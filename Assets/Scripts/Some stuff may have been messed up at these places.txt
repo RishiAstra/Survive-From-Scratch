@@ -1,0 +1,12 @@
+"co" in makeBranch for loop is going to get messed up
+line 430 b.IntLength will get messed up
+line 471 check
+line 476 check
+line 494 check
+line 837 check
+line 430 very messed up
+
+nvm, everything seems to be working?
+
+//TODO: Branches spawn when parent branch isn't quite at right length, ProgTillTop is slightly off?
+it seems like progtilltop is fine, maybe the branch's mesh is smaller than progTilltop?

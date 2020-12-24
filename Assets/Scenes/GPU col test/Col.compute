@@ -1,0 +1,131 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel Col
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+
+//TODO: Make bounce variable
+//TODO: For diffrent masses, i think new velocity = lerp(oldvel, newvel, othermass/thismass);
+float rad;
+uint length;
+float bounds;
+float speed;
+float gravity;
+float bouncy;
+float colThreshold;
+RWStructuredBuffer<half3> pos;
+RWStructuredBuffer<bool> col;
+RWStructuredBuffer<half3> vel;
+
+[numthreads(1024, 1, 1)]
+void Col(uint3 id : SV_DispatchThreadID)
+{
+	if (id.x >= length) return;
+	half3 p1 = pos[id.x];
+	half radsq = rad * rad;// (rad * 2) * (rad * 2);
+	for (uint i = 0; i < length; i++) {
+		if (i == id.x) continue;
+		
+		half3 p2 = pos[i];
+		half3 p = (p1 - p2);
+		half3 pu = (p1 + vel[id.x]*speed - p2 - vel[i]*speed);
+		if ((pu.x*pu.x + pu.y*pu.y + pu.z*pu.z) < radsq || (p.x*p.x + p.y*p.y + p.z*p.z) < radsq) {
+				
+			half3 rv = vel[id.x] - vel[i];
+			if (sqrt(rv.x*rv.x + rv.y*rv.y + rv.z*rv.z) > colThreshold) {
+				half3 vA = vel[id.x];
+				half3 vB = vel[i];
+				half3 n = p;
+
+				col[0] = true;
+
+				float div = sqrt(n.x*n.x + n.y*n.y + n.z*n.z);
+				if (div > 0) n /= div;
+
+				half dotA1 = (vA.x*n.x + vA.y*n.y + vA.z*n.z);
+				half dotB1 = (vA.x*n.x + vA.y*n.y + vA.z*n.z);
+
+				half3 dotA = dotA1 * n * -2 + vA;
+				half3 dotB = dotB1 * -n * -2 + vB;
+
+				//half d = sqrt(vA.x*vA.x + vA.y*vA.y + vA.z*vA.z);
+
+				vel[id.x] = dotA;
+				vel[i] = dotB;
+				//vA = vel[id.x];
+				//vB = vel[i];
+				//float divA = sqrt(vA.x * vA.x + vA.y * vA.y + vA.z * vA.z);//TODO: make bouncy only affect reflection, not total velocity
+				//float divB = sqrt(vB.x * vB.x + vB.y * vB.y + vB.z * vB.z);
+				//float mult = divA + divB;
+				//vA *= (mult-divB) * bouncy;// divB / divA * bouncy;
+				//vB *= (mult-divA) * bouncy;// divA / divB * bouncy;
+				//half3 tmp = vel[id.x];
+				//vel[id.x] = vB;// vel[i];
+				//vel[i] = vA;// tmp;
+
+				
+			}
+			else{// if((p.x*p.x + p.y*p.y + p.z*p.z) < radsq){
+				vel[id.x] = half3(0, 0, 0);
+				vel[i] = half3(0, 0, 0);
+				half sq = sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
+				if (sq != 0) {
+					half3 tmp = p1;
+					p1 = p2 + p * ((rad + 0.001) / sq);
+					p2 = tmp - p * ((rad + 0.001) / sq);
+				}
+			}
+
+			
+			
+			//pos[id.x] = half3(5, 5, 5);
+		}
+	}
+	if (p1.x > bounds) {
+		p1.x = bounds;
+		if (vel[id.x].x > 0) vel[id.x] *= half3(-bouncy, 1, 1);
+		//vel[id.x] *= half3(-1, 1, 1);
+		col[0] = true;
+		
+	}
+	if (p1.x < -bounds) {
+		p1.x = -bounds;
+		if(vel[id.x].x < 0) vel[id.x] *= half3(-bouncy, 1, 1);
+		col[0] = true;
+		
+	}
+
+	if (p1.y > bounds) {
+		p1.y = bounds;
+		if (vel[id.x].y > 0) vel[id.x] *= half3(1, -bouncy, 1);
+		//vel[id.x] *= half3(1, -1, 1);
+		col[0] = true;
+		
+	}
+	if (p1.y < -bounds) {
+		p1.y = -bounds;
+		if (vel[id.x].y < 0) vel[id.x] *= half3(1, -bouncy, 1);
+		//vel[id.x] *= half3(1, -1, 1);
+		col[0] = true;
+		
+	}
+	
+	if (p1.z > bounds) {
+		p1.z = bounds;
+		if (vel[id.x].z > 0) vel[id.x] *= half3(1, 1, -bouncy);
+		//vel[id.x] *= half3(1, 1, -1);
+		col[0] = true;
+		
+	}
+	if (p1.z < -bounds) {
+		p1.z = -bounds;
+		if (vel[id.x].z < 0) vel[id.x] *= half3(1, 1, -bouncy);
+		//vel[id.x] *= half3(1, 1, -1);
+		col[0] = true;
+		
+	}
+	//vel[id.x] += float3(0, -speed * gravity, 0);//not working gravity fail
+	p1 += vel[id.x] * speed + float3(0, -speed * gravity, 0);;
+	pos[id.x] = p1;
+
+}

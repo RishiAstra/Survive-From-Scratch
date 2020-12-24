@@ -1,0 +1,625 @@
+fileFormatVersion: 2
+guid: b06be7d6c1b0bb649a9ddcacbe65645c
+timeCreated: 1501538243
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Armature.001
+    100004: BasicBandit_Body
+    100006: BasicBandit_Clothes
+    100008: BasicBandit_Clothes.001
+    100010: BasicBandit_Eye
+    100012: BasicBandit_Mask
+    100014: Chest
+    100016: Chest 1
+    100018: Eye.L
+    100020: Eye.L 1
+    100022: Eye.L_end
+    100024: Eye.L_end 1
+    100026: Eye.L_end_end
+    100028: Eye.L_end_end 1
+    100030: Eye.L_end_end_end
+    100032: Eye.L_end_end_end 1
+    100034: Eye.L_end_end_end_end
+    100036: Eye.L_end_end_end_end 1
+    100038: Eye.L_end_end_end_end_end
+    100040: Eye.L_end_end_end_end_end 1
+    100042: Eye.R
+    100044: Eye.R 1
+    100046: Eye.R_end
+    100048: Eye.R_end 1
+    100050: Eye.R_end_end
+    100052: Eye.R_end_end 1
+    100054: Eye.R_end_end_end
+    100056: Eye.R_end_end_end 1
+    100058: Eye.R_end_end_end_end
+    100060: Eye.R_end_end_end_end 1
+    100062: Eye.R_end_end_end_end_end
+    100064: Eye.R_end_end_end_end_end 1
+    100066: Foot.L
+    100068: Foot.L 1
+    100070: Foot.R
+    100072: Foot.R 1
+    100074: Hand.L
+    100076: Hand.L 1
+    100078: Hand.R
+    100080: Hand.R 1
+    100082: Head
+    100084: Head 1
+    100086: Hips
+    100088: Hips 1
+    100090: IndexDistal.L
+    100092: IndexDistal.L 1
+    100094: IndexDistal.L_end
+    100096: IndexDistal.L_end 1
+    100098: IndexDistal.L_end_end
+    100100: IndexDistal.L_end_end 1
+    100102: IndexDistal.L_end_end_end
+    100104: IndexDistal.L_end_end_end 1
+    100106: IndexDistal.L_end_end_end_end
+    100108: IndexDistal.L_end_end_end_end 1
+    100110: IndexDistal.L_end_end_end_end_end
+    100112: IndexDistal.L_end_end_end_end_end 1
+    100114: IndexDistal.R
+    100116: IndexDistal.R 1
+    100118: IndexDistal.R_end
+    100120: IndexDistal.R_end 1
+    100122: IndexDistal.R_end_end
+    100124: IndexDistal.R_end_end 1
+    100126: IndexDistal.R_end_end_end
+    100128: IndexDistal.R_end_end_end 1
+    100130: IndexDistal.R_end_end_end_end
+    100132: IndexDistal.R_end_end_end_end 1
+    100134: IndexDistal.R_end_end_end_end_end
+    100136: IndexDistal.R_end_end_end_end_end 1
+    100138: IndexMiddle.L
+    100140: IndexMiddle.L 1
+    100142: IndexMiddle.R
+    100144: IndexMiddle.R 1
+    100146: IndexProximal.L
+    100148: IndexProximal.L 1
+    100150: IndexProximal.R
+    100152: IndexProximal.R 1
+    100154: Jaw
+    100156: Jaw 1
+    100158: Jaw_end
+    100160: Jaw_end 1
+    100162: Jaw_end_end
+    100164: Jaw_end_end 1
+    100166: Jaw_end_end_end
+    100168: Jaw_end_end_end 1
+    100170: Jaw_end_end_end_end
+    100172: Jaw_end_end_end_end 1
+    100174: Jaw_end_end_end_end_end
+    100176: Jaw_end_end_end_end_end 1
+    100178: LittleDistal.L
+    100180: LittleDistal.L 1
+    100182: LittleDistal.L_end
+    100184: LittleDistal.L_end 1
+    100186: LittleDistal.L_end_end
+    100188: LittleDistal.L_end_end 1
+    100190: LittleDistal.L_end_end_end
+    100192: LittleDistal.L_end_end_end 1
+    100194: LittleDistal.L_end_end_end_end
+    100196: LittleDistal.L_end_end_end_end 1
+    100198: LittleDistal.L_end_end_end_end_end
+    100200: LittleDistal.L_end_end_end_end_end 1
+    100202: LittleDistal.R
+    100204: LittleDistal.R 1
+    100206: LittleDistal.R_end
+    100208: LittleDistal.R_end 1
+    100210: LittleDistal.R_end_end
+    100212: LittleDistal.R_end_end 1
+    100214: LittleDistal.R_end_end_end
+    100216: LittleDistal.R_end_end_end 1
+    100218: LittleDistal.R_end_end_end_end
+    100220: LittleDistal.R_end_end_end_end 1
+    100222: LittleDistal.R_end_end_end_end_end
+    100224: LittleDistal.R_end_end_end_end_end 1
+    100226: LittleMiddle.L
+    100228: LittleMiddle.L 1
+    100230: LittleMiddle.R
+    100232: LittleMiddle.R 1
+    100234: LittleProximal.L
+    100236: LittleProximal.L 1
+    100238: LittleProximal.R
+    100240: LittleProximal.R 1
+    100242: LowerArm.L
+    100244: LowerArm.L 1
+    100246: LowerArm.R
+    100248: LowerArm.R 1
+    100250: LowerLeg.L
+    100252: LowerLeg.L 1
+    100254: LowerLeg.R
+    100256: LowerLeg.R 1
+    100258: MiddleDistal.L
+    100260: MiddleDistal.L 1
+    100262: MiddleDistal.L_end
+    100264: MiddleDistal.L_end 1
+    100266: MiddleDistal.L_end_end
+    100268: MiddleDistal.L_end_end 1
+    100270: MiddleDistal.L_end_end_end
+    100272: MiddleDistal.L_end_end_end 1
+    100274: MiddleDistal.L_end_end_end_end
+    100276: MiddleDistal.L_end_end_end_end 1
+    100278: MiddleDistal.L_end_end_end_end_end
+    100280: MiddleDistal.L_end_end_end_end_end 1
+    100282: MiddleDistal.R
+    100284: MiddleDistal.R 1
+    100286: MiddleDistal.R_end
+    100288: MiddleDistal.R_end 1
+    100290: MiddleDistal.R_end_end
+    100292: MiddleDistal.R_end_end 1
+    100294: MiddleDistal.R_end_end_end
+    100296: MiddleDistal.R_end_end_end 1
+    100298: MiddleDistal.R_end_end_end_end
+    100300: MiddleDistal.R_end_end_end_end 1
+    100302: MiddleDistal.R_end_end_end_end_end
+    100304: MiddleDistal.R_end_end_end_end_end 1
+    100306: MiddleMiddle.L
+    100308: MiddleMiddle.L 1
+    100310: MiddleMiddle.R
+    100312: MiddleMiddle.R 1
+    100314: MiddleProximal.L
+    100316: MiddleProximal.L 1
+    100318: MiddleProximal.R
+    100320: MiddleProximal.R 1
+    100322: Neck
+    100324: Neck 1
+    100326: RingDistal.L
+    100328: RingDistal.L 1
+    100330: RingDistal.L_end
+    100332: RingDistal.L_end 1
+    100334: RingDistal.L_end_end
+    100336: RingDistal.L_end_end 1
+    100338: RingDistal.L_end_end_end
+    100340: RingDistal.L_end_end_end 1
+    100342: RingDistal.L_end_end_end_end
+    100344: RingDistal.L_end_end_end_end 1
+    100346: RingDistal.L_end_end_end_end_end
+    100348: RingDistal.L_end_end_end_end_end 1
+    100350: RingDistal.R
+    100352: RingDistal.R 1
+    100354: RingDistal.R_end
+    100356: RingDistal.R_end 1
+    100358: RingDistal.R_end_end
+    100360: RingDistal.R_end_end 1
+    100362: RingDistal.R_end_end_end
+    100364: RingDistal.R_end_end_end 1
+    100366: RingDistal.R_end_end_end_end
+    100368: RingDistal.R_end_end_end_end 1
+    100370: RingDistal.R_end_end_end_end_end
+    100372: RingDistal.R_end_end_end_end_end 1
+    100374: RingMiddle.L
+    100376: RingMiddle.L 1
+    100378: RingMiddle.R
+    100380: RingMiddle.R 1
+    100382: RingProximal.L
+    100384: RingProximal.L 1
+    100386: RingProximal.R
+    100388: RingProximal.R 1
+    100390: //RootNode
+    100392: Shoulder.L
+    100394: Shoulder.L 1
+    100396: Shoulder.R
+    100398: Shoulder.R 1
+    100400: Spine
+    100402: Spine 1
+    100404: ThumbDistal.L
+    100406: ThumbDistal.L 1
+    100408: ThumbDistal.L_end
+    100410: ThumbDistal.L_end 1
+    100412: ThumbDistal.L_end_end
+    100414: ThumbDistal.L_end_end 1
+    100416: ThumbDistal.L_end_end_end
+    100418: ThumbDistal.L_end_end_end 1
+    100420: ThumbDistal.L_end_end_end_end
+    100422: ThumbDistal.L_end_end_end_end 1
+    100424: ThumbDistal.L_end_end_end_end_end
+    100426: ThumbDistal.L_end_end_end_end_end 1
+    100428: ThumbDistal.R
+    100430: ThumbDistal.R 1
+    100432: ThumbDistal.R_end
+    100434: ThumbDistal.R_end 1
+    100436: ThumbDistal.R_end_end
+    100438: ThumbDistal.R_end_end 1
+    100440: ThumbDistal.R_end_end_end
+    100442: ThumbDistal.R_end_end_end 1
+    100444: ThumbDistal.R_end_end_end_end
+    100446: ThumbDistal.R_end_end_end_end 1
+    100448: ThumbDistal.R_end_end_end_end_end
+    100450: ThumbDistal.R_end_end_end_end_end 1
+    100452: ThumbMiddle.L
+    100454: ThumbMiddle.L 1
+    100456: ThumbMiddle.R
+    100458: ThumbMiddle.R 1
+    100460: ThumbProximal.L
+    100462: ThumbProximal.L 1
+    100464: ThumbProximal.R
+    100466: ThumbProximal.R 1
+    100468: Toe.L
+    100470: Toe.L 1
+    100472: Toe.L_end
+    100474: Toe.L_end 1
+    100476: Toe.L_end_end
+    100478: Toe.L_end_end 1
+    100480: Toe.L_end_end_end
+    100482: Toe.L_end_end_end 1
+    100484: Toe.L_end_end_end_end
+    100486: Toe.L_end_end_end_end 1
+    100488: Toe.L_end_end_end_end_end
+    100490: Toe.L_end_end_end_end_end 1
+    100492: Toe.R
+    100494: Toe.R 1
+    100496: Toe.R_end
+    100498: Toe.R_end 1
+    100500: Toe.R_end_end
+    100502: Toe.R_end_end 1
+    100504: Toe.R_end_end_end
+    100506: Toe.R_end_end_end 1
+    100508: Toe.R_end_end_end_end
+    100510: Toe.R_end_end_end_end 1
+    100512: Toe.R_end_end_end_end_end
+    100514: Toe.R_end_end_end_end_end 1
+    100516: UpperArm.L
+    100518: UpperArm.L 1
+    100520: UpperArm.R
+    100522: UpperArm.R 1
+    100524: UpperLeg.L
+    100526: UpperLeg.L 1
+    100528: UpperLeg.R
+    100530: UpperLeg.R 1
+    400000: Armature
+    400002: Armature.001
+    400004: BasicBandit_Body
+    400006: BasicBandit_Clothes
+    400008: BasicBandit_Clothes.001
+    400010: BasicBandit_Eye
+    400012: BasicBandit_Mask
+    400014: Chest
+    400016: Chest 1
+    400018: Eye.L
+    400020: Eye.L 1
+    400022: Eye.L_end
+    400024: Eye.L_end 1
+    400026: Eye.L_end_end
+    400028: Eye.L_end_end 1
+    400030: Eye.L_end_end_end
+    400032: Eye.L_end_end_end 1
+    400034: Eye.L_end_end_end_end
+    400036: Eye.L_end_end_end_end 1
+    400038: Eye.L_end_end_end_end_end
+    400040: Eye.L_end_end_end_end_end 1
+    400042: Eye.R
+    400044: Eye.R 1
+    400046: Eye.R_end
+    400048: Eye.R_end 1
+    400050: Eye.R_end_end
+    400052: Eye.R_end_end 1
+    400054: Eye.R_end_end_end
+    400056: Eye.R_end_end_end 1
+    400058: Eye.R_end_end_end_end
+    400060: Eye.R_end_end_end_end 1
+    400062: Eye.R_end_end_end_end_end
+    400064: Eye.R_end_end_end_end_end 1
+    400066: Foot.L
+    400068: Foot.L 1
+    400070: Foot.R
+    400072: Foot.R 1
+    400074: Hand.L
+    400076: Hand.L 1
+    400078: Hand.R
+    400080: Hand.R 1
+    400082: Head
+    400084: Head 1
+    400086: Hips
+    400088: Hips 1
+    400090: IndexDistal.L
+    400092: IndexDistal.L 1
+    400094: IndexDistal.L_end
+    400096: IndexDistal.L_end 1
+    400098: IndexDistal.L_end_end
+    400100: IndexDistal.L_end_end 1
+    400102: IndexDistal.L_end_end_end
+    400104: IndexDistal.L_end_end_end 1
+    400106: IndexDistal.L_end_end_end_end
+    400108: IndexDistal.L_end_end_end_end 1
+    400110: IndexDistal.L_end_end_end_end_end
+    400112: IndexDistal.L_end_end_end_end_end 1
+    400114: IndexDistal.R
+    400116: IndexDistal.R 1
+    400118: IndexDistal.R_end
+    400120: IndexDistal.R_end 1
+    400122: IndexDistal.R_end_end
+    400124: IndexDistal.R_end_end 1
+    400126: IndexDistal.R_end_end_end
+    400128: IndexDistal.R_end_end_end 1
+    400130: IndexDistal.R_end_end_end_end
+    400132: IndexDistal.R_end_end_end_end 1
+    400134: IndexDistal.R_end_end_end_end_end
+    400136: IndexDistal.R_end_end_end_end_end 1
+    400138: IndexMiddle.L
+    400140: IndexMiddle.L 1
+    400142: IndexMiddle.R
+    400144: IndexMiddle.R 1
+    400146: IndexProximal.L
+    400148: IndexProximal.L 1
+    400150: IndexProximal.R
+    400152: IndexProximal.R 1
+    400154: Jaw
+    400156: Jaw 1
+    400158: Jaw_end
+    400160: Jaw_end 1
+    400162: Jaw_end_end
+    400164: Jaw_end_end 1
+    400166: Jaw_end_end_end
+    400168: Jaw_end_end_end 1
+    400170: Jaw_end_end_end_end
+    400172: Jaw_end_end_end_end 1
+    400174: Jaw_end_end_end_end_end
+    400176: Jaw_end_end_end_end_end 1
+    400178: LittleDistal.L
+    400180: LittleDistal.L 1
+    400182: LittleDistal.L_end
+    400184: LittleDistal.L_end 1
+    400186: LittleDistal.L_end_end
+    400188: LittleDistal.L_end_end 1
+    400190: LittleDistal.L_end_end_end
+    400192: LittleDistal.L_end_end_end 1
+    400194: LittleDistal.L_end_end_end_end
+    400196: LittleDistal.L_end_end_end_end 1
+    400198: LittleDistal.L_end_end_end_end_end
+    400200: LittleDistal.L_end_end_end_end_end 1
+    400202: LittleDistal.R
+    400204: LittleDistal.R 1
+    400206: LittleDistal.R_end
+    400208: LittleDistal.R_end 1
+    400210: LittleDistal.R_end_end
+    400212: LittleDistal.R_end_end 1
+    400214: LittleDistal.R_end_end_end
+    400216: LittleDistal.R_end_end_end 1
+    400218: LittleDistal.R_end_end_end_end
+    400220: LittleDistal.R_end_end_end_end 1
+    400222: LittleDistal.R_end_end_end_end_end
+    400224: LittleDistal.R_end_end_end_end_end 1
+    400226: LittleMiddle.L
+    400228: LittleMiddle.L 1
+    400230: LittleMiddle.R
+    400232: LittleMiddle.R 1
+    400234: LittleProximal.L
+    400236: LittleProximal.L 1
+    400238: LittleProximal.R
+    400240: LittleProximal.R 1
+    400242: LowerArm.L
+    400244: LowerArm.L 1
+    400246: LowerArm.R
+    400248: LowerArm.R 1
+    400250: LowerLeg.L
+    400252: LowerLeg.L 1
+    400254: LowerLeg.R
+    400256: LowerLeg.R 1
+    400258: MiddleDistal.L
+    400260: MiddleDistal.L 1
+    400262: MiddleDistal.L_end
+    400264: MiddleDistal.L_end 1
+    400266: MiddleDistal.L_end_end
+    400268: MiddleDistal.L_end_end 1
+    400270: MiddleDistal.L_end_end_end
+    400272: MiddleDistal.L_end_end_end 1
+    400274: MiddleDistal.L_end_end_end_end
+    400276: MiddleDistal.L_end_end_end_end 1
+    400278: MiddleDistal.L_end_end_end_end_end
+    400280: MiddleDistal.L_end_end_end_end_end 1
+    400282: MiddleDistal.R
+    400284: MiddleDistal.R 1
+    400286: MiddleDistal.R_end
+    400288: MiddleDistal.R_end 1
+    400290: MiddleDistal.R_end_end
+    400292: MiddleDistal.R_end_end 1
+    400294: MiddleDistal.R_end_end_end
+    400296: MiddleDistal.R_end_end_end 1
+    400298: MiddleDistal.R_end_end_end_end
+    400300: MiddleDistal.R_end_end_end_end 1
+    400302: MiddleDistal.R_end_end_end_end_end
+    400304: MiddleDistal.R_end_end_end_end_end 1
+    400306: MiddleMiddle.L
+    400308: MiddleMiddle.L 1
+    400310: MiddleMiddle.R
+    400312: MiddleMiddle.R 1
+    400314: MiddleProximal.L
+    400316: MiddleProximal.L 1
+    400318: MiddleProximal.R
+    400320: MiddleProximal.R 1
+    400322: Neck
+    400324: Neck 1
+    400326: RingDistal.L
+    400328: RingDistal.L 1
+    400330: RingDistal.L_end
+    400332: RingDistal.L_end 1
+    400334: RingDistal.L_end_end
+    400336: RingDistal.L_end_end 1
+    400338: RingDistal.L_end_end_end
+    400340: RingDistal.L_end_end_end 1
+    400342: RingDistal.L_end_end_end_end
+    400344: RingDistal.L_end_end_end_end 1
+    400346: RingDistal.L_end_end_end_end_end
+    400348: RingDistal.L_end_end_end_end_end 1
+    400350: RingDistal.R
+    400352: RingDistal.R 1
+    400354: RingDistal.R_end
+    400356: RingDistal.R_end 1
+    400358: RingDistal.R_end_end
+    400360: RingDistal.R_end_end 1
+    400362: RingDistal.R_end_end_end
+    400364: RingDistal.R_end_end_end 1
+    400366: RingDistal.R_end_end_end_end
+    400368: RingDistal.R_end_end_end_end 1
+    400370: RingDistal.R_end_end_end_end_end
+    400372: RingDistal.R_end_end_end_end_end 1
+    400374: RingMiddle.L
+    400376: RingMiddle.L 1
+    400378: RingMiddle.R
+    400380: RingMiddle.R 1
+    400382: RingProximal.L
+    400384: RingProximal.L 1
+    400386: RingProximal.R
+    400388: RingProximal.R 1
+    400390: //RootNode
+    400392: Shoulder.L
+    400394: Shoulder.L 1
+    400396: Shoulder.R
+    400398: Shoulder.R 1
+    400400: Spine
+    400402: Spine 1
+    400404: ThumbDistal.L
+    400406: ThumbDistal.L 1
+    400408: ThumbDistal.L_end
+    400410: ThumbDistal.L_end 1
+    400412: ThumbDistal.L_end_end
+    400414: ThumbDistal.L_end_end 1
+    400416: ThumbDistal.L_end_end_end
+    400418: ThumbDistal.L_end_end_end 1
+    400420: ThumbDistal.L_end_end_end_end
+    400422: ThumbDistal.L_end_end_end_end 1
+    400424: ThumbDistal.L_end_end_end_end_end
+    400426: ThumbDistal.L_end_end_end_end_end 1
+    400428: ThumbDistal.R
+    400430: ThumbDistal.R 1
+    400432: ThumbDistal.R_end
+    400434: ThumbDistal.R_end 1
+    400436: ThumbDistal.R_end_end
+    400438: ThumbDistal.R_end_end 1
+    400440: ThumbDistal.R_end_end_end
+    400442: ThumbDistal.R_end_end_end 1
+    400444: ThumbDistal.R_end_end_end_end
+    400446: ThumbDistal.R_end_end_end_end 1
+    400448: ThumbDistal.R_end_end_end_end_end
+    400450: ThumbDistal.R_end_end_end_end_end 1
+    400452: ThumbMiddle.L
+    400454: ThumbMiddle.L 1
+    400456: ThumbMiddle.R
+    400458: ThumbMiddle.R 1
+    400460: ThumbProximal.L
+    400462: ThumbProximal.L 1
+    400464: ThumbProximal.R
+    400466: ThumbProximal.R 1
+    400468: Toe.L
+    400470: Toe.L 1
+    400472: Toe.L_end
+    400474: Toe.L_end 1
+    400476: Toe.L_end_end
+    400478: Toe.L_end_end 1
+    400480: Toe.L_end_end_end
+    400482: Toe.L_end_end_end 1
+    400484: Toe.L_end_end_end_end
+    400486: Toe.L_end_end_end_end 1
+    400488: Toe.L_end_end_end_end_end
+    400490: Toe.L_end_end_end_end_end 1
+    400492: Toe.R
+    400494: Toe.R 1
+    400496: Toe.R_end
+    400498: Toe.R_end 1
+    400500: Toe.R_end_end
+    400502: Toe.R_end_end 1
+    400504: Toe.R_end_end_end
+    400506: Toe.R_end_end_end 1
+    400508: Toe.R_end_end_end_end
+    400510: Toe.R_end_end_end_end 1
+    400512: Toe.R_end_end_end_end_end
+    400514: Toe.R_end_end_end_end_end 1
+    400516: UpperArm.L
+    400518: UpperArm.L 1
+    400520: UpperArm.R
+    400522: UpperArm.R 1
+    400524: UpperLeg.L
+    400526: UpperLeg.L 1
+    400528: UpperLeg.R
+    400530: UpperLeg.R 1
+    4300000: BasicBandit_Clothes
+    4300002: BasicBandit_Body
+    4300004: BasicBandit_Eye
+    4300006: BasicBandit_Mask
+    4300008: BasicBandit_Clothes.001
+    9500000: //RootNode
+    13700000: BasicBandit_Body
+    13700002: BasicBandit_Clothes
+    13700004: BasicBandit_Clothes.001
+    13700006: BasicBandit_Eye
+    13700008: BasicBandit_Mask
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
