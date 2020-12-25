@@ -49,6 +49,7 @@ public class Movement : MonoBehaviour
 	private float angleOff;
 
 	private Abilities abilities;//used to determine if need to pause to use a skill
+	private bool died;
 	//public bool canFly;//TODO: add flying
 	// Start is called before the first frame update
 	void Start()
@@ -93,6 +94,14 @@ public class Movement : MonoBehaviour
 	bool transitionCaptured;//
 	private void FixedUpdate()
 	{
+		if (abilities.dead){
+			if (!died)
+			{
+				anim.SetTrigger("Dead");
+				died = true;
+			}
+			return;
+		}
 		angleOff = Quaternion.Angle(transform.rotation, angle);
 		idle = (direction.magnitude < 0.01f) && (angleOff < ANGLE_THRESHOLD) && (rig.velocity.magnitude < 0.05f);//move very slow and be on target to be idle
 		if (true)//abilities == null)  || !abilities.busy)

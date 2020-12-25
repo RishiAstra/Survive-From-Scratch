@@ -39,6 +39,7 @@ public class Abilities : MonoBehaviour
 		Slash = 4,
 		Magic = 8
 	};
+	public bool dead;//TODO: consider stopping all attacks already happening when it dies
 	public Stat maxStat;
 	public Stat stat;
 	public List<Skill> skills;
@@ -54,18 +55,19 @@ public class Abilities : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-
+		stat = maxStat;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-
+		dead = stat.hp <= 0;
 	}
 
 
 	public void Attack()
 	{
+		if (dead) return;
 		if (attackAllowed)
 		{
 			foreach (Weapon w in attackTranforms[currentAttackTransform].GetComponentsInChildren<Weapon>())
@@ -83,7 +85,7 @@ public class Abilities : MonoBehaviour
 		}
 	}
 
-	public void Damage(float dmg, Collider cols, AttackType type)
+	public void Damage(float dmg, Collider cols, AttackType type)//accouns for weakpoints in different armor pieces
 	{
 		Armor a = new Armor();
 		foreach(Armor t in armors)
@@ -108,6 +110,7 @@ public class Abilities : MonoBehaviour
 
 	public void UseSkill(int i)
 	{
+		if (dead) return;
 		if (!busy)
 		{
 			busy = true;

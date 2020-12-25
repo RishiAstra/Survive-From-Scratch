@@ -392,12 +392,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566d6838528735047847b71a31f08853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dead: 0
   maxStat:
-    hp: 0
+    hp: 25
     mp: 0
     eng: 0
     mor: 0
-    atk: 0
+    atk: 5
     def: 0
     mag: 0
   stat:

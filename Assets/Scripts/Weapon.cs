@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour
 {
 	public Abilities.AttackType attackType;
 	public Abilities parent;
-	public float dmg;
+	[Range(0, 2)]public float dmg;
 	public bool canDmg;
 	public float attackDuriation;//StopAttack() will prevent this, so no need. Set it to large value, larger than realistic attack duriation (e.g. if sword takes 1 sec to swing, set to 2 sec)
 	//public Equip eq;
@@ -70,7 +70,7 @@ public class Weapon : MonoBehaviour
 				if (bg != null && bg != parent && ! hit.Contains(bg))
 				{
 					hit.Add(bg);
-					bg.Damage(dmg, other, attackType);
+					bg.Damage(dmg * parent.stat.atk, other, attackType);
 					//canDmg = false;
 				}
 				
