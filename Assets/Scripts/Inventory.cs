@@ -6,6 +6,8 @@ using bobStuff;
 public class Inventory : MonoBehaviour
 {
 	public List<Item> items;
+
+    private InventoryUI ui;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,4 +19,12 @@ public class Inventory : MonoBehaviour
     {
         
     }
+
+    void RefreshUI()
+	{
+        if(ui != null && ui.gameObject.ActiveInHeirarchy)
+		{
+            ui.Refresh();
+		}
+	}
 }
