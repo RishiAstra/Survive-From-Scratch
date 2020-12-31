@@ -8,6 +8,8 @@ using UnityEditor;
 [CustomEditor(typeof(TagScript))]
 public class TagScriptEditor : Editor
 {
+	static bool initialized;
+
 	TagScript t;
 	bool showTags = false;
 	//List<string> tagStrings;
@@ -18,8 +20,17 @@ public class TagScriptEditor : Editor
 	{
 		Debug.Log("starting");
 		((TagScript)target).Awake();
-		if(errorContent == null) errorContent = EditorGUIUtility.IconContent("Error");
+		CheckStartUp();
 		//RefreshTags();
+	}
+	private static void CheckStartUp()
+	{
+		if (!initialized)
+		{
+			initialized = true;
+			TagScript.InitializeTagMap();
+		}
+		if (errorContent == null) errorContent = EditorGUIUtility.IconContent("Error");
 	}
 
 	//void RefreshTags()
@@ -77,13 +88,14 @@ public class TagScriptEditor : Editor
 
 	public static void TagGUI(ref List<int> tags)
 	{
-		if (GUILayout.Button("+"))
-		{
-			tags.Add(0);
-		}
-		EditorGUI.indentLevel += 2;
+		CheckStartUp();
+		
+		//EditorGUI.indentLevel += 2;
+		int indentLevel = EditorGUI.indentLevel;
+		EditorGUI.indentLevel = 0;
 		for (int i = 0; i < tags.Count; i++)
 		{
+			
 			//string temp = tagStrings[i];
 			GUILayout.BeginHorizontal();
 			tags[i] = EditorGUILayout.IntField(tags[i], GUILayout.MaxWidth(50.0f));
@@ -127,7 +139,12 @@ public class TagScriptEditor : Editor
 			}
 			GUILayout.EndHorizontal();
 		}
-		EditorGUI.indentLevel -= 2;
+		if (GUILayout.Button("+"))
+		{
+			tags.Add(0);
+		}
+		EditorGUI.indentLevel = indentLevel;
+		//EditorGUI.indentLevel -= 2;
 	}
 }
 #endif

@@ -17,11 +17,7 @@ public class TagScript : MonoBehaviour
     // Start is called before the first frame update
     public void Awake()
     {
-		if (!initialized)
-		{
-			initialized = true;
-			InitializeTagMap();
-		}
+		
 	}
 
 	public bool ContainsTag(int[] tag) {
@@ -51,7 +47,7 @@ public class TagScript : MonoBehaviour
 		return tags.Contains(tag);
 	}
 
-	private static void InitializeTagMap()
+	public static void InitializeTagMap()
 	{
 		TextAsset ta = Resources.Load<TextAsset>("tags");
 		string tagText = ta.text;

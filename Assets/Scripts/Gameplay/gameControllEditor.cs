@@ -38,10 +38,15 @@ public class gameControllEditor : Editor
 					item.strength = EditorGUILayout.FloatField("Strength", item.strength);
 					//item.type = (ItemToolType)EditorGUILayout.EnumFlagsField("Type", item.type);
 					item.Cat = (ItemTag)EditorGUILayout.EnumFlagsField("Catigory", item.Cat);
-					EditorGUI.indentLevel += 2;
-					EditorGUI.indentLevel -= 2;
+					//EditorGUI.indentLevel += 2;
+					EditorGUILayout.Space(10);
+					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
+					TagScriptEditor.TagGUI(ref item.tags);
+					EditorGUILayout.Space(10);
+					//EditorGUI.indentLevel -= 2;
 					//public float strength;
 					t.itemTypes[i] = item;
+					EditorGUILayout.LabelField("Add or Remove ItemType", EditorStyles.boldLabel);
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button("+"))
 					{
