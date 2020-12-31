@@ -27,6 +27,7 @@ public class InventoryUI : MonoBehaviour
         for(int i = 0; i < target.items.Count; i++)
 		{
             GameObject g = Instantiate(slotPrefab);
+            g.transform.SetParent(transform);
             slotT.Add(g.GetComponent<RectTransform>());
             slotI.Add(g.GetComponent<ItemIcon>());
             
