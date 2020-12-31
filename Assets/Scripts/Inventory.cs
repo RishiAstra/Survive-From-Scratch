@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour
 
     void RefreshUI()
 	{
-        if(ui != null && ui.gameObject.ActiveInHeirarchy)
+        if(ui != null && ui.gameObject.activeInHierarchy)
 		{
             ui.Refresh();
 		}
