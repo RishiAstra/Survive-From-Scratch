@@ -18,8 +18,8 @@ public class TagScriptEditor : Editor
 	private static GUIContent errorContent;
 	private void OnEnable()
 	{
-		Debug.Log("starting");
-		((TagScript)target).Awake();
+		//Debug.Log("starting");
+		//((TagScript)target).Awake();
 		CheckStartUp();
 		//RefreshTags();
 	}

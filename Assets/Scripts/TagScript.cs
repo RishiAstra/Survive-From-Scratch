@@ -8,6 +8,11 @@ using bobStuff;
 
 public class TagScript : MonoBehaviour
 {
+	//easy constants instead of using TagToId many times
+	public static int rhEquip;
+	public static int placeable;
+
+
 	public static Dictionary<string, int> TagIntMap;
 	public static Dictionary<int, string> TagStringMap;
 	public static bool initialized = false;
@@ -17,7 +22,7 @@ public class TagScript : MonoBehaviour
     // Start is called before the first frame update
     public void Awake()
     {
-		
+		if (!initialized) InitializeTagMap();
 	}
 
 	public bool ContainsTag(int[] tag) {
@@ -47,6 +52,9 @@ public class TagScript : MonoBehaviour
 		return tags.Contains(tag);
 	}
 
+	/// <summary>
+	/// Fills the TagIntMap and TagStringMap to convert strings to ints and vice versa
+	/// </summary>
 	public static void InitializeTagMap()
 	{
 		TextAsset ta = Resources.Load<TextAsset>("tags");
@@ -81,13 +89,15 @@ public class TagScript : MonoBehaviour
 
 		}
 		print("Initialized tags with " + invalidLines + " invalid tags");
+		initialized = true;
 
-
+		rhEquip = TagToId("rh equip", out _);
+		placeable = TagToId("placeable", out _);
 	}
-
 
 	public static int TagToId(string s, out bool succeed)
 	{
+		if (!initialized) InitializeTagMap();
 		if (TagIntMap.ContainsKey(s))
 		{
 			succeed = true;
@@ -101,6 +111,7 @@ public class TagScript : MonoBehaviour
 	}
 	public static string IdTotag(int i, out bool succeed)
 	{
+		if (!initialized) InitializeTagMap();
 		if (TagStringMap.ContainsKey(i))
 		{
 			succeed = true;

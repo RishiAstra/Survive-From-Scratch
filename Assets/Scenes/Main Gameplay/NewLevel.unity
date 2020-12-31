@@ -371,12 +371,12 @@ GameObject:
   - component: {fileID: 122116492}
   - component: {fileID: 122116491}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: InventoryPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &122116490
 RectTransform:
   m_ObjectHideFlags: 0
@@ -488,14 +488,12 @@ MonoBehaviour:
   itemTypes:
   - name: Blank
     icon: {fileID: 0}
-    Cat: -1
     tags: 
     prefab: {fileID: 0}
     equipPrefab: {fileID: 0}
     strength: 1
   - name: Branch
     icon: {fileID: 0}
-    Cat: 16
     tags: 01000000
     prefab: {fileID: 0}
     equipPrefab: {fileID: 1955108893448462, guid: 4b85d9c70ae4d014f96b93a8bcd9ac4a,
@@ -503,7 +501,6 @@ MonoBehaviour:
     strength: 100
   - name: Rock
     icon: {fileID: 0}
-    Cat: 16
     tags: 01000000
     prefab: {fileID: 0}
     equipPrefab: {fileID: 1382041385227520, guid: 8953bf7744fb7fa4794e541ade71b3c0,
@@ -16737,7 +16734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1054728911991326, guid: c1914c0c139f0df49a9282cfcf81ae88, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4918891165435872, guid: c1914c0c139f0df49a9282cfcf81ae88, type: 3}
       propertyPath: m_RootOrder

@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
 	private int deaths = 0;
 	private GameObject placeing;
 	private bool clickedThisFrame = true;//used for selecting inventory
-	private ItemTag selectable = ~ItemTag.Item;
+	//private ItemTag selectable = ~ItemTag.Item;
 	public bool jumping;
 	private bool prevJump;
 	private float yRot;
@@ -174,7 +174,8 @@ public class Player : MonoBehaviour
 				Destroy(rightHand.GetChild(i).gameObject);
 			}
 		}
-		if ((itemTypes[inv.items[invSel].id].Cat & selectable) != 0)
+		//TODO: is this necessary?
+		if (itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
 		{
 			if (itemTypes[inv.items[invSel].id].equipPrefab != null)
 			{
@@ -191,24 +192,19 @@ public class Player : MonoBehaviour
 	/// <param name="index">The index in inventory of the item to select</param>
 	void SelectInv(int index) {
 		if (index >= inv.items.Count) return;// || invSel < 0
+		//destroy thing if previously placing thing, see todos below
 		Destroy(placeing);
-		if(index == invSel)
-		{//cases where you should deselect when you click on already selected inventory slot.
-			if ((itemTypes[inv.items[index].id].Cat & selectable) != 0)
-			{
-				invSel = -1;
-			}
-			return;
-		}
 
 		if (rightHand.childCount != 0) {
+			//TODO: this might cause errors if children are deleted instantly
 			for (int i = 0; i < rightHand.childCount; i++) {
 				Destroy(rightHand.GetChild(i).gameObject);
 			}
 		}
-		if ((itemTypes[inv.items[index].id].Cat & selectable) != 0)
+
+		//Right Hand Equippable item
+		if (itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
 		{
-			//print(invSel + ", " + index);
 			if (invSel != index) {
 				if(itemTypes[inv.items[index].id].equipPrefab != null)
 				{
@@ -218,24 +214,31 @@ public class Player : MonoBehaviour
 					//print("Selected equipable object");
 				}
 				invSel = index;
-			}
-			
-			else
+			}else
 			{
 				invSel = -1;
 			}
 		}
 
-		if ((itemTypes[inv.items[index].id].Cat & ItemTag.Placeable) == ItemTag.Placeable)
+		if (itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
 		{
-			placeing = (GameObject)Instantiate(itemTypes[inv.items[index].id].prefab);
-			foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
+			if (invSel != index)
 			{
-				m.enabled = false;
+				//TODO: should this equip it?
+				//TODO: placing prefab should be different from final prefab. The placing prefab could have a placing script that spawns the final
+				placeing = (GameObject)Instantiate(itemTypes[inv.items[index].id].prefab);
+				foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
+				{
+					m.enabled = false;
+				}
+			}
+			else
+			{
+				////see above todos
+				//invSel = -1;
 			}
 		}
 		//print(invSel);
-		// if hand equipable, instantiate prebab
 	}
 
 	void OnGUI()
@@ -502,6 +505,7 @@ public class Player : MonoBehaviour
 		for (int i = 0; i < inv.items.Count; i++) {
 			if(inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength-inv.items[i].strength)<0.01f){
 				inv.items [i].amount += amount;
+				//TODO: this might require inventory to be refreshed
 				//if (invSel == i) {
 				//	RefreshSelected();
 				//	//SelectInv (invSel);
