@@ -21,12 +21,14 @@ public class HeldItem : MonoBehaviour
         {
             img.color = Color.white;
             img.sprite = Player.itemTypes[ItemIcon.held.id].icon;
+            amountText.enabled = true;
             amountText.text = ItemIcon.held.amount.ToString();
             transform.position = Input.mousePosition;
         }
 		else
         {
             img.color = Color.clear;
+            amountText.enabled = false; 
 		}
         
     }

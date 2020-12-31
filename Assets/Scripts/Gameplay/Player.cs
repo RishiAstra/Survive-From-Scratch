@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
 	private int kills = 0;
 	private int deaths = 0;
 	private GameObject placeing;
-	private bool clickedThisFrame = true;//used for selecting inventory
+	//private bool clickedThisFrame = true;//used for selecting inventory
 	//private ItemTag selectable = ~ItemTag.Item;
 	public bool jumping;
 	private bool prevJump;
@@ -352,9 +352,9 @@ public class Player : MonoBehaviour
 
 		//if (ph.isMine && PhotonNetwork.connected && ph.owner != null) {
 		//anim.SetBool("Whak", Input.GetMouseButton(0)&&!clickedThisFrame);
-		while (inv.items.Count < invStuff.inventorySize) {
-			inv.items.Add(new Item(0, 0, 0, 0));
-		}
+		//while (inv.items.Count < invStuff.inventorySize) {
+		//	inv.items.Add(new Item(0, 0, 0, 0));
+		//}
 		if (Input.GetKey(KeyCode.Tab)) {
 			//Transform content = scoreBoard.transform.GetChild(0).GetChild(0);
 			//while (scores.Count < PhotonNetwork.playerList.Length) {
@@ -476,7 +476,7 @@ public class Player : MonoBehaviour
 		//{
 		//	clickedThisFrame = true;
 		//}
-		clickedThisFrame = false;
+		//clickedThisFrame = false;
 		//}
 	}
 

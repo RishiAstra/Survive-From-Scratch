@@ -123,7 +123,7 @@ namespace bobStuff
 		public float invButtonSize = 50;
 		public Texture2D invBackground;
 		public float buttonsPerInvRow;
-		public int inventorySize;
+		//public int inventorySize;
 		public Color selectedColor;
 		public Color normalColor;
 	}

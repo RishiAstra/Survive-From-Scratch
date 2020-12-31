@@ -5,12 +5,17 @@ using bobStuff;
 
 public class Inventory : MonoBehaviour
 {
+    public int size;
 	public List<Item> items;
     //public InventoryUI ui;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
 		items = new List<Item>();
+        for(int i = 0; i < size; i++)
+		{
+            items.Add(new Item());
+		}
     }
 
     // Update is called once per frame

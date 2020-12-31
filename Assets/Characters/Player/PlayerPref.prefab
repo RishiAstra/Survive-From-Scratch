@@ -308,7 +308,6 @@ MonoBehaviour:
     invButtonSize: 50
     invBackground: {fileID: 2800000, guid: 7537841ef9875c94da9a1aa73388053d, type: 3}
     buttonsPerInvRow: 8
-    inventorySize: 8
     selectedColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0}
     normalColor: {r: 0.6886792, g: 0.6784447, b: 0.28261837, a: 0}
   rig: {fileID: 0}
@@ -459,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 9
   items: []
 --- !u!1 &1064236654853702
 GameObject:
