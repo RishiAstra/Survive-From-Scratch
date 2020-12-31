@@ -68,10 +68,18 @@ namespace bobStuff
 	[System.Serializable]
 	public class Item
 	{
-		public int id = 0;
-		public int amount = 1;
-		public float strength = 0;
-		public float currentStrength = 0;
+		public int id;
+		public int amount;
+		public float strength;
+		public float currentStrength;
+
+		public Item()
+		{
+			id = 0;
+			amount = 1;
+			strength = 0;
+			currentStrength = 0;
+		}
 
 		public Item(int id, int amount, float duriation, float currentDuriation)
 		{
@@ -90,14 +98,14 @@ namespace bobStuff
 	public struct ItemType
 	{
 		public string name;
-		public Texture2D icon;//icon to display in inventory
+		public Sprite icon;//icon to display in inventory
 		//public ItemTag Cat;
 		public List<int> tags;
 		public GameObject prefab;
 		public GameObject equipPrefab;
 		public float strength;
 
-		public ItemType(string name, Texture2D icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
+		public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		{
 			this.name = name;
 			this.icon = icon;

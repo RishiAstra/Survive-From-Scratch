@@ -46,7 +46,7 @@ public class gameControll : MonoBehaviour
 			//load data for this item type
 			item.prefab =			Resources.Load<GameObject>	(item.name + "/" + item.name + "-p");
 			item.equipPrefab =		Resources.Load<GameObject>	(item.name + "/" + item.name + "-e");
-			item.icon =				Resources.Load<Texture2D>	(item.name + "/" + item.name + "-i");
+			item.icon =				Resources.Load<Sprite>	(item.name + "/" + item.name + "-i");
 			itemTypes[i] = item;
 		}
 	}

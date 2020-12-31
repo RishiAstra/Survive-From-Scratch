@@ -43,7 +43,7 @@ public class PlayerControl : MonoBehaviour
 		dir = Quaternion.Euler(0, cam.pivot.eulerAngles.y, 0) * dir;
 		movement.SetDirection(dir);
 
-		if (Input.GetMouseButton(0))
+		if (Input.GetMouseButtonDown(0))
 		{
 			abilities.UseSkill(0);
 		}

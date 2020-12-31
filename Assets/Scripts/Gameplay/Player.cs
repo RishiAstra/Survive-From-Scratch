@@ -7,9 +7,10 @@ using System;
 
 public class Player : MonoBehaviour
 {
+	//TODO: this system of a player list should be replaced
 	public static List<Player> bobs = new List<Player>();
 	public static Player main;
-	public static List<ItemType> itemTypes;
+	public static List<ItemType> itemTypes;//TODO: this might be bad
 	public static int amountOfInstances = 0;
 	//	public Material notMe;
 	public int score;
@@ -166,6 +167,7 @@ public class Player : MonoBehaviour
 	//}
 	void RefreshSelected()
 	{
+		//TODO: should this really destroy the current equip gameobjects, or should it check if they changed first
 		if (invSel >= inv.items.Count || invSel < 0) return;
 		if (rightHand.childCount != 0)
 		{
@@ -241,83 +243,84 @@ public class Player : MonoBehaviour
 		//print(invSel);
 	}
 
-	void OnGUI()
-	{
-		//if (PhotonNetwork.connected) {
-		//	if (ph.owner != null) {
-		//		if (ph.isMine) {
-		//					int invRows = Mathf.CeilToInt (inventory.Count/inv.buttonsPerInvRow);
-		float scale = Screen.width / canvasScaler.referenceResolution.x;
+	//TODO: remove this inventory display, it should be replaced with UI gameobjects
+	//void OnGUI()
+	//{
+	//	//if (PhotonNetwork.connected) {
+	//	//	if (ph.owner != null) {
+	//	//		if (ph.isMine) {
+	//	//					int invRows = Mathf.CeilToInt (inventory.Count/inv.buttonsPerInvRow);
+	//	float scale = Screen.width / canvasScaler.referenceResolution.x;
 
-		for (int i = 0; i < inv.items.Count; i++) {
-			int x = (int)(i % invStuff.buttonsPerInvRow);
-			int y = Mathf.CeilToInt((i + 1) / invStuff.buttonsPerInvRow);
-			float xOffset = (Screen.width / 2 - (invStuff.buttonsPerInvRow * invStuff.invButtonSize / 2) * scale);
-			if (inv.items.Count < invStuff.buttonsPerInvRow) {
-				xOffset = (Screen.width / 2 - ((inv.items.Count) * invStuff.invButtonSize / 2) * scale);
-			}
-			Rect pos = new Rect(
-				xOffset + x * invStuff.invButtonSize * scale,
-				Screen.height - ((invStuff.invButtonSize / 2 + 25 + y * invStuff.invButtonSize) * scale),
-				invStuff.invButtonSize * scale,
-				invStuff.invButtonSize * scale
-			);
-			Vector2 tempMousePos = Event.current.mousePosition;
+	//	for (int i = 0; i < inv.items.Count; i++) {
+	//		int x = (int)(i % invStuff.buttonsPerInvRow);
+	//		int y = Mathf.CeilToInt((i + 1) / invStuff.buttonsPerInvRow);
+	//		float xOffset = (Screen.width / 2 - (invStuff.buttonsPerInvRow * invStuff.invButtonSize / 2) * scale);
+	//		if (inv.items.Count < invStuff.buttonsPerInvRow) {
+	//			xOffset = (Screen.width / 2 - ((inv.items.Count) * invStuff.invButtonSize / 2) * scale);
+	//		}
+	//		Rect pos = new Rect(
+	//			xOffset + x * invStuff.invButtonSize * scale,
+	//			Screen.height - ((invStuff.invButtonSize / 2 + 25 + y * invStuff.invButtonSize) * scale),
+	//			invStuff.invButtonSize * scale,
+	//			invStuff.invButtonSize * scale
+	//		);
+	//		Vector2 tempMousePos = Event.current.mousePosition;
 
-			if (!clickedThisFrame&&
-				tempMousePos.x > pos.x &&
-				tempMousePos.y > pos.y &&
-				tempMousePos.x < (pos.x + pos.width) &&
-				tempMousePos.y < (pos.y + pos.height)) {
-				clickedThisFrame = true;
-				SelectInv(i);
-			}
-			if (invSel == i) {
-				GUI.DrawTexture(pos, invStuff.invBackground, ScaleMode.ScaleToFit, true, 0, invStuff.selectedColor, 0, 0);
-			} else {
-				GUI.DrawTexture(pos, invStuff.invBackground, ScaleMode.ScaleToFit, true, 0, invStuff.normalColor, 0, 0);
-			}
+	//		if (!clickedThisFrame&&
+	//			tempMousePos.x > pos.x &&
+	//			tempMousePos.y > pos.y &&
+	//			tempMousePos.x < (pos.x + pos.width) &&
+	//			tempMousePos.y < (pos.y + pos.height)) {
+	//			clickedThisFrame = true;
+	//			SelectInv(i);
+	//		}
+	//		if (invSel == i) {
+	//			GUI.DrawTexture(pos, invStuff.invBackground, ScaleMode.ScaleToFit, true, 0, invStuff.selectedColor, 0, 0);
+	//		} else {
+	//			GUI.DrawTexture(pos, invStuff.invBackground, ScaleMode.ScaleToFit, true, 0, invStuff.normalColor, 0, 0);
+	//		}
 
-			GUI.color = Color.white;
-			pos = new Rect(
-					xOffset + invStuff.invButtonSize * 0.1f + x * invStuff.invButtonSize * scale,
-					Screen.height - ((invStuff.invButtonSize / 2 + invStuff.invButtonSize * -0.1f + 25 + y * invStuff.invButtonSize) * scale),
-					invStuff.invButtonSize * 0.8f * scale,
-					invStuff.invButtonSize * 0.8f * scale
-			);
-			GUI.DrawTexture(pos, itemTypes[inv.items[i].id].icon);
-			if (inv.items[i].amount > 1) {
-				pos = new Rect(
-					xOffset + x * invStuff.invButtonSize * scale,
-					Screen.height - ((invStuff.invButtonSize / 2 + 25 + y * invStuff.invButtonSize) * scale),
-					invStuff.invButtonSize * scale,
-					invStuff.invButtonSize * scale
-				);
-				GUI.Label(pos, inv.items[i].amount.ToString());
-			}
-		}
-		//if (!isDead) {
-		//	GUI.Label (new Rect (0, 0, 250, 25), ph.owner.NickName + "'s hp: " + hp);
-		//} else {
-		//	GUI.Label (new Rect (0, 0, 250, 25), ph.owner.NickName + "'s hp: DEAD");
-		//}
-		//} else {
-		//	if (!isDead) {
-		//		GUI.Label (new Rect (0, 15 * id + 15, 250, 25), ph.owner.NickName + "'s hp: " + hp);
-		//	} else {
-		//		GUI.Label (new Rect (0, 15 * id + 15, 250, 25), ph.owner.NickName + "'s hp: DEAD");
-		//	}
+	//		GUI.color = Color.white;
+	//		pos = new Rect(
+	//				xOffset + invStuff.invButtonSize * 0.1f + x * invStuff.invButtonSize * scale,
+	//				Screen.height - ((invStuff.invButtonSize / 2 + invStuff.invButtonSize * -0.1f + 25 + y * invStuff.invButtonSize) * scale),
+	//				invStuff.invButtonSize * 0.8f * scale,
+	//				invStuff.invButtonSize * 0.8f * scale
+	//		);
+	//		GUI.DrawTexture(pos, itemTypes[inv.items[i].id].icon);
+	//		if (inv.items[i].amount > 1) {
+	//			pos = new Rect(
+	//				xOffset + x * invStuff.invButtonSize * scale,
+	//				Screen.height - ((invStuff.invButtonSize / 2 + 25 + y * invStuff.invButtonSize) * scale),
+	//				invStuff.invButtonSize * scale,
+	//				invStuff.invButtonSize * scale
+	//			);
+	//			GUI.Label(pos, inv.items[i].amount.ToString());
+	//		}
+	//	}
+	//	//if (!isDead) {
+	//	//	GUI.Label (new Rect (0, 0, 250, 25), ph.owner.NickName + "'s hp: " + hp);
+	//	//} else {
+	//	//	GUI.Label (new Rect (0, 0, 250, 25), ph.owner.NickName + "'s hp: DEAD");
+	//	//}
+	//	//} else {
+	//	//	if (!isDead) {
+	//	//		GUI.Label (new Rect (0, 15 * id + 15, 250, 25), ph.owner.NickName + "'s hp: " + hp);
+	//	//	} else {
+	//	//		GUI.Label (new Rect (0, 15 * id + 15, 250, 25), ph.owner.NickName + "'s hp: DEAD");
+	//	//	}
 
-		//}
-		//	} else {
-		//		GUI.Label (new Rect (0, 15 * id + 15, 250, 25), "ERROR CANT FIND NICKNAME");
-		//	}
-
-
-		//}
+	//	//}
+	//	//	} else {
+	//	//		GUI.Label (new Rect (0, 15 * id + 15, 250, 25), "ERROR CANT FIND NICKNAME");
+	//	//	}
 
 
-	}
+	//	//}
+
+
+	//}
 
 	private void Update()
 	{
@@ -440,17 +443,18 @@ public class Player : MonoBehaviour
 			//				transform.GetChild (transform.childCount-1).localScale = new Vector3 (hp / maxHp, 1, 1);
 
 			if (Input.GetMouseButtonDown(0) && invSel != -1) {
+				//TODO: change placing system
 				if (placeing == null) {
-					Player[] hitThese = GameObject.FindObjectsOfType<Player>();
-					//					bool[] couldHit = new bool[hitThese.Length];
-					for (int i = 0; i < hitThese.Length; i++) {
-						float dist = Vector3.Distance(hitThese[i].transform.position, transform.position);
-						if (dist < range && dist > 0.01f) {
-							//						hitThese [i].GetComponent<PhotonView> ().RPC ("takeDmg",PhotonTargets.All,damage);
-							//hitThese[i].hp -= damage;//damage other players
-							//this.photonView.RPC ("setHp", PhotonTargets.All, hitThese [i].hp);
-						}
-					}
+					//Player[] hitThese = GameObject.FindObjectsOfType<Player>();
+					////					bool[] couldHit = new bool[hitThese.Length];
+					//for (int i = 0; i < hitThese.Length; i++) {
+					//	float dist = Vector3.Distance(hitThese[i].transform.position, transform.position);
+					//	if (dist < range && dist > 0.01f) {
+					//		//						hitThese [i].GetComponent<PhotonView> ().RPC ("takeDmg",PhotonTargets.All,damage);
+					//		//hitThese[i].hp -= damage;//damage other players
+					//		//this.photonView.RPC ("setHp", PhotonTargets.All, hitThese [i].hp);
+					//	}
+					//}
 				} else {
 					foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>()) {
 						m.enabled = false;
@@ -500,6 +504,8 @@ public class Player : MonoBehaviour
 	//	isDead = v;
 	//}
 
+	//TODO: check if there is no place to put the item
+	//TODO: move these functions to Inventory.cs
 	public void GetItem(int id) { GetItem(id, 1); }
 	public void GetItem(int id, int amount){
 		for (int i = 0; i < inv.items.Count; i++) {
@@ -517,6 +523,7 @@ public class Player : MonoBehaviour
 			if(inv.items[i].id == 0){
 				inv.items [i] = new Item (id, amount, itemTypes[id].strength, itemTypes[id].strength);
 				if (invSel == i) {
+					
 					RefreshSelected();
 					//SelectInv (invSel);
 				}
@@ -544,56 +551,7 @@ public class Player : MonoBehaviour
 				RefreshSelected();
 			}
 		}
-		
 	}
-	/// <summary>
-	/// Carry out move functions.
-	/// </summary>
-	//void Move(){
-	//	if (isDead) {
-	//		return;
-	//	}
-	//	float MouseX = Cursor.lockState == CursorLockMode.Locked ? Mathf.Clamp(Input.GetAxis ("Mouse X") * myCam.mouseSensitivity.x * Time.fixedDeltaTime, -10, 10) : 0;
-	//	float v = Input.GetAxis ("Vertical");
-	//	float h = Input.GetAxis("Horizontal");
-
-	//	Vector3 tv = rig.velocity;
-	//	//tv = transform.InverseTransformVector (tv);
-	//	tv.x *= 0.93f;
-	//	tv.z *= 0.93f;
-	//	//tv = transform.TransformVector (tv);
-	//	rig.velocity = tv;
-
-	//	//float mult = Mathf.Abs(v) > Mathf.Abs(h) ? v : h;
-	//	transform.eulerAngles = Vector3.up * yRot;//90
-	//	Vector3 temp = dir;
-	//	dir = Vector3.forward * v + Vector3.right * h;// transform.forward * v + transform.right * h;//90
-
-	//	if (dir.magnitude == 0) dir = temp;
-	//	//Vector3 dir1 = Quaternion.Euler(0, -yRot, 0) * dir;
-	//	dir = Quaternion.Euler(0, 90, 0) * dir;
-	//	float a = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;//TODO not working movement player should rotate
-	//	yRot += MouseX * turnSpeed;
-
-		
-	//	dir = transform.forward * v + transform.right * h;
-	//	if (dir.magnitude > 1) dir.Normalize();
-	//	Vector3 rigvel = rig.velocity;
-	//	rigvel.y = 0;
-	//	if (rigvel.magnitude < maxSpeed) {
-	//		rig.AddForce (dir * acceleration * Time.deltaTime, ForceMode.Acceleration);
-	//	}
-	//	float speedAmount = anim.GetFloat("Speed") * 0.8f + Mathf.Abs(rig.velocity.magnitude / maxSpeed) * 0.2f;
-	//	float directionLerpSpeed = 0.08f;
-	//	float totalDirection = MouseX + (Armature.localEulerAngles.y - lastArmatureRot);//TODO total direction
-	//	lastArmatureRot = Armature.localEulerAngles.y;
-	//	Armature.localRotation = Quaternion.Lerp(Armature.localRotation, Quaternion.Euler(ArmatureStartRot + Vector3.up * (-a)), 0.05f);//TODO lerp rotation for smooth transition, and make animator direction variable adjust for even smoother transitions.
-		
-	//	anim.SetFloat ("Speed", speedAmount);
-	//	anim.SetFloat ("Direction", anim.GetFloat ("Direction") * (1-directionLerpSpeed) + totalDirection * directionLerpSpeed);
-	//	anim.SetLayerWeight(1, 1-(Mathf.Clamp01(speedAmount)/2));
-	//}
-
 	void OnDestroy(){
 		bobs.Remove (this);
 	}
