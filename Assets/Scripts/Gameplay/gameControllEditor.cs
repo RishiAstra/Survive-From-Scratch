@@ -35,10 +35,11 @@ public class gameControllEditor : Editor
 					//public ItemCatagory Cat;
 					item.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", item.prefab, typeof(GameObject), false);
 					item.equipPrefab = (GameObject)EditorGUILayout.ObjectField("Equip Prefab", item.equipPrefab, typeof(GameObject), false);
-					item.damage = EditorGUILayout.FloatField("Damage", item.damage);
 					item.strength = EditorGUILayout.FloatField("Strength", item.strength);
 					//item.type = (ItemToolType)EditorGUILayout.EnumFlagsField("Type", item.type);
 					item.Cat = (ItemTag)EditorGUILayout.EnumFlagsField("Catigory", item.Cat);
+					EditorGUI.indentLevel += 2;
+					EditorGUI.indentLevel -= 2;
 					//public float strength;
 					t.itemTypes[i] = item;
 					GUILayout.BeginHorizontal();

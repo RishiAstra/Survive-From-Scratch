@@ -94,18 +94,15 @@ namespace bobStuff
 		public List<int> tags;
 		public GameObject prefab;
 		public GameObject equipPrefab;
-		public float damage;
-		//public ItemToolType type;
 		public float strength;
 
-		public ItemType(string name, Texture2D icon, ItemTag catigory, GameObject prefab, GameObject equipPrefab, float damage, float strength, List<int> tags)//ItemToolType type,
+		public ItemType(string name, Texture2D icon, ItemTag catigory, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		{
 			this.name = name;
 			this.icon = icon;
 			this.Cat = catigory;
 			this.prefab = prefab;
 			this.equipPrefab = equipPrefab;
-			this.damage = damage;
 			//this.type = type;
 			this.strength = strength;
 			this.tags = tags;

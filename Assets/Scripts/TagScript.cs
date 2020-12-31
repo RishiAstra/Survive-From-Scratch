@@ -90,12 +90,30 @@ public class TagScript : MonoBehaviour
 	}
 
 
-	public static int TagToId(string s)
+	public static int TagToId(string s, out bool succeed)
 	{
-		return TagIntMap[s];
+		if (TagIntMap.ContainsKey(s))
+		{
+			succeed = true;
+			return TagIntMap[s];
+		}
+		else
+		{
+			succeed = false;
+			return -1;
+		}
 	}
-	public static string IdTotag(int i)
+	public static string IdTotag(int i, out bool succeed)
 	{
-		return TagStringMap[i];
+		if (TagStringMap.ContainsKey(i))
+		{
+			succeed = true;
+			return TagStringMap[i];
+		}
+		else
+		{
+			succeed = false;
+			return "|error|";
+		}
 	}
 }
