@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using bobStuff;
 using System;
+using UnityEngine.UI;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class gameControll : MonoBehaviour
 	public GameObject player;
 	public InventoryUI hotBarUI;
 	public Inventory craftInventory;
+	public Image mainHpBar;
 	
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
@@ -103,6 +105,7 @@ public class gameControll : MonoBehaviour
 
 		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);//PhotonNetwork.
 		me = newPlayerObject.GetComponent<Player> ();
+		newPlayerObject.GetComponent<HPBar>().hpBarImage = mainHpBar;//TODO: check taht this works
 		Player.main = me;
 		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
 		if (Player.main == null) {
