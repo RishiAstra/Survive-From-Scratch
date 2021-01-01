@@ -12,6 +12,7 @@ public class gameControll : MonoBehaviour
 	public LayerMask raycastLayerMask;
 	public LayerMask weaponHit;
 	public GameObject player;
+	public InventoryUI hotBarUI;
 	
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
@@ -69,7 +70,7 @@ public class gameControll : MonoBehaviour
 	private void Update()
 	{
 		if (me.isDead) return;
-		if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.C))
+		if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.F))
 		{
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -102,6 +103,7 @@ public class gameControll : MonoBehaviour
 		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);//PhotonNetwork.
 		me = newPlayerObject.GetComponent<Player> ();
 		Player.main = me;
+		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
 		if (Player.main == null) {
 			print ("UG");
 		}

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 //TODO: this class will automatically make inventory slots on the ui canvas and fill them to target inventory
 public class InventoryUI : MonoBehaviour
 {
     public Inventory target;
     public GameObject slotPrefab;
     public float preferedSize;
+    public float defaultSize;//used to scale
     public RectTransform slotBounds;
     public int w, h;
 
@@ -20,8 +22,8 @@ public class InventoryUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //TODO: this might cause problems
-        target = Player.main.GetComponent<Inventory>();//TODO: TEMPORAIRY
+        slotT = new List<RectTransform>();
+        slotI = new List<ItemIcon>();
     }
     void RefreshSlots()
 	{
@@ -35,11 +37,8 @@ public class InventoryUI : MonoBehaviour
         slotI = new List<ItemIcon>();
         
         //make new slots
-        float maxSlotSizeX = slotBounds.sizeDelta.x / w;
-        float maxSlotSizeY = slotBounds.sizeDelta.y / h;
-        print(maxSlotSizeY);
-        print(maxSlotSizeY);
-        print(preferedSize);
+        float maxSlotSizeX = slotBounds.rect.size.x / w;
+        float maxSlotSizeY = slotBounds.rect.size.y / h;
         float size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
         for(int i = 0; i < target.items.Count; i++)
 		{
@@ -50,7 +49,7 @@ public class InventoryUI : MonoBehaviour
             slotI.Add(g.GetComponent<ItemIcon>());
 
             slotT[i].localPosition = new Vector2(size * (i - target.items.Count / 2f), 0);
-            slotT[i].localScale = new Vector3(size, size, size);
+            slotT[i].localScale = new Vector3(size, size, size) / defaultSize;
 			slotI[i].parent = target;
 			slotI[i].index = i;
 		}

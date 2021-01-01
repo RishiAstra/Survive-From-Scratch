@@ -17,12 +17,12 @@ public class HeldItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ItemIcon.held != null)
+        if (ItemIcon.held != null && ItemIcon.held.id != 0)
         {
             img.color = Color.white;
             img.sprite = Player.itemTypes[ItemIcon.held.id].icon;
             amountText.enabled = true;
-            amountText.text = ItemIcon.held.amount.ToString();
+            amountText.text = ItemIcon.held.amount > 1 ? ItemIcon.held.amount.ToString() : "";
             transform.position = Input.mousePosition;
         }
 		else

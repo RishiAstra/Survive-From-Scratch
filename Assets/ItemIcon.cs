@@ -28,7 +28,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     void UpdateIcon()
 	{
         img.sprite = Player.itemTypes[parent.items[index].id].icon;
-        amountText.text = parent.items[index].amount.ToString();
+        amountText.text = parent.items[index].amount > 1 ? parent.items[index].amount.ToString() : "";
 	}
 
     //TODO: call this when the inventoryUI is closed if the held item is in that inventory
@@ -62,7 +62,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     void Update()
     {
         UpdateIcon();//TODO: only use this when needed
-        if(mouseOver && Input.GetMouseButtonUp(0))
+        if(mouseOver && Input.GetMouseButtonDown(0))
 		{
             if(held == null)
 			{
