@@ -47,8 +47,9 @@ public class InventoryUI : MonoBehaviour
             //g.GetComponent<Transform>().SetParent(slotBounds);
             slotT.Add(g.GetComponent<RectTransform>());
             slotI.Add(g.GetComponent<ItemIcon>());
-
-            slotT[i].localPosition = new Vector2(size * (i - target.items.Count / 2f), 0);
+            int x = i % w;
+            int y = Mathf.FloorToInt(i / w);
+            slotT[i].anchoredPosition = new Vector2(size * (x - (w-1)/2f), size * (y - (h-1)/2f));
             slotT[i].localScale = new Vector3(size, size, size) / defaultSize;
 			slotI[i].parent = target;
 			slotI[i].index = i;

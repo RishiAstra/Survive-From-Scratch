@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using bobStuff;
 using System;
-
+//TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
 	public static Dictionary<string, int> StringIdMap;
@@ -13,6 +13,7 @@ public class gameControll : MonoBehaviour
 	public LayerMask weaponHit;
 	public GameObject player;
 	public InventoryUI hotBarUI;
+	public Inventory craftInventory;
 	
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
