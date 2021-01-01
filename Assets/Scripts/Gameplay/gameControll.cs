@@ -106,6 +106,7 @@ public class gameControll : MonoBehaviour
 			tempUnlockMouse = true;
 			TryUnlockCursor();
 		}
+		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
 		if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
 		{
 			tempUnlockMouse = false;

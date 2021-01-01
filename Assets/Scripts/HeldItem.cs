@@ -28,7 +28,8 @@ public class HeldItem : MonoBehaviour
 		else
         {
             img.color = Color.clear;
-            amountText.enabled = false; 
+            amountText.enabled = false;
+            if(ItemIcon.held != null)ItemIcon.held.amount = 0;
 		}
         
     }

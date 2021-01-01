@@ -76,7 +76,7 @@ namespace bobStuff
 		public Item()
 		{
 			id = 0;
-			amount = 1;
+			amount = 0;
 			strength = 0;
 			currentStrength = 0;
 		}

@@ -20,10 +20,11 @@ public class InventoryUI : MonoBehaviour
     private float slotSize;
     private int pSize = 0;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         slotT = new List<RectTransform>();
         slotI = new List<ItemIcon>();
+        RefreshSlots();
     }
     void RefreshSlots()
 	{

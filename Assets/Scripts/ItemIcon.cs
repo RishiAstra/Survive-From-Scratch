@@ -23,12 +23,23 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     // Start is called before the first frame update
     void Start()
     {
+        UpdateIcon();
     }
 
     void UpdateIcon()
-	{
-        img.sprite = Player.itemTypes[parent.items[index].id].icon;
-        amountText.text = parent.items[index].amount > 1 ? parent.items[index].amount.ToString() : "";
+    {
+        Item temp = parent.items[index];
+        if (temp == null || temp.id == 0 || temp.amount == 0)
+		{
+            img.color = Color.clear;
+            amountText.text = "";
+		}
+		else
+		{
+            img.color = Color.white;
+            img.sprite = Player.itemTypes[parent.items[index].id].icon;
+            amountText.text = parent.items[index].amount.ToString();
+        }        
 	}
 
     //TODO: call this when the inventoryUI is closed if the held item is in that inventory
@@ -64,7 +75,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         UpdateIcon();//TODO: only use this when needed
         if(mouseOver && Input.GetMouseButtonDown(0))
 		{
-            if(held == null)
+            if(held == null || held.id == 0)
 			{
                 held = parent.items[index];
                 parent.items[index] = new Item();
