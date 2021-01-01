@@ -145,7 +145,6 @@ public class Player : MonoBehaviour
 
 	public void Respawn()
 	{
-		isDead = false;
 		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint>();
 		int chosen = UnityEngine.Random.Range(0, sp.Length);
 		transform.position = sp[chosen].transform.position;
@@ -400,7 +399,7 @@ public class Player : MonoBehaviour
 		} else {
 			scoreBoard.gameObject.SetActive(false);
 		}
-		if (!isDead) {
+		if (!gameControll.main.myAbilities.dead) {
 			
 			//if (Physics.CheckSphere(groundCheck.position, 0.05f, ground))
 			//{

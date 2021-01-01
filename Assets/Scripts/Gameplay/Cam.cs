@@ -29,33 +29,6 @@ public class Cam : MonoBehaviour
 		offset = transform.localPosition / dist;
 	}
 
-	//private void OnPreRender()
-	//{
-	//	temp = Time.time;
-	//}
-
-	//private void OnPostRender()
-	//{
-	//	if (f.Count > 20)
-	//	{
-	//		f.RemoveAt(0);
-	//	}
-	//	f.Add(Time.time - temp);
-	//	wait = 0;
-	//	int c = 0;
-	//	for (int i = 0; i < f.Count; i++)
-	//	{
-	//		wait += f[i];
-	//		c++;
-	//	}
-	//	wait /= c;
-	//}
-
-	void LockMouse()
-	{
-		Cursor.lockState = CursorLockMode.Locked;
-	}
-
 	public void AddPitch(float p)
 	{
 		Vector3 temp = pivot.eulerAngles;
@@ -72,51 +45,5 @@ public class Cam : MonoBehaviour
 	void FixedUpdate()
 	{
 		transform.localPosition = offset * Mathf.Lerp(transform.localPosition.magnitude, dist, ZOOM_LERP_SPEED);
-		//Vector3 temp = transform.parent.eulerAngles;
-				//temp.x = Mathf.Clamp(Mathf.DeltaAngle(0, transform.eulerAngles.x - Input.GetAxis("Mouse Y") * mouseSensitivity.y * Time.fixedDeltaTime * (invertMouseY ? 1 : -1)), minX, maxX);
-				//transform.parent.eulerAngles = temp;
-				//if (myPlayer.isDead)
-				//{
-				//	Cursor.lockState = CursorLockMode.None;
-				//}
-		//else
-		//{
-			if (Cursor.lockState == CursorLockMode.Locked)
-			{
-				//dist = Mathf.Clamp(dist + Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity, minDist, maxDist);
-				
-				//Vector3 temp = transform.parent.eulerAngles;
-				//temp.x = Mathf.Clamp(Mathf.DeltaAngle(0, transform.eulerAngles.x - Input.GetAxis("Mouse Y") * mouseSensitivity.y * Time.fixedDeltaTime * (invertMouseY ? 1 : -1)), minX, maxX);
-				//transform.parent.eulerAngles = temp;
-			}
-			if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
-			{
-				Cursor.lockState = CursorLockMode.None;
-			}
-			if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl))
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-			}
-			if (!(Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)))
-			{
-				if (Input.GetMouseButtonUp(0))
-				{
-					//Invoke("LockMouse", 0.2f);
-					Cursor.lockState = CursorLockMode.Locked;
-
-				}
-
-			}
-		//}
-
-
-
-
-		if (Input.GetKey(KeyCode.Escape))
-		{
-			Cursor.lockState = CursorLockMode.None;
-		}
-
-
 	}
 }

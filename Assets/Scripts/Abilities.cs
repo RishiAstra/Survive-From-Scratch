@@ -55,6 +55,11 @@ public class Abilities : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		Reset();
+	}
+
+	public void Reset()
+	{
 		stat = maxStat;
 	}
 
