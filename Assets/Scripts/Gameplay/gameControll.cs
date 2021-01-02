@@ -19,6 +19,7 @@ public class gameControll : MonoBehaviour
 	public InventoryUI hotBarUI;
 	public Inventory craftInventory;
 	public Image mainHpBar;
+	public Canvas mainCanvas;
 	
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
