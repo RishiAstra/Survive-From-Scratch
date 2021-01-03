@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
+//TODO: check if has permission to place or remove before doing it
 public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static Item held;
