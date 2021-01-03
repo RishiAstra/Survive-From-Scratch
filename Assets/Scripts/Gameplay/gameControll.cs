@@ -17,7 +17,8 @@ public class gameControll : MonoBehaviour
 	public LayerMask weaponHit;
 	public GameObject player;
 	public InventoryUI hotBarUI;
-	public Inventory craftInventory;
+	public GameObject craftInventory;
+	public GameObject middleCursor;
 	public Image mainHpBar;
 	public Canvas mainCanvas;
 	
@@ -29,7 +30,7 @@ public class gameControll : MonoBehaviour
 	void Awake(){
 		
 		main = this;
-		craftInventory.gameObject.SetActive(false);
+		//craftInventory.SetActive(false);
 		InitializeItemTypes();
 		CreatePlayerObject();
 	}
@@ -87,17 +88,19 @@ public class gameControll : MonoBehaviour
 	void TryLockCursor()
 	{
 		if(
-			!craftInventory.gameObject.activeSelf &&
+			!craftInventory.activeSelf &&
 			!tempUnlockMouse
 			)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
+			middleCursor.SetActive(true);
 		}
 	}
 
 	void TryUnlockCursor()
 	{
 		Cursor.lockState = CursorLockMode.None;
+		middleCursor.SetActive(false);
 	}
 
 	private void Update()
@@ -132,23 +135,23 @@ public class gameControll : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			if (craftInventory.gameObject.activeSelf)
+			if (craftInventory.activeSelf)
 			{
-				craftInventory.gameObject.SetActive(false);
+				craftInventory.SetActive(false);
 				TryLockCursor();
 			}
 			else
 			{
-				craftInventory.gameObject.SetActive(true);
+				craftInventory.SetActive(true);
 				TryUnlockCursor();
 			}
 		}
 
 		if (myAbilities.dead) {
 			//deactivate crafting if dead
-			if (craftInventory.gameObject.activeSelf)
+			if (craftInventory.activeSelf)
 			{
-				craftInventory.gameObject.SetActive(false);
+				craftInventory.SetActive(false);
 			}
 			TryUnlockCursor();
 		}
@@ -199,5 +202,8 @@ public class gameControll : MonoBehaviour
 		if (Player.main == null) {
 			print ("UG");
 		}
+		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
+		myInv.take = true;
+		myInv.put = true;
 	}
 }

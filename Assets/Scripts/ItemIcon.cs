@@ -78,30 +78,44 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		{
             if(held == null || held.id == 0)
 			{
-                held = parent.items[index];
-                parent.items[index] = new Item();
-                heldFrom = this;
-                UpdateIcon();
+				if (parent.take)
+				{
+                    
+                    held = parent.items[index];
+                    parent.items[index] = new Item();
+                    heldFrom = this;
+                    parent.invChange.Invoke(index);
+                    UpdateIcon();
+                }                
 			}
 			else
 			{
                 //add the stacks of items (add the 2 items' amounts to make 1 item)
-                //TODO: WARNING overflow possible
+                //TODO: WARNING integer overflow (unlikely) or undesirably large "stacks" possible
                 //TODO: WARNING any swap with same id is allowed
                 if(held.id == parent.items[index].id)
 				{
-                    parent.items[index].amount += held.amount;
-                    held = null;
-                    heldFrom = null;
-                    UpdateIcon();
+					if (parent.put)
+					{
+                        parent.items[index].amount += held.amount;
+                        held = null;
+                        heldFrom = null;
+                        parent.invChange.Invoke(index);
+                        UpdateIcon();
+                    }                    
                 }
-				else
+				else//this also handles putting items in an empty inventory slot
 				{
-                    //swap
-                    Item temp = held;
-                    held = parent.items[index];
-                    parent.items[index] = temp;
-                    UpdateIcon();
+					if (parent.put && parent.take)
+					{
+                        //swap
+                        Item temp = held;
+                        held = parent.items[index];
+                        parent.items[index] = temp;
+                        parent.invChange.Invoke(index);
+                        UpdateIcon();
+					}
+                    
                 }
 			}
 		}
