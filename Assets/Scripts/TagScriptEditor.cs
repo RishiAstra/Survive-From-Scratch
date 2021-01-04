@@ -8,6 +8,8 @@ using UnityEditor;
 [CustomEditor(typeof(TagScript))]
 public class TagScriptEditor : Editor
 {
+	public static GUIContent errorContent;
+
 	static bool initialized;
 
 	TagScript t;
@@ -15,7 +17,6 @@ public class TagScriptEditor : Editor
 	//List<string> tagStrings;
 	//List<bool> goodTag;
 
-	private static GUIContent errorContent;
 	private void OnEnable()
 	{
 		//Debug.Log("starting");

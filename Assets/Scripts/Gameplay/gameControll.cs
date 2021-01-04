@@ -22,6 +22,7 @@ public class gameControll : MonoBehaviour
 	public Image mainHpBar;
 	public Canvas mainCanvas;
 	
+	//TODO: make itemTypes static
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
 	private Player me;

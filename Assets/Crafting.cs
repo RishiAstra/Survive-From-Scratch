@@ -31,9 +31,10 @@ public class Crafting : MonoBehaviour
 
     private gameControll me;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         me = GetComponent<gameControll>();
+        if (gameControll.main == null) gameControll.main = me;
 
         craftInventory.invChange.AddListener(OnCraftInventoryChanged);
         craftInventory.take = true;
@@ -42,6 +43,7 @@ public class Crafting : MonoBehaviour
         craftResult.invChange.AddListener(OnItemCraft);
         craftResult.take = true;
         craftResult.put = false;
+        OnCraftInventoryChanged(0);
     }
 
     public void OnCraftInventoryChanged(int itemIndex)
@@ -61,6 +63,7 @@ public class Crafting : MonoBehaviour
         //go through all recipies
         for (int i = 0; i < recipies.Count; i++)
         {
+            bool canMakeThis = true;
             //go through the required ingredients
             for (int j = 0; j < recipies[i].ingredients.Count; j++)
             {
@@ -78,12 +81,12 @@ public class Crafting : MonoBehaviour
                 //if too little of this ingredient, cannot craft this, break (move on to the next recipie in the i recipies.Count forloop)
                 if(count < recipies[i].ingredients[j].amount)
 				{
+                    canMakeThis = false;
                     break;
 				}
             }
 
-            //if it survived till here, there are enough materials to craft the recipie
-            craftResult.items.Add(recipies[i].result);
+            if (canMakeThis) craftResult.items.Add(recipies[i].result);
         }
     }
 

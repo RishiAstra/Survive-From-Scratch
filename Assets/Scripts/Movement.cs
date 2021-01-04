@@ -5,7 +5,7 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 	public const float ANGLE_THRESHOLD = 0.5f;//degrees off that is considered good enough
-	public const float GROUND_THRESHOLD = 0.05f;
+	public const float GROUND_THRESHOLD = 0.1f;
 	
 	public float jumpForce;
 	public LayerMask ground;
