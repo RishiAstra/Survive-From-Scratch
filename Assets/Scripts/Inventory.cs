@@ -4,6 +4,12 @@ using UnityEngine;
 using bobStuff;
 using UnityEngine.Events;
 
+[System.Serializable]
+public class IntUnityEvent: UnityEvent<int>
+{
+
+}
+
 public class Inventory : MonoBehaviour
 {
     public bool take;//permissions for if the current player can take and place items in this inventory
@@ -11,7 +17,7 @@ public class Inventory : MonoBehaviour
     public int size;
 	public List<Item> items;
 
-    public UnityEvent<int> invChange;//called when the inventory is changed (trigger this by script, manual inspector change won't trigger this)
+    public IntUnityEvent invChange;//called when the inventory is changed (trigger this by script, manual inspector change won't trigger this)
     //public InventoryUI ui;
     // Start is called before the first frame update
     void Awake()

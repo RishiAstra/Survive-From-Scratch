@@ -6,6 +6,7 @@ using UnityEngine;
 //TODO: make recipie class or struct, check if for craftable things, remove items when crafted
 
 [System.Flags]
+[System.Serializable]
 public enum CraftType
 {
     none = 1 << 0,
@@ -13,6 +14,7 @@ public enum CraftType
 }
 
 //TODO: WARNING: recipie cannot have 2 items of the same type
+[System.Serializable]
 public struct Recipie
 {
     public List<Item> ingredients;
@@ -90,7 +92,7 @@ public class Crafting : MonoBehaviour
     {
 		if (gameControll.main.craftInventory.activeSelf)
 		{
-            if()
+            
             RefreshCraftableRecipies();
 		}
 		else

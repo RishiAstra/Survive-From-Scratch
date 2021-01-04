@@ -29,8 +29,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     void UpdateIcon()
     {
-        Item temp = parent.items[index];
-        if (temp == null || temp.id == 0 || temp.amount == 0)
+        if (index >= parent.items.Count || parent.items[index].id == 0 || parent.items[index].amount == 0)
 		{
             img.color = Color.clear;
             amountText.text = "";
@@ -46,28 +45,30 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     //TODO: call this when the inventoryUI is closed if the held item is in that inventory
     public static void CancelMove()
 	{
-        if(held != null)
+  //      if(held != null)
+		//{
+        if(held.id == heldFrom.parent.items[heldFrom.index].id)
 		{
-            if(held.id == heldFrom.parent.items[heldFrom.index].id)
-			{
-                heldFrom.parent.items[heldFrom.index].amount += held.amount;
-                held = null;
-                Debug.Log("Canceled moving item, added back");
-            }else if (heldFrom.parent.items[heldFrom.index].id == 0)
-			{
-                Debug.Log("Canceled moving item, added back to empty slot");
-			}
-			else
-			{
-                //TODO: destroying items is very bad, should be fixed
-                Debug.LogError("Canceled moving item, but the original slot was the wrong id. The item is destroyed instead");
-                held = null;
-			}
+            Item tempItem = heldFrom.parent.items[heldFrom.index];
+            tempItem.amount += held.amount;
+            heldFrom.parent.items[heldFrom.index] = tempItem;
+            held = new Item();
+            Debug.Log("Canceled moving item, added back");
+        }else if (heldFrom.parent.items[heldFrom.index].id == 0)
+		{
+            Debug.Log("Canceled moving item, added back to empty slot");
 		}
 		else
 		{
-            Debug.Log("Canceled moving item nothing");
+            //TODO: destroying items is very bad, should be fixed
+            Debug.LogError("Canceled moving item, but the original slot was the wrong id. The item is destroyed instead");
+            held = new Item();
 		}
+		//}
+		//else
+		//{
+  //          Debug.Log("Canceled moving item nothing");
+		//}
 	}
 
     // Update is called once per frame
@@ -76,7 +77,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         UpdateIcon();//TODO: only use this when needed
         if(mouseOver && Input.GetMouseButtonDown(0))
 		{
-            if(held == null || held.id == 0)
+            if(held.id == 0)
 			{
 				if (parent.take)
 				{
@@ -97,8 +98,10 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 				{
 					if (parent.put)
 					{
-                        parent.items[index].amount += held.amount;
-                        held = null;
+                        Item tempItem = parent.items[index];
+                        tempItem.amount += held.amount;
+                        parent.items[index] = tempItem;
+                        held = new Item();
                         heldFrom = null;
                         parent.invChange.Invoke(index);
                         UpdateIcon();

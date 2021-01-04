@@ -17,7 +17,7 @@ public class HeldItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (ItemIcon.held != null && ItemIcon.held.id != 0)
+        if (ItemIcon.held.id != 0)
         {
             img.color = Color.white;
             img.sprite = Player.itemTypes[ItemIcon.held.id].icon;
@@ -29,7 +29,7 @@ public class HeldItem : MonoBehaviour
         {
             img.color = Color.clear;
             amountText.enabled = false;
-            if(ItemIcon.held != null)ItemIcon.held.amount = 0;
+            ItemIcon.held.amount = 0;
 		}
         
     }

@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b36573d3d12f66408b8674026c74453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 6
+  jumpForce: 4
   ground:
     serializedVersion: 2
     m_Bits: 1
@@ -459,8 +459,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  take: 0
+  put: 0
   size: 9
   items: []
+  invChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8140287808217058764
 MonoBehaviour:
   m_ObjectHideFlags: 0

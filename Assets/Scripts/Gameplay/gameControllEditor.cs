@@ -41,6 +41,7 @@ public class gameControllEditor : Editor
 					//EditorGUI.indentLevel += 2;
 					EditorGUILayout.Space(10);
 					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
+					if (item.tags == null) item.tags = new List<int>();//TODO: is this good
 					TagScriptEditor.TagGUI(ref item.tags);
 					EditorGUILayout.Space(10);
 					//EditorGUI.indentLevel -= 2;

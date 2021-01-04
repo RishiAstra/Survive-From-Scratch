@@ -66,20 +66,20 @@ namespace bobStuff
 	//};
 
 	[System.Serializable]
-	public class Item
+	public struct Item
 	{
 		public int id;
 		public int amount;
 		public float strength;
 		public float currentStrength;
 
-		public Item()
-		{
-			id = 0;
-			amount = 0;
-			strength = 0;
-			currentStrength = 0;
-		}
+		//public Item()
+		//{
+		//	id = 0;
+		//	amount = 0;
+		//	strength = 0;
+		//	currentStrength = 0;
+		//}
 
 		public Item(int id, int amount, float duriation, float currentDuriation)
 		{

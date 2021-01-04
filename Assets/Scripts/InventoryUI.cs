@@ -84,7 +84,7 @@ public class InventoryUI : MonoBehaviour
         //adjust the height if needed
         int yRequired = Mathf.CeilToInt(((float)target.items.Count) / (float)w);
         float heightRequired = yRequired * size + initialYPadding;
-        if(overflowDown)print(heightRequired);
+        //if(overflowDown)print(heightRequired);
         //if (heightRequired > slotBounds.rect.height)
         //{
             slotBounds.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, heightRequired);

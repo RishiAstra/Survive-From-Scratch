@@ -8,7 +8,7 @@ public class Collectible : MonoBehaviour
 	public string idString;
 	public int id;
 	public int amount;
-	public LayerMask layerMask;
+	//public LayerMask layerMask;
 
 	//private Rigidbody rig;
 	public float sleepThreshold;

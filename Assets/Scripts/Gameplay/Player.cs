@@ -509,7 +509,11 @@ public class Player : MonoBehaviour
 	public void GetItem(int id, int amount){
 		for (int i = 0; i < inv.items.Count; i++) {
 			if(inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength-inv.items[i].strength)<0.01f){
-				inv.items [i].amount += amount;
+				Item temp = inv.items[i];
+				temp.amount += amount;
+				inv.items[i] = temp;
+				//inv.items [i].amount += amount;
+
 				//TODO: this might require inventory to be refreshed
 				//if (invSel == i) {
 				//	RefreshSelected();
@@ -542,8 +546,12 @@ public class Player : MonoBehaviour
 	/// <param name="amount">Amount to remove</param>
 	public void RemoveItem(int index, int amount){
 		if (index == -1) return;
-		inv.items [index].amount -= amount;
+		Item temp = inv.items[index];
+		temp.amount += amount;
+		inv.items[index] = temp;
+		//inv.items [index].amount -= amount;
 		if (inv.items [index].amount <= 0) {
+			if (inv.items[index].amount < 0) Debug.LogError("removed too much of item");
 			inv.items [index] = new Item (0, 0, 0, 0);
 			if (invSel == index)
 			{
