@@ -53,8 +53,9 @@ public class Crafting : MonoBehaviour
 
     public void OnItemCraft(int itemIndex)
 	{
-        Item item = craftResult.items[itemIndex];
+        Item item = craftResult.items[itemIndex];//TODO: unused
         //TODO: remove the crafting ingredients
+        RemoveCraftingIngredients(itemIndex);
 	}
 
     public void RefreshCraftableRecipies()
@@ -87,6 +88,43 @@ public class Crafting : MonoBehaviour
             }
 
             if (canMakeThis) craftResult.items.Add(recipies[i].result);
+        }
+    }
+
+    public void RemoveCraftingIngredients(int index)
+	{
+        //go through the required ingredients
+        for (int j = 0; j < recipies[index].ingredients.Count; j++)
+        {
+            int required = recipies[index].ingredients[j].amount;
+            //go through the craft inventory to find the ingredients
+            for (int k = 0; k < craftInventory.items.Count; k++)
+            {
+                if (craftInventory.items[k].id == recipies[index].ingredients[j].id)
+                {
+                    if(required >= craftInventory.items[k].amount)
+					{
+                        //remove all of this item, because even all of it isn't enough
+                        Item temp = craftInventory.items[k];
+                        required -= temp.amount;//remove the ingredient used
+                        temp.amount = 0;
+                        temp.id = 0;
+                        craftInventory.items[k] = temp;
+					}
+					else
+					{
+                        //remove as much as needed, some of this item will be left
+                        Item temp = craftInventory.items[k];
+                        temp.amount -= required;
+                        required = 0;
+                        craftInventory.items[k] = temp;
+                        break;//we are done fulfilling this ingredient spending requirement for the recipie
+                    }
+                }                
+            }
+            //TODO: make this better
+            //error if we still need to take more ingredient, but there is none left to take. This means that the crafting was illegitimate
+            if (required > 0) Debug.LogError("Not enough of ingredient " + "in crafting recipie");
         }
     }
 

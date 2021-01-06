@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
-
+//TODO: perhaps have each tag have a int as well, e.g. tag Axe, 10 means this is an axe that is 10 good at being an axe?
 //TODO: check if has permission to place or remove before doing it
 public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -94,8 +94,10 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 //add the stacks of items (add the 2 items' amounts to make 1 item)
                 //TODO: WARNING integer overflow (unlikely) or undesirably large "stacks" possible
                 //TODO: WARNING any swap with same id is allowed
+                //TODO: consider not allowing crafting item to be taken unless enough resources, if not, return resources
                 if(held.id == parent.items[index].id)
 				{
+                    //if same id, try to place that item
 					if (parent.put)
 					{
                         Item tempItem = parent.items[index];
@@ -105,7 +107,17 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                         heldFrom = null;
                         parent.invChange.Invoke(index);
                         UpdateIcon();
-                    }                    
+                    }else if (parent.take)//otherwise, try to take that item and add it to held
+					{
+                        Item tempItem = held;// parent.items[index];
+                        tempItem.amount += parent.items[index].amount;// held.amount;
+                        held = tempItem;
+                        //parent.items[index] = tempItem;
+                        parent.items[index] = new Item();
+                        //heldFrom = null;
+                        parent.invChange.Invoke(index);
+                        UpdateIcon();
+                    }                
                 }
 				else//this also handles putting items in an empty inventory slot
 				{

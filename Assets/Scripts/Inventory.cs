@@ -35,6 +35,14 @@ public class Inventory : MonoBehaviour
         
     }
 
+    //TODO: use this everywhere
+    void SetInv(Item item, int index)
+	{
+        //Item temp = items[index];
+        if (item.amount == 0) item.id = 0;
+        items[index] = item;
+	}
+
  //   void RefreshUI()
 	//{
  //       if(ui != null && ui.gameObject.activeInHierarchy)
