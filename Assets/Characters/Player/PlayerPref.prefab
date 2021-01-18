@@ -340,11 +340,11 @@ MonoBehaviour:
   acceleration: 20
   minAngleForMove: 45
   maxAngleForMove: 270
-  maxTurnSpeed: 180
+  maxTurnSpeed: 1080
   minTurnSpeed: 0.1
   maxTurnSpeedAngle: 45
-  maxTurnAccel: 100
-  minTurnAccel: 1
+  maxTurnAccel: 500
+  minTurnAccel: 500
   rig: {fileID: 0}
   anim: {fileID: 95955619351916386}
   jumping: 0

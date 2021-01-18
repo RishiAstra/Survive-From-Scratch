@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
 	public const float CAM_LERP_SPEED = 0.02f;
+	public const float INPUT_THRESHOLD = 0.01f;
 
 	public Transform camPos;
 	public GameObject camPref;
@@ -53,9 +54,10 @@ public class PlayerControl : MonoBehaviour
 		//jump
 		if (Input.GetKey(KeyCode.Space)) movement.AttemptJump();
 		//move		
-		movement.SetAngle(cam.transform.eulerAngles.y);
+		//movement.SetAngle(cam.transform.eulerAngles.y);
 		Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		dir = Quaternion.Euler(0, cam.pivot.eulerAngles.y, 0) * dir;
+		if (dir.magnitude > INPUT_THRESHOLD) movement.SetAngle(Quaternion.LookRotation(dir, transform.up));
 		movement.SetDirection(dir);		
     }
 }
