@@ -264,11 +264,11 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 50
   m_Drag: 0
-  m_AngularDrag: 0.5
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &136602099478796468
 CapsuleCollider:
@@ -340,11 +340,7 @@ MonoBehaviour:
   acceleration: 20
   minAngleForMove: 45
   maxAngleForMove: 270
-  maxTurnSpeed: 1080
-  minTurnSpeed: 0.1
-  maxTurnSpeedAngle: 45
-  maxTurnAccel: 500
-  minTurnAccel: 500
+  turnSpeed: 1080
   rig: {fileID: 0}
   anim: {fileID: 95955619351916386}
   jumping: 0
@@ -3491,7 +3487,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3106704235940016939}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.87, z: 0.168}
+  m_LocalPosition: {x: 0, y: 1.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4918891165435872}
