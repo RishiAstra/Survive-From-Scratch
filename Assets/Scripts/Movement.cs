@@ -7,7 +7,9 @@ public class Movement : MonoBehaviour
 	public const float ANGLE_THRESHOLD = 2f;//degrees off that is considered good enough
 	public const float CLOSE_ANGLE = 45f;//below this angle, turning animations might slow down
 	public const float GROUND_THRESHOLD = 0.1f;
-	
+	public const float SMALL_INPUT = 0.05f;//below this means no input (e.g. not trying to move)
+
+
 	public float jumpForce;
 	public LayerMask ground;
 	public Transform[] groundCheck;
@@ -191,10 +193,10 @@ public class Movement : MonoBehaviour
 
 			if (attemptJump && jumpCooldownLeft < 0)
 			{
-				attemptJump = false;
 				anim.ResetTrigger("JumpStart");
 				anim.SetTrigger("JumpStart");
 				anim.ResetTrigger("JumpEnd");
+				Jump();//TODO: organize this
 				//tryingToJump = true;
 				jumpCooldownLeft = jumpCooldown;
 				//jumpInProg = true;
@@ -215,7 +217,7 @@ public class Movement : MonoBehaviour
 				//jumping = false;
 				//StartCoroutine(LandFromJump());
 			}
-
+			attemptJump = false;
 
 		}
 		else if (prevJump)
@@ -228,6 +230,7 @@ public class Movement : MonoBehaviour
 	bool previouslyIdle;
 	public float jumpCooldownLeft;
 	public bool jumpInProg;
+
 	void HandleMove()
 	{
 		if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Jump Start")) jumpCooldownLeft -= Time.fixedDeltaTime;//TODO: add event to anim to trigger this instead for optimization
@@ -330,7 +333,7 @@ public class Movement : MonoBehaviour
 				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
 				float velDot = Vector3.Dot(rig.velocity, direction.normalized);
 				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
-				if (velDot < -0.5f)//if you are moving in a really wrong direction, slow down
+				if (direction.magnitude < SMALL_INPUT || velDot < -0.5f)//if you are moving in a really wrong direction, slow down
 				{
 					rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
 				}
