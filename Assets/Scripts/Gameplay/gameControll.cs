@@ -21,6 +21,7 @@ public class gameControll : MonoBehaviour
 	public Text mapLoadText;
 	public RectTransform mapLoadBar;
 	public GameObject mapLoadScreen;
+	public GameObject mapScreen;
 	//private AsyncOperation mapSceneProg;
 	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
@@ -50,6 +51,7 @@ public class gameControll : MonoBehaviour
 		mapLoadBarInitialWidth = mapLoadBar.sizeDelta.x;
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
 		//craftInventory.SetActive(false);
+		//TODO: consider setting mapScreen to active
 		InitializeItemTypes();
 	}
 
@@ -109,6 +111,7 @@ public class gameControll : MonoBehaviour
 
 		SceneManager.SetActiveScene(toLoad);
 		mapLoadScreen.SetActive(false);
+		mapScreen.SetActive(false);
 		CreatePlayerObject();
 		playerExists = true;
 		loading = false;
@@ -205,6 +208,20 @@ public class gameControll : MonoBehaviour
 				else
 				{
 					craftInventory.SetActive(true);
+					TryUnlockCursor();
+				}
+			}
+
+			if (Input.GetKeyDown(KeyCode.M))
+			{
+				if (mapScreen.activeSelf)
+				{
+					mapScreen.SetActive(false);
+					TryLockCursor();
+				}
+				else
+				{
+					mapScreen.SetActive(true);
 					TryUnlockCursor();
 				}
 			}

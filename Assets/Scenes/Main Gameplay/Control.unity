@@ -38,13 +38,13 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1362111558}
-  m_IndirectSpecularColor: {r: 0.18028377, g: 0.22571403, b: 0.3069225, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -985,6 +985,7 @@ MonoBehaviour:
   mapLoadText: {fileID: 80416761}
   mapLoadBar: {fileID: 640074841}
   mapLoadScreen: {fileID: 1095511804}
+  mapScreen: {fileID: 24063261}
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 1024
