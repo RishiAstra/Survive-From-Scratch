@@ -11,12 +11,18 @@ public class gameControll : MonoBehaviour
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
 	public static bool loading;//true if currently loading a scene
+	public static bool playerExists;//is the main character existant yet? won't be if loading a scene or start screen etc
 
 	public static Dictionary<string, int> StringIdMap;
 	public static gameControll main;
 
 	public string mapScenePath;
+	public string controlSceneName;
+	public Text mapLoadText;
+	public RectTransform mapLoadBar;
+	public GameObject mapLoadScreen;
 	//private AsyncOperation mapSceneProg;
+	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
 
 	public LayerMask raycastLayerMask;
@@ -40,33 +46,70 @@ public class gameControll : MonoBehaviour
 	void Awake(){
 		if (main != null) Debug.LogError("two gameControls");
 		main = this;
+		TryUnlockCursor();
+		mapLoadBarInitialWidth = mapLoadBar.sizeDelta.x;
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
 		//craftInventory.SetActive(false);
 		InitializeItemTypes();
-		
 	}
+
+	public void BeginLoadMapLocation(string name)
+    {
+		StartCoroutine(LoadMapLocation(name));
+    }
 
 	public IEnumerator LoadMapLocation(string name)
     {
-		string path = mapScenePath + "\\" + name;
-		AsyncOperation a = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+		//TODO:test this
+		//remove other scenes if they aren't the control scene
+		loading = true;
+		TryUnlockCursor();
+		mapLoadScreen.SetActive(true);
+		playerExists = false;
+		yield return null;//wait a frame before starting
+
+		int sceneCount = SceneManager.sceneCount;
+		for (int i = sceneCount - 1; i >= 0; i--)
+        {
+			mapLoadText.text = "Unloading scene " + (sceneCount - i) + " of " + sceneCount;
+			Scene scene = SceneManager.GetSceneAt(i);
+			if(scene.name != controlSceneName)
+            {
+				AsyncOperation b = SceneManager.UnloadSceneAsync(scene);
+                while (!b.isDone)
+                {
+					mapSceneLoadProgress = b.progress;
+					yield return null;
+                }
+            }
+        }
+
+		string path = mapScenePath + "/" + name;
+		Scene toLoad = SceneManager.GetSceneByName(name);
+		if(toLoad == null || toLoad.buildIndex == -1)
+        {
+			throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
+        }
+		AsyncOperation a = SceneManager.LoadSceneAsync(toLoad.buildIndex, LoadSceneMode.Additive);
+		//don't load the scene fully
 		a.allowSceneActivation = false;
+		mapLoadText.text = "Loading scene...";
+		//update the progress, but stop once the scene is ready (0.9)
 		do
 		{
-			mapSceneLoadProgress = a.progress;
+			mapSceneLoadProgress = 0.5f + a.progress/2;
 			yield return null;
 		} while (a.progress < 0.9f);
-		//TODO:fix this
-		//hotBarUI.target = ...;
-    }
-
-	/// <summary>
-	/// Called when a map location scene is loaded
-	/// </summary>
-	void OnMapLoaded()
-    {
+		mapLoadText.text = "Activating Scene";
+		//allow the last step and wait for it
+		a.allowSceneActivation = true;
+		yield return a;
+		SceneManager.SetActiveScene(toLoad);
+		mapLoadScreen.SetActive(false);
 		CreatePlayerObject();
-	}
+		playerExists = true;
+		loading = false;
+    }
 
 	public static int NameToId(string s)
 	{
@@ -136,66 +179,81 @@ public class gameControll : MonoBehaviour
 		middleCursor.SetActive(false);
 	}
 
+
 	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
-		{
-			tempUnlockMouse = true;
-			TryUnlockCursor();
-		}
-		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
-		if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
-		{
-			tempUnlockMouse = false;
-			TryLockCursor();
-		}
+    {
 
-		if (Cursor.lockState == CursorLockMode.Locked)
-		{
+        if (loading)
+        {
+            mapLoadBar.sizeDelta = new Vector2(mapSceneLoadProgress * mapLoadBarInitialWidth, mapLoadBar.sizeDelta.y);
+        }
 
-			if (Input.GetKey(KeyCode.Escape))
+		if (playerExists)
+		{
+			CursorLockUpdate();
+
+			if (Input.GetKeyDown(KeyCode.E))
 			{
+				if (craftInventory.activeSelf)
+				{
+					craftInventory.SetActive(false);
+					TryLockCursor();
+				}
+				else
+				{
+					craftInventory.SetActive(true);
+					TryUnlockCursor();
+				}
+			}
+
+			if (myAbilities.dead)
+			{
+				//deactivate crafting if dead
+				if (craftInventory.activeSelf)
+				{
+					craftInventory.SetActive(false);
+				}
 				TryUnlockCursor();
-			}
-		}
-		else
-		{
-			if (Input.GetMouseButtonUp(0))
-			{
-				TryLockCursor();
-			}
-		}
-
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			if (craftInventory.activeSelf)
-			{
-				craftInventory.SetActive(false);
-				TryLockCursor();
 			}
 			else
 			{
-				craftInventory.SetActive(true);
-				TryUnlockCursor();
+				LiveFunctions();
 			}
 		}
+    }
 
-		if (myAbilities.dead) {
-			//deactivate crafting if dead
-			if (craftInventory.activeSelf)
-			{
-				craftInventory.SetActive(false);
-			}
-			TryUnlockCursor();
-		}
-		else
-		{
-			LiveFunctions();
-		}
+    private void CursorLockUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+        {
+            tempUnlockMouse = true;
+            TryUnlockCursor();
+        }
+        //TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
+        if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
+        {
+            tempUnlockMouse = false;
+            TryLockCursor();
+        }
 
-	}
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
 
-	private void LiveFunctions()
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                TryUnlockCursor();
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                TryLockCursor();
+            }
+        }
+    }
+
+    private void LiveFunctions()
 	{
 		if (Input.GetKey(KeyCode.F))
 		{
@@ -226,13 +284,17 @@ public class gameControll : MonoBehaviour
 		int chosen = UnityEngine.Random.Range (0, sp.Length);
 		position = sp [chosen].transform.position;
 
-		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);//PhotonNetwork.
+		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
 		me = newPlayerObject.GetComponent<Player> ();
 		newPlayerObject.GetComponent<HPBar>().hpBarImage = mainHpBar;//TODO: check taht this works
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
+
+		//bind hotbar to character and initialize
 		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
+		hotBarUI.InitializeSlots();
+
 		if (Player.main == null) Debug.LogError("Failed to create main character");
 		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
 		myInv.take = true;

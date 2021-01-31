@@ -33,7 +33,7 @@ public class InventoryUI : MonoBehaviour
         initialHeight = slotBounds.rect.height;
         //InitializeSlots();
     }
-    void InitializeSlots()
+    public void InitializeSlots()
 	{
         //delete old 
         for(int i = slotBounds.childCount - 1; i >= 0; i--)
