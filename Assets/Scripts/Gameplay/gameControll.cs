@@ -3,23 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using bobStuff;
 using System;
-
+using UnityEngine.UI;
+//TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
+	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
+	public static bool tempUnlockMouse;
+
 	public static Dictionary<string, int> StringIdMap;
 	public static gameControll main;
 
 	public LayerMask raycastLayerMask;
 	public LayerMask weaponHit;
 	public GameObject player;
+	public InventoryUI hotBarUI;
+	public GameObject craftInventory;
+	public GameObject middleCursor;
+	public Image mainHpBar;
+	public Canvas mainCanvas;
 	
+	//TODO: make itemTypes static
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
 	private Player me;
+	[HideInInspector]public Abilities myAbilities;
 
 	void Awake(){
 		
 		main = this;
+		//craftInventory.SetActive(false);
 		InitializeItemTypes();
 		CreatePlayerObject();
 	}
@@ -46,7 +58,7 @@ public class gameControll : MonoBehaviour
 			//load data for this item type
 			item.prefab =			Resources.Load<GameObject>	(item.name + "/" + item.name + "-p");
 			item.equipPrefab =		Resources.Load<GameObject>	(item.name + "/" + item.name + "-e");
-			item.icon =				Resources.Load<Texture2D>	(item.name + "/" + item.name + "-i");
+			item.icon =				Resources.Load<Sprite>	(item.name + "/" + item.name + "-i");
 			itemTypes[i] = item;
 		}
 	}
@@ -56,20 +68,104 @@ public class gameControll : MonoBehaviour
 	//	CreatePlayerObject();
 	//}
 
-	void OnGUI(){
-		if (me!=null && me.isDead)
-		{// && me.ph.isMine
-			if (GUI.Button (new Rect ((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn")) {
-				me.gameObject.SetActive (true);
-				me.Respawn ();
-			}
+	void Respawn()
+	{
+		//TODO: clear all statis effects, maybe just delete player and spawn a new one
+		myAbilities.Reset();
+		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
+		{
+			me.gameObject.SetActive(true);
+			me.Respawn();
 		}
+	}
+
+	void OnGUI(){
+		if (me!=null && myAbilities.dead)
+		{// && me.ph.isMine
+			Respawn();
+		}
+	}
+
+	void TryLockCursor()
+	{
+		if(
+			!craftInventory.activeSelf &&
+			!tempUnlockMouse
+			)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			middleCursor.SetActive(true);
+		}
+	}
+
+	void TryUnlockCursor()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		middleCursor.SetActive(false);
 	}
 
 	private void Update()
 	{
-		if (me.isDead) return;
-		if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.C))
+		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+		{
+			tempUnlockMouse = true;
+			TryUnlockCursor();
+		}
+		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
+		if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
+		{
+			tempUnlockMouse = false;
+			TryLockCursor();
+		}
+
+		if (Cursor.lockState == CursorLockMode.Locked)
+		{
+			
+			if (Input.GetKey(KeyCode.Escape))
+			{
+				TryUnlockCursor();
+			}
+		}
+		else
+		{
+			if (Input.GetMouseButtonUp(0))
+			{
+				TryLockCursor();
+			}
+		}		
+
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			if (craftInventory.activeSelf)
+			{
+				craftInventory.SetActive(false);
+				TryLockCursor();
+			}
+			else
+			{
+				craftInventory.SetActive(true);
+				TryUnlockCursor();
+			}
+		}
+
+		if (myAbilities.dead) {
+			//deactivate crafting if dead
+			if (craftInventory.activeSelf)
+			{
+				craftInventory.SetActive(false);
+			}
+			TryUnlockCursor();
+		}
+		else
+		{
+			LiveFunctions();
+		}
+
+	}
+
+	private void LiveFunctions()
+	{
+		if (Input.GetKey(KeyCode.F))
 		{
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -98,15 +194,17 @@ public class gameControll : MonoBehaviour
 		int chosen = UnityEngine.Random.Range (0, sp.Length);
 		position = sp [chosen].transform.position;
 
-
 		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);//PhotonNetwork.
 		me = newPlayerObject.GetComponent<Player> ();
+		newPlayerObject.GetComponent<HPBar>().hpBarImage = mainHpBar;//TODO: check taht this works
 		Player.main = me;
+		myAbilities = newPlayerObject.GetComponent<Abilities>();
+		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
 		if (Player.main == null) {
 			print ("UG");
 		}
-
-
-//		Camera.Target = newPlayerObject.transform;
+		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
+		myInv.take = true;
+		myInv.put = true;
 	}
 }

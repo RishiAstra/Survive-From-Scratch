@@ -2,16 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using bobStuff;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class IntUnityEvent: UnityEvent<int>
+{
+
+}
 
 public class Inventory : MonoBehaviour
 {
+    public bool take;//permissions for if the current player can take and place items in this inventory
+    public bool put;//TODO: permissions might be a list of players who can access
+    public int size;
 	public List<Item> items;
 
-    private InventoryUI ui;
+    public IntUnityEvent invChange;//called when the inventory is changed (trigger this by script, manual inspector change won't trigger this)
+    //public InventoryUI ui;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
 		items = new List<Item>();
+        for(int i = 0; i < size; i++)
+		{
+            items.Add(new Item());
+		}
     }
 
     // Update is called once per frame
@@ -20,11 +35,19 @@ public class Inventory : MonoBehaviour
         
     }
 
-    void RefreshUI()
+    //TODO: use this everywhere
+    void SetInv(Item item, int index)
 	{
-        if(ui != null && ui.gameObject.activeInHierarchy)
-		{
-            ui.Refresh();
-		}
+        //Item temp = items[index];
+        if (item.amount == 0) item.id = 0;
+        items[index] = item;
 	}
+
+ //   void RefreshUI()
+	//{
+ //       if(ui != null && ui.gameObject.activeInHierarchy)
+	//	{
+ //           ui.Refresh();
+	//	}
+	//}
 }

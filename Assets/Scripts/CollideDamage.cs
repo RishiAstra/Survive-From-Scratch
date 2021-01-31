@@ -10,6 +10,7 @@ public class CollideDamage : MonoBehaviour
 	public float minDamage;
 	public float maxVelocity;
 	public float minVelocity;
+	public Abilities.AttackType attackType;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +26,7 @@ public class CollideDamage : MonoBehaviour
 	void OnCollisionEnter(Collision collision)
 	{
 		float v = collision.relativeVelocity.magnitude;
-		badguy b = collision.gameObject.GetComponent<badguy>();
+		Abilities b = collision.gameObject.GetComponent<Abilities>();
 		if(b != null)
 		{
 			if (hit.Contains(collision.gameObject))
@@ -41,7 +42,7 @@ public class CollideDamage : MonoBehaviour
 					if (d > 1) d = 1;//cap damage at maxDamage
 					float damage = minDamage + (maxDamage - minDamage) * d;//min damage plus the extra from higher velocity
 					print("Collide damage: " + damage);
-					b.Damage(damage);
+					b.Damage(damage, collision.collider, attackType);
 				}
 			}
 			

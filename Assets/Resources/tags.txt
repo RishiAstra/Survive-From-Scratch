@@ -1,4 +1,7 @@
 //This text file contains all of the tags that a character or item can have. To add a comment, put "/" at the start of the line
+//					0-12
+blank:0
+//Other
 droppable:3
 //++ character traits
 arthropod:4
@@ -15,3 +18,5 @@ head equip:10
 chest equip:11
 pant equip:12
 //-- equip places
+//					13+
+placeable:13

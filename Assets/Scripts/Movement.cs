@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-	public const float ANGLE_THRESHOLD = 0.5f;//degrees off that is considered good enough
-	public const float GROUND_THRESHOLD = 0.05f;
-	
+	public const float ANGLE_THRESHOLD = 2f;//degrees off that is considered good enough
+	public const float CLOSE_ANGLE = 45f;//below this angle, turning animations might slow down
+	public const float GROUND_THRESHOLD = 0.1f;
+	public const float SMALL_INPUT = 0.05f;//below this means no input (e.g. not trying to move)
+
+
 	public float jumpForce;
 	public LayerMask ground;
 	public Transform[] groundCheck;
@@ -16,11 +19,13 @@ public class Movement : MonoBehaviour
 	//affects the maxSpeed and acceleration for moving in a direction that you are not facing (e.g. walking backwards)
 	public float minAngleForMove;
 	public float maxAngleForMove;
-	public float maxTurnSpeed;
-	public float minTurnSpeed;
-	public float maxTurnSpeedAngle;
-	public float maxTurnAccel;
-	public float minTurnAccel;
+	//public float maxTurnSpeed;
+	//public float minTurnSpeed;
+	//public float maxTurnSpeedAngle;
+	//public float maxTurnAccel;
+	//public float minTurnAccel;
+
+	public float turnSpeed;
 	
 	public Rigidbody rig;
 	
@@ -188,10 +193,10 @@ public class Movement : MonoBehaviour
 
 			if (attemptJump && jumpCooldownLeft < 0)
 			{
-				attemptJump = false;
 				anim.ResetTrigger("JumpStart");
 				anim.SetTrigger("JumpStart");
 				anim.ResetTrigger("JumpEnd");
+				Jump();//TODO: organize this
 				//tryingToJump = true;
 				jumpCooldownLeft = jumpCooldown;
 				//jumpInProg = true;
@@ -212,7 +217,7 @@ public class Movement : MonoBehaviour
 				//jumping = false;
 				//StartCoroutine(LandFromJump());
 			}
-
+			attemptJump = false;
 
 		}
 		else if (prevJump)
@@ -225,12 +230,13 @@ public class Movement : MonoBehaviour
 	bool previouslyIdle;
 	public float jumpCooldownLeft;
 	public bool jumpInProg;
+
 	void HandleMove()
 	{
-		if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Jump Start")) jumpCooldownLeft -= Time.deltaTime;
+		if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Jump Start")) jumpCooldownLeft -= Time.fixedDeltaTime;//TODO: add event to anim to trigger this instead for optimization
 		float a = angle.eulerAngles.y;
 		float t = transform.eulerAngles.y;
-		float d = Mathf.DeltaAngle(a, t);
+		float deltaAngle = Mathf.DeltaAngle(a, t);
 		
 		float velocityInDirection = Vector3.Dot(direction.normalized, rig.velocity);
 		//print(velocityInDirection / maxSpeed);
@@ -242,44 +248,82 @@ public class Movement : MonoBehaviour
 		}
 		else
 		{
-			anim.SetFloat("Direction", Mathf.Clamp(d / maxTurnSpeedAngle, -1, 1), 0.2f, Time.deltaTime);//player tries to turn in mid-air
-			if (!grounded) anim.SetFloat("Speed", Mathf.Clamp01(direction.magnitude), 0.2f, Time.deltaTime);//player tries to run in mid-air
+			anim.SetFloat("Direction", Mathf.Clamp(deltaAngle / CLOSE_ANGLE, -1, 1), 0.2f, Time.fixedDeltaTime);//player tries to turn in mid-air
+			if (!grounded) anim.SetFloat("Speed", Mathf.Clamp01(direction.magnitude), 0.2f, Time.fixedDeltaTime);//player tries to run in mid-air
 			if (grounded)
 			{
-				anim.SetFloat("Speed", velocityInDirection / maxSpeed, 0.2f, Time.deltaTime);//player is running on ground
+				anim.SetFloat("Speed", velocityInDirection / maxSpeed, 0.2f, Time.fixedDeltaTime);//player is running on ground
 																							 //TODO: move only now
 
 				//attack angle:
 
-				if (angleOff > ANGLE_THRESHOLD)
-				{
-					//TODO: for now it only rotates the y
 
-					float ab = Mathf.Abs(d);
+				//TODO: for now it only rotates the y
 
-					bool cw = d > 0;//should the force be applied clockwise
-					float av = rig.angularVelocity.y * Mathf.Rad2Deg;
-					av = cw ? -av : av;//how fast it is turning in the desired direction
+				transform.rotation = Quaternion.RotateTowards(transform.rotation, angle, turnSpeed * Time.fixedDeltaTime);
+				//float ab = Mathf.Abs(deltaAngle);
+				////deltaAngle left is negative
+				//float tempMaxTurnSpeed = Mathf.Lerp(minTurnSpeed, maxTurnSpeed, ab / maxTurnSpeedAngle);// minTurnSpeed + (maxTurnSpeed - minTurnSpeed) * ab / maxTurnSpeedAngle;
+				
 
-					float temp = maxTurnSpeedAngle;// * av;
-												   //if (temp < 45) temp = 45;
+				////if(tempMaxTurnSpeed > ab * )
+				////don't overshoot in 1 frame
+				//if (tempMaxTurnSpeed > ab / Time.fixedDeltaTime) tempMaxTurnSpeed = ab / Time.fixedDeltaTime;
+				
+				//if (deltaAngle > 0) tempMaxTurnSpeed *= -1;
 
-					float tempMaxTurnSpeed = minTurnSpeed + (maxTurnSpeed - minTurnSpeed) * ab / temp;
-					float tempMaxTurnAccel = minTurnAccel + (maxTurnAccel - minTurnAccel) * ab / temp;
-					tempMaxTurnAccel = cw ? -tempMaxTurnAccel : tempMaxTurnAccel;
-					if (av < tempMaxTurnSpeed)//av < tempMaxSpeed)
-					{
-						//print(av / tempMaxTurnSpeed);
-						//help prevent overshoot causing "vibration" rotation
-						rig.AddTorque(0, tempMaxTurnAccel * Time.deltaTime * rig.mass, 0);
-					}
-					else
-					{
-						//print(av / tempMaxTurnSpeed);
-						//help prevent overshoot causing "vibration" rotation
-						rig.AddTorque(0, -tempMaxTurnAccel * Time.deltaTime * rig.mass, 0);
-					}
-				}
+				////try to stop if close enough to the right angle
+				//if (angleOff < ANGLE_THRESHOLD) tempMaxTurnSpeed = 0;
+
+				////how off is the turn velocity from target
+				//float turnVelOff = tempMaxTurnSpeed - rig.angularVelocity.y * Mathf.Rad2Deg;
+
+				////the maximum turn velocity change allowed this frame
+				//float turnVelChange = maxTurnAccel * Time.deltaTime;
+
+				////if turnVelChange is bigger than needed set it equal
+				//if (turnVelChange > Mathf.Abs(turnVelOff))
+    //            {
+    //                turnVelChange = turnVelOff;
+    //            }else if(turnVelOff < 0)//otherwise, check that the signs are same direction
+    //            {
+				//	turnVelChange *= -1;
+    //            }
+				//rig.angularVelocity += new Vector3(0, turnVelOff * Mathf.Deg2Rad, 0);
+				//rig.angularVelocity += Vector3.up * turnVelChange * Mathf.Deg2Rad;
+				//rig.AddTorque(turnVelChange * Mathf.Deg2Rad * Vector3.up, ForceMode.VelocityChange);
+
+                //print(tempMaxTurnSpeed + "|" + rig.angularVelocity.y * Mathf.Rad2Deg);
+				/*old method*/
+				//float ab = Mathf.Abs(deltaAngle);
+
+				//bool cw = deltaAngle > 0;//should the force be applied clockwise
+				//float av = rig.angularVelocity.y * Mathf.Rad2Deg;
+				//av = cw ? -av : av;//how fast it is turning in the desired direction
+
+				//float temp = maxTurnSpeedAngle;// * av;
+				//							   //if (temp < 45) temp = 45;
+
+				//float tempMaxTurnSpeed = minTurnSpeed + (maxTurnSpeed - minTurnSpeed) * ab / temp;
+				//float tempMaxTurnAccel = minTurnAccel + (maxTurnAccel - minTurnAccel) * ab / temp;
+				//tempMaxTurnAccel = cw ? -tempMaxTurnAccel : tempMaxTurnAccel;
+
+				//float angularVelocityChange = maxTurnAccel;
+				//float wrongSpeed = maxTurnSpeed - Mathf.Abs(av);
+
+				//if (av < tempMaxTurnSpeed)//av < tempMaxSpeed)
+				//{//TODO: change rig.AddTorque mode
+				//	//print(av / tempMaxTurnSpeed);
+				//	//help prevent overshoot causing "vibration" rotation
+				//	rig.AddTorque(0, tempMaxTurnAccel * Time.deltaTime * rig.mass, 0);
+				//}
+				//else
+				//{
+				//	//print(av / tempMaxTurnSpeed);
+				//	//help prevent overshoot causing "vibration" rotation
+				//	rig.AddTorque(0, -tempMaxTurnAccel * Time.deltaTime * rig.mass, 0);
+				//}
+				
 
 				//float dot = Vector3.Dot(direction.normalized, (angle * Vector3.forward).normalized);
 				float mult = 1 - Mathf.Clamp01((Vector3.Angle(angle * Vector3.forward, direction) - minAngleForMove) / (maxAngleForMove - minAngleForMove));
@@ -289,16 +333,16 @@ public class Movement : MonoBehaviour
 				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
 				float velDot = Vector3.Dot(rig.velocity, direction.normalized);
 				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
-				if (velDot < -0.5f)
+				if (direction.magnitude < SMALL_INPUT || velDot < -0.5f)//if you are moving in a really wrong direction, slow down
 				{
-					rig.AddForce(-rig.velocity.normalized * acceleration * Time.deltaTime, ForceMode.VelocityChange);// * mult
+					rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
 				}
 				else
 				{
 					if (rig.velocity.magnitude < maxSpeed * mult)
 					{
 						//print(transform.InverseTransformDirection(rig.velocity).z / (maxSpeed * mult));
-						rig.AddForce(direction.normalized * acceleration * Time.deltaTime, ForceMode.VelocityChange);// * mult
+						rig.AddForce(direction.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
 					}
 				}
 			}
