@@ -85,12 +85,8 @@ public class gameControll : MonoBehaviour
         }
 
 		string path = mapScenePath + "/" + name;
-		Scene toLoad = SceneManager.GetSceneByName(name);
-		if(toLoad == null || toLoad.buildIndex == -1)
-        {
-			throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
-        }
-		AsyncOperation a = SceneManager.LoadSceneAsync(toLoad.buildIndex, LoadSceneMode.Additive);
+		
+		AsyncOperation a = SceneManager.LoadSceneAsync(path, LoadSceneMode.Additive);
 		//don't load the scene fully
 		a.allowSceneActivation = false;
 		mapLoadText.text = "Loading scene...";
@@ -104,6 +100,13 @@ public class gameControll : MonoBehaviour
 		//allow the last step and wait for it
 		a.allowSceneActivation = true;
 		yield return a;
+
+		Scene toLoad = SceneManager.GetSceneByName(name);
+		if (toLoad == null || toLoad.buildIndex == -1)
+		{
+			throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
+		}
+
 		SceneManager.SetActiveScene(toLoad);
 		mapLoadScreen.SetActive(false);
 		CreatePlayerObject();
