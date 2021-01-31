@@ -10,16 +10,32 @@ public class gameControll : MonoBehaviour
 	public static gameControll main;
 
 	public LayerMask raycastLayerMask;
-	public LayerMask weaponHit;
 	public GameObject player;
+<<<<<<< Updated upstream
+=======
+	public GameObject camPref;
+	public Transform camPos;//start the camera here
+	public InventoryUI hotBarUI;
+	public GameObject craftInventory;
+	public GameObject middleCursor;
+	public Image mainHpBar;
+	public Canvas mainCanvas;
+
+	public GameObject camGameObject;
+>>>>>>> Stashed changes
 	
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
 	private Player me;
 
 	void Awake(){
-		
+		if (main != null) Debug.LogError("two gameControls");
 		main = this;
+<<<<<<< Updated upstream
+=======
+		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
+		//craftInventory.SetActive(false);
+>>>>>>> Stashed changes
 		InitializeItemTypes();
 		CreatePlayerObject();
 	}
@@ -102,11 +118,20 @@ public class gameControll : MonoBehaviour
 		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);//PhotonNetwork.
 		me = newPlayerObject.GetComponent<Player> ();
 		Player.main = me;
+<<<<<<< Updated upstream
 		if (Player.main == null) {
 			print ("UG");
 		}
 
 
 //		Camera.Target = newPlayerObject.transform;
+=======
+		myAbilities = newPlayerObject.GetComponent<Abilities>();
+		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
+		if (Player.main == null) Debug.LogError("Failed to create main character");
+		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
+		myInv.take = true;
+		myInv.put = true;
+>>>>>>> Stashed changes
 	}
 }
