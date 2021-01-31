@@ -218,7 +218,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			    #define ENABLE_TERRAIN_PERPIXEL_NORMAL
 			#endif
 
-			#define ASE_NEEDS_VERT_TANGENT
 			#define ASE_NEEDS_VERT_NORMAL
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma multi_compile_instancing
@@ -364,12 +363,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
-				{
-				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
-				v.ase_tangent.w = -1;
-				}
-				
 				o.ase_texcoord7.xy = v.texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
@@ -379,7 +372,7 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g109;
+				float3 vertexValue = defaultVertexValue;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -883,7 +876,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			{
 				float4 vertex : POSITION;
 				float3 ase_normal : NORMAL;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -998,12 +990,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( o );
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
-				{
-				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
-				v.ase_tangent.w = -1;
-				}
-				
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
@@ -1013,7 +999,7 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g109;
+				float3 vertexValue = defaultVertexValue;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -1050,7 +1036,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			{
 				float4 vertex : INTERNALTESSPOS;
 				float3 ase_normal : NORMAL;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -1069,7 +1054,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				o.vertex = v.vertex;
 				o.ase_normal = v.ase_normal;
-				o.ase_tangent = v.ase_tangent;
 				o.ase_texcoord = v.ase_texcoord;
 				return o;
 			}
@@ -1109,7 +1093,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				VertexInput o = (VertexInput) 0;
 				o.vertex = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
-				o.ase_tangent = patch[0].ase_tangent * bary.x + patch[1].ase_tangent * bary.y + patch[2].ase_tangent * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -1221,7 +1204,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			{
 				float4 vertex : POSITION;
 				float3 ase_normal : NORMAL;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1334,12 +1316,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
-				{
-				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
-				v.ase_tangent.w = -1;
-				}
-				
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
@@ -1349,7 +1325,7 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g109;
+				float3 vertexValue = defaultVertexValue;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -1379,7 +1355,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			{
 				float4 vertex : INTERNALTESSPOS;
 				float3 ase_normal : NORMAL;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -1398,7 +1373,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				o.vertex = v.vertex;
 				o.ase_normal = v.ase_normal;
-				o.ase_tangent = v.ase_tangent;
 				o.ase_texcoord = v.ase_texcoord;
 				return o;
 			}
@@ -1438,7 +1412,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				VertexInput o = (VertexInput) 0;
 				o.vertex = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
-				o.ase_tangent = patch[0].ase_tangent * bary.x + patch[1].ase_tangent * bary.y + patch[2].ase_tangent * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -1546,7 +1519,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				float3 ase_normal : NORMAL;
 				float4 texcoord1 : TEXCOORD1;
 				float4 texcoord2 : TEXCOORD2;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1664,12 +1636,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
-				{
-				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
-				v.ase_tangent.w = -1;
-				}
-				
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
@@ -1680,7 +1646,7 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g109;
+				float3 vertexValue = defaultVertexValue;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -1711,7 +1677,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				float3 ase_normal : NORMAL;
 				float4 texcoord1 : TEXCOORD1;
 				float4 texcoord2 : TEXCOORD2;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -1732,7 +1697,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				o.ase_normal = v.ase_normal;
 				o.texcoord1 = v.texcoord1;
 				o.texcoord2 = v.texcoord2;
-				o.ase_tangent = v.ase_tangent;
 				o.ase_texcoord = v.ase_texcoord;
 				return o;
 			}
@@ -1774,7 +1738,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
 				o.texcoord1 = patch[0].texcoord1 * bary.x + patch[1].texcoord1 * bary.y + patch[2].texcoord1 * bary.z;
 				o.texcoord2 = patch[0].texcoord2 * bary.x + patch[1].texcoord2 * bary.y + patch[2].texcoord2 * bary.z;
-				o.ase_tangent = patch[0].ase_tangent * bary.x + patch[1].ase_tangent * bary.y + patch[2].ase_tangent * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -1942,7 +1905,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			{
 				float4 vertex : POSITION;
 				float3 ase_normal : NORMAL;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -2060,12 +2022,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( o );
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
-				{
-				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
-				v.ase_tangent.w = -1;
-				}
-				
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
@@ -2076,7 +2032,7 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g109;
+				float3 vertexValue = defaultVertexValue;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -2108,7 +2064,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 			{
 				float4 vertex : INTERNALTESSPOS;
 				float3 ase_normal : NORMAL;
-				float4 ase_tangent : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -2127,7 +2082,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				UNITY_TRANSFER_INSTANCE_ID(v, o);
 				o.vertex = v.vertex;
 				o.ase_normal = v.ase_normal;
-				o.ase_tangent = v.ase_tangent;
 				o.ase_texcoord = v.ase_texcoord;
 				return o;
 			}
@@ -2167,7 +2121,6 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 				VertexInput o = (VertexInput) 0;
 				o.vertex = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
-				o.ase_tangent = patch[0].ase_tangent * bary.x + patch[1].ase_tangent * bary.y + patch[2].ase_tangent * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
@@ -2290,7 +2243,7 @@ Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 }
 /*ASEBEGIN
 Version=18800
-0;73;1006;746;2619.695;1168.482;2.586413;True;False
+0;73;1006;746;2515.25;1143.643;2.286413;True;False
 Node;AmplifyShaderEditor.RangedFloatNode;40;-1501.861,-515.2333;Inherit;False;Property;_SecondTiling;Second Tiling;25;0;Create;True;0;0;0;False;0;False;0;0.1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;42;-1591.019,-419.8593;Inherit;False;Property;_SecondWeight;Second Weight;24;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;27;-1030.065,-167.4696;Inherit;False;Constant;_AlphaClipThreshold;AlphaClipThreshold;1;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
@@ -2309,6 +2262,5 @@ WireConnection;21;3;67;56
 WireConnection;21;4;67;45
 WireConnection;21;6;67;19
 WireConnection;21;7;27;0
-WireConnection;21;8;67;17
 ASEEND*/
-//CHKSM=C899A2D970F912C0FD06D3FFAABA7C0ED16DB6C0
+//CHKSM=E1973B0640B7677589CE16EFFE16C027F06569A2
