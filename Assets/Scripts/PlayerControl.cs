@@ -18,7 +18,7 @@ public class PlayerControl : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		cam = Instantiate(camPref, camPos.position, camPos.rotation).GetComponentInChildren<Cam>();
+		//cam = Instantiate(camPref, camPos.position, camPos.rotation).GetComponentInChildren<Cam>();
     }
 
 	private void FixedUpdate()

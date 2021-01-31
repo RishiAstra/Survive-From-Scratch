@@ -801,15 +801,15 @@ MonoBehaviour:
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 1024
-  weaponHit:
-    serializedVersion: 2
-    m_Bits: 2048
   player: {fileID: 1054728911991326, guid: c1914c0c139f0df49a9282cfcf81ae88, type: 3}
+  camPref: {fileID: 6979773146364979283, guid: 492fc9c19fa33a54fb9da100a1af7667, type: 3}
+  camPos: {fileID: 164377916}
   hotBarUI: {fileID: 122116491}
   craftInventory: {fileID: 2053797420}
   middleCursor: {fileID: 1825127735}
   mainHpBar: {fileID: 369618570}
   mainCanvas: {fileID: 1057924725}
+  camGameObject: {fileID: 0}
   itemTypes:
   - name: Blank
     icon: {fileID: 0}

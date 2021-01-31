@@ -203,6 +203,7 @@ public class gameControll : MonoBehaviour
 		me = newPlayerObject.GetComponent<Player> ();
 		newPlayerObject.GetComponent<HPBar>().hpBarImage = mainHpBar;//TODO: check taht this works
 		Player.main = me;
+		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
 		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
 		if (Player.main == null) Debug.LogError("Failed to create main character");
