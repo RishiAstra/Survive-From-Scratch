@@ -1,6 +1,6 @@
 // Made with Amplify Shader Editor
 // Available at the Unity Asset Store - http://u3d.as/y3X 
-Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
+Shader "ASESampleShaders/SRP Universal/CustomTerrainFirstPass"
 {
 	Properties
 	{
@@ -8,14 +8,6 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[HideInInspector]_TerrainHolesTexture("_TerrainHolesTexture", 2D) = "white" {}
 		[HideInInspector]_Control("Control", 2D) = "white" {}
-		[HideInInspector]_Splat3("Splat3", 2D) = "white" {}
-		[HideInInspector]_Splat2("Splat2", 2D) = "white" {}
-		[HideInInspector]_Splat1("Splat1", 2D) = "white" {}
-		[HideInInspector]_Splat0("Splat0", 2D) = "white" {}
-		[HideInInspector]_Normal0("Normal0", 2D) = "white" {}
-		[HideInInspector]_Normal1("Normal1", 2D) = "white" {}
-		[HideInInspector]_Normal2("Normal2", 2D) = "white" {}
-		[HideInInspector]_Normal3("Normal3", 2D) = "white" {}
 		[HideInInspector]_Smoothness3("Smoothness3", Range( 0 , 1)) = 1
 		[HideInInspector]_Smoothness1("Smoothness1", Range( 0 , 1)) = 1
 		[HideInInspector]_Smoothness0("Smoothness0", Range( 0 , 1)) = 1
@@ -28,6 +20,16 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 		[HideInInspector]_Mask0("_Mask0", 2D) = "white" {}
 		[HideInInspector]_Mask1("_Mask1", 2D) = "white" {}
 		[HideInInspector]_Mask3("_Mask3", 2D) = "white" {}
+		[ASEBegin]_Splat2("Splat2", 2D) = "white" {}
+		_Normal1("Normal1", 2D) = "white" {}
+		_Normal0("Normal0", 2D) = "white" {}
+		_Splat0("Splat0", 2D) = "white" {}
+		_Splat3("Splat3", 2D) = "white" {}
+		_Splat1("Splat1", 2D) = "white" {}
+		_Normal2("Normal2", 2D) = "white" {}
+		_Normal3("Normal3", 2D) = "white" {}
+		_SecondWeight("Second Weight", Range( 0 , 1)) = 0
+		[ASEEnd]_SecondTiling("Second Tiling", Float) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 		//_TransmissionShadow( "Transmission Shadow", Range( 0, 1 ) ) = 0.5
@@ -51,7 +53,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 
 		
 
-		Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Opaque" "Queue"="Geometry-99" }
+		Tags { "RenderPipeline"="UniversalPipeline" "RenderType"="Opaque" "Queue"="Geometry-100" }
 		Cull Back
 		AlphaToMask Off
 		HLSLINCLUDE
@@ -166,8 +168,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			Name "Forward"
 			Tags { "LightMode"="UniversalForward" }
 			
-			Blend One One, One OneMinusSrcAlpha
-			ZWrite Off
+			Blend One Zero, One Zero
+			ZWrite On
 			ZTest LEqual
 			Offset 0 , 0
 			ColorMask RGBA
@@ -221,7 +223,6 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma multi_compile_instancing
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
-			#define TERRAIN_SPLAT_ADDPASS 1
 			#pragma multi_compile_local __ _ALPHATEST_ON
 			#pragma shader_feature_local _MASKMAP
 
@@ -264,6 +265,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			float4 _Splat3_ST;
 			float4 _TerrainHolesTexture_ST;
 			float _Smoothness0;
+			float _SecondWeight;
+			float _SecondTiling;
 			float _Smoothness1;
 			float _Smoothness2;
 			float _Smoothness3;
@@ -292,17 +295,17 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#endif
 			CBUFFER_END
 			sampler2D _Mask1;
+			float4 _MaskMapRemapScale2;
 			sampler2D _Mask0;
 			sampler2D _Mask3;
+			float4 _MaskMapRemapOffset3;
+			float4 _MaskMapRemapOffset2;
 			sampler2D _Mask2;
+			float4 _MaskMapRemapOffset0;
+			float4 _MaskMapRemapScale3;
+			float4 _MaskMapRemapOffset1;
 			float4 _MaskMapRemapScale1;
 			float4 _MaskMapRemapScale0;
-			float4 _MaskMapRemapOffset1;
-			float4 _MaskMapRemapOffset2;
-			float4 _MaskMapRemapScale2;
-			float4 _MaskMapRemapScale3;
-			float4 _MaskMapRemapOffset0;
-			float4 _MaskMapRemapOffset3;
 			sampler2D _Control;
 			sampler2D _Splat0;
 			sampler2D _Splat1;
@@ -361,7 +364,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g1 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
+				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
 				{
 				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
 				v.ase_tangent.w = -1;
@@ -376,7 +379,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g1;
+				float3 vertexValue = localCalculateTangentsSRP76_g109;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -547,106 +550,148 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				WorldViewDirection = SafeNormalize( WorldViewDirection );
 
 				float2 uv_Control = IN.ase_texcoord7.xy * _Control_ST.xy + _Control_ST.zw;
-				float4 tex2DNode5_g1 = tex2D( _Control, uv_Control );
-				float dotResult20_g1 = dot( tex2DNode5_g1 , float4(1,1,1,1) );
-				float SplatWeight22_g1 = dotResult20_g1;
-				float localSplatClip74_g1 = ( SplatWeight22_g1 );
-				float SplatWeight74_g1 = SplatWeight22_g1;
+				float4 tex2DNode5_g109 = tex2D( _Control, uv_Control );
+				float dotResult20_g109 = dot( tex2DNode5_g109 , float4(1,1,1,1) );
+				float SplatWeight22_g109 = dotResult20_g109;
+				float localSplatClip74_g109 = ( SplatWeight22_g109 );
+				float SplatWeight74_g109 = SplatWeight22_g109;
 				{
 				#if !defined(SHADER_API_MOBILE) && defined(TERRAIN_SPLAT_ADDPASS)
-				clip(SplatWeight74_g1 == 0.0f ? -1 : 1);
+				clip(SplatWeight74_g109 == 0.0f ? -1 : 1);
 				#endif
 				}
-				float4 SplatControl26_g1 = ( tex2DNode5_g1 / ( localSplatClip74_g1 + 0.001 ) );
-				float4 temp_output_59_0_g1 = SplatControl26_g1;
-				float4 appendResult33_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness0));
+				float4 SplatControl26_g109 = ( tex2DNode5_g109 / ( localSplatClip74_g109 + 0.001 ) );
+				float4 temp_output_59_0_g109 = SplatControl26_g109;
+				float4 appendResult33_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness0));
+				float SecondWeightVar250_g109 = _SecondWeight;
+				float temp_output_8_0_g115 = SecondWeightVar250_g109;
+				float2 appendResult5_g115 = (float2(temp_output_8_0_g115 , ( 1.0 - temp_output_8_0_g115 )));
 				float2 uv_Splat0 = IN.ase_texcoord7.xy * _Splat0_ST.xy + _Splat0_ST.zw;
-				float4 tex2DNode4_g1 = tex2D( _Splat0, uv_Splat0 );
-				float4 appendResult36_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness1));
+				float2 temp_output_17_0_g115 = uv_Splat0;
+				float SecondTilingVar248_g109 = _SecondTiling;
+				float2 weightedBlendVar4_g115 = appendResult5_g115;
+				float4 weightedBlend4_g115 = ( weightedBlendVar4_g115.x*tex2D( _Splat0, ( temp_output_17_0_g115 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g115.y*tex2D( _Splat0, temp_output_17_0_g115 ) );
+				float4 appendResult36_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness1));
+				float temp_output_8_0_g117 = SecondWeightVar250_g109;
+				float2 appendResult5_g117 = (float2(temp_output_8_0_g117 , ( 1.0 - temp_output_8_0_g117 )));
 				float2 uv_Splat1 = IN.ase_texcoord7.xy * _Splat1_ST.xy + _Splat1_ST.zw;
-				float4 tex2DNode3_g1 = tex2D( _Splat1, uv_Splat1 );
-				float4 appendResult39_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness2));
+				float2 temp_output_17_0_g117 = uv_Splat1;
+				float2 weightedBlendVar4_g117 = appendResult5_g117;
+				float4 weightedBlend4_g117 = ( weightedBlendVar4_g117.x*tex2D( _Splat1, ( temp_output_17_0_g117 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g117.y*tex2D( _Splat1, temp_output_17_0_g117 ) );
+				float4 appendResult39_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness2));
+				float temp_output_8_0_g116 = SecondWeightVar250_g109;
+				float2 appendResult5_g116 = (float2(temp_output_8_0_g116 , ( 1.0 - temp_output_8_0_g116 )));
 				float2 uv_Splat2 = IN.ase_texcoord7.xy * _Splat2_ST.xy + _Splat2_ST.zw;
-				float4 tex2DNode6_g1 = tex2D( _Splat2, uv_Splat2 );
-				float4 appendResult42_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness3));
+				float2 temp_output_17_0_g116 = uv_Splat2;
+				float2 weightedBlendVar4_g116 = appendResult5_g116;
+				float4 weightedBlend4_g116 = ( weightedBlendVar4_g116.x*tex2D( _Splat2, ( temp_output_17_0_g116 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g116.y*tex2D( _Splat2, temp_output_17_0_g116 ) );
+				float4 appendResult42_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness3));
+				float temp_output_8_0_g110 = SecondWeightVar250_g109;
+				float2 appendResult5_g110 = (float2(temp_output_8_0_g110 , ( 1.0 - temp_output_8_0_g110 )));
 				float2 uv_Splat3 = IN.ase_texcoord7.xy * _Splat3_ST.xy + _Splat3_ST.zw;
-				float4 tex2DNode7_g1 = tex2D( _Splat3, uv_Splat3 );
-				float4 weightedBlendVar9_g1 = temp_output_59_0_g1;
-				float4 weightedBlend9_g1 = ( weightedBlendVar9_g1.x*( appendResult33_g1 * tex2DNode4_g1 ) + weightedBlendVar9_g1.y*( appendResult36_g1 * tex2DNode3_g1 ) + weightedBlendVar9_g1.z*( appendResult39_g1 * tex2DNode6_g1 ) + weightedBlendVar9_g1.w*( appendResult42_g1 * tex2DNode7_g1 ) );
-				float4 MixDiffuse28_g1 = weightedBlend9_g1;
-				float4 temp_output_60_0_g1 = MixDiffuse28_g1;
-				float4 localClipHoles100_g1 = ( temp_output_60_0_g1 );
+				float2 temp_output_17_0_g110 = uv_Splat3;
+				float2 weightedBlendVar4_g110 = appendResult5_g110;
+				float4 weightedBlend4_g110 = ( weightedBlendVar4_g110.x*tex2D( _Splat3, ( temp_output_17_0_g110 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g110.y*tex2D( _Splat3, temp_output_17_0_g110 ) );
+				float4 weightedBlendVar9_g109 = temp_output_59_0_g109;
+				float4 weightedBlend9_g109 = ( weightedBlendVar9_g109.x*( appendResult33_g109 * weightedBlend4_g115 ) + weightedBlendVar9_g109.y*( appendResult36_g109 * weightedBlend4_g117 ) + weightedBlendVar9_g109.z*( appendResult39_g109 * weightedBlend4_g116 ) + weightedBlendVar9_g109.w*( appendResult42_g109 * weightedBlend4_g110 ) );
+				float4 MixDiffuse28_g109 = weightedBlend9_g109;
+				float4 temp_output_60_0_g109 = MixDiffuse28_g109;
+				float4 localClipHoles100_g109 = ( temp_output_60_0_g109 );
 				float2 uv_TerrainHolesTexture = IN.ase_texcoord7.xy * _TerrainHolesTexture_ST.xy + _TerrainHolesTexture_ST.zw;
-				float holeClipValue99_g1 = tex2D( _TerrainHolesTexture, uv_TerrainHolesTexture ).r;
-				float Hole100_g1 = holeClipValue99_g1;
+				float holeClipValue99_g109 = tex2D( _TerrainHolesTexture, uv_TerrainHolesTexture ).r;
+				float Hole100_g109 = holeClipValue99_g109;
 				{
 				#ifdef _ALPHATEST_ON
-				clip(Hole100_g1 == 0.0f ? -1 : 1);
+				clip(Hole100_g109 == 0.0f ? -1 : 1);
 				#endif
 				}
 				
-				float4 weightedBlendVar8_g1 = temp_output_59_0_g1;
-				float4 weightedBlend8_g1 = ( weightedBlendVar8_g1.x*tex2D( _Normal0, uv_Splat0 ) + weightedBlendVar8_g1.y*tex2D( _Normal1, uv_Splat1 ) + weightedBlendVar8_g1.z*tex2D( _Normal2, uv_Splat2 ) + weightedBlendVar8_g1.w*tex2D( _Normal3, uv_Splat3 ) );
-				float3 temp_output_61_0_g1 = UnpackNormalScale( weightedBlend8_g1, 1.0 );
+				float temp_output_8_0_g114 = SecondWeightVar250_g109;
+				float2 appendResult5_g114 = (float2(temp_output_8_0_g114 , ( 1.0 - temp_output_8_0_g114 )));
+				float2 temp_output_17_0_g114 = uv_Splat0;
+				float2 weightedBlendVar4_g114 = appendResult5_g114;
+				float4 weightedBlend4_g114 = ( weightedBlendVar4_g114.x*tex2D( _Normal0, ( temp_output_17_0_g114 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g114.y*tex2D( _Normal0, temp_output_17_0_g114 ) );
+				float temp_output_8_0_g113 = SecondWeightVar250_g109;
+				float2 appendResult5_g113 = (float2(temp_output_8_0_g113 , ( 1.0 - temp_output_8_0_g113 )));
+				float2 temp_output_17_0_g113 = uv_Splat1;
+				float2 weightedBlendVar4_g113 = appendResult5_g113;
+				float4 weightedBlend4_g113 = ( weightedBlendVar4_g113.x*tex2D( _Normal1, ( temp_output_17_0_g113 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g113.y*tex2D( _Normal1, temp_output_17_0_g113 ) );
+				float temp_output_8_0_g111 = SecondWeightVar250_g109;
+				float2 appendResult5_g111 = (float2(temp_output_8_0_g111 , ( 1.0 - temp_output_8_0_g111 )));
+				float2 temp_output_17_0_g111 = uv_Splat2;
+				float2 weightedBlendVar4_g111 = appendResult5_g111;
+				float4 weightedBlend4_g111 = ( weightedBlendVar4_g111.x*tex2D( _Normal2, ( temp_output_17_0_g111 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g111.y*tex2D( _Normal2, temp_output_17_0_g111 ) );
+				float temp_output_8_0_g112 = SecondWeightVar250_g109;
+				float2 appendResult5_g112 = (float2(temp_output_8_0_g112 , ( 1.0 - temp_output_8_0_g112 )));
+				float2 temp_output_17_0_g112 = uv_Splat3;
+				float2 weightedBlendVar4_g112 = appendResult5_g112;
+				float4 weightedBlend4_g112 = ( weightedBlendVar4_g112.x*tex2D( _Normal3, ( temp_output_17_0_g112 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g112.y*tex2D( _Normal3, temp_output_17_0_g112 ) );
+				float4 weightedBlendVar8_g109 = temp_output_59_0_g109;
+				float4 weightedBlend8_g109 = ( weightedBlendVar8_g109.x*weightedBlend4_g114 + weightedBlendVar8_g109.y*weightedBlend4_g113 + weightedBlendVar8_g109.z*weightedBlend4_g111 + weightedBlendVar8_g109.w*weightedBlend4_g112 );
+				float3 temp_output_61_0_g109 = UnpackNormalScale( weightedBlend8_g109, 1.0 );
 				
-				float4 appendResult55_g1 = (float4(_Metallic0 , _Metallic1 , _Metallic2 , _Metallic3));
-				float localComputeMasks130_g1 = ( 0.0 );
-				float4 masks0130_g1 = float4( 0,0,0,0 );
-				float4 masks1130_g1 = float4( 0,0,0,0 );
-				float4 masks2130_g1 = float4( 0,0,0,0 );
-				float4 masks3130_g1 = float4( 0,0,0,0 );
-				float4 appendResult135_g1 = (float4(_LayerHasMask0 , _LayerHasMask1 , _LayerHasMask2 , _LayerHasMask3));
-				float4 layerHasMask136_g1 = appendResult135_g1;
-				float4 hasMask130_g1 = layerHasMask136_g1;
-				float2 uvMask0130_g1 = uv_Splat0;
-				float2 uvMask1130_g1 = uv_Splat1;
-				float2 uvMask2130_g1 = uv_Splat2;
-				float2 uvMask3130_g1 = uv_Splat3;
+				float4 appendResult55_g109 = (float4(_Metallic0 , _Metallic1 , _Metallic2 , _Metallic3));
+				float localComputeMasks130_g109 = ( 0.0 );
+				float4 masks0130_g109 = float4( 0,0,0,0 );
+				float4 masks1130_g109 = float4( 0,0,0,0 );
+				float4 masks2130_g109 = float4( 0,0,0,0 );
+				float4 masks3130_g109 = float4( 0,0,0,0 );
+				float4 appendResult135_g109 = (float4(_LayerHasMask0 , _LayerHasMask1 , _LayerHasMask2 , _LayerHasMask3));
+				float4 layerHasMask136_g109 = appendResult135_g109;
+				float4 hasMask130_g109 = layerHasMask136_g109;
+				float2 texCoord111_g109 = IN.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 uvMask0130_g109 = texCoord111_g109;
+				float2 texCoord112_g109 = IN.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 uvMask1130_g109 = texCoord112_g109;
+				float2 texCoord113_g109 = IN.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 uvMask2130_g109 = texCoord113_g109;
+				float2 texCoord114_g109 = IN.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float2 uvMask3130_g109 = texCoord114_g109;
 				{
-				masks0130_g1 = 0.5h;
-				masks1130_g1 = 0.5h;
-				masks2130_g1 = 0.5h;
-				masks3130_g1 = 0.5h;
+				masks0130_g109 = 0.5h;
+				masks1130_g109 = 0.5h;
+				masks2130_g109 = 0.5h;
+				masks3130_g109 = 0.5h;
 				#ifdef _MASKMAP
-				masks0130_g1 = lerp(masks0130_g1, SAMPLE_TEXTURE2D(_Mask0, sampler_Mask0, uvMask0130_g1), hasMask130_g1.x);
-				masks1130_g1 = lerp(masks1130_g1, SAMPLE_TEXTURE2D(_Mask1, sampler_Mask0, uvMask1130_g1), hasMask130_g1.y);
-				masks2130_g1 = lerp(masks2130_g1, SAMPLE_TEXTURE2D(_Mask2, sampler_Mask0, uvMask2130_g1), hasMask130_g1.z);
-				masks3130_g1 = lerp(masks3130_g1, SAMPLE_TEXTURE2D(_Mask3, sampler_Mask0, uvMask3130_g1), hasMask130_g1.w);
+				masks0130_g109 = lerp(masks0130_g109, SAMPLE_TEXTURE2D(_Mask0, sampler_Mask0, uvMask0130_g109), hasMask130_g109.x);
+				masks1130_g109 = lerp(masks1130_g109, SAMPLE_TEXTURE2D(_Mask1, sampler_Mask0, uvMask1130_g109), hasMask130_g109.y);
+				masks2130_g109 = lerp(masks2130_g109, SAMPLE_TEXTURE2D(_Mask2, sampler_Mask0, uvMask2130_g109), hasMask130_g109.z);
+				masks3130_g109 = lerp(masks3130_g109, SAMPLE_TEXTURE2D(_Mask3, sampler_Mask0, uvMask3130_g109), hasMask130_g109.w);
 				#endif
-				masks0130_g1 *= _MaskMapRemapScale0.rgba;
-				masks0130_g1 += _MaskMapRemapOffset0.rgba;
-				masks1130_g1 *= _MaskMapRemapScale1.rgba;
-				masks1130_g1 += _MaskMapRemapOffset1.rgba;
-				masks2130_g1 *= _MaskMapRemapScale2.rgba;
-				masks2130_g1 += _MaskMapRemapOffset2.rgba;
-				masks3130_g1 *= _MaskMapRemapScale3.rgba;
-				masks3130_g1 += _MaskMapRemapOffset3.rgba;
+				masks0130_g109 *= _MaskMapRemapScale0.rgba;
+				masks0130_g109 += _MaskMapRemapOffset0.rgba;
+				masks1130_g109 *= _MaskMapRemapScale1.rgba;
+				masks1130_g109 += _MaskMapRemapOffset1.rgba;
+				masks2130_g109 *= _MaskMapRemapScale2.rgba;
+				masks2130_g109 += _MaskMapRemapOffset2.rgba;
+				masks3130_g109 *= _MaskMapRemapScale3.rgba;
+				masks3130_g109 += _MaskMapRemapOffset3.rgba;
 				}
-				float4 mask0138_g1 = masks0130_g1;
-				float4 mask1139_g1 = masks1130_g1;
-				float4 mask2140_g1 = masks2130_g1;
-				float4 mask3141_g1 = masks3130_g1;
-				float4 appendResult168_g1 = (float4((mask0138_g1).x , (mask1139_g1).x , (mask2140_g1).x , (mask3141_g1).x));
-				float4 maskMetallic169_g1 = appendResult168_g1;
-				float4 lerpResult202_g1 = lerp( appendResult55_g1 , maskMetallic169_g1 , layerHasMask136_g1);
-				float dotResult53_g1 = dot( SplatControl26_g1 , lerpResult202_g1 );
+				float4 mask0138_g109 = masks0130_g109;
+				float4 mask1139_g109 = masks1130_g109;
+				float4 mask2140_g109 = masks2130_g109;
+				float4 mask3141_g109 = masks3130_g109;
+				float4 appendResult168_g109 = (float4((mask0138_g109).x , (mask1139_g109).x , (mask2140_g109).x , (mask3141_g109).x));
+				float4 maskMetallic169_g109 = appendResult168_g109;
+				float4 lerpResult202_g109 = lerp( appendResult55_g109 , maskMetallic169_g109 , layerHasMask136_g109);
+				float dotResult53_g109 = dot( SplatControl26_g109 , lerpResult202_g109 );
 				
-				float4 appendResult205_g1 = (float4(_Smoothness0 , _Smoothness1 , _Smoothness2 , _Smoothness3));
-				float4 appendResult206_g1 = (float4(tex2DNode4_g1.a , tex2DNode3_g1.a , tex2DNode6_g1.a , tex2DNode7_g1.a));
-				float4 defaultSmoothness210_g1 = ( appendResult205_g1 * appendResult206_g1 );
-				float4 appendResult158_g1 = (float4((mask0138_g1).w , (mask1139_g1).w , (mask2140_g1).w , (mask3141_g1).w));
-				float4 maskSmoothness149_g1 = appendResult158_g1;
-				float4 lerpResult215_g1 = lerp( defaultSmoothness210_g1 , maskSmoothness149_g1 , layerHasMask136_g1);
-				float dotResult216_g1 = dot( lerpResult215_g1 , SplatControl26_g1 );
+				float4 appendResult205_g109 = (float4(_Smoothness0 , _Smoothness1 , _Smoothness2 , _Smoothness3));
+				float4 appendResult206_g109 = (float4(weightedBlend4_g115.a , weightedBlend4_g117.a , weightedBlend4_g116.a , weightedBlend4_g110.a));
+				float4 defaultSmoothness210_g109 = ( appendResult205_g109 * appendResult206_g109 );
+				float4 appendResult158_g109 = (float4((mask0138_g109).w , (mask1139_g109).w , (mask2140_g109).w , (mask3141_g109).w));
+				float4 maskSmoothness149_g109 = appendResult158_g109;
+				float4 lerpResult215_g109 = lerp( defaultSmoothness210_g109 , maskSmoothness149_g109 , layerHasMask136_g109);
+				float dotResult216_g109 = dot( lerpResult215_g109 , SplatControl26_g109 );
 				
-				float3 Albedo = localClipHoles100_g1.xyz;
-				float3 Normal = temp_output_61_0_g1;
+				float3 Albedo = localClipHoles100_g109.xyz;
+				float3 Normal = temp_output_61_0_g109;
 				float3 Emission = 0;
 				float3 Specular = 0.5;
-				float Metallic = dotResult53_g1;
-				float Smoothness = dotResult216_g1;
+				float Metallic = dotResult53_g109;
+				float Smoothness = dotResult216_g109;
 				float Occlusion = 1;
-				float Alpha = SplatWeight22_g1;
+				float Alpha = SplatWeight22_g109;
 				float AlphaClipThreshold = 0.0;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -830,7 +875,6 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma multi_compile_instancing
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
-			#define TERRAIN_SPLAT_ADDPASS 1
 			#pragma multi_compile_local __ _ALPHATEST_ON
 			#pragma shader_feature_local _MASKMAP
 
@@ -866,6 +910,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			float4 _Splat3_ST;
 			float4 _TerrainHolesTexture_ST;
 			float _Smoothness0;
+			float _SecondWeight;
+			float _SecondTiling;
 			float _Smoothness1;
 			float _Smoothness2;
 			float _Smoothness3;
@@ -894,17 +940,17 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#endif
 			CBUFFER_END
 			sampler2D _Mask1;
+			float4 _MaskMapRemapScale2;
 			sampler2D _Mask0;
 			sampler2D _Mask3;
+			float4 _MaskMapRemapOffset3;
+			float4 _MaskMapRemapOffset2;
 			sampler2D _Mask2;
+			float4 _MaskMapRemapOffset0;
+			float4 _MaskMapRemapScale3;
+			float4 _MaskMapRemapOffset1;
 			float4 _MaskMapRemapScale1;
 			float4 _MaskMapRemapScale0;
-			float4 _MaskMapRemapOffset1;
-			float4 _MaskMapRemapOffset2;
-			float4 _MaskMapRemapScale2;
-			float4 _MaskMapRemapScale3;
-			float4 _MaskMapRemapOffset0;
-			float4 _MaskMapRemapOffset3;
 			sampler2D _Control;
 			#ifdef UNITY_INSTANCING_ENABLED//ASE Terrain Instancing
 				TEXTURE2D(_TerrainHeightmapTexture);//ASE Terrain Instancing
@@ -952,7 +998,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( o );
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g1 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
+				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
 				{
 				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
 				v.ase_tangent.w = -1;
@@ -967,7 +1013,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g1;
+				float3 vertexValue = localCalculateTangentsSRP76_g109;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -1101,11 +1147,11 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#endif
 
 				float2 uv_Control = IN.ase_texcoord2.xy * _Control_ST.xy + _Control_ST.zw;
-				float4 tex2DNode5_g1 = tex2D( _Control, uv_Control );
-				float dotResult20_g1 = dot( tex2DNode5_g1 , float4(1,1,1,1) );
-				float SplatWeight22_g1 = dotResult20_g1;
+				float4 tex2DNode5_g109 = tex2D( _Control, uv_Control );
+				float dotResult20_g109 = dot( tex2DNode5_g109 , float4(1,1,1,1) );
+				float SplatWeight22_g109 = dotResult20_g109;
 				
-				float Alpha = SplatWeight22_g1;
+				float Alpha = SplatWeight22_g109;
 				float AlphaClipThreshold = 0.0;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -1167,7 +1213,6 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma multi_compile_instancing
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
-			#define TERRAIN_SPLAT_ADDPASS 1
 			#pragma multi_compile_local __ _ALPHATEST_ON
 			#pragma shader_feature_local _MASKMAP
 
@@ -1203,6 +1248,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			float4 _Splat3_ST;
 			float4 _TerrainHolesTexture_ST;
 			float _Smoothness0;
+			float _SecondWeight;
+			float _SecondTiling;
 			float _Smoothness1;
 			float _Smoothness2;
 			float _Smoothness3;
@@ -1231,17 +1278,17 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#endif
 			CBUFFER_END
 			sampler2D _Mask1;
+			float4 _MaskMapRemapScale2;
 			sampler2D _Mask0;
 			sampler2D _Mask3;
+			float4 _MaskMapRemapOffset3;
+			float4 _MaskMapRemapOffset2;
 			sampler2D _Mask2;
+			float4 _MaskMapRemapOffset0;
+			float4 _MaskMapRemapScale3;
+			float4 _MaskMapRemapOffset1;
 			float4 _MaskMapRemapScale1;
 			float4 _MaskMapRemapScale0;
-			float4 _MaskMapRemapOffset1;
-			float4 _MaskMapRemapOffset2;
-			float4 _MaskMapRemapScale2;
-			float4 _MaskMapRemapScale3;
-			float4 _MaskMapRemapOffset0;
-			float4 _MaskMapRemapOffset3;
 			sampler2D _Control;
 			#ifdef UNITY_INSTANCING_ENABLED//ASE Terrain Instancing
 				TEXTURE2D(_TerrainHeightmapTexture);//ASE Terrain Instancing
@@ -1287,7 +1334,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g1 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
+				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
 				{
 				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
 				v.ase_tangent.w = -1;
@@ -1302,7 +1349,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g1;
+				float3 vertexValue = localCalculateTangentsSRP76_g109;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -1429,11 +1476,11 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#endif
 
 				float2 uv_Control = IN.ase_texcoord2.xy * _Control_ST.xy + _Control_ST.zw;
-				float4 tex2DNode5_g1 = tex2D( _Control, uv_Control );
-				float dotResult20_g1 = dot( tex2DNode5_g1 , float4(1,1,1,1) );
-				float SplatWeight22_g1 = dotResult20_g1;
+				float4 tex2DNode5_g109 = tex2D( _Control, uv_Control );
+				float dotResult20_g109 = dot( tex2DNode5_g109 , float4(1,1,1,1) );
+				float SplatWeight22_g109 = dotResult20_g109;
 				
-				float Alpha = SplatWeight22_g1;
+				float Alpha = SplatWeight22_g109;
 				float AlphaClipThreshold = 0.0;
 
 				#ifdef _ALPHATEST_ON
@@ -1487,7 +1534,6 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma multi_compile_instancing
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
-			#define TERRAIN_SPLAT_ADDPASS 1
 			#pragma multi_compile_local __ _ALPHATEST_ON
 			#pragma shader_feature_local _MASKMAP
 
@@ -1527,6 +1573,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			float4 _Splat3_ST;
 			float4 _TerrainHolesTexture_ST;
 			float _Smoothness0;
+			float _SecondWeight;
+			float _SecondTiling;
 			float _Smoothness1;
 			float _Smoothness2;
 			float _Smoothness3;
@@ -1555,17 +1603,17 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#endif
 			CBUFFER_END
 			sampler2D _Mask1;
+			float4 _MaskMapRemapScale2;
 			sampler2D _Mask0;
 			sampler2D _Mask3;
+			float4 _MaskMapRemapOffset3;
+			float4 _MaskMapRemapOffset2;
 			sampler2D _Mask2;
+			float4 _MaskMapRemapOffset0;
+			float4 _MaskMapRemapScale3;
+			float4 _MaskMapRemapOffset1;
 			float4 _MaskMapRemapScale1;
 			float4 _MaskMapRemapScale0;
-			float4 _MaskMapRemapOffset1;
-			float4 _MaskMapRemapOffset2;
-			float4 _MaskMapRemapScale2;
-			float4 _MaskMapRemapScale3;
-			float4 _MaskMapRemapOffset0;
-			float4 _MaskMapRemapOffset3;
 			sampler2D _Control;
 			sampler2D _Splat0;
 			sampler2D _Splat1;
@@ -1616,7 +1664,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g1 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
+				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
 				{
 				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
 				v.ase_tangent.w = -1;
@@ -1632,7 +1680,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g1;
+				float3 vertexValue = localCalculateTangentsSRP76_g109;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -1764,48 +1812,66 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#endif
 
 				float2 uv_Control = IN.ase_texcoord2.xy * _Control_ST.xy + _Control_ST.zw;
-				float4 tex2DNode5_g1 = tex2D( _Control, uv_Control );
-				float dotResult20_g1 = dot( tex2DNode5_g1 , float4(1,1,1,1) );
-				float SplatWeight22_g1 = dotResult20_g1;
-				float localSplatClip74_g1 = ( SplatWeight22_g1 );
-				float SplatWeight74_g1 = SplatWeight22_g1;
+				float4 tex2DNode5_g109 = tex2D( _Control, uv_Control );
+				float dotResult20_g109 = dot( tex2DNode5_g109 , float4(1,1,1,1) );
+				float SplatWeight22_g109 = dotResult20_g109;
+				float localSplatClip74_g109 = ( SplatWeight22_g109 );
+				float SplatWeight74_g109 = SplatWeight22_g109;
 				{
 				#if !defined(SHADER_API_MOBILE) && defined(TERRAIN_SPLAT_ADDPASS)
-				clip(SplatWeight74_g1 == 0.0f ? -1 : 1);
+				clip(SplatWeight74_g109 == 0.0f ? -1 : 1);
 				#endif
 				}
-				float4 SplatControl26_g1 = ( tex2DNode5_g1 / ( localSplatClip74_g1 + 0.001 ) );
-				float4 temp_output_59_0_g1 = SplatControl26_g1;
-				float4 appendResult33_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness0));
+				float4 SplatControl26_g109 = ( tex2DNode5_g109 / ( localSplatClip74_g109 + 0.001 ) );
+				float4 temp_output_59_0_g109 = SplatControl26_g109;
+				float4 appendResult33_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness0));
+				float SecondWeightVar250_g109 = _SecondWeight;
+				float temp_output_8_0_g115 = SecondWeightVar250_g109;
+				float2 appendResult5_g115 = (float2(temp_output_8_0_g115 , ( 1.0 - temp_output_8_0_g115 )));
 				float2 uv_Splat0 = IN.ase_texcoord2.xy * _Splat0_ST.xy + _Splat0_ST.zw;
-				float4 tex2DNode4_g1 = tex2D( _Splat0, uv_Splat0 );
-				float4 appendResult36_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness1));
+				float2 temp_output_17_0_g115 = uv_Splat0;
+				float SecondTilingVar248_g109 = _SecondTiling;
+				float2 weightedBlendVar4_g115 = appendResult5_g115;
+				float4 weightedBlend4_g115 = ( weightedBlendVar4_g115.x*tex2D( _Splat0, ( temp_output_17_0_g115 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g115.y*tex2D( _Splat0, temp_output_17_0_g115 ) );
+				float4 appendResult36_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness1));
+				float temp_output_8_0_g117 = SecondWeightVar250_g109;
+				float2 appendResult5_g117 = (float2(temp_output_8_0_g117 , ( 1.0 - temp_output_8_0_g117 )));
 				float2 uv_Splat1 = IN.ase_texcoord2.xy * _Splat1_ST.xy + _Splat1_ST.zw;
-				float4 tex2DNode3_g1 = tex2D( _Splat1, uv_Splat1 );
-				float4 appendResult39_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness2));
+				float2 temp_output_17_0_g117 = uv_Splat1;
+				float2 weightedBlendVar4_g117 = appendResult5_g117;
+				float4 weightedBlend4_g117 = ( weightedBlendVar4_g117.x*tex2D( _Splat1, ( temp_output_17_0_g117 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g117.y*tex2D( _Splat1, temp_output_17_0_g117 ) );
+				float4 appendResult39_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness2));
+				float temp_output_8_0_g116 = SecondWeightVar250_g109;
+				float2 appendResult5_g116 = (float2(temp_output_8_0_g116 , ( 1.0 - temp_output_8_0_g116 )));
 				float2 uv_Splat2 = IN.ase_texcoord2.xy * _Splat2_ST.xy + _Splat2_ST.zw;
-				float4 tex2DNode6_g1 = tex2D( _Splat2, uv_Splat2 );
-				float4 appendResult42_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness3));
+				float2 temp_output_17_0_g116 = uv_Splat2;
+				float2 weightedBlendVar4_g116 = appendResult5_g116;
+				float4 weightedBlend4_g116 = ( weightedBlendVar4_g116.x*tex2D( _Splat2, ( temp_output_17_0_g116 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g116.y*tex2D( _Splat2, temp_output_17_0_g116 ) );
+				float4 appendResult42_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness3));
+				float temp_output_8_0_g110 = SecondWeightVar250_g109;
+				float2 appendResult5_g110 = (float2(temp_output_8_0_g110 , ( 1.0 - temp_output_8_0_g110 )));
 				float2 uv_Splat3 = IN.ase_texcoord2.xy * _Splat3_ST.xy + _Splat3_ST.zw;
-				float4 tex2DNode7_g1 = tex2D( _Splat3, uv_Splat3 );
-				float4 weightedBlendVar9_g1 = temp_output_59_0_g1;
-				float4 weightedBlend9_g1 = ( weightedBlendVar9_g1.x*( appendResult33_g1 * tex2DNode4_g1 ) + weightedBlendVar9_g1.y*( appendResult36_g1 * tex2DNode3_g1 ) + weightedBlendVar9_g1.z*( appendResult39_g1 * tex2DNode6_g1 ) + weightedBlendVar9_g1.w*( appendResult42_g1 * tex2DNode7_g1 ) );
-				float4 MixDiffuse28_g1 = weightedBlend9_g1;
-				float4 temp_output_60_0_g1 = MixDiffuse28_g1;
-				float4 localClipHoles100_g1 = ( temp_output_60_0_g1 );
+				float2 temp_output_17_0_g110 = uv_Splat3;
+				float2 weightedBlendVar4_g110 = appendResult5_g110;
+				float4 weightedBlend4_g110 = ( weightedBlendVar4_g110.x*tex2D( _Splat3, ( temp_output_17_0_g110 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g110.y*tex2D( _Splat3, temp_output_17_0_g110 ) );
+				float4 weightedBlendVar9_g109 = temp_output_59_0_g109;
+				float4 weightedBlend9_g109 = ( weightedBlendVar9_g109.x*( appendResult33_g109 * weightedBlend4_g115 ) + weightedBlendVar9_g109.y*( appendResult36_g109 * weightedBlend4_g117 ) + weightedBlendVar9_g109.z*( appendResult39_g109 * weightedBlend4_g116 ) + weightedBlendVar9_g109.w*( appendResult42_g109 * weightedBlend4_g110 ) );
+				float4 MixDiffuse28_g109 = weightedBlend9_g109;
+				float4 temp_output_60_0_g109 = MixDiffuse28_g109;
+				float4 localClipHoles100_g109 = ( temp_output_60_0_g109 );
 				float2 uv_TerrainHolesTexture = IN.ase_texcoord2.xy * _TerrainHolesTexture_ST.xy + _TerrainHolesTexture_ST.zw;
-				float holeClipValue99_g1 = tex2D( _TerrainHolesTexture, uv_TerrainHolesTexture ).r;
-				float Hole100_g1 = holeClipValue99_g1;
+				float holeClipValue99_g109 = tex2D( _TerrainHolesTexture, uv_TerrainHolesTexture ).r;
+				float Hole100_g109 = holeClipValue99_g109;
 				{
 				#ifdef _ALPHATEST_ON
-				clip(Hole100_g1 == 0.0f ? -1 : 1);
+				clip(Hole100_g109 == 0.0f ? -1 : 1);
 				#endif
 				}
 				
 				
-				float3 Albedo = localClipHoles100_g1.xyz;
+				float3 Albedo = localClipHoles100_g109.xyz;
 				float3 Emission = 0;
-				float Alpha = SplatWeight22_g1;
+				float Alpha = SplatWeight22_g109;
 				float AlphaClipThreshold = 0.0;
 
 				#ifdef _ALPHATEST_ON
@@ -1830,8 +1896,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			Name "Universal2D"
 			Tags { "LightMode"="Universal2D" }
 
-			Blend One One, One OneMinusSrcAlpha
-			ZWrite Off
+			Blend One Zero, One Zero
+			ZWrite On
 			ZTest LEqual
 			Offset 0 , 0
 			ColorMask RGBA
@@ -1866,7 +1932,6 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#define ASE_NEEDS_VERT_POSITION
 			#pragma multi_compile_instancing
 			#pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap forwardadd
-			#define TERRAIN_SPLAT_ADDPASS 1
 			#pragma multi_compile_local __ _ALPHATEST_ON
 			#pragma shader_feature_local _MASKMAP
 
@@ -1904,6 +1969,8 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			float4 _Splat3_ST;
 			float4 _TerrainHolesTexture_ST;
 			float _Smoothness0;
+			float _SecondWeight;
+			float _SecondTiling;
 			float _Smoothness1;
 			float _Smoothness2;
 			float _Smoothness3;
@@ -1932,17 +1999,17 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 			#endif
 			CBUFFER_END
 			sampler2D _Mask1;
+			float4 _MaskMapRemapScale2;
 			sampler2D _Mask0;
 			sampler2D _Mask3;
+			float4 _MaskMapRemapOffset3;
+			float4 _MaskMapRemapOffset2;
 			sampler2D _Mask2;
+			float4 _MaskMapRemapOffset0;
+			float4 _MaskMapRemapScale3;
+			float4 _MaskMapRemapOffset1;
 			float4 _MaskMapRemapScale1;
 			float4 _MaskMapRemapScale0;
-			float4 _MaskMapRemapOffset1;
-			float4 _MaskMapRemapOffset2;
-			float4 _MaskMapRemapScale2;
-			float4 _MaskMapRemapScale3;
-			float4 _MaskMapRemapOffset0;
-			float4 _MaskMapRemapOffset3;
 			sampler2D _Control;
 			sampler2D _Splat0;
 			sampler2D _Splat1;
@@ -1993,7 +2060,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( o );
 
 				v = ApplyMeshModification(v);
-				float3 localCalculateTangentsSRP76_g1 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
+				float3 localCalculateTangentsSRP76_g109 = ( ( v.ase_tangent.xyz * v.ase_normal * 0.0 ) );
 				{
 				v.ase_tangent.xyz = cross ( v.ase_normal, float3( 0, 0, 1 ) );
 				v.ase_tangent.w = -1;
@@ -2009,7 +2076,7 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#else
 					float3 defaultVertexValue = float3(0, 0, 0);
 				#endif
-				float3 vertexValue = localCalculateTangentsSRP76_g1;
+				float3 vertexValue = localCalculateTangentsSRP76_g109;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					v.vertex.xyz = vertexValue;
 				#else
@@ -2138,47 +2205,65 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 				#endif
 
 				float2 uv_Control = IN.ase_texcoord2.xy * _Control_ST.xy + _Control_ST.zw;
-				float4 tex2DNode5_g1 = tex2D( _Control, uv_Control );
-				float dotResult20_g1 = dot( tex2DNode5_g1 , float4(1,1,1,1) );
-				float SplatWeight22_g1 = dotResult20_g1;
-				float localSplatClip74_g1 = ( SplatWeight22_g1 );
-				float SplatWeight74_g1 = SplatWeight22_g1;
+				float4 tex2DNode5_g109 = tex2D( _Control, uv_Control );
+				float dotResult20_g109 = dot( tex2DNode5_g109 , float4(1,1,1,1) );
+				float SplatWeight22_g109 = dotResult20_g109;
+				float localSplatClip74_g109 = ( SplatWeight22_g109 );
+				float SplatWeight74_g109 = SplatWeight22_g109;
 				{
 				#if !defined(SHADER_API_MOBILE) && defined(TERRAIN_SPLAT_ADDPASS)
-				clip(SplatWeight74_g1 == 0.0f ? -1 : 1);
+				clip(SplatWeight74_g109 == 0.0f ? -1 : 1);
 				#endif
 				}
-				float4 SplatControl26_g1 = ( tex2DNode5_g1 / ( localSplatClip74_g1 + 0.001 ) );
-				float4 temp_output_59_0_g1 = SplatControl26_g1;
-				float4 appendResult33_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness0));
+				float4 SplatControl26_g109 = ( tex2DNode5_g109 / ( localSplatClip74_g109 + 0.001 ) );
+				float4 temp_output_59_0_g109 = SplatControl26_g109;
+				float4 appendResult33_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness0));
+				float SecondWeightVar250_g109 = _SecondWeight;
+				float temp_output_8_0_g115 = SecondWeightVar250_g109;
+				float2 appendResult5_g115 = (float2(temp_output_8_0_g115 , ( 1.0 - temp_output_8_0_g115 )));
 				float2 uv_Splat0 = IN.ase_texcoord2.xy * _Splat0_ST.xy + _Splat0_ST.zw;
-				float4 tex2DNode4_g1 = tex2D( _Splat0, uv_Splat0 );
-				float4 appendResult36_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness1));
+				float2 temp_output_17_0_g115 = uv_Splat0;
+				float SecondTilingVar248_g109 = _SecondTiling;
+				float2 weightedBlendVar4_g115 = appendResult5_g115;
+				float4 weightedBlend4_g115 = ( weightedBlendVar4_g115.x*tex2D( _Splat0, ( temp_output_17_0_g115 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g115.y*tex2D( _Splat0, temp_output_17_0_g115 ) );
+				float4 appendResult36_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness1));
+				float temp_output_8_0_g117 = SecondWeightVar250_g109;
+				float2 appendResult5_g117 = (float2(temp_output_8_0_g117 , ( 1.0 - temp_output_8_0_g117 )));
 				float2 uv_Splat1 = IN.ase_texcoord2.xy * _Splat1_ST.xy + _Splat1_ST.zw;
-				float4 tex2DNode3_g1 = tex2D( _Splat1, uv_Splat1 );
-				float4 appendResult39_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness2));
+				float2 temp_output_17_0_g117 = uv_Splat1;
+				float2 weightedBlendVar4_g117 = appendResult5_g117;
+				float4 weightedBlend4_g117 = ( weightedBlendVar4_g117.x*tex2D( _Splat1, ( temp_output_17_0_g117 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g117.y*tex2D( _Splat1, temp_output_17_0_g117 ) );
+				float4 appendResult39_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness2));
+				float temp_output_8_0_g116 = SecondWeightVar250_g109;
+				float2 appendResult5_g116 = (float2(temp_output_8_0_g116 , ( 1.0 - temp_output_8_0_g116 )));
 				float2 uv_Splat2 = IN.ase_texcoord2.xy * _Splat2_ST.xy + _Splat2_ST.zw;
-				float4 tex2DNode6_g1 = tex2D( _Splat2, uv_Splat2 );
-				float4 appendResult42_g1 = (float4(1.0 , 1.0 , 1.0 , _Smoothness3));
+				float2 temp_output_17_0_g116 = uv_Splat2;
+				float2 weightedBlendVar4_g116 = appendResult5_g116;
+				float4 weightedBlend4_g116 = ( weightedBlendVar4_g116.x*tex2D( _Splat2, ( temp_output_17_0_g116 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g116.y*tex2D( _Splat2, temp_output_17_0_g116 ) );
+				float4 appendResult42_g109 = (float4(1.0 , 1.0 , 1.0 , _Smoothness3));
+				float temp_output_8_0_g110 = SecondWeightVar250_g109;
+				float2 appendResult5_g110 = (float2(temp_output_8_0_g110 , ( 1.0 - temp_output_8_0_g110 )));
 				float2 uv_Splat3 = IN.ase_texcoord2.xy * _Splat3_ST.xy + _Splat3_ST.zw;
-				float4 tex2DNode7_g1 = tex2D( _Splat3, uv_Splat3 );
-				float4 weightedBlendVar9_g1 = temp_output_59_0_g1;
-				float4 weightedBlend9_g1 = ( weightedBlendVar9_g1.x*( appendResult33_g1 * tex2DNode4_g1 ) + weightedBlendVar9_g1.y*( appendResult36_g1 * tex2DNode3_g1 ) + weightedBlendVar9_g1.z*( appendResult39_g1 * tex2DNode6_g1 ) + weightedBlendVar9_g1.w*( appendResult42_g1 * tex2DNode7_g1 ) );
-				float4 MixDiffuse28_g1 = weightedBlend9_g1;
-				float4 temp_output_60_0_g1 = MixDiffuse28_g1;
-				float4 localClipHoles100_g1 = ( temp_output_60_0_g1 );
+				float2 temp_output_17_0_g110 = uv_Splat3;
+				float2 weightedBlendVar4_g110 = appendResult5_g110;
+				float4 weightedBlend4_g110 = ( weightedBlendVar4_g110.x*tex2D( _Splat3, ( temp_output_17_0_g110 * SecondTilingVar248_g109 ) ) + weightedBlendVar4_g110.y*tex2D( _Splat3, temp_output_17_0_g110 ) );
+				float4 weightedBlendVar9_g109 = temp_output_59_0_g109;
+				float4 weightedBlend9_g109 = ( weightedBlendVar9_g109.x*( appendResult33_g109 * weightedBlend4_g115 ) + weightedBlendVar9_g109.y*( appendResult36_g109 * weightedBlend4_g117 ) + weightedBlendVar9_g109.z*( appendResult39_g109 * weightedBlend4_g116 ) + weightedBlendVar9_g109.w*( appendResult42_g109 * weightedBlend4_g110 ) );
+				float4 MixDiffuse28_g109 = weightedBlend9_g109;
+				float4 temp_output_60_0_g109 = MixDiffuse28_g109;
+				float4 localClipHoles100_g109 = ( temp_output_60_0_g109 );
 				float2 uv_TerrainHolesTexture = IN.ase_texcoord2.xy * _TerrainHolesTexture_ST.xy + _TerrainHolesTexture_ST.zw;
-				float holeClipValue99_g1 = tex2D( _TerrainHolesTexture, uv_TerrainHolesTexture ).r;
-				float Hole100_g1 = holeClipValue99_g1;
+				float holeClipValue99_g109 = tex2D( _TerrainHolesTexture, uv_TerrainHolesTexture ).r;
+				float Hole100_g109 = holeClipValue99_g109;
 				{
 				#ifdef _ALPHATEST_ON
-				clip(Hole100_g1 == 0.0f ? -1 : 1);
+				clip(Hole100_g109 == 0.0f ? -1 : 1);
 				#endif
 				}
 				
 				
-				float3 Albedo = localClipHoles100_g1.xyz;
-				float Alpha = SplatWeight22_g1;
+				float3 Albedo = localClipHoles100_g109.xyz;
+				float Alpha = SplatWeight22_g109;
 				float AlphaClipThreshold = 0.0;
 
 				half4 color = half4( Albedo, Alpha );
@@ -2197,24 +2282,33 @@ Shader "ASESampleShaders/SRP Universal/TerrainAddPass"
 	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
 	Fallback "Hidden/InternalErrorShader"
 	
+	Dependency "BaseMapShader"="ASESampleShaders/SRP Universal/TerrainBasePass"
+	Dependency "AddPassShader"="ASESampleShaders/SRP Universal/TerrainAddPass"
+	Dependency "BaseMapShader"="ASESampleShaders/SRP Universal/TerrainBasePass"
+	Dependency "AddPassShader"="ASESampleShaders/SRP Universal/TerrainAddPass"
+
 }
 /*ASEBEGIN
 Version=18800
-0;73;1006;746;1049.657;273.8018;1;True;False
-Node;AmplifyShaderEditor.FunctionNode;14;-882.8884,-118.9244;Inherit;False;Four Splats First Pass Terrain;0;;1;37452fdfb732e1443b7e39720d05b708;2,85,0,102,1;7;59;FLOAT4;0,0,0,0;False;60;FLOAT4;0,0,0,0;False;61;FLOAT3;0,0,0;False;57;FLOAT;0;False;58;FLOAT;0;False;201;FLOAT;0;False;62;FLOAT;0;False;7;FLOAT4;0;FLOAT3;14;FLOAT;56;FLOAT;45;FLOAT;200;FLOAT;19;FLOAT3;17
-Node;AmplifyShaderEditor.RangedFloatNode;22;-510.2,117.6766;Inherit;False;Constant;_AlphaClipThreshold;AlphaClipThreshold;1;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;16;-304,-192;Float;False;True;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;ASESampleShaders/SRP Universal/TerrainAddPass;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;17;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=-99;True;2;0;True;1;1;False;-1;1;False;-1;1;1;False;-1;10;False;-1;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;2;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalForward;False;2;Include;;False;;Native;Define;TERRAIN_SPLAT_ADDPASS 1;False;;Custom;Hidden/InternalErrorShader;0;0;Standard;36;Workflow;1;Surface;1;  Refraction Model;0;  Blend;2;Two Sided;1;Fragment Normal Space,InvertActionOnDeselection;0;Transmission;0;  Transmission Shadow;0.5,False,-1;Translucency;0;  Translucency Strength;1,False,-1;  Normal Distortion;0.5,False,-1;  Scattering;2,False,-1;  Direct;0.9,False,-1;  Ambient;0.1,False,-1;  Shadow;0.5,False,-1;Cast Shadows;1;  Use Shadow Threshold;0;Receive Shadows;1;GPU Instancing;1;LOD CrossFade;1;Built-in Fog;1;_FinalColorxAlpha;1;Meta Pass;1;Override Baked GI;0;Extra Pre Pass;0;DOTS Instancing;0;Tessellation;0;  Phong;0;  Strength;0.5,False,-1;  Type;0;  Tess;16,False,-1;  Min;10,False,-1;  Max;25,False,-1;  Edge Length;16,False,-1;  Max Displacement;25,False,-1;Vertex Position,InvertActionOnDeselection;1;0;6;False;True;True;True;True;True;True;;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;17;-304,-192;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;18;-304,-192;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;False;False;False;False;0;False;-1;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;19;-304,-192;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;Meta;0;4;Meta;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;20;-304,-192;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;Universal2D;0;5;Universal2D;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;True;1;1;False;-1;1;False;-1;1;1;False;-1;10;False;-1;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;True;2;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=Universal2D;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;21;-304,-192;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;0;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;0;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
-WireConnection;16;0;14;0
-WireConnection;16;1;14;14
-WireConnection;16;3;14;56
-WireConnection;16;4;14;45
-WireConnection;16;6;14;19
-WireConnection;16;7;22;0
-WireConnection;16;8;14;17
+0;73;1006;746;2619.695;1168.482;2.586413;True;False
+Node;AmplifyShaderEditor.RangedFloatNode;40;-1501.861,-515.2333;Inherit;False;Property;_SecondTiling;Second Tiling;25;0;Create;True;0;0;0;False;0;False;0;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;42;-1591.019,-419.8593;Inherit;False;Property;_SecondWeight;Second Weight;24;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;27;-1030.065,-167.4696;Inherit;False;Constant;_AlphaClipThreshold;AlphaClipThreshold;1;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode;67;-1303.174,-467.8934;Inherit;False;Four Splats First Pass Terrain custom;0;;109;466cbacfb9b55884180e8d41a32c883c;2,85,0,102,1;9;229;FLOAT;0.79;False;231;FLOAT;0.83;False;59;FLOAT4;0,0,0,0;False;60;FLOAT4;0,0,0,0;False;61;FLOAT3;0,0,0;False;57;FLOAT;0;False;58;FLOAT;0;False;201;FLOAT;0;False;62;FLOAT;0;False;7;FLOAT4;0;FLOAT3;14;FLOAT;56;FLOAT;45;FLOAT;200;FLOAT;19;FLOAT3;17
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;21;-784,-448;Float;False;True;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;ASESampleShaders/SRP Universal/CustomTerrainFirstPass;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;17;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=-100;True;2;0;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=UniversalForward;False;0;Hidden/InternalErrorShader;4;BaseMapShader=ASESampleShaders/SRP Universal/TerrainBasePass;AddPassShader=ASESampleShaders/SRP Universal/TerrainAddPass;BaseMapShader=ASESampleShaders/SRP Universal/TerrainBasePass;AddPassShader=ASESampleShaders/SRP Universal/TerrainAddPass;0;Standard;36;Workflow;1;Surface;0;  Refraction Model;0;  Blend;0;Two Sided;1;Fragment Normal Space,InvertActionOnDeselection;0;Transmission;0;  Transmission Shadow;0.5,False,-1;Translucency;0;  Translucency Strength;1,False,-1;  Normal Distortion;0.5,False,-1;  Scattering;2,False,-1;  Direct;0.9,False,-1;  Ambient;0.1,False,-1;  Shadow;0.5,False,-1;Cast Shadows;1;  Use Shadow Threshold;0;Receive Shadows;1;GPU Instancing;1;LOD CrossFade;1;Built-in Fog;1;_FinalColorxAlpha;1;Meta Pass;1;Override Baked GI;0;Extra Pre Pass;0;DOTS Instancing;0;Tessellation;0;  Phong;0;  Strength;0.5,False,-1;  Type;0;  Tess;16,False,-1;  Min;10,False,-1;  Max;25,False,-1;  Edge Length;16,False,-1;  Max Displacement;25,False,-1;Vertex Position,InvertActionOnDeselection;1;0;6;False;True;True;True;True;True;True;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;22;-784,-448;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;False;False;False;False;False;False;False;False;True;0;False;-1;False;False;False;False;False;False;True;1;False;-1;True;3;False;-1;False;True;1;LightMode=ShadowCaster;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;23;-784,-448;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;False;False;False;False;False;False;False;False;True;0;False;-1;False;True;False;False;False;False;0;False;-1;False;False;False;False;True;1;False;-1;False;False;True;1;LightMode=DepthOnly;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;24;-784,-448;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;Meta;0;4;Meta;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;False;False;False;False;False;False;False;False;False;True;2;False;-1;False;False;False;False;False;False;False;False;True;1;LightMode=Meta;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;25;-784,-448;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;Universal2D;0;5;Universal2D;0;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;0;True;1;1;False;-1;0;False;-1;1;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;-1;False;False;False;False;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;1;LightMode=Universal2D;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;26;-784,-448;Float;False;False;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;2;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;True;0;False;-1;True;0;False;-1;False;False;False;False;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;0;True;1;1;False;-1;0;False;-1;0;1;False;-1;0;False;-1;False;False;False;False;False;False;False;False;True;0;False;-1;True;True;True;True;True;0;False;-1;False;False;False;True;False;255;False;-1;255;False;-1;255;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;7;False;-1;1;False;-1;1;False;-1;1;False;-1;True;1;False;-1;True;3;False;-1;True;True;0;False;-1;0;False;-1;True;0;False;0;Hidden/InternalErrorShader;0;0;Standard;0;False;0
+WireConnection;67;229;40;0
+WireConnection;67;231;42;0
+WireConnection;21;0;67;0
+WireConnection;21;1;67;14
+WireConnection;21;3;67;56
+WireConnection;21;4;67;45
+WireConnection;21;6;67;19
+WireConnection;21;7;27;0
+WireConnection;21;8;67;17
 ASEEND*/
-//CHKSM=70175104B531CF2CA51AF3E48CECB6B200DF2580
+//CHKSM=C899A2D970F912C0FD06D3FFAABA7C0ED16DB6C0
