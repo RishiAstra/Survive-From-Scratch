@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using bobStuff;
 using System;
 using UnityEngine.UI;
@@ -9,9 +10,14 @@ public class gameControll : MonoBehaviour
 {
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
+	public static bool loading;//true if currently loading a scene
 
 	public static Dictionary<string, int> StringIdMap;
 	public static gameControll main;
+
+	public string mapScenePath;
+	//private AsyncOperation mapSceneProg;
+	private float mapSceneLoadProgress;
 
 	public LayerMask raycastLayerMask;
 	public GameObject player;
@@ -37,9 +43,30 @@ public class gameControll : MonoBehaviour
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
 		//craftInventory.SetActive(false);
 		InitializeItemTypes();
-		CreatePlayerObject();
+		
 	}
 
+	public IEnumerator LoadMapLocation(string name)
+    {
+		string path = mapScenePath + "\\" + name;
+		AsyncOperation a = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+		a.allowSceneActivation = false;
+		do
+		{
+			mapSceneLoadProgress = a.progress;
+			yield return null;
+		} while (a.progress < 0.9f);
+		//TODO:fix this
+		//hotBarUI.target = ...;
+    }
+
+	/// <summary>
+	/// Called when a map location scene is loaded
+	/// </summary>
+	void OnMapLoaded()
+    {
+		CreatePlayerObject();
+	}
 
 	public static int NameToId(string s)
 	{

@@ -31,7 +31,7 @@ public class InventoryUI : MonoBehaviour
         slotT = new List<RectTransform>();
         slotI = new List<ItemIcon>();
         initialHeight = slotBounds.rect.height;
-        InitializeSlots();
+        //InitializeSlots();
     }
     void InitializeSlots()
 	{
@@ -128,7 +128,7 @@ public class InventoryUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(target.items.Count != pSize)
+        if(target != null && target.items.Count != pSize)
 		{
             CorrectSlotCount();
             pSize = target.items.Count;
