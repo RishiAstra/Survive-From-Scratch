@@ -11,8 +11,6 @@ public class gameControll : MonoBehaviour
 
 	public LayerMask raycastLayerMask;
 	public GameObject player;
-<<<<<<< Updated upstream
-=======
 	public GameObject camPref;
 	public Transform camPos;//start the camera here
 	public InventoryUI hotBarUI;
@@ -22,8 +20,8 @@ public class gameControll : MonoBehaviour
 	public Canvas mainCanvas;
 
 	public GameObject camGameObject;
->>>>>>> Stashed changes
 	
+	//TODO: make itemTypes static
 	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
 	private Player me;
@@ -31,11 +29,8 @@ public class gameControll : MonoBehaviour
 	void Awake(){
 		if (main != null) Debug.LogError("two gameControls");
 		main = this;
-<<<<<<< Updated upstream
-=======
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
 		//craftInventory.SetActive(false);
->>>>>>> Stashed changes
 		InitializeItemTypes();
 		CreatePlayerObject();
 	}
@@ -87,6 +82,45 @@ public class gameControll : MonoBehaviour
 		if (me.isDead) return;
 		if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.C))
 		{
+			if (Input.GetMouseButtonUp(0))
+			{
+				TryLockCursor();
+			}
+		}		
+
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			if (craftInventory.activeSelf)
+			{
+				craftInventory.SetActive(false);
+				TryLockCursor();
+			}
+			else
+			{
+				craftInventory.SetActive(true);
+				TryUnlockCursor();
+			}
+		}
+
+		if (myAbilities.dead) {
+			//deactivate crafting if dead
+			if (craftInventory.activeSelf)
+			{
+				craftInventory.SetActive(false);
+			}
+			TryUnlockCursor();
+		}
+		else
+		{
+			LiveFunctions();
+		}
+
+	}
+
+	private void LiveFunctions()
+	{
+		if (Input.GetKey(KeyCode.F))
+		{
 			RaycastHit hit;
 			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -114,24 +148,17 @@ public class gameControll : MonoBehaviour
 		int chosen = UnityEngine.Random.Range (0, sp.Length);
 		position = sp [chosen].transform.position;
 
-
 		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);//PhotonNetwork.
 		me = newPlayerObject.GetComponent<Player> ();
+		newPlayerObject.GetComponent<HPBar>().hpBarImage = mainHpBar;//TODO: check taht this works
 		Player.main = me;
-<<<<<<< Updated upstream
-		if (Player.main == null) {
-			print ("UG");
-		}
-
-
-//		Camera.Target = newPlayerObject.transform;
-=======
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
 		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
 		if (Player.main == null) Debug.LogError("Failed to create main character");
 		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
 		myInv.take = true;
 		myInv.put = true;
->>>>>>> Stashed changes
+		myInv.take = true;
+		myInv.put = true;
 	}
 }

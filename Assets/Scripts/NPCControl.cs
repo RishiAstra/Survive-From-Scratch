@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: add good wandering behavior
 public class NPCControl : MonoBehaviour
 {
 	public LayerMask targetMask;

@@ -35,12 +35,19 @@ public class gameControllEditor : Editor
 					//public ItemCatagory Cat;
 					item.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", item.prefab, typeof(GameObject), false);
 					item.equipPrefab = (GameObject)EditorGUILayout.ObjectField("Equip Prefab", item.equipPrefab, typeof(GameObject), false);
-					item.damage = EditorGUILayout.FloatField("Damage", item.damage);
 					item.strength = EditorGUILayout.FloatField("Strength", item.strength);
 					//item.type = (ItemToolType)EditorGUILayout.EnumFlagsField("Type", item.type);
-					item.Cat = (ItemTag)EditorGUILayout.EnumFlagsField("Catigory", item.Cat);
+					//item.Cat = (ItemTag)EditorGUILayout.EnumFlagsField("Catigory", item.Cat);
+					//EditorGUI.indentLevel += 2;
+					EditorGUILayout.Space(10);
+					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
+					if (item.tags == null) item.tags = new List<int>();//TODO: is this good
+					TagScriptEditor.TagGUI(ref item.tags);
+					EditorGUILayout.Space(10);
+					//EditorGUI.indentLevel -= 2;
 					//public float strength;
 					t.itemTypes[i] = item;
+					EditorGUILayout.LabelField("Add or Remove ItemType", EditorStyles.boldLabel);
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button("+"))
 					{
