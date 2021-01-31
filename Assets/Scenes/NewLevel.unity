@@ -798,6 +798,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a18994e2bb264641a916f95d7113213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapScenePath: 
+  controlSceneName: 
+  mapLoadText: {fileID: 0}
+  mapLoadBar: {fileID: 0}
+  mapLoadScreen: {fileID: 0}
+  mapScreen: {fileID: 0}
   raycastLayerMask:
     serializedVersion: 2
     m_Bits: 1024
@@ -3560,12 +3566,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259219833}
   m_CullTransparentMesh: 0
---- !u!212 &1283356107 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 9089679403205342837, guid: e4ad692a90baa6b469ae3a79a8d5f782,
-    type: 3}
-  m_PrefabInstance: {fileID: 9089679403486618364}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1283534426
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17619,19 +17619,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 447233516, guid: e4ad692a90baa6b469ae3a79a8d5f782, type: 3}
-      propertyPath: hpBarSprite
-      value: 
-      objectReference: {fileID: 1283356107}
     - target: {fileID: 9089679403127632740, guid: e4ad692a90baa6b469ae3a79a8d5f782,
         type: 3}
       propertyPath: m_Name
       value: spider enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 9089679403127632740, guid: e4ad692a90baa6b469ae3a79a8d5f782,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9089679403127729988, guid: e4ad692a90baa6b469ae3a79a8d5f782,
         type: 3}
@@ -17687,11 +17678,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9089679403608972908, guid: e4ad692a90baa6b469ae3a79a8d5f782,
-        type: 3}
-      propertyPath: m_Text
-      value: HP txt
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4ad692a90baa6b469ae3a79a8d5f782, type: 3}

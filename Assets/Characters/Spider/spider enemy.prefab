@@ -2370,7 +2370,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!135 &9089679403127600196
 SphereCollider:
@@ -2448,11 +2448,7 @@ MonoBehaviour:
   acceleration: 10
   minAngleForMove: 30
   maxAngleForMove: 90
-  maxTurnSpeed: 90
-  minTurnSpeed: 0.1
-  maxTurnSpeedAngle: 45
-  maxTurnAccel: 100
-  minTurnAccel: 1
+  turnSpeed: 0
   rig: {fileID: 0}
   anim: {fileID: 5323454491581019214}
   jumping: 0

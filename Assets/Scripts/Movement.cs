@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//TODO: falling small distances triggers the landing animation
 public class Movement : MonoBehaviour
 {
 	public const float ANGLE_THRESHOLD = 2f;//degrees off that is considered good enough

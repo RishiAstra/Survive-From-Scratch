@@ -55,6 +55,15 @@ public class gameControll : MonoBehaviour
 		InitializeItemTypes();
 	}
 
+	private void SetMapLoadProgress(float amount)
+    {
+		mapSceneLoadProgress = amount;
+		if (loading)
+		{
+			mapLoadBar.sizeDelta = new Vector2(mapSceneLoadProgress * mapLoadBarInitialWidth, mapLoadBar.sizeDelta.y);
+		}
+	}
+
 	public void BeginLoadMapLocation(string name)
     {
 		StartCoroutine(LoadMapLocation(name));
@@ -66,11 +75,14 @@ public class gameControll : MonoBehaviour
 		//remove other scenes if they aren't the control scene
 		loading = true;
 		TryUnlockCursor();
+		mapLoadText.text = "Unloading scenes";
+		SetMapLoadProgress(0);
 		mapLoadScreen.SetActive(true);
 		playerExists = false;
 		yield return null;//wait a frame before starting
 
 		int sceneCount = SceneManager.sceneCount;
+		float m = 0.5f / sceneCount;
 		for (int i = sceneCount - 1; i >= 0; i--)
         {
 			mapLoadText.text = "Unloading scene " + (sceneCount - i) + " of " + sceneCount;
@@ -80,11 +92,14 @@ public class gameControll : MonoBehaviour
 				AsyncOperation b = SceneManager.UnloadSceneAsync(scene);
                 while (!b.isDone)
                 {
-					mapSceneLoadProgress = b.progress;
+
+					SetMapLoadProgress((sceneCount - i - 1) * m + b.progress * m);//TODO: test
 					yield return null;
-                }
-            }
-        }
+                }				
+			}
+			SetMapLoadProgress((sceneCount - i) * m);
+			yield return null;
+		}
 
 		string path = mapScenePath + "/" + name;
 		
@@ -95,10 +110,11 @@ public class gameControll : MonoBehaviour
 		//update the progress, but stop once the scene is ready (0.9)
 		do
 		{
-			mapSceneLoadProgress = 0.5f + a.progress/2;
+			SetMapLoadProgress(0.5f + a.progress/2);
 			yield return null;
 		} while (a.progress < 0.9f);
 		mapLoadText.text = "Activating Scene";
+		SetMapLoadProgress(0.95f);
 		//allow the last step and wait for it
 		a.allowSceneActivation = true;
 		yield return a;
@@ -171,6 +187,7 @@ public class gameControll : MonoBehaviour
 	{
 		if (
 			!craftInventory.activeSelf &&
+			!mapScreen.activeSelf &&
 			!tempUnlockMouse
 			)
 		{
@@ -189,10 +206,7 @@ public class gameControll : MonoBehaviour
 	private void Update()
     {
 
-        if (loading)
-        {
-            mapLoadBar.sizeDelta = new Vector2(mapSceneLoadProgress * mapLoadBarInitialWidth, mapLoadBar.sizeDelta.y);
-        }
+        
 
 		if (playerExists)
 		{

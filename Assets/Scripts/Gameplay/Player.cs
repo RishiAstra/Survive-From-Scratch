@@ -547,7 +547,7 @@ public class Player : MonoBehaviour
 	public void RemoveItem(int index, int amount){
 		if (index == -1) return;
 		Item temp = inv.items[index];
-		temp.amount += amount;
+		temp.amount -= amount;
 		inv.items[index] = temp;
 		//inv.items [index].amount -= amount;
 		if (inv.items [index].amount <= 0) {
