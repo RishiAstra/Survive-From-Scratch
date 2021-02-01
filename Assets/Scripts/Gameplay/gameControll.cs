@@ -8,6 +8,7 @@ using UnityEngine.UI;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
+	public static byte[] sessionId;
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
 	public static bool loading;//true if currently loading a scene
