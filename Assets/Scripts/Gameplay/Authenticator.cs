@@ -9,9 +9,11 @@ public class Authenticator : MonoBehaviour
 	public const string authFileName = "auth.txt";
 
 	public static Authenticator main;
+	public bool isServer;
 
 	public static Dictionary<string, byte[]> sessionIds;
 	public static Dictionary<byte[], string> sessionIdsInverse;
+	public static string lastLoginFailMessage;
 
 	//private static System.Random random;//TODO: WARNING: NOT RANDOM
 	private static RandomNumberGenerator random;
@@ -19,7 +21,7 @@ public class Authenticator : MonoBehaviour
 	// Start is called before the first frame update
 	void Awake()
     {
-		if (main != null) DestroyImmediate(gameObject);//there can only be 1, delete this one ASAP to avoid conflicts
+		if (main != null || !isServer) DestroyImmediate(gameObject);//there can only be 1, delete this one ASAP to avoid conflicts. Only server is allowed this script
 
 		DontDestroyOnLoad(gameObject);
 
@@ -41,6 +43,12 @@ public class Authenticator : MonoBehaviour
 
     public static bool MakeAccount(string username, string password)
 	{
+		if (Directory.Exists(GetAccountPath(username)))
+		{
+			lastLoginFailMessage = "username is taken";
+			print("Failed to make account: " + lastLoginFailMessage);
+			return false;//don't overwrite an existing account
+		}
 		Directory.CreateDirectory(GetAccountPath(username));
 		string path = GetAccountDataFile(username, authFileName);
 		//TODO: make separate create account page thingy
@@ -146,7 +154,8 @@ public class Authenticator : MonoBehaviour
 	private static void LoginFailed(string username, string message, out byte[] output)
 	{
 		output = null;
-		print("Login failed");
+		lastLoginFailMessage = message;
+		print("Login failed: " + message);
 	}
 
     // Update is called once per frame

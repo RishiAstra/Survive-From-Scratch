@@ -8,12 +8,16 @@ using System.IO;
 using System.Text;
 
 public class enterName : MonoBehaviour {
+	public float showLoginFailTime = 1;
+
 	public InputField nameHere;
 	public InputField passField;
+	public Text failText;
 
 	private static bool finished = true;
 
 	private System.Diagnostics.Stopwatch sw;
+	private Coroutine failCoroutine;
 	//private System.Random random;//TODO: WARNING: NOT RANDOM
 
 	// Use this for initialization
@@ -53,7 +57,19 @@ public class enterName : MonoBehaviour {
 	{
 		string username = nameHere.text;
 		string password = passField.text;
-		Authenticator.MakeAccount(username, password);
+		bool succeed = Authenticator.MakeAccount(username, password);
+		if (!succeed)
+		{
+			if (failCoroutine != null) StopCoroutine(failCoroutine);
+			failCoroutine = StartCoroutine(showLoginError());
+		}
+	}
+
+	IEnumerator showLoginError()
+	{
+		failText.text = Authenticator.lastLoginFailMessage;
+		yield return new WaitForSeconds(showLoginFailTime);
+		failText.text = "";
 	}
 
 	public void tryLogin(){
@@ -61,7 +77,16 @@ public class enterName : MonoBehaviour {
 		//sw.Restart();
 		string username = nameHere.text;
 		string password = passField.text;
-		Authenticator.Login(username, password, out _);
+		bool succeed = Authenticator.Login(username, password, out _);
+		if (!succeed)
+		{
+			if(failCoroutine != null) StopCoroutine(failCoroutine);
+			failCoroutine = StartCoroutine(showLoginError());
+		}
+		else
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		}
 		//print(password);
 		//string path = Application.persistentDataPath + "\\" + username + ".txt";
 		//if (File.Exists(path))

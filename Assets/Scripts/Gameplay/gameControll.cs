@@ -17,6 +17,7 @@ public class gameControll : MonoBehaviour
 	public static Dictionary<string, int> StringIdMap;
 	public static gameControll main;
 
+	public string serverIp;
 	public string mapScenePath;
 	public string controlSceneName;
 	public Text mapLoadText;
