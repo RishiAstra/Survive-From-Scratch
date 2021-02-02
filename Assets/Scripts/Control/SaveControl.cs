@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class SaveControl : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public const string entityPath = @"\Entities\";
+    public const string playerEntityPath = entityPath + @"players\";
+    public const string npsEntityPath = entityPath + @"NPCs\";
+    public const string entityFileExtension = ".entitydata";
+
+    public void LoadEntity(string path)
+	{
+
+	}
 }

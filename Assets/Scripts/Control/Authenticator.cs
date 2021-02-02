@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Authenticator : MonoBehaviour
 {
-	public const string authFilePath = "\\Accounts\\";
-	public const string authFileName = "auth.txt";
+	public const string authFilePath = @"\Accounts\";
+	public const string authFileName = @"auth.txt";
 
 	public static Authenticator main;
 	public bool isServer;
