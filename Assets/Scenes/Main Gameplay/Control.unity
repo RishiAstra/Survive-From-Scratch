@@ -961,6 +961,7 @@ GameObject:
   - component: {fileID: 164377916}
   - component: {fileID: 164377913}
   - component: {fileID: 164377914}
+  - component: {fileID: 164377915}
   m_Layer: 0
   m_Name: Control Objects
   m_TagString: Untagged
@@ -980,6 +981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a18994e2bb264641a916f95d7113213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverIp: 
   mapScenePath: Scenes/Map
   controlSceneName: Control
   mapLoadText: {fileID: 80416761}
@@ -1057,6 +1059,18 @@ MonoBehaviour:
       strength: 0
       currentStrength: 0
     craftType: 1
+--- !u!114 &164377915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164377912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5071ceff4dc0414cbe92295f3d988a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &164377916
 Transform:
   m_ObjectHideFlags: 0
@@ -1390,7 +1404,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1075821166}
   m_HandleRect: {fileID: 1075821165}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2439,8 +2453,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 711141797}
   m_HandleRect: {fileID: 711141796}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

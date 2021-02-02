@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class gameControll : MonoBehaviour
 {
 	public static byte[] sessionId;
+	public static string username;
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
 	public static bool loading;//true if currently loading a scene
