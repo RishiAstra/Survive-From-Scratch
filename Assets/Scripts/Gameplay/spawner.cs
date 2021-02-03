@@ -30,10 +30,10 @@ public class spawner : MonoBehaviour {
 			removeNullTimeLeft += removeNullObjectsSpeed;
 		}
 		int maxPerFrame = 10;
-		while (reload < 0 && spawnedThese.Count <= maxAmount && maxPerFrame >= 0) {
+		while (reload < 0 && spawnedThese.Count < maxAmount && maxPerFrame >= 0) {
 			float a = Random.Range (0, 360);
 			float dist = Random.Range (radius, 0);
-			Vector3 target = new Vector3(Mathf.Cos(a) * dist, transform.position.z + 10, Mathf.Sin(a) * dist) + transform.position;
+			Vector3 target = new Vector3(Mathf.Cos(a) * dist, transform.position.y + 10, Mathf.Sin(a) * dist) + transform.position;
 			RaycastHit hit;
 			if (Physics.Raycast (target, -Vector3.up, out hit)) {
 				target = hit.point;		
@@ -42,6 +42,8 @@ public class spawner : MonoBehaviour {
 			reload += delay;
 			maxPerFrame--;
 		}
-		reload -= Time.deltaTime;
+		//only reload if it needs to spawn more
+		if (spawnedThese.Count < maxAmount) reload -= Time.deltaTime;
+		else reload = 0;
 	}
 }

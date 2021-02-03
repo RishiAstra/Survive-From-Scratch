@@ -26,7 +26,7 @@ public class gameControllEditor : Editor
 		EditorGUI.indentLevel += 2;
 		if (showTypes)
 		{
-			bool changed = false;
+			//bool changed = false;
 			for(int i = 0; i < gameControll.itemTypes.Count; i++)
 			{
 				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + gameControll.itemTypes[i].name);
@@ -50,10 +50,10 @@ public class gameControllEditor : Editor
 					EditorGUILayout.Space(10);
 					//EditorGUI.indentLevel -= 2;
 					//public float strength;
-					if (!ItemType.Same(gameControll.itemTypes[i],item))
-					{
-						changed = true;
-					}
+					//if (!ItemType.Same(gameControll.itemTypes[i],item))
+					//{
+					//	changed = true;
+					//}
 
 					gameControll.itemTypes[i] = item;
 					EditorGUILayout.LabelField("Add or Remove ItemType", EditorStyles.boldLabel);
@@ -71,12 +71,17 @@ public class gameControllEditor : Editor
 				}
 			}
 
-			if(changed) gameControll.SaveItemTypes();
+			//if(changed) gameControll.SaveItemTypes();
 
 
 			if (GUILayout.Button("+ Append ItemType"))
 			{
 				gameControll.itemTypes.Add(new ItemType());
+			}
+
+			if (GUILayout.Button("Save"))
+			{
+				gameControll.SaveItemTypes();
 			}
 		}
 		EditorGUI.indentLevel -= 2;

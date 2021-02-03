@@ -354,51 +354,51 @@ public class Player : MonoBehaviour
 		//while (inv.items.Count < invStuff.inventorySize) {
 		//	inv.items.Add(new Item(0, 0, 0, 0));
 		//}
-		if (Input.GetKey(KeyCode.Tab)) {
-			//Transform content = scoreBoard.transform.GetChild(0).GetChild(0);
-			//while (scores.Count < PhotonNetwork.playerList.Length) {
-			//	GameObject g = (GameObject)Instantiate (scorePref);
-			//	g.transform.SetParent (content);
-			//	g.transform.localScale = new Vector3 (1, 1, 1);
-			//	g.transform.localPosition = new Vector3 (400, scores.Count * 25 - 12.5f, 0);
-			//	scores.Add (g.transform);
-			//	content.GetComponent<RectTransform> ().sizeDelta += new Vector2 (0, 25);
-			//}
+		//if (Input.GetKey(KeyCode.Tab)) {
+		//	//Transform content = scoreBoard.transform.GetChild(0).GetChild(0);
+		//	//while (scores.Count < PhotonNetwork.playerList.Length) {
+		//	//	GameObject g = (GameObject)Instantiate (scorePref);
+		//	//	g.transform.SetParent (content);
+		//	//	g.transform.localScale = new Vector3 (1, 1, 1);
+		//	//	g.transform.localPosition = new Vector3 (400, scores.Count * 25 - 12.5f, 0);
+		//	//	scores.Add (g.transform);
+		//	//	content.GetComponent<RectTransform> ().sizeDelta += new Vector2 (0, 25);
+		//	//}
 
-			//				bobPlayer[] bp = GameObject.FindObjectsOfType<bobPlayer> ();
-			//				List<int> ind = new List<int> (bp.Length);
-			//				for (int i = 0; i < ind.Count; i++) {
-			//					ind [i] = i;
-			//				}
-			//				ind.Sort ((x,y) => bp[x].kills.CompareTo(bp[y].kills));
-			//				for(int i = 0;i<pp.Length;i++){
-			//					
-			//					for(int j = i;j<pp.Length;j++){
-			//
-			//					}
-			//				}
-			for (int i = 0; i < bobs.Count; i++) {
-				//					print (i);
-				int myPlace = bobs.Count;
-				for (int j = 0; j < bobs.Count; j++) {
-					if (score < bobs[j].score) {
-						myPlace--;
-					}
-				}
-				//scores [myPlace].GetChild (0).GetComponent<Text> ().text = bobs [myPlace].photonView.owner.NickName;
-				scores[myPlace].GetChild(1).GetComponent<Text>().text = bobs[myPlace].kills.ToString();
-				scores[myPlace].GetChild(2).GetComponent<Text>().text = bobs[myPlace].deaths.ToString();
-				if ((bobs[myPlace].kills / bobs[myPlace].deaths) < 10000000) {
-					scores[myPlace].GetChild(3).GetComponent<Text>().text = (bobs[myPlace].kills / bobs[myPlace].deaths).ToString().Substring(0, 4);
-				} else {
-					scores[myPlace].GetChild(3).GetComponent<Text>().text = "---";
+		//	//				bobPlayer[] bp = GameObject.FindObjectsOfType<bobPlayer> ();
+		//	//				List<int> ind = new List<int> (bp.Length);
+		//	//				for (int i = 0; i < ind.Count; i++) {
+		//	//					ind [i] = i;
+		//	//				}
+		//	//				ind.Sort ((x,y) => bp[x].kills.CompareTo(bp[y].kills));
+		//	//				for(int i = 0;i<pp.Length;i++){
+		//	//					
+		//	//					for(int j = i;j<pp.Length;j++){
+		//	//
+		//	//					}
+		//	//				}
+		//	for (int i = 0; i < bobs.Count; i++) {
+		//		//					print (i);
+		//		int myPlace = bobs.Count;
+		//		for (int j = 0; j < bobs.Count; j++) {
+		//			if (score < bobs[j].score) {
+		//				myPlace--;
+		//			}
+		//		}
+		//		//scores [myPlace].GetChild (0).GetComponent<Text> ().text = bobs [myPlace].photonView.owner.NickName;
+		//		scores[myPlace].GetChild(1).GetComponent<Text>().text = bobs[myPlace].kills.ToString();
+		//		scores[myPlace].GetChild(2).GetComponent<Text>().text = bobs[myPlace].deaths.ToString();
+		//		if ((bobs[myPlace].kills / bobs[myPlace].deaths) < 10000000) {
+		//			scores[myPlace].GetChild(3).GetComponent<Text>().text = (bobs[myPlace].kills / bobs[myPlace].deaths).ToString().Substring(0, 4);
+		//		} else {
+		//			scores[myPlace].GetChild(3).GetComponent<Text>().text = "---";
 
-				}
-			}
-			scoreBoard.gameObject.SetActive(true);
-		} else {
-			scoreBoard.gameObject.SetActive(false);
-		}
+		//		}
+		//	}
+		//	scoreBoard.gameObject.SetActive(true);
+		//} else {
+		//	scoreBoard.gameObject.SetActive(false);
+		//}
 		if (!gameControll.main.myAbilities.dead) {
 			
 			//if (Physics.CheckSphere(groundCheck.position, 0.05f, ground))
@@ -570,7 +570,11 @@ public class Player : MonoBehaviour
 		if (Input.GetKeyDown("0")) SelectInv(9);
 		for(int i = 1; i < 10; i++)
 		{
-			if (Input.GetKeyDown(i.ToString())) SelectInv(i-1);
+			if (Input.GetKeyDown(i.ToString()))
+			{
+				SelectInv(i-1);
+				//print("select " + i);
+			}
 		}
 	}
 	#endregion

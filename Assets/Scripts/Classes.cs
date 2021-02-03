@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 namespace bobStuff
 {
 
@@ -66,7 +67,7 @@ namespace bobStuff
 	//	All = ~0
 	//};
 
-	[System.Serializable]
+	[Serializable]
 	public struct Item
 	{
 		public int id;
@@ -95,14 +96,17 @@ namespace bobStuff
 		}
 	}
 
-	[System.Serializable]
+	[Serializable]
 	public struct ItemType
 	{
 		public string name;
+		[NonSerialized]
 		public Sprite icon;//icon to display in inventory
 						   //public ItemTag Cat;
 		public List<int> tags;
+		[NonSerialized]
 		public GameObject prefab;
+		[NonSerialized]
 		public GameObject equipPrefab;
 		public float strength;
 
@@ -131,7 +135,7 @@ namespace bobStuff
 		}
 	}
 
-	[System.Serializable]
+	[Serializable]
 	public class inventoryStuff
 	{
 		public float invButtonSize = 50;

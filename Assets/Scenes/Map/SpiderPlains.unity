@@ -275,8 +275,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1265451178000196, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_Name
+      value: BranchSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 4068722258585612, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
       propertyPath: m_RootOrder
@@ -288,7 +288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4068722258585612, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4068722258585612, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
       propertyPath: m_LocalPosition.z
@@ -310,25 +310,27 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114530824292345588, guid: 121c8708833cfd442ab95eab60f8d121,
-        type: 3}
-      propertyPath: delay
-      value: 10
+    - target: {fileID: 4068722258585612, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4068722258585612, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4068722258585612, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114530824292345588, guid: 121c8708833cfd442ab95eab60f8d121,
         type: 3}
-      propertyPath: radius
-      value: 400
+      propertyPath: delay
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 114530824292345588, guid: 121c8708833cfd442ab95eab60f8d121,
         type: 3}
       propertyPath: maxAmount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114530824292345588, guid: 121c8708833cfd442ab95eab60f8d121,
-        type: 3}
-      propertyPath: removeNullObjectsSpeed
-      value: 1
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
@@ -465,8 +467,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1858329282347364, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_Name
+      value: RockSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 4026253494805924, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
       propertyPath: m_RootOrder
@@ -478,7 +480,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4026253494805924, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4026253494805924, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
       propertyPath: m_LocalPosition.z
@@ -500,20 +502,27 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114059993019174600, guid: 5e32f55e3e26c96489ad86c77704c241,
-        type: 3}
-      propertyPath: delay
-      value: 5
+    - target: {fileID: 4026253494805924, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4026253494805924, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4026253494805924, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114059993019174600, guid: 5e32f55e3e26c96489ad86c77704c241,
         type: 3}
-      propertyPath: radius
-      value: 400
+      propertyPath: delay
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 114059993019174600, guid: 5e32f55e3e26c96489ad86c77704c241,
         type: 3}
       propertyPath: maxAmount
-      value: 50
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}

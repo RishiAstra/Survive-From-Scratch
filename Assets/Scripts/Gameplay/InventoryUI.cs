@@ -44,20 +44,21 @@ public class InventoryUI : MonoBehaviour
         slotT = new List<RectTransform>();
         slotI = new List<ItemIcon>();
 
-        //Vector2 min = slotBounds.anchorMin;
-        //min.x *= Screen.width / gameControll.main.mainCanvas.scaleFactor;
-        //min.y *= Screen.height / gameControll.main.mainCanvas.scaleFactor;
+		//Vector2 min = slotBounds.anchorMin;
+		//min.x *= Screen.width / gameControll.main.mainCanvas.scaleFactor;
+		//min.y *= Screen.height / gameControll.main.mainCanvas.scaleFactor;
 
-        //min += slotBounds.offsetMin;
+		//min += slotBounds.offsetMin;
 
-        //Vector2 max = slotBounds.anchorMax;
-        //max.x *= Screen.width / gameControll.main.mainCanvas.scaleFactor;
-        //max.y *= Screen.height / gameControll.main.mainCanvas.scaleFactor;
+		//Vector2 max = slotBounds.anchorMax;
+		//max.x *= Screen.width / gameControll.main.mainCanvas.scaleFactor;
+		//max.y *= Screen.height / gameControll.main.mainCanvas.scaleFactor;
 
-        //max += slotBounds.offsetMax;
+		//max += slotBounds.offsetMax;
 
-        //Vector2 diff = max - min;
-        //make new slots
+		//Vector2 diff = max - min;
+		//make new slots
+		print(slotBounds.rect.ToString());
         maxSlotSizeX = slotBounds.rect.width / w;
         maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
         size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
@@ -81,8 +82,11 @@ public class InventoryUI : MonoBehaviour
 
     void CorrectSlotCount()
 	{
-        //adjust the height if needed
-        int yRequired = Mathf.CeilToInt(((float)target.items.Count) / (float)w);
+		maxSlotSizeX = slotBounds.rect.width / w;
+		maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
+		size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
+		//adjust the height if needed
+		int yRequired = Mathf.CeilToInt(((float)target.items.Count) / (float)w);
         float heightRequired = yRequired * size + initialYPadding;
         //if(overflowDown)print(heightRequired);
         //if (heightRequired > slotBounds.rect.height)

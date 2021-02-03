@@ -167,7 +167,6 @@ public class gameControll : MonoBehaviour
 
 	private IEnumerator LoadItemData()
 	{
-		StringIdMap = new Dictionary<string, int>(itemTypes.Count);
 		for (int i = 0; i < itemTypes.Count; i++)
 		{
 
@@ -190,6 +189,7 @@ public class gameControll : MonoBehaviour
 			itemTypes[i] = item;
 		}
 		initialized = true;
+		GetComponent<Crafting>().InitializeUI();
 		yield return null;
 	}
 
@@ -239,9 +239,6 @@ public class gameControll : MonoBehaviour
 
 	private void Update()
     {
-
-        
-
 		if (playerExists)
 		{
 			CursorLockUpdate();
@@ -392,5 +389,6 @@ public class gameControll : MonoBehaviour
 	public static void SaveItemTypes()
 	{
 		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented));
+		Debug.Log("Saved ItemTypes");
 	}
 }
