@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 namespace bobStuff
 {
@@ -94,12 +95,41 @@ namespace bobStuff
 		}
 	}
 
+	//public static class JsonHelper
+	//{
+	//	public static T[] FromJson<T>(string json)
+	//	{
+	//		Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+	//		return wrapper.Items;
+	//	}
+
+	//	public static string ToJson<T>(T[] array)
+	//	{
+	//		Wrapper<T> wrapper = new Wrapper<T>();
+	//		wrapper.Items = array;
+	//		return JsonUtility.ToJson(wrapper);
+	//	}
+
+	//	public static string ToJson<T>(T[] array, bool prettyPrint)
+	//	{
+	//		Wrapper<T> wrapper = new Wrapper<T>();
+	//		wrapper.Items = array;
+	//		return JsonUtility.ToJson(wrapper, prettyPrint);
+	//	}
+
+	//	[System.Serializable]
+	//	private class Wrapper<T>
+	//	{
+	//		public T[] Items;
+	//	}
+	//}
+
 	[System.Serializable]
 	public struct ItemType
 	{
 		public string name;
 		public Sprite icon;//icon to display in inventory
-		//public ItemTag Cat;
+						   //public ItemTag Cat;
 		public List<int> tags;
 		public GameObject prefab;
 		public GameObject equipPrefab;
@@ -114,6 +144,19 @@ namespace bobStuff
 			//this.type = type;
 			this.strength = strength;
 			this.tags = tags;
+		}
+
+		public static bool Same(ItemType a, ItemType b)
+		{
+			if (a.name != b.name)					return false;
+			if (a.icon != b.icon)					return false;
+			if (a.prefab != b.prefab)				return false;
+			if (a.equipPrefab != b.equipPrefab)		return false;
+			if (a.strength != b.strength)			return false;
+			if (a.tags == null || b.tags == null)	return false;
+			if (!a.tags.SequenceEqual(b.tags))		return false;
+			return true;
+
 		}
 	}
 

@@ -1000,34 +1000,6 @@ MonoBehaviour:
   mainHpBar: {fileID: 369618570}
   mainCanvas: {fileID: 1057924725}
   camGameObject: {fileID: 0}
-  itemTypes:
-  - name: Blank
-    icon: {fileID: 0}
-    tags: 
-    prefab: {fileID: 0}
-    equipPrefab: {fileID: 0}
-    strength: 1
-  - name: Branch
-    icon: {fileID: 21300000, guid: b43dc6c99f134454b92990be2effc87a, type: 3}
-    tags: 01000000
-    prefab: {fileID: 1382041385227520, guid: b256468773a703d44904067c8f924806, type: 3}
-    equipPrefab: {fileID: 1955108893448462, guid: 4b85d9c70ae4d014f96b93a8bcd9ac4a,
-      type: 3}
-    strength: 100
-  - name: Rock
-    icon: {fileID: 21300000, guid: 6eb3f0a6d67a62c4093532ac0d101337, type: 3}
-    tags: 01000000
-    prefab: {fileID: 1382041385227520, guid: c6ed64d08f416a94498c348aca379e1c, type: 3}
-    equipPrefab: {fileID: 1382041385227520, guid: 8953bf7744fb7fa4794e541ade71b3c0,
-      type: 3}
-    strength: 100
-  - name: Axe
-    icon: {fileID: 21300000, guid: 2eda6c653ea10bc44a4f39d9b42d2517, type: 3}
-    tags: 01000000
-    prefab: {fileID: 1382041385227520, guid: 4872865031852784aac37ff3e70d7b92, type: 3}
-    equipPrefab: {fileID: 1955108893448462, guid: 694f69b7541b6a340ab1e1c061660c45,
-      type: 3}
-    strength: 100
   myAbilities: {fileID: 0}
 --- !u!114 &164377914
 MonoBehaviour:
@@ -1405,7 +1377,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1075821165}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2453,7 +2425,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 711141797}
   m_HandleRect: {fileID: 711141796}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:

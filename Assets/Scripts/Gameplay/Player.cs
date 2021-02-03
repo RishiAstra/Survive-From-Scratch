@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 	//TODO: this system of a player list should be replaced
 	public static List<Player> bobs = new List<Player>();
 	public static Player main;
-	public static List<ItemType> itemTypes;//TODO: this might be bad
+	//public static List<ItemType> itemTypes;//TODO: this might be bad
 	public static int amountOfInstances = 0;
 	//	public Material notMe;
 	public int score;
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
 		cam = Camera.main.transform;
 		//canvas = GameObject.FindObjectOfType<Canvas>();
 		canvasScaler = GameObject.Find("Scaled Canvas").GetComponent<CanvasScaler>();
-		itemTypes = gameControll.main.itemTypes;
+		//itemTypes = gameControll.itemTypes;
 		//anim = GetComponent<Animator>();
 		scoreBoard = GameObject.Find("Scaled Canvas").transform.GetChild(0).gameObject;//Resources.FindObjectsOfTypeAll<Canvas>()[0].transform.GetChild(0).gameObject;
 		//		scoreBoard.SetActive (false);
@@ -176,11 +176,11 @@ public class Player : MonoBehaviour
 			}
 		}
 		//TODO: is this necessary?
-		if (itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
+		if (gameControll.itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
 		{
-			if (itemTypes[inv.items[invSel].id].equipPrefab != null)
+			if (gameControll.itemTypes[inv.items[invSel].id].equipPrefab != null)
 			{
-				GameObject g = (GameObject)Instantiate(itemTypes[inv.items[invSel].id].equipPrefab);
+				GameObject g = (GameObject)Instantiate(gameControll.itemTypes[inv.items[invSel].id].equipPrefab);
 				g.transform.SetParent(rightHand, false);
 				g.GetComponent<Equip>().bob = this;
 				//print("Selected equipable object");
@@ -204,12 +204,12 @@ public class Player : MonoBehaviour
 		}
 
 		//Right Hand Equippable item
-		if (itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
+		if (gameControll.itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
 		{
 			if (invSel != index) {
-				if(itemTypes[inv.items[index].id].equipPrefab != null)
+				if(gameControll.itemTypes[inv.items[index].id].equipPrefab != null)
 				{
-					GameObject g = (GameObject)Instantiate(itemTypes[inv.items[index].id].equipPrefab);
+					GameObject g = (GameObject)Instantiate(gameControll.itemTypes[inv.items[index].id].equipPrefab);
 					g.transform.SetParent(rightHand, false);
 					g.GetComponent<Equip>().bob = this;
 					//print("Selected equipable object");
@@ -221,13 +221,13 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		if (itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
+		if (gameControll.itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
 		{
 			if (invSel != index)
 			{
 				//TODO: should this equip it?
 				//TODO: placing prefab should be different from final prefab. The placing prefab could have a placing script that spawns the final
-				placeing = (GameObject)Instantiate(itemTypes[inv.items[index].id].prefab);
+				placeing = (GameObject)Instantiate(gameControll.itemTypes[inv.items[index].id].prefab);
 				foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
 				{
 					m.enabled = false;
@@ -524,7 +524,7 @@ public class Player : MonoBehaviour
 		}
 		for (int i = 0; i < inv.items.Count; i++) {
 			if(inv.items[i].id == 0){
-				inv.items [i] = new Item (id, amount, itemTypes[id].strength, itemTypes[id].strength);
+				inv.items [i] = new Item (id, amount, gameControll.itemTypes[id].strength, gameControll.itemTypes[id].strength);
 				if (invSel == i) {
 					
 					RefreshSelected();
