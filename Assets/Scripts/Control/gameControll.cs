@@ -377,15 +377,7 @@ public class gameControll : MonoBehaviour
 		{
 			if (File.Exists(itemTypePath))
 			{
-				//string read = File.ReadAllText(itemTypePath);
-				//string[] temp = read.Split(",");
-				//StringBuilder sb = new StringBuilder();
-				//for (int i = 0; i < temp.Length; i++)
-				//{
-				//	sb.Append("[" + JsonUtility.ToJson(itemTypes[i]) + "],");
-				//}
-				//File.WriteAllText(itemTypePath, sb.ToString());// itemTypePath, JsonHelper.ToJson<ItemType>(itemTypes.ToArray()));
-				
+				Debug.Log("read ItemTypes");
 				itemTypes = JsonConvert.DeserializeObject<ItemType[]>(File.ReadAllText(itemTypePath)).ToList();
 			}
 			else
@@ -399,14 +391,6 @@ public class gameControll : MonoBehaviour
 
 	public static void SaveItemTypes()
 	{
-		//Debug.Log(itemTypes[0].name);
-		//string[] temp = new string[itemTypes.Count];
-		//StringBuilder sb = new StringBuilder();
-		//for(int i = 0; i < temp.Length; i++)
-		//{
-		//	sb.Append("[" + JsonUtility.ToJson(itemTypes[i]) + "],");
-		//}
-		//File.WriteAllText(itemTypePath, sb.ToString());
 		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented));
 	}
 }
