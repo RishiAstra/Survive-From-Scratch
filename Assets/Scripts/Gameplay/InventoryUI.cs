@@ -15,7 +15,7 @@ public class InventoryUI : MonoBehaviour
     public int w, h;
     public bool overflowDown;
 
-    private List<RectTransform> slotT;
+    public List<RectTransform> slotT;
     private List<ItemIcon> slotI;
 
     private float slotSize;
@@ -30,8 +30,7 @@ public class InventoryUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slotT = new List<RectTransform>();
-        slotI = new List<ItemIcon>();
+        
         //InitializeSlots();
     }
     public void InitializeSlots()

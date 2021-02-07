@@ -65,9 +65,20 @@ public class gameControll : MonoBehaviour
 		mapLoadBarInitialWidth = mapLoadBar.sizeDelta.x;
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
 		//craftInventory.SetActive(false);
+
+		HideMenus();
+		mapScreen.SetActive(true);
+
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
 		InitializeItemTypes();
+	}
+
+	private void HideMenus()
+	{
+		mapLoadScreen.SetActive(false);
+		mapScreen.SetActive(false);
+		craftInventory.SetActive(false);
 	}
 
 	private void SetMapLoadProgress(float amount)
@@ -142,8 +153,7 @@ public class gameControll : MonoBehaviour
 		}
 
 		SceneManager.SetActiveScene(toLoad);
-		mapLoadScreen.SetActive(false);
-		mapScreen.SetActive(false);
+		HideMenus();
 		CreatePlayerObject();
 		playerExists = true;
 		loading = false;
@@ -189,8 +199,9 @@ public class gameControll : MonoBehaviour
 			itemTypes[i] = item;
 		}
 		initialized = true;
-		
+		craftInventory.SetActive(true);
 		GetComponent<Crafting>().InitializeUI();
+		craftInventory.SetActive(false);
 		//print("reached");
 		yield return null;
 	}
