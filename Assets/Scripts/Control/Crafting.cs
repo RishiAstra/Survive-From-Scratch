@@ -147,7 +147,7 @@ public class Crafting : MonoBehaviour
 
 	internal void InitializeUI()
 	{
-		//craftInventoryUI.InitializeSlots();
-		//craftResultUI.InitializeSlots();
+		craftInventoryUI.InitializeSlots();
+		craftResultUI.InitializeSlots();
 	}
 }

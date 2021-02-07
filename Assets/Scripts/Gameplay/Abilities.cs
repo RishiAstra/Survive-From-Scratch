@@ -113,6 +113,10 @@ public class Abilities : MonoBehaviour
 		return damage * mult;
 	}
 
+	/// <summary>
+	/// Uses a skill. It's ok to call this every frame since it won't execute the skill if busy.
+	/// </summary>
+	/// <param name="i"></param>
 	public void UseSkill(int i)
 	{
 		if (dead) return;

@@ -25,12 +25,13 @@ public class InventoryUI : MonoBehaviour
     private float maxSlotSizeX;
     private float maxSlotSizeY;
     private float initialYPadding;//space around the top and bottom initially, used for overflowDown auto readjusting height of scrollable
+    private Vector2 initialSizeDeta;
+    private bool initialized;
     // Start is called before the first frame update
     void Start()
     {
         slotT = new List<RectTransform>();
         slotI = new List<ItemIcon>();
-        initialHeight = slotBounds.rect.height;
         //InitializeSlots();
     }
     public void InitializeSlots()
@@ -58,11 +59,14 @@ public class InventoryUI : MonoBehaviour
 
 		//Vector2 diff = max - min;
 		//make new slots
-		print(slotBounds.rect.ToString());
+		//print(slotBounds.rect.ToString());
         maxSlotSizeX = slotBounds.rect.width / w;
         maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
         size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
         initialYPadding = slotBounds.rect.height - h * size;
+        initialSizeDeta = slotBounds.sizeDelta;
+        //print(slotBounds.sizeDelta);
+        initialHeight = slotBounds.rect.height;
         //      for(int i = 0; i < target.items.Count; i++)
         //{
         //          GameObject g = Instantiate(slotPrefab, slotBounds);
@@ -77,6 +81,7 @@ public class InventoryUI : MonoBehaviour
         //	slotI[i].parent = target;
         //	slotI[i].index = i;
         //}
+        initialized = true;
         CorrectSlotCount();
     }
 
@@ -85,21 +90,27 @@ public class InventoryUI : MonoBehaviour
 		maxSlotSizeX = slotBounds.rect.width / w;
 		maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
 		size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
+  //      if(overflowDown && size * h > slotBounds.rect.height)
+		//{
+  //          slotBounds.sizeDelta += new Vector2(0, size * h - slotBounds.rect.height);
+		//}
 		//adjust the height if needed
 		int yRequired = Mathf.CeilToInt(((float)target.items.Count) / (float)w);
         float heightRequired = yRequired * size + initialYPadding;
-        //if(overflowDown)print(heightRequired);
-        //if (heightRequired > slotBounds.rect.height)
-        //{
-            slotBounds.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, heightRequired);
+		//if(overflowDown)print(heightRequired);
+		//if (heightRequired > slotBounds.rect.height)
+		//{
+		//print(slotBounds.sizeDelta + "|" + initialSizeDeta);
+		slotBounds.sizeDelta = initialSizeDeta + new Vector2(0, heightRequired - initialHeight);
+		//slotBounds.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, heightRequired);
 		//}
 		//else
 		//{
-  //          slotBounds.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, initialHeight);
-  //      }
+		//          slotBounds.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, initialHeight);
+		//      }
 
 
-        if (slotT.Count > target.items.Count)
+		if (slotT.Count > target.items.Count)
 		{
             //delete excess slots
             for(int i = slotT.Count - 1; i > target.items.Count - 1; i--)
@@ -120,8 +131,10 @@ public class InventoryUI : MonoBehaviour
                 slotI.Add(g.GetComponent<ItemIcon>());
                 int x = i % w;
                 int y = Mathf.FloorToInt(i / w);
-                
-                slotT[i].anchoredPosition = new Vector2(size * (x - (w - 1) / 2f), -size * (y - (h - 1) / 2f));
+
+                slotT[i].anchorMin = new Vector2(0.5f, 1f);
+                slotT[i].anchorMax = slotT[i].anchorMin;
+                slotT[i].anchoredPosition = new Vector2(size * (x - (w - 1) / 2f), -size * y - initialYPadding / 2f - size / 2f);// new Vector2(size * (x - (w - 1) / 2f), -size * (y - (h - 1) / 2f));
                 slotT[i].localScale = new Vector3(size, size, size) / defaultSize;
                 slotI[i].parent = target;
                 slotI[i].index = i;
@@ -132,7 +145,7 @@ public class InventoryUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(target != null && target.items.Count != pSize)
+        if(initialized && target != null && target.items.Count != pSize)
 		{
             CorrectSlotCount();
             pSize = target.items.Count;

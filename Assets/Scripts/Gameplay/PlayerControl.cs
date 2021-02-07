@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
 	public const float CAM_LERP_SPEED = 0.02f;
-	public const float INPUT_THRESHOLD = 0.01f;
+	//public const float INPUT_THRESHOLD = 0.01f;
 
 	public Transform camPos;
 	public GameObject camPref;
@@ -40,7 +40,7 @@ public class PlayerControl : MonoBehaviour
 			cam.pivot.eulerAngles = temp;
 
 			//use the attack
-			if (Input.GetMouseButtonDown(0))
+			if (Input.GetMouseButton(0))
 			{
 				abilities.UseSkill(0);
 			}
@@ -57,7 +57,9 @@ public class PlayerControl : MonoBehaviour
 		//movement.SetAngle(cam.transform.eulerAngles.y);
 		Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 		dir = Quaternion.Euler(0, cam.pivot.eulerAngles.y, 0) * dir;
-		if (dir.magnitude > INPUT_THRESHOLD) movement.SetAngle(Quaternion.LookRotation(dir, transform.up));
-		movement.SetDirection(dir);		
-    }
+		////rotate towards the direction if actually moving
+		//if (dir.magnitude > INPUT_THRESHOLD) movement.SetAngle(Quaternion.LookRotation(dir, transform.up));
+		movement.SetDirection(dir);
+		movement.SetAngleFromDirection();
+	}
 }

@@ -5,9 +5,9 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
 	public const float ANGLE_THRESHOLD = 2f;//degrees off that is considered good enough
-	public const float CLOSE_ANGLE = 45f;//below this angle, turning animations might slow down
+	public const float CLOSE_ANGLE = 45f;//below this angle turning animations might slow down
 	public const float GROUND_THRESHOLD = 0.1f;
-	public const float SMALL_INPUT = 0.05f;//below this means no input (e.g. not trying to move)
+	public const float SMALL_INPUT = 0.01f;//below this means no input (e.g. not trying to move)
 
 
 	public float jumpForce;
@@ -83,6 +83,12 @@ public class Movement : MonoBehaviour
 	public void AddAngle(Quaternion a)
 	{
 		angle = angle * a;
+	}
+
+	public void SetAngleFromDirection()
+	{
+		//only change the angle if actually moving
+		if(direction.magnitude > SMALL_INPUT) SetAngle(Quaternion.LookRotation(direction, transform.up));
 	}
 
 	public void SetAngle(float a) { SetAngle(Quaternion.Euler(0, a, 0)); }

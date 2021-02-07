@@ -189,7 +189,9 @@ public class gameControll : MonoBehaviour
 			itemTypes[i] = item;
 		}
 		initialized = true;
+		
 		GetComponent<Crafting>().InitializeUI();
+		//print("reached");
 		yield return null;
 	}
 

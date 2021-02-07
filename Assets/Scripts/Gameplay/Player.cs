@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 	//public static List<ItemType> itemTypes;//TODO: this might be bad
 	public static int amountOfInstances = 0;
 	//	public Material notMe;
-	public int score;
+	//public int score;
 	//	public GUIStyle inventoryStyle;
 
 	//public float jumpForce;
@@ -21,8 +21,8 @@ public class Player : MonoBehaviour
 	//public Transform groundCheck;
 	//public float maxHp;
 	//public float hp;
-	public float damage;
-	public float range;
+	//public float damage;
+	//public float range;
 	//public float maxSpeed;
 	//public float acceleration;
 	//public float maxTurnSpeed;
@@ -30,11 +30,11 @@ public class Player : MonoBehaviour
 	public float grabDist;
 	[Space(10)]
 	//public Transform hpBar;
-	public GameObject scoreBoard;
-	public List<Transform> scores = new List<Transform>();
-	public GameObject scorePref;
+	//public GameObject scoreBoard;
+	//public List<Transform> scores = new List<Transform>();
+	//public GameObject scorePref;
 	public Transform rightHand;
-	public Transform camHolder;
+	//public Transform camHolder;
 
 	public inventoryStuff invStuff;
 	[HideInInspector()] public Rigidbody rig;
@@ -46,43 +46,43 @@ public class Player : MonoBehaviour
 	//	private float brakeThreshold = 0.1f;
 
 	//private Animator anim;
-	private Cam myCam;
+	//private Cam myCam;
 	public Transform cam;
 	//private Canvas canvas;
-	private CanvasScaler canvasScaler;
-	private int kills = 0;
-	private int deaths = 0;
+	//private CanvasScaler canvasScaler;
+	//private int kills = 0;
+	//private int deaths = 0;
 	private GameObject placeing;
 	//private bool clickedThisFrame = true;//used for selecting inventory
 	//private ItemTag selectable = ~ItemTag.Item;
-	public bool jumping;
-	private bool prevJump;
-	private float yRot;
-	private Vector3 ArmatureStartRot;
-	private Vector3 dir;
-	private float lastA;
-	private float lastArmatureRot;
-	private Vector3 camLocalPosWhenRespawn;//use this to position the camera when respawning
-	private Quaternion camHoldRotWhenRespawn;//see above
-	public Transform Armature;
+	//public bool jumping;
+	//private bool prevJump;
+	//private float yRot;
+	//private Vector3 ArmatureStartRot;
+	//private Vector3 dir;
+	//private float lastA;
+	//private float lastArmatureRot;
+	//private Vector3 camLocalPosWhenRespawn;//use this to position the camera when respawning
+	//private Quaternion camHoldRotWhenRespawn;//see above
+	//public Transform Armature;
 	// Use this for initialization
 	void Start()
 	{
-		ArmatureStartRot = Armature.localEulerAngles;
-		lastArmatureRot = Armature.localEulerAngles.y;
-		yRot = transform.eulerAngles.y;
+		//ArmatureStartRot = Armature.localEulerAngles;
+		//lastArmatureRot = Armature.localEulerAngles.y;
+		//yRot = transform.eulerAngles.y;
 		bobs.Add(this);
 		cam = Camera.main.transform;
 		//canvas = GameObject.FindObjectOfType<Canvas>();
-		canvasScaler = GameObject.Find("Scaled Canvas").GetComponent<CanvasScaler>();
+		//canvasScaler = GameObject.Find("Scaled Canvas").GetComponent<CanvasScaler>();
 		//itemTypes = gameControll.itemTypes;
 		//anim = GetComponent<Animator>();
-		scoreBoard = GameObject.Find("Scaled Canvas").transform.GetChild(0).gameObject;//Resources.FindObjectsOfTypeAll<Canvas>()[0].transform.GetChild(0).gameObject;
+		//scoreBoard = GameObject.Find("Scaled Canvas").transform.GetChild(0).gameObject;//Resources.FindObjectsOfTypeAll<Canvas>()[0].transform.GetChild(0).gameObject;
 		//		scoreBoard.SetActive (false);
 		//id = amountOfInstances;
 		amountOfInstances++;
 		rig = GetComponent<Rigidbody>();
-		myCam = GetComponentInChildren<Cam>();
+		//myCam = GetComponentInChildren<Cam>();
 		inv = GetComponent<Inventory>();
 		//if(Player.main == this)
 		//{

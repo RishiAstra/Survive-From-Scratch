@@ -34,7 +34,7 @@ public class NPCControl : MonoBehaviour
 		//movement.SetDirection(dir);
 
 		//TODO: can spot through things
-		float angle = abilities.skills[0].useAngle;
+		//float angle = abilities.skills[0].useAngle;
 		Spot();
 		if(targets.Count > 0)
 		{
@@ -42,12 +42,14 @@ public class NPCControl : MonoBehaviour
 			Transform attackPlace = abilities.attackTranforms[0];
 			Vector3 off = t.transform.position - attackPlace.position;
 			Quaternion targetAngle = Quaternion.LookRotation(off, transform.up);
-			float angleOff = Quaternion.Angle(transform.rotation, targetAngle);
-			movement.SetAngle(targetAngle);
+			//float angleOff = Quaternion.Angle(transform.rotation, targetAngle);
+			//movement.SetAngle(targetAngle);
 			movement.SetDirection(off.normalized);
+			movement.SetAngleFromDirection();
 			foreach (Collider col in Physics.OverlapSphere(checkAttack.position, checkAttackRadius, targetMask))//TODO: this can change depending on intelligence, dumb can attack at wrong distance. This should be based off of the skill's attack area/dist.
 			{
 				TagScript tagScript = col.GetComponent<TagScript>();
+				//TODO: make targets a struct or something that has tagscript and abilities
 				if (tagScript != null && tagScript.ContainsTag(enemyString))
 				{
 
@@ -82,7 +84,6 @@ public class NPCControl : MonoBehaviour
 					targets.Add(temp);
 				}
 			}
-			
 		}
 	}
 }
