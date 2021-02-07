@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
-	public const string itemTypePath = @"Assets\Resources\item types.json";
+	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
 	public const string itemPath = @"Assets/Items/";
 
 
