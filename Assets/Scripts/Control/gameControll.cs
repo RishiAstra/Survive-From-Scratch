@@ -10,6 +10,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using TMPro;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class gameControll : MonoBehaviour
 	public static string username;
 
 	public static bool initialized;
+
+	public static Camera mainCamera;
 
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
@@ -34,7 +37,7 @@ public class gameControll : MonoBehaviour
 	public string serverIp;
 	public string mapScenePath;
 	public string controlSceneName;
-	public Text mapLoadText;
+	public TextMeshProUGUI mapLoadText;
 	public RectTransform mapLoadBar;
 	public GameObject mapLoadScreen;
 	public GameObject mapScreen;
@@ -42,14 +45,18 @@ public class gameControll : MonoBehaviour
 	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
 
-	public LayerMask raycastLayerMask;
+	public LayerMask collectibleLayerMask;
 	public GameObject player;
 	public GameObject camPref;
 	public Transform camPos;//start the camera here
 	public InventoryUI hotBarUI;
 	public GameObject craftInventory;
 	public GameObject middleCursor;
+	public GameObject itemHoverInfo;
+	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
+	public bool itemHoverPositionMatch;
 	public Image mainHpBar;
+	public TMPro.TextMeshProUGUI mainHpText;
 	public Canvas mainCanvas;
 
 	public GameObject camGameObject;
@@ -64,8 +71,10 @@ public class gameControll : MonoBehaviour
 		TryUnlockCursor();
 		mapLoadBarInitialWidth = mapLoadBar.sizeDelta.x;
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
+		mainCamera = Camera.main;
 		//craftInventory.SetActive(false);
 
+		itemHoverInfo.SetActive(false);
 		HideMenus();
 		mapScreen.SetActive(true);
 
@@ -80,6 +89,20 @@ public class gameControll : MonoBehaviour
 		mapScreen.SetActive(false);
 		craftInventory.SetActive(false);
 	}
+
+	/// <summary>
+	/// returns if any menu is open (crafting, map, etc.)
+	/// </summary>
+	/// <returns></returns>
+	private bool MenuActive()
+	{
+		return
+			mapLoadScreen.activeInHierarchy ||
+			mapScreen.activeInHierarchy ||
+			craftInventory.activeInHierarchy;
+	}
+
+	#region Map Functions
 
 	private void SetMapLoadProgress(float amount)
     {
@@ -159,10 +182,14 @@ public class gameControll : MonoBehaviour
 		loading = false;
     }
 
+	#endregion
+
 	public static int NameToId(string s)
 	{
 		return StringIdMap[s];
 	}
+
+	#region Item Types
 
 	private void InitializeItemTypes()
 	{
@@ -205,6 +232,8 @@ public class gameControll : MonoBehaviour
 		//print("reached");
 		yield return null;
 	}
+
+	#endregion
 
 	//void OnJoinedRoom()
 	//{
@@ -333,12 +362,46 @@ public class gameControll : MonoBehaviour
 
     private void LiveFunctions()
 	{
+		if (!MenuActive())
+		{
+			//To make something collectible, a collider attached to it must match collectibleLayerMask
+			RaycastHit hit;
+			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask, QueryTriggerInteraction.Collide);
+			bool foundCollectible = false;
+			Collectible c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
+
+			if (foundSomething)
+			{
+				GameObject g = hit.collider.gameObject;
+				c = g.GetComponentInParent<Collectible>();
+				if (c != null)
+				{
+					foundCollectible = true;
+					//print("click me");
+					//c.MouseClickMe();
+				}
+			}
+
+			itemHoverInfo.SetActive(foundCollectible);
+
+			if (foundCollectible)
+			{
+				if(itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
+				if (Input.GetKey(KeyCode.F))
+				{
+					c.MouseClickMe();
+				}
+			}
+
+			
+		}
 		if (Input.GetKey(KeyCode.F))
 		{
 			RaycastHit hit;
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-			if (Physics.Raycast(ray, out hit, Player.main.grabDist, raycastLayerMask))
+			if (Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask))
 			{
 				GameObject g = hit.collider.gameObject;
 				Collectible c = g.GetComponent<Collectible>();
@@ -364,7 +427,11 @@ public class gameControll : MonoBehaviour
 
 		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
 		me = newPlayerObject.GetComponent<Player> ();
-		newPlayerObject.GetComponent<HPBar>().hpBarImage = mainHpBar;//TODO: check taht this works
+		HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
+		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
+		hPBar.hpTextUI = mainHpText;
+		hPBar.SetWorldHpBarVisible(false);
+
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
 		myAbilities = newPlayerObject.GetComponent<Abilities>();

@@ -8,9 +8,11 @@ public class HPBar : MonoBehaviour
 {
     public SpriteRenderer hpBarSprite;
 	public Image hpBarImage;
+	//TODO: make hp bar inactive since it's on ui for player
 
 	[Tooltip("Shows the hp")]
 	public TextMeshPro hpText;
+	public TextMeshProUGUI hpTextUI;
 	public bool changeHpTextColor;
 	[Tooltip("Shown before the hp number")]
 	public string prefix;
@@ -27,16 +29,22 @@ public class HPBar : MonoBehaviour
 		a = GetComponent<Abilities>();
     }
 
+	public void SetWorldHpBarVisible(bool visible)
+	{
+		hpHolder.gameObject.SetActive(visible);
+	}
+
     // Update is called once per frame
     void Update()
     {
 		bool sprite = hpBarSprite != null;
 		bool image = hpBarImage != null;
-		if (hpHolder != null) hpHolder.LookAt(Camera.main.transform);//TODO: optimize or change rendering to flat on screen by shader or something
+		bool text = hpText != null;
+		bool textUI = hpTextUI != null;
+		if (hpHolder != null) hpHolder.LookAt(gameControll.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
 
 		if (a.dead)
-		{
-			hpText.text = "Dead";
+		{			
 			if(sprite)
 			{
 				hpBarSprite.transform.localScale = new Vector3(0, 1, 1);
@@ -47,27 +55,49 @@ public class HPBar : MonoBehaviour
 				hpBarImage.transform.localScale = new Vector3(0, 1, 1);
 				hpBarImage.color = new Color(0, 0, 0);
 			}
+			if (text)
+			{
+				hpText.text = "Dead";
+				hpText.color = new Color(0, 0, 0);
+			}
+			if (textUI)
+			{
+				hpTextUI.text = "Dead";
+				hpTextUI.color = new Color(0, 0, 0);
+			}
 
-			hpText.color = new Color(0, 0, 0);
 			return;
 		}
 		else
 		{
+			Color color = Color.magenta;//error color
 			if (a.stat.hp > (a.maxStat.hp / 2))
 			{
 				if (sprite) hpBarSprite.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
 				if (image) hpBarImage.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-				if(changeHpTextColor) hpText.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-				else hpText.color = new Color(0, 0, 0);
+				if(changeHpTextColor) color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
+				else color = new Color(0, 0, 0);
 			}
 			else
 			{
 				if (sprite) hpBarSprite.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
 				if (image) hpBarImage.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-				if(changeHpTextColor) hpText.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-				else hpText.color = new Color(0, 0, 0);
+				if(changeHpTextColor) color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
+				else color = new Color(0, 0, 0);
 			}
-			hpText.text = Mathf.Round(a.stat.hp) + "/" + Mathf.Round(a.maxStat.hp);//TODO: use Math.Round(hp, 2) to make it 2 decimal places
+
+			string tempText = Mathf.Round(a.stat.hp) + "/" + Mathf.Round(a.maxStat.hp);//TODO: use Math.Round(hp, 2) to make it 2 decimal places
+
+			if (text)
+			{
+				hpText.text = tempText;
+				hpText.color = color;
+			}
+			if (textUI)
+			{
+				hpTextUI.text = tempText;
+				hpTextUI.color = color;
+			}
 
 			if (sprite) hpBarSprite.transform.localScale = new Vector3(a.stat.hp / a.maxStat.hp, 1, 1);
 			if (image) hpBarImage.transform.localScale = new Vector3(a.stat.hp / a.maxStat.hp, 1, 1);
