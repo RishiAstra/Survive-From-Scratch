@@ -37,7 +37,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		else
 		{
             img.color = Color.white;
-            img.sprite = Player.itemTypes[parent.items[index].id].icon;
+            img.sprite = gameControll.itemTypes[parent.items[index].id].icon;
             amountText.text = parent.items[index].amount.ToString();
         }        
 	}

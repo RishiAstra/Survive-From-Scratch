@@ -31,7 +31,7 @@ public class CraftingEditor : Editor
 		{
 			for (int i = 0; i < t.recipies.Count; i++)
 			{
-				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + gameControll.main.itemTypes[t.recipies[i].result.id].name);
+				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + gameControll.itemTypes[t.recipies[i].result.id].name);
 				if (show[i])
 				{
 					EditorGUI.indentLevel += 2;
@@ -104,13 +104,13 @@ public class CraftingEditor : Editor
 		item.id = EditorGUILayout.IntField(item.id, GUILayout.MaxWidth(50.0f));
 
 		bool suc = false;
-		string temp = EditorGUILayout.TextArea(gameControll.main.itemTypes[item.id].name);
+		string temp = EditorGUILayout.TextArea(gameControll.itemTypes[item.id].name);
 
-		if(temp != gameControll.main.itemTypes[item.id].name)
+		if(temp != gameControll.itemTypes[item.id].name)
 		{
-			for (int i = 0; i < gameControll.main.itemTypes.Count; i++)
+			for (int i = 0; i < gameControll.itemTypes.Count; i++)
 			{
-				if (gameControll.main.itemTypes[i].name == temp)
+				if (gameControll.itemTypes[i].name == temp)
 				{
 					item.id = i;
 					suc = true;

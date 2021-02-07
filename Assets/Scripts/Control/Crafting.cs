@@ -1,4 +1,5 @@
 ﻿using bobStuff;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,8 @@ public class Crafting : MonoBehaviour
 {
     public Inventory craftInventory;
     public Inventory craftResult;
+	public InventoryUI craftInventoryUI;
+	public InventoryUI craftResultUI;
 
     public List<Recipie> recipies;
 
@@ -141,4 +144,10 @@ public class Crafting : MonoBehaviour
 
 		}
     }
+
+	internal void InitializeUI()
+	{
+		//craftInventoryUI.InitializeSlots();
+		//craftResultUI.InitializeSlots();
+	}
 }

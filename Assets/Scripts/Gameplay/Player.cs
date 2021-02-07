@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 	//TODO: this system of a player list should be replaced
 	public static List<Player> bobs = new List<Player>();
 	public static Player main;
-	public static List<ItemType> itemTypes;//TODO: this might be bad
+	//public static List<ItemType> itemTypes;//TODO: this might be bad
 	public static int amountOfInstances = 0;
 	//	public Material notMe;
 	public int score;
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
 		cam = Camera.main.transform;
 		//canvas = GameObject.FindObjectOfType<Canvas>();
 		canvasScaler = GameObject.Find("Scaled Canvas").GetComponent<CanvasScaler>();
-		itemTypes = gameControll.main.itemTypes;
+		//itemTypes = gameControll.itemTypes;
 		//anim = GetComponent<Animator>();
 		scoreBoard = GameObject.Find("Scaled Canvas").transform.GetChild(0).gameObject;//Resources.FindObjectsOfTypeAll<Canvas>()[0].transform.GetChild(0).gameObject;
 		//		scoreBoard.SetActive (false);
@@ -176,11 +176,11 @@ public class Player : MonoBehaviour
 			}
 		}
 		//TODO: is this necessary?
-		if (itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
+		if (gameControll.itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
 		{
-			if (itemTypes[inv.items[invSel].id].equipPrefab != null)
+			if (gameControll.itemTypes[inv.items[invSel].id].equipPrefab != null)
 			{
-				GameObject g = (GameObject)Instantiate(itemTypes[inv.items[invSel].id].equipPrefab);
+				GameObject g = (GameObject)Instantiate(gameControll.itemTypes[inv.items[invSel].id].equipPrefab);
 				g.transform.SetParent(rightHand, false);
 				g.GetComponent<Equip>().bob = this;
 				//print("Selected equipable object");
@@ -204,12 +204,12 @@ public class Player : MonoBehaviour
 		}
 
 		//Right Hand Equippable item
-		if (itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
+		if (gameControll.itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
 		{
 			if (invSel != index) {
-				if(itemTypes[inv.items[index].id].equipPrefab != null)
+				if(gameControll.itemTypes[inv.items[index].id].equipPrefab != null)
 				{
-					GameObject g = (GameObject)Instantiate(itemTypes[inv.items[index].id].equipPrefab);
+					GameObject g = (GameObject)Instantiate(gameControll.itemTypes[inv.items[index].id].equipPrefab);
 					g.transform.SetParent(rightHand, false);
 					g.GetComponent<Equip>().bob = this;
 					//print("Selected equipable object");
@@ -221,13 +221,13 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		if (itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
+		if (gameControll.itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
 		{
 			if (invSel != index)
 			{
 				//TODO: should this equip it?
 				//TODO: placing prefab should be different from final prefab. The placing prefab could have a placing script that spawns the final
-				placeing = (GameObject)Instantiate(itemTypes[inv.items[index].id].prefab);
+				placeing = (GameObject)Instantiate(gameControll.itemTypes[inv.items[index].id].prefab);
 				foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
 				{
 					m.enabled = false;
@@ -354,51 +354,51 @@ public class Player : MonoBehaviour
 		//while (inv.items.Count < invStuff.inventorySize) {
 		//	inv.items.Add(new Item(0, 0, 0, 0));
 		//}
-		if (Input.GetKey(KeyCode.Tab)) {
-			//Transform content = scoreBoard.transform.GetChild(0).GetChild(0);
-			//while (scores.Count < PhotonNetwork.playerList.Length) {
-			//	GameObject g = (GameObject)Instantiate (scorePref);
-			//	g.transform.SetParent (content);
-			//	g.transform.localScale = new Vector3 (1, 1, 1);
-			//	g.transform.localPosition = new Vector3 (400, scores.Count * 25 - 12.5f, 0);
-			//	scores.Add (g.transform);
-			//	content.GetComponent<RectTransform> ().sizeDelta += new Vector2 (0, 25);
-			//}
+		//if (Input.GetKey(KeyCode.Tab)) {
+		//	//Transform content = scoreBoard.transform.GetChild(0).GetChild(0);
+		//	//while (scores.Count < PhotonNetwork.playerList.Length) {
+		//	//	GameObject g = (GameObject)Instantiate (scorePref);
+		//	//	g.transform.SetParent (content);
+		//	//	g.transform.localScale = new Vector3 (1, 1, 1);
+		//	//	g.transform.localPosition = new Vector3 (400, scores.Count * 25 - 12.5f, 0);
+		//	//	scores.Add (g.transform);
+		//	//	content.GetComponent<RectTransform> ().sizeDelta += new Vector2 (0, 25);
+		//	//}
 
-			//				bobPlayer[] bp = GameObject.FindObjectsOfType<bobPlayer> ();
-			//				List<int> ind = new List<int> (bp.Length);
-			//				for (int i = 0; i < ind.Count; i++) {
-			//					ind [i] = i;
-			//				}
-			//				ind.Sort ((x,y) => bp[x].kills.CompareTo(bp[y].kills));
-			//				for(int i = 0;i<pp.Length;i++){
-			//					
-			//					for(int j = i;j<pp.Length;j++){
-			//
-			//					}
-			//				}
-			for (int i = 0; i < bobs.Count; i++) {
-				//					print (i);
-				int myPlace = bobs.Count;
-				for (int j = 0; j < bobs.Count; j++) {
-					if (score < bobs[j].score) {
-						myPlace--;
-					}
-				}
-				//scores [myPlace].GetChild (0).GetComponent<Text> ().text = bobs [myPlace].photonView.owner.NickName;
-				scores[myPlace].GetChild(1).GetComponent<Text>().text = bobs[myPlace].kills.ToString();
-				scores[myPlace].GetChild(2).GetComponent<Text>().text = bobs[myPlace].deaths.ToString();
-				if ((bobs[myPlace].kills / bobs[myPlace].deaths) < 10000000) {
-					scores[myPlace].GetChild(3).GetComponent<Text>().text = (bobs[myPlace].kills / bobs[myPlace].deaths).ToString().Substring(0, 4);
-				} else {
-					scores[myPlace].GetChild(3).GetComponent<Text>().text = "---";
+		//	//				bobPlayer[] bp = GameObject.FindObjectsOfType<bobPlayer> ();
+		//	//				List<int> ind = new List<int> (bp.Length);
+		//	//				for (int i = 0; i < ind.Count; i++) {
+		//	//					ind [i] = i;
+		//	//				}
+		//	//				ind.Sort ((x,y) => bp[x].kills.CompareTo(bp[y].kills));
+		//	//				for(int i = 0;i<pp.Length;i++){
+		//	//					
+		//	//					for(int j = i;j<pp.Length;j++){
+		//	//
+		//	//					}
+		//	//				}
+		//	for (int i = 0; i < bobs.Count; i++) {
+		//		//					print (i);
+		//		int myPlace = bobs.Count;
+		//		for (int j = 0; j < bobs.Count; j++) {
+		//			if (score < bobs[j].score) {
+		//				myPlace--;
+		//			}
+		//		}
+		//		//scores [myPlace].GetChild (0).GetComponent<Text> ().text = bobs [myPlace].photonView.owner.NickName;
+		//		scores[myPlace].GetChild(1).GetComponent<Text>().text = bobs[myPlace].kills.ToString();
+		//		scores[myPlace].GetChild(2).GetComponent<Text>().text = bobs[myPlace].deaths.ToString();
+		//		if ((bobs[myPlace].kills / bobs[myPlace].deaths) < 10000000) {
+		//			scores[myPlace].GetChild(3).GetComponent<Text>().text = (bobs[myPlace].kills / bobs[myPlace].deaths).ToString().Substring(0, 4);
+		//		} else {
+		//			scores[myPlace].GetChild(3).GetComponent<Text>().text = "---";
 
-				}
-			}
-			scoreBoard.gameObject.SetActive(true);
-		} else {
-			scoreBoard.gameObject.SetActive(false);
-		}
+		//		}
+		//	}
+		//	scoreBoard.gameObject.SetActive(true);
+		//} else {
+		//	scoreBoard.gameObject.SetActive(false);
+		//}
 		if (!gameControll.main.myAbilities.dead) {
 			
 			//if (Physics.CheckSphere(groundCheck.position, 0.05f, ground))
@@ -524,7 +524,7 @@ public class Player : MonoBehaviour
 		}
 		for (int i = 0; i < inv.items.Count; i++) {
 			if(inv.items[i].id == 0){
-				inv.items [i] = new Item (id, amount, itemTypes[id].strength, itemTypes[id].strength);
+				inv.items [i] = new Item (id, amount, gameControll.itemTypes[id].strength, gameControll.itemTypes[id].strength);
 				if (invSel == i) {
 					
 					RefreshSelected();
@@ -570,7 +570,11 @@ public class Player : MonoBehaviour
 		if (Input.GetKeyDown("0")) SelectInv(9);
 		for(int i = 1; i < 10; i++)
 		{
-			if (Input.GetKeyDown(i.ToString())) SelectInv(i-1);
+			if (Input.GetKeyDown(i.ToString()))
+			{
+				SelectInv(i-1);
+				//print("select " + i);
+			}
 		}
 	}
 	#endregion

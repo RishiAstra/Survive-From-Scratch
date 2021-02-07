@@ -4,6 +4,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using bobStuff;
+using System.IO;
 
 [CustomEditor(typeof(gameControll))]
 [System.Serializable]
@@ -16,6 +17,8 @@ public class gameControllEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		t = (gameControll)target;
+		gameControll.CheckItemTypes();
+
 		DrawDefaultInspector();
 		UpdateShowList();		
 			
@@ -23,13 +26,14 @@ public class gameControllEditor : Editor
 		EditorGUI.indentLevel += 2;
 		if (showTypes)
 		{
-			for(int i = 0; i < t.itemTypes.Count; i++)
+			//bool changed = false;
+			for(int i = 0; i < gameControll.itemTypes.Count; i++)
 			{
-				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + t.itemTypes[i].name);
+				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + gameControll.itemTypes[i].name);
 				if (show[i])
 				{
 					EditorGUI.indentLevel += 2;
-					ItemType item = t.itemTypes[i];
+					ItemType item = gameControll.itemTypes[i];
 					item.name = EditorGUILayout.TextField("name", item.name);
 					//public Texture2D Icon;//icon to display in inventory
 					//public ItemCatagory Cat;
@@ -46,20 +50,38 @@ public class gameControllEditor : Editor
 					EditorGUILayout.Space(10);
 					//EditorGUI.indentLevel -= 2;
 					//public float strength;
-					t.itemTypes[i] = item;
+					//if (!ItemType.Same(gameControll.itemTypes[i],item))
+					//{
+					//	changed = true;
+					//}
+
+					gameControll.itemTypes[i] = item;
 					EditorGUILayout.LabelField("Add or Remove ItemType", EditorStyles.boldLabel);
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button("+"))
 					{
-						t.itemTypes.Insert(i + 1, new ItemType());
+						gameControll.itemTypes.Insert(i + 1, new ItemType());
 					}
 					if (GUILayout.Button("-"))
 					{
-						t.itemTypes.RemoveAt(i);
+						gameControll.itemTypes.RemoveAt(i);
 					}
 					GUILayout.EndHorizontal();
 					EditorGUI.indentLevel -= 2;
 				}
+			}
+
+			//if(changed) gameControll.SaveItemTypes();
+
+
+			if (GUILayout.Button("+ Append ItemType"))
+			{
+				gameControll.itemTypes.Add(new ItemType());
+			}
+
+			if (GUILayout.Button("Save"))
+			{
+				gameControll.SaveItemTypes();
 			}
 		}
 		EditorGUI.indentLevel -= 2;
@@ -67,11 +89,11 @@ public class gameControllEditor : Editor
 
 	void UpdateShowList()
 	{
-		while (show.Count < t.itemTypes.Count)
+		while (show.Count < gameControll.itemTypes.Count)
 		{
 			show.Add(false);
 		}
-		while (show.Count > t.itemTypes.Count)
+		while (show.Count > gameControll.itemTypes.Count)
 		{
 			show.RemoveAt(show.Count - 1);
 		}

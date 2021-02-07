@@ -5,16 +5,29 @@ using UnityEngine.SceneManagement;
 using bobStuff;
 using System;
 using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
+	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
+	public const string itemPath = @"Assets/Items/";
+
+
 	public static byte[] sessionId;
 	public static string username;
+
+	public static bool initialized;
+
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
 	public static bool loading;//true if currently loading a scene
 	public static bool playerExists;//is the main character existant yet? won't be if loading a scene or start screen etc
 
+	public static List<ItemType> itemTypes;
 	public static Dictionary<string, int> StringIdMap;
 	public static gameControll main;
 
@@ -41,8 +54,6 @@ public class gameControll : MonoBehaviour
 
 	public GameObject camGameObject;
 	
-	//TODO: make itemTypes static
-	[HideInInspector()]public List<ItemType> itemTypes;
 //	public RPGCamera Camera;
 	private Player me;
 	[HideInInspector] public Abilities myAbilities;
@@ -55,6 +66,7 @@ public class gameControll : MonoBehaviour
 		camGameObject = Instantiate(camPref, camPos.position, camPos.rotation);
 		//craftInventory.SetActive(false);
 		//TODO: consider setting mapScreen to active
+		CheckItemTypes();
 		InitializeItemTypes();
 	}
 
@@ -74,6 +86,7 @@ public class gameControll : MonoBehaviour
 
 	public IEnumerator LoadMapLocation(string name)
     {
+		if(!initialized)
 		//TODO:test this
 		//remove other scenes if they aren't the control scene
 		loading = true;
@@ -144,22 +157,40 @@ public class gameControll : MonoBehaviour
 	private void InitializeItemTypes()
 	{
 		StringIdMap = new Dictionary<string, int>(itemTypes.Count);
-
 		for(int i = 0; i < itemTypes.Count; i++)
+		{
+			//add to the dictionary to convert names to ids
+			StringIdMap.Add(itemTypes[i].name, i);
+		}
+		StartCoroutine(LoadItemData());
+	}
+
+	private IEnumerator LoadItemData()
+	{
+		for (int i = 0; i < itemTypes.Count; i++)
 		{
 
 			ItemType item = itemTypes[i];
 
-			//add to the dictionary to convert names to ids
-			StringIdMap.Add(item.name, i);
-
 			//WARNING: Resources.Load returns null if not found
 			//load data for this item type
-			item.prefab =			Resources.Load<GameObject>	(item.name + "/" + item.name + "-p");
-			item.equipPrefab =		Resources.Load<GameObject>	(item.name + "/" + item.name + "-e");
-			item.icon =				Resources.Load<Sprite>	(item.name + "/" + item.name + "-i");
+
+			AsyncOperationHandle<GameObject> prefabAsync = Addressables.LoadAssetAsync<GameObject>(itemPath + item.name + "/" + item.name + " p.prefab");
+			AsyncOperationHandle<GameObject> equipPrefabAsync = Addressables.LoadAssetAsync<GameObject>(itemPath + item.name + "/" + item.name + " e.prefab");
+			AsyncOperationHandle<Sprite> iconAsync = Addressables.LoadAssetAsync<Sprite>(itemPath + item.name + "/" + item.name + " i.png");
+			//wait for operations to complete
+			if (!prefabAsync.IsDone) yield return prefabAsync;
+			if (!equipPrefabAsync.IsDone) yield return equipPrefabAsync;
+			if (!iconAsync.IsDone) yield return iconAsync;
+
+			item.prefab = prefabAsync.Result;// Addressables.LoadAssetAsync<GameObject>(item.name + "/" + item.name + "-p");
+			item.equipPrefab = equipPrefabAsync.Result;// Resources.Load<GameObject>(item.name + "/" + item.name + "-e");
+			item.icon = iconAsync.Result;// Resources.Load<Sprite>(item.name + "/" + item.name + "-i");
 			itemTypes[i] = item;
 		}
+		initialized = true;
+		GetComponent<Crafting>().InitializeUI();
+		yield return null;
 	}
 
 	//void OnJoinedRoom()
@@ -208,9 +239,6 @@ public class gameControll : MonoBehaviour
 
 	private void Update()
     {
-
-        
-
 		if (playerExists)
 		{
 			CursorLockUpdate();
@@ -338,5 +366,29 @@ public class gameControll : MonoBehaviour
 		myInv.put = true;
 		myInv.take = true;
 		myInv.put = true;
+	}
+
+	public static void CheckItemTypes()
+	{
+		if (itemTypes == null)
+		{
+			if (File.Exists(itemTypePath))
+			{
+				Debug.Log("read ItemTypes");
+				itemTypes = JsonConvert.DeserializeObject<ItemType[]>(File.ReadAllText(itemTypePath)).ToList();
+			}
+			else
+			{
+				itemTypes = new List<ItemType>();
+				itemTypes.Add(new ItemType());
+				Debug.LogError("No itemtypes list, made a new one");
+			}
+		}
+	}
+
+	public static void SaveItemTypes()
+	{
+		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented));
+		Debug.Log("Saved ItemTypes");
 	}
 }
