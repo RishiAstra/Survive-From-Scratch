@@ -32,11 +32,13 @@ public class gameControll : MonoBehaviour
 
 	public static List<ItemType> itemTypes;
 	public static Dictionary<string, int> StringIdMap;
+
 	public static gameControll main;
 
 	public string serverIp;
 	public string mapScenePath;
 	public string controlSceneName;
+
 	public TextMeshProUGUI mapLoadText;
 	public RectTransform mapLoadBar;
 	public GameObject mapLoadScreen;

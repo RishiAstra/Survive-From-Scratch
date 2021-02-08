@@ -33,6 +33,7 @@ public class Abilities : MonoBehaviour
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
 
+
 	public enum AttackType {
 		Pierce = 1,
 		Blunt = 2,
@@ -69,6 +70,7 @@ public class Abilities : MonoBehaviour
 		dead = stat.hp <= 0;
 	}
 
+	#region Attack and Defense
 
 	public void Attack()
 	{
@@ -164,6 +166,9 @@ public class Abilities : MonoBehaviour
 		attackAllowed = false;
 		print("finished action ");
 	}
+
+	#endregion
+
 }
 
 [System.Serializable]
