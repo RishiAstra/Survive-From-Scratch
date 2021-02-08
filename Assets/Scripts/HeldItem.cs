@@ -7,7 +7,7 @@ using TMPro;
 public class HeldItem : MonoBehaviour
 {
     public Image img;
-    public TextMesh amountText;
+    public TextMeshProUGUI amountText;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,15 +21,15 @@ public class HeldItem : MonoBehaviour
         {
             img.color = Color.white;
             img.sprite = gameControll.itemTypes[ItemIcon.held.id].icon;
-            //amountText.enabled = true;
-            amountText.text = ItemIcon.held.amount > 1 ? ItemIcon.held.amount.ToString() : "";
+			amountText.enabled = true;
+			amountText.text = ItemIcon.held.amount > 1 ? ItemIcon.held.amount.ToString() : "";
             transform.position = Input.mousePosition;
         }
 		else
         {
             img.color = Color.clear;
-            //amountText.enabled = false;
-            ItemIcon.held.amount = 0;
+			amountText.enabled = false;
+			ItemIcon.held.amount = 0;
 		}
         
     }
