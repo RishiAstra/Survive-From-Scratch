@@ -473,4 +473,15 @@ public class gameControll : MonoBehaviour
 		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented));
 		Debug.Log("Saved ItemTypes");
 	}
+
+	public void LoadSavedStuff()
+	{
+		print("loading saved entities...");
+		StartCoroutine(Save.LoadAll());
+	}
+	public void SaveStuff()
+	{
+		print("saving entities...");
+		Save.SaveAll();
+	}
 }

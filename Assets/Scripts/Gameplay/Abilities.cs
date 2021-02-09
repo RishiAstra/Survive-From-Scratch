@@ -41,6 +41,7 @@ public class Abilities : MonoBehaviour
 		Magic = 8
 	};
 	public bool dead;//TODO: consider stopping all attacks already happening when it dies
+	public bool resetOnStart = true;
 	public Stat maxStat;
 	public Stat stat;
 	public List<Skill> skills;
@@ -56,7 +57,7 @@ public class Abilities : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		Reset();
+		if(resetOnStart) Reset();
 	}
 
 	public void Reset()
@@ -132,7 +133,7 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteSkill(int i)
 	{
-		print("using skill " + i);
+		//print("using skill " + i);
 		Skill s = skills[i];
 		foreach(Action a in s.actions)
 		{
@@ -144,7 +145,7 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteAction(Action a)
 	{
-		print("using action ");
+		//print("using action ");
 		if (a.useWeapons)
 		{
 			currentAttackTransform = a.spawnTransform;
@@ -164,7 +165,7 @@ public class Abilities : MonoBehaviour
 		
 		yield return new WaitForSeconds(a.time);
 		attackAllowed = false;
-		print("finished action ");
+		//print("finished action ");
 	}
 
 	#endregion
