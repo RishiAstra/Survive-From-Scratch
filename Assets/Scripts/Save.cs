@@ -6,6 +6,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using bobStuff;
 
 public class Save : MonoBehaviour
 {
@@ -73,6 +74,8 @@ public class Save : MonoBehaviour
 
 	public SaveData GetData()
 	{
+		Inventory inventory = GetComponent<Inventory>();
+		List<Item> tempItems = inventory != null ? GetComponent<Inventory>().items : null;
 		return new SaveData
 		{
 			id = id,
@@ -81,6 +84,7 @@ public class Save : MonoBehaviour
 			position = transform.position,
 			rotation = transform.eulerAngles,
 			playerOwnerName = playerOwnerName,
+			items = tempItems,
 		};
 	}
 
@@ -96,6 +100,19 @@ public class Save : MonoBehaviour
 		{
 			gameControll.main.SetUpPlayer(gameObject);
 		}
+		List<Item> tempItems = data.items;
+		Inventory inventory = GetComponent<Inventory>();
+		if (tempItems != null)
+		{
+			if (inventory == null)
+			{
+				Debug.LogError("An Inventory was loaded, but there is not one to load it to on this GameObject");
+			}
+			else
+			{
+				inventory.items = tempItems;
+			}
+		}
 	}
 
 
@@ -103,6 +120,11 @@ public class Save : MonoBehaviour
 	{
 		int typeCount = 0;
 		int entityCount = 0;
+		if (!Directory.Exists(savePath))
+		{
+			Debug.LogWarning("Nothing to load!");
+			yield break;
+		}
 
 		foreach (string typeString in Directory.GetDirectories(savePath))
 		{
@@ -137,7 +159,7 @@ public class Save : MonoBehaviour
 	}
 }
 
-
+//TODO: split into inventory and abilities etc.
 [System.Serializable]
 public class SaveData
 {
@@ -147,4 +169,5 @@ public class SaveData
     public Vector3 position;
     public Vector3 rotation;
 	public string playerOwnerName;
+	public List<Item> items;
 }
