@@ -34,7 +34,7 @@ public class Authenticator : MonoBehaviour
 
 	public static string GetAccountPath(string username)
 	{
-		return Application.persistentDataPath + authFilePath + username + "\\";
+		return Application.persistentDataPath + authFilePath + username + @"\";
 	}
 
 	public static string GetAccountDataFile(string username, string datafile)

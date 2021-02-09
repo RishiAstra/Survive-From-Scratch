@@ -14,6 +14,7 @@ using TMPro;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class gameControll : MonoBehaviour
 {
+	//public static string playerSavePath = Application.persistentDataPath + "/Players/";
 	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
 	public const string itemPath = @"Assets/Items/";
 
@@ -179,8 +180,9 @@ public class gameControll : MonoBehaviour
 
 		SceneManager.SetActiveScene(toLoad);
 
+		//LoadPlayer(this);
 		//TODO: save by map
-		yield return Save.LoadAll();//load everything
+		yield return LoadSavedStuffHelper();// Save.LoadAll();//load everything
 
 
 		HideMenus();
@@ -268,6 +270,8 @@ public class gameControll : MonoBehaviour
 		}
 	}
 
+	#region Mouse
+
 	void TryLockCursor()
 	{
 		if (
@@ -287,6 +291,38 @@ public class gameControll : MonoBehaviour
 		middleCursor.SetActive(false);
 	}
 
+	private void CursorLockUpdate()
+	{
+		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+		{
+			tempUnlockMouse = true;
+			TryUnlockCursor();
+		}
+		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
+		if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
+		{
+			tempUnlockMouse = false;
+			TryLockCursor();
+		}
+
+		if (Cursor.lockState == CursorLockMode.Locked)
+		{
+
+			if (Input.GetKey(KeyCode.Escape))
+			{
+				TryUnlockCursor();
+			}
+		}
+		else
+		{
+			if (Input.GetMouseButtonUp(0))
+			{
+				TryLockCursor();
+			}
+		}
+	}
+
+	#endregion
 
 	private void Update()
     {
@@ -336,37 +372,6 @@ public class gameControll : MonoBehaviour
 				LiveFunctions();
 			}
 		}
-    }
-
-    private void CursorLockUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
-        {
-            tempUnlockMouse = true;
-            TryUnlockCursor();
-        }
-        //TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
-        if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
-        {
-            tempUnlockMouse = false;
-            TryLockCursor();
-        }
-
-        if (Cursor.lockState == CursorLockMode.Locked)
-        {
-
-            if (Input.GetKey(KeyCode.Escape))
-            {
-                TryUnlockCursor();
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                TryLockCursor();
-            }
-        }
     }
 
     private void LiveFunctions()
@@ -489,6 +494,35 @@ public class gameControll : MonoBehaviour
 		//myInv.put = true;
 	}
 
+	#region save
+	public static void SavePlayer(gameControll p)
+	{
+		Crafting crafting = p.GetComponent<Crafting>();
+		PlayerSaveData s = new PlayerSaveData()
+		{
+			username = username,
+			craftInventoryItems = crafting.craftInventory.items,
+		};
+		string path1 = Authenticator.GetAccountPath(username);
+		if (!Directory.Exists(path1)) Directory.CreateDirectory(path1);//TODO: warning this is bad, allows making account folders without registering
+		File.WriteAllText(path1 + "data.json", JsonConvert.SerializeObject(s, Formatting.Indented));
+		Debug.Log("Saved player data for username: " + username);
+	}
+
+	public static void LoadPlayer(gameControll p)
+	{
+		Crafting crafting = p.GetComponent<Crafting>();
+		string path = Authenticator.GetAccountPath(username) + "data.json";
+		if (File.Exists(path))
+		{
+			PlayerSaveData s = JsonConvert.DeserializeObject<PlayerSaveData>(File.ReadAllText(path));
+			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
+			crafting.craftInventory.items = s.craftInventoryItems;
+			print("Loaded player: " + username);
+		}
+
+	}
+
 	public static void CheckItemTypes()
 	{
 		if (itemTypes == null)
@@ -515,12 +549,29 @@ public class gameControll : MonoBehaviour
 
 	public void LoadSavedStuff()
 	{
-		print("loading saved entities...");
-		StartCoroutine(Save.LoadAll());
+		StartCoroutine(LoadSavedStuffHelper());
 	}
+
+	public IEnumerator LoadSavedStuffHelper()
+	{
+		LoadPlayer(this);
+		yield return Save.LoadAll();
+		print("loaded saved entities...");
+	}
+
 	public void SaveStuff()
 	{
-		print("saving entities...");
+		SavePlayer(this);
 		Save.SaveAll();
+		print("saved entities...");
 	}
+
+	#endregion
+}
+
+[System.Serializable]
+public class PlayerSaveData
+{
+	public string username;
+	public List<Item> craftInventoryItems;
 }

@@ -8,13 +8,24 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
 
+//TODO: save the path to player-controlled to the player's data file
+//TODO: save player data file including crafting inventory etc.
 public class Save : MonoBehaviour
 {
 	public static List<Save> saves;
 
 	const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
-		get { return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Entities/"; }
+		get {
+			//if(customSavePath == "")
+			//{
+				return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Entities/";
+			//}
+			//else
+			//{
+			//	return Application.persistentDataPath + "/" + customSavePath;
+			//}
+		}
 	}
 
 	public static long nextId = 1;
@@ -23,7 +34,7 @@ public class Save : MonoBehaviour
 
     public long id;
 	public string type;
-	//public bool saveAbilities;
+	public string customSavePath;
 
 	public Abilities a;
 
