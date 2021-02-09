@@ -16,8 +16,10 @@ public class Save : MonoBehaviour
 		get { return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Entities/"; }
 	}
 
-
 	public static long nextId = 1;
+	public static bool readNextId;
+	public string playerOwnerName;
+
     public long id;
 	public string type;
 	//public bool saveAbilities;
@@ -29,6 +31,15 @@ public class Save : MonoBehaviour
     {
 		if (saves == null) saves = new List<Save>();
 		saves.Add(this);
+
+		if (!readNextId)
+		{
+			string path = Application.persistentDataPath + "/nextid.txt";
+			//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
+			if(File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
+			readNextId = true;
+		}
+
 		//if (saveAbilities) a = GetComponent<Abilities>();
 		if (id == 0)
 		{
@@ -69,6 +80,7 @@ public class Save : MonoBehaviour
 			stat = a.stat,
 			position = transform.position,
 			rotation = transform.eulerAngles,
+			playerOwnerName = playerOwnerName,
 		};
 	}
 
@@ -79,17 +91,22 @@ public class Save : MonoBehaviour
 		a.stat = data.stat;
 		transform.position = data.position;
 		transform.eulerAngles = data.rotation;
+		playerOwnerName = data.playerOwnerName;
+		if(playerOwnerName == gameControll.username)
+		{
+			gameControll.main.SetUpPlayer(gameObject);
+		}
 	}
 
 
 	public static IEnumerator LoadAll()
 	{
-		string path = Application.persistentDataPath + "nextid.txt";
-		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
-		nextId = int.Parse(File.ReadAllText(path));
+		int typeCount = 0;
+		int entityCount = 0;
 
 		foreach (string typeString in Directory.GetDirectories(savePath))
 		{
+			typeCount++;
 			string type = typeString.Substring(savePath.Length);
 			print("fetching entity prefab: " + type);
 			AsyncOperationHandle<GameObject> toSpawnAsync = Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
@@ -97,12 +114,14 @@ public class Save : MonoBehaviour
 			GameObject toSpawn = toSpawnAsync.Result;
 			foreach (string idPath in Directory.GetFiles(typeString))
 			{
+				entityCount++;
 				GameObject g = Instantiate(toSpawn);
 				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
 				g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
 				g.GetComponent<Save>().SetData(saveData);
 			}
 		}
+		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
 		yield return null;
 	}
 
@@ -112,7 +131,7 @@ public class Save : MonoBehaviour
 		{
 			s.SaveDataToFile();
 		}
-		string path = Application.persistentDataPath + "nextid.txt";
+		string path = Application.persistentDataPath + "/nextid.txt";
 		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 		File.WriteAllText(path, nextId.ToString());
 	}
@@ -127,4 +146,5 @@ public class SaveData
     public Stat stat;
     public Vector3 position;
     public Vector3 rotation;
+	public string playerOwnerName;
 }

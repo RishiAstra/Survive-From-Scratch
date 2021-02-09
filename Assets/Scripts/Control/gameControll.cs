@@ -19,7 +19,7 @@ public class gameControll : MonoBehaviour
 
 
 	public static byte[] sessionId;
-	public static string username;
+	public static string username = "default";
 
 	public static bool initialized;
 
@@ -178,8 +178,15 @@ public class gameControll : MonoBehaviour
 		}
 
 		SceneManager.SetActiveScene(toLoad);
+
+		//TODO: save by map
+		yield return Save.LoadAll();//load everything
+
+
 		HideMenus();
-		CreatePlayerObject();
+
+		if(me == null) SetUpPlayer(CreatePlayerObject());
+
 		playerExists = true;
 		loading = false;
     }
@@ -420,15 +427,12 @@ public class gameControll : MonoBehaviour
 		}
 	}
 
-	void CreatePlayerObject()
+	public void SetUpPlayer(GameObject newPlayerObject)
 	{
-		Vector3 position;
-		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
-		int chosen = UnityEngine.Random.Range (0, sp.Length);
-		position = sp [chosen].transform.position;
+		Save save = newPlayerObject.GetComponent<Save>();
+		save.playerOwnerName = username;
 
-		GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
-		me = newPlayerObject.GetComponent<Player> ();
+		me = newPlayerObject.GetComponent<Player>();
 		HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
 		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
 		hPBar.hpTextUI = mainHpText;
@@ -448,6 +452,41 @@ public class gameControll : MonoBehaviour
 		myInv.put = true;
 		myInv.take = true;
 		myInv.put = true;
+	}
+
+	GameObject CreatePlayerObject()
+	{
+		Vector3 position;
+		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
+		int chosen = UnityEngine.Random.Range (0, sp.Length);
+		position = sp [chosen].transform.position;
+
+		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
+		return Instantiate(player, position, Quaternion.identity);
+
+		//Save save = newPlayerObject.GetComponent<Save>();
+		//save.playerOwnerName = username;
+
+		//me = newPlayerObject.GetComponent<Player> ();
+		//HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
+		//hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
+		//hPBar.hpTextUI = mainHpText;
+		//hPBar.SetWorldHpBarVisible(false);
+
+		//Player.main = me;
+		//newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+		//myAbilities = newPlayerObject.GetComponent<Abilities>();
+
+		////bind hotbar to character and initialize
+		//hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
+		//hotBarUI.InitializeSlots();
+
+		//if (Player.main == null) Debug.LogError("Failed to create main character");
+		//Inventory myInv = newPlayerObject.GetComponent<Inventory>();
+		//myInv.take = true;
+		//myInv.put = true;
+		//myInv.take = true;
+		//myInv.put = true;
 	}
 
 	public static void CheckItemTypes()
