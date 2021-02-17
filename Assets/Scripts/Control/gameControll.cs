@@ -557,7 +557,7 @@ public class gameControll : MonoBehaviour
 		LoadPlayer(this);
 		yield return SaveItem.LoadAll();//load items (inc. buildings maybe) first
 		yield return Save.LoadAll();
-		print("loaded saved entities...");
+		print("loaded saved entities and items...");
 	}
 
 	public void SaveStuff()
@@ -565,7 +565,7 @@ public class gameControll : MonoBehaviour
 		SavePlayer(this);
 		Save.SaveAll();
 		SaveItem.SaveAll();
-		print("saved entities...");
+		print("saved entities and items...");
 	}
 
 	#endregion

@@ -122,9 +122,12 @@ public class SaveItem : MonoBehaviour
 			typeCount++;
 			string type = typeString.Substring(savePath.Length);
 			print("fetching item prefab: " + type);
-			AsyncOperationHandle<GameObject> toSpawnAsync = Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
-			yield return toSpawnAsync;
-			GameObject toSpawn = toSpawnAsync.Result;
+			//TODO: save change to auto do this maybe
+			//AsyncOperationHandle<GameObject> toSpawnAsync = Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
+			//yield return toSpawnAsync;
+			//GameObject toSpawn = toSpawnAsync.Result;
+			//TODO: saving takes too long!
+			GameObject toSpawn = gameControll.itemTypes[gameControll.StringIdMap[type]].prefab;
 			foreach (string idPath in Directory.GetFiles(typeString))
 			{
 				itemCount++;
