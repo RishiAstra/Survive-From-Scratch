@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ID))]
 public class Collectible : MonoBehaviour
 {
 	//public static Transform cam;

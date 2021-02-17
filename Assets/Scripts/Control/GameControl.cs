@@ -569,6 +569,11 @@ public class GameControl : MonoBehaviour
 	}
 
 	#endregion
+
+	private void OnApplicationQuit()
+	{
+		SaveStuff();
+	}
 }
 
 [System.Serializable]

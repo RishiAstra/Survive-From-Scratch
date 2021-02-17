@@ -8,8 +8,10 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
 
+//TODO: link to collectible or something to remove it from list automatically
 //TODO: save the path to player-controlled to the player's data file
 //TODO: save player data file including crafting inventory etc.
+[RequireComponent(typeof(ID))]
 public class SaveItem : Save
 {
 	public static List<SaveItem> saves;
@@ -26,11 +28,15 @@ public class SaveItem : Save
 	public Abilities a;
 	public ID myID;
 
+	private int indexInSaves;
+
 	// Start is called before the first frame update
 	void Start()
 	{
 		if (saves == null) saves = new List<SaveItem>();
+		indexInSaves = saves.Count;
 		saves.Add(this);
+
 		myID = GetComponent<ID>();
 
 		if (!readNextId)
@@ -128,6 +134,10 @@ public class SaveItem : Save
 		{
 			//get item and type
 			SaveItem temp = saves[i];
+			//don't save items that have already been picked up
+			if (temp == null) continue;
+
+
 			string tempId = temp.myID.idString;
 
 			int index;

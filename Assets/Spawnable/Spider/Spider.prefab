@@ -2292,6 +2292,7 @@ GameObject:
   - component: {fileID: 2118055796}
   - component: {fileID: 447233516}
   - component: {fileID: 2246126291130573370}
+  - component: {fileID: -842003936032522875}
   m_Layer: 12
   m_Name: Spider
   m_TagString: Untagged
@@ -2541,8 +2542,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  playerOwnerName: 
   type: Spider
+  customSavePath: 
   a: {fileID: 2118055796}
+  deleteOnDeath: 1
+--- !u!114 &-842003936032522875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9089679403127632740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa444949664c8741bbed5aabb7b5394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9089679403127632744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2732,6 +2748,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7aa23471e641cb4fb854e7012039f58, type: 3}
+--- !u!4 &6299230668674717226 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+    type: 3}
+  m_PrefabInstance: {fileID: 5947060956918450074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &9089679403205342837 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3219285574800454127, guid: b7aa23471e641cb4fb854e7012039f58,
@@ -2750,9 +2772,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6299230668674717226 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
-    type: 3}
-  m_PrefabInstance: {fileID: 5947060956918450074}
-  m_PrefabAsset: {fileID: 0}

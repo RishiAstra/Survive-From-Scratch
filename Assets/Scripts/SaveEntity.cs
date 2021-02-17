@@ -8,8 +8,11 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
 
+//TODO: link to abilities to update when damaged or killed
+//TODO: organize all of the paths in a well-defined mannar
 //TODO: save the path to player-controlled to the player's data file
 //TODO: save player data file including crafting inventory etc.
+[RequireComponent(typeof(Abilities))]
 public class SaveEntity : Save
 {
 	public static List<SaveEntity> saves;
@@ -27,11 +30,18 @@ public class SaveEntity : Save
 	public string customSavePath;
 
 	public Abilities a;
+	public bool deleteOnDeath;
 
-    // Start is called before the first frame update
-    void Start()
+
+	private int indexInSaves;
+	private Stat pStat;
+
+
+	// Start is called before the first frame update
+	void Start()
     {
 		if (saves == null) saves = new List<SaveEntity>();
+		indexInSaves = saves.Count;
 		saves.Add(this);
 
 		if (!readNextId)
@@ -48,22 +58,42 @@ public class SaveEntity : Save
 			id = nextId;
 			nextId++;
 		}
+
+		pStat = a.stat;
 	}
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
+		//TODO: find a better way to detect changes
+		//Autosave the entity if stat was changed
+		if (!Stat.StatEquals(pStat, a.stat))
+		{
+			print("autosaved data for entity id: " + id);
+			pStat = a.stat;
+			SaveDataToFile();
+		}
+	}
 
-	//public string GetPath()
-	//{
-	//	return  + type + "/" + type;
-	//}
+	//TODO: warning: the dead body will get deleted even if it's supposed to stay as a dead body for a few seconds
+	private void OnDestroy()
+	{
+		string filePath = GetPath() + id + ".json";
+		if (a.dead && deleteOnDeath && File.Exists(filePath))
+		{
+			File.Delete(filePath);
+			print("Deleted dead entity id: " + id);
+		}
+	}
+
+	public string GetPath()
+	{
+		return savePath + type + "/";
+	}
 
 	public void SaveDataToFile()
 	{
-		string path = savePath + type + "/";
+		string path = GetPath();
 		Directory.CreateDirectory(path);
 		File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
 	}

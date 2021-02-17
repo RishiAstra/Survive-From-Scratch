@@ -14,6 +14,18 @@ public struct Stat
 	//TODO: defence should be implemented in colliders that can have different defence values and resistances
 	public float def;//defence
 	public float mag;//
+
+	public static bool StatEquals(Stat c1, Stat c2)
+	{
+		return
+			c1.hp == c2.hp &&
+			c1.mp == c2.mp &&
+			c1.eng == c2.eng &&
+			c1.mor == c2.mor &&
+			c1.atk == c2.atk &&
+			c1.def == c2.def &&
+			c1.mag == c2.mag;
+	}
 }
 [System.Serializable]
 public struct Armor
