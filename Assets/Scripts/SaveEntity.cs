@@ -180,9 +180,9 @@ public class SaveEntity : Save
 
 	public static void SaveAll()
 	{
-		foreach(SaveEntity s in saves)
+		for(int i = 0; i < saves.Count; i++)
 		{
-			s.SaveDataToFile();
+			if (saves[i] != null) saves[i].SaveDataToFile();
 		}
 		string path = Application.persistentDataPath + "/nextid.txt";
 		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());

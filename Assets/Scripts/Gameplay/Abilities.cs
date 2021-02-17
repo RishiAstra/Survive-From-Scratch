@@ -61,6 +61,7 @@ public class Abilities : MonoBehaviour
 	public bool busy;
 	public bool attackAllowed;
 	public Animator anim;
+	public float dieTime = 2.5f;
 
 	public int currentAttackTransform;
 	public Transform[] attackTranforms;
@@ -80,7 +81,11 @@ public class Abilities : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		dead = stat.hp <= 0;
+		if(stat.hp <= 0 && !dead)
+		{
+			dead = true;
+			Destroy(gameObject, dieTime);
+		}
 	}
 
 	#region Attack and Defense

@@ -24,6 +24,8 @@ public class GameControl : MonoBehaviour
 
 	public static bool initialized;
 
+	public static bool inWorld;//are you in the world? used to know if can spawn player
+
 	public static Camera mainCamera;
 
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
@@ -190,6 +192,7 @@ public class GameControl : MonoBehaviour
 		if(me == null) SetUpPlayer(CreatePlayerObject());
 
 		playerExists = true;
+		inWorld = true;
 		loading = false;
     }
 
@@ -258,17 +261,21 @@ public class GameControl : MonoBehaviour
 	void Respawn()
 	{
 		//TODO: clear all statis effects, maybe just delete player and spawn a new one
-		myAbilities.Reset();
+		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
-			me.gameObject.SetActive(true);
-			me.Respawn();
+			CreatePlayerObject();
+			//me.gameObject.SetActive(true);
+			//me.Respawn();
 		}
 	}
 
 	void OnGUI()
 	{
-		if (me != null && myAbilities.dead)
+		//TODO: warning, there could be other reasons for me being null, not just death
+		//TODO: actually this might be great, use this to select your respawn point, etc.
+		//TODO: probably won't work with multiple player characters
+		if (inWorld && me == null)
 		{// && me.ph.isMine
 			Respawn();
 		}

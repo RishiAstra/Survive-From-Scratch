@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 8140287808217058764}
   - component: {fileID: -453695833806950689}
   m_Layer: 9
-  m_Name: PlayerPref
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -420,6 +420,7 @@ MonoBehaviour:
   busy: 0
   attackAllowed: 0
   anim: {fileID: 95955619351916386}
+  dieTime: 2.5
   currentAttackTransform: 0
   attackTranforms:
   - {fileID: 4245163473704240}
@@ -487,10 +488,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d19f5f7da5436143af7fc67cc2fe63d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOwnerName: 
   id: 0
+  playerOwnerName: 
   type: Player
+  customSavePath: 
   a: {fileID: 924814010}
+  deleteOnDeath: 1
 --- !u!1 &1064236654853702
 GameObject:
   m_ObjectHideFlags: 0
