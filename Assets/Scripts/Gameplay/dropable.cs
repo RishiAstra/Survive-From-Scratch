@@ -36,7 +36,7 @@ public class dropable : MonoBehaviour {
 			if (me.bob.inv.items[me.bob.invSel].amount >= 1)
 			{
 				me.bob.RemoveItem(me.bob.invSel, 1);
-				GameObject g = Instantiate(gameControll.itemTypes[me.id].prefab, transform.position, transform.rotation);
+				GameObject g = Instantiate(gameControll.itemTypes[me.myID.id].prefab, transform.position, transform.rotation);
 				Rigidbody rig = g.GetComponent<Rigidbody>();
 				if (rig != null)
 				{
