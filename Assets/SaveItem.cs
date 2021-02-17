@@ -106,7 +106,8 @@ public class SaveItem : MonoBehaviour
 		transform.eulerAngles = data.rotation;
 	}
 
-
+	//TODO: make all save to 1 file to have better performance
+	//TODO: save on a different thread
 	public static IEnumerator LoadAll()
 	{
 		int typeCount = 0;
