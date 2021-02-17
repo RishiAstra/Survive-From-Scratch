@@ -10,7 +10,7 @@ using bobStuff;
 
 //TODO: save the path to player-controlled to the player's data file
 //TODO: save player data file including crafting inventory etc.
-public class SaveItem : MonoBehaviour
+public class SaveItem : Save
 {
 	public static List<SaveItem> saves;
 
@@ -19,24 +19,9 @@ public class SaveItem : MonoBehaviour
 	{
 		get
 		{
-			//if(customSavePath == "")
-			//{
 			return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Items/";
-			//}
-			//else
-			//{
-			//	return Application.persistentDataPath + "/" + customSavePath;
-			//}
 		}
 	}
-
-	public static long nextId = 1;
-	public static bool readNextId;
-	//public string playerOwnerName;
-
-	public long id;
-	//public string type;
-	//public string customSavePath;
 
 	public Abilities a;
 	public ID myID;
@@ -51,12 +36,10 @@ public class SaveItem : MonoBehaviour
 		if (!readNextId)
 		{
 			string path = Application.persistentDataPath + "/nextidItems.txt";
-			//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 			if (File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
 			readNextId = true;
 		}
 
-		//if (saveAbilities) a = GetComponent<Abilities>();
 		if (id == 0)
 		{
 			id = nextId;
@@ -64,33 +47,15 @@ public class SaveItem : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
-
-	//public string GetPath()
+	//public void SaveDataToFile()
 	//{
-	//	return  + type + "/" + type;
-	//}
-
-	public void SaveDataToFile()
-	{
-		string path = savePath + myID.idString + "/";
-		Directory.CreateDirectory(path);
-		File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
-	}
-
-	//public void GetDataFromFile()
-	//{
-
+	//	string path = savePath + myID.idString + "/";
+	//	Directory.CreateDirectory(path);
+	//	File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
 	//}
 
 	public SaveDataItem GetData()
 	{
-		Inventory inventory = GetComponent<Inventory>();
-		List<Item> tempItems = inventory != null ? GetComponent<Inventory>().items : null;
 		return new SaveDataItem
 		{
 			id = id,
@@ -128,28 +93,67 @@ public class SaveItem : MonoBehaviour
 			//yield return toSpawnAsync;
 			//GameObject toSpawn = toSpawnAsync.Result;
 			//TODO: saving takes too long!
-			GameObject toSpawn = gameControll.itemTypes[gameControll.StringIdMap[type]].prefab;
-			foreach (string idPath in Directory.GetFiles(typeString))
+			GameObject toSpawn = GameControl.itemTypes[GameControl.StringIdMap[type]].prefab;
+			string typeFilePath = typeString + "/" + type + ".json";
+			if (File.Exists(typeFilePath))
 			{
-				itemCount++;
-				GameObject g = Instantiate(toSpawn);
-				SaveDataItem saveData = JsonConvert.DeserializeObject<SaveDataItem>(File.ReadAllText(idPath));
-				g.GetComponent<SaveItem>().SetData(saveData);
+				List<SaveDataItem> tempData = JsonConvert.DeserializeObject<List<SaveDataItem>>(File.ReadAllText(typeFilePath));
+
+				foreach (SaveDataItem s in tempData)
+				{
+					itemCount++;
+					GameObject g = Instantiate(toSpawn);
+					g.GetComponent<SaveItem>().SetData(s);
+				}
 			}
+			else
+			{
+				Debug.LogWarning("No file for type:" + type);
+			}			
 		}
-		print("Loaded entities: " + itemCount + ", " + typeCount + "types");
+		print("Loaded items: " + itemCount + ", " + typeCount + "types");
 		yield return null;
 	}
 
 	public static void SaveAll()
 	{
-		foreach (SaveItem s in saves)
+		int saveCount = saves.Count;//keep this constant during saving i guess
+
+		//keep track of data to be saved
+		List<List<SaveDataItem>> toSave = new List<List<SaveDataItem>>();
+		Dictionary<string, int> typeToIndex = new Dictionary<string, int>();
+
+		//go through all the things to be saved
+		for (int i = 0; i < saveCount; i++)
 		{
-			s.SaveDataToFile();
+			//get item and type
+			SaveItem temp = saves[i];
+			string tempId = temp.myID.idString;
+
+			int index;
+			//find list for this type, otherwise add new one for this type
+			if (!typeToIndex.TryGetValue(tempId, out index))
+			{
+				index = toSave.Count;
+				toSave.Add(new List<SaveDataItem>());
+				typeToIndex.Add(tempId, index);
+			}
+
+			//add this data to the type list
+			toSave[index].Add(saves[i].GetData());
 		}
-		string path = Application.persistentDataPath + "/nextidItems.txt";
-		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
-		File.WriteAllText(path, nextId.ToString());
+
+		//save each to the right name
+		foreach (KeyValuePair<string, int> i in typeToIndex)
+		{
+			string path = savePath + i.Key + "/";
+			Directory.CreateDirectory(path);
+			File.WriteAllText(path + i.Key + ".json", JsonConvert.SerializeObject(toSave[i.Value], Formatting.Indented));
+		}
+
+		//save next id
+		string nextIdPath = Application.persistentDataPath + "/nextidItems.txt";
+		File.WriteAllText(nextIdPath, nextId.ToString());
 	}
 }
 

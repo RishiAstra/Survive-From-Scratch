@@ -41,7 +41,7 @@ public class HPBar : MonoBehaviour
 		bool image = hpBarImage != null;
 		bool text = hpText != null;
 		bool textUI = hpTextUI != null;
-		if (hpHolder != null) hpHolder.LookAt(gameControll.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
+		if (hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
 
 		if (a.dead)
 		{			

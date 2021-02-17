@@ -32,12 +32,12 @@ public class Crafting : MonoBehaviour
 
     public List<Recipie> recipies;
 
-    private gameControll me;
+    private GameControl me;
     // Start is called before the first frame update
     public void Start()
     {
-        me = GetComponent<gameControll>();
-        if (gameControll.main == null) gameControll.main = me;
+        me = GetComponent<GameControl>();
+        if (GameControl.main == null) GameControl.main = me;
 
         craftInventory.invChange.AddListener(OnCraftInventoryChanged);
         craftInventory.take = true;
@@ -134,7 +134,7 @@ public class Crafting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (gameControll.main.craftInventory.activeSelf)
+		if (GameControl.main.craftInventory.activeSelf)
 		{
             
             RefreshCraftableRecipies();

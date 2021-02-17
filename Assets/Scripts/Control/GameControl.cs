@@ -12,7 +12,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
-public class gameControll : MonoBehaviour
+public class GameControl : MonoBehaviour
 {
 	//public static string playerSavePath = Application.persistentDataPath + "/Players/";
 	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
@@ -34,7 +34,7 @@ public class gameControll : MonoBehaviour
 	public static List<ItemType> itemTypes;
 	public static Dictionary<string, int> StringIdMap;
 
-	public static gameControll main;
+	public static GameControl main;
 
 	public string serverIp;
 	public string mapScenePath;
@@ -434,7 +434,7 @@ public class gameControll : MonoBehaviour
 
 	public void SetUpPlayer(GameObject newPlayerObject)
 	{
-		Save save = newPlayerObject.GetComponent<Save>();
+		SaveEntity save = newPlayerObject.GetComponent<SaveEntity>();
 		save.playerOwnerName = username;
 
 		me = newPlayerObject.GetComponent<Player>();
@@ -495,7 +495,7 @@ public class gameControll : MonoBehaviour
 	}
 
 	#region save
-	public static void SavePlayer(gameControll p)
+	public static void SavePlayer(GameControl p)
 	{
 		Crafting crafting = p.GetComponent<Crafting>();
 		PlayerSaveData s = new PlayerSaveData()
@@ -509,7 +509,7 @@ public class gameControll : MonoBehaviour
 		Debug.Log("Saved player data for username: " + username);
 	}
 
-	public static void LoadPlayer(gameControll p)
+	public static void LoadPlayer(GameControl p)
 	{
 		Crafting crafting = p.GetComponent<Crafting>();
 		string path = Authenticator.GetAccountPath(username) + "data.json";
@@ -556,14 +556,14 @@ public class gameControll : MonoBehaviour
 	{
 		LoadPlayer(this);
 		yield return SaveItem.LoadAll();//load items (inc. buildings maybe) first
-		yield return Save.LoadAll();
+		yield return SaveEntity.LoadAll();
 		print("loaded saved entities and items...");
 	}
 
 	public void SaveStuff()
 	{
 		SavePlayer(this);
-		Save.SaveAll();
+		SaveEntity.SaveAll();
 		SaveItem.SaveAll();
 		print("saved entities and items...");
 	}

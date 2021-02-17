@@ -10,7 +10,7 @@ public class ID : MonoBehaviour
 	// Start is called before the first frame update
 	void Awake()
 	{
-		id = gameControll.NameToId(idString);
+		id = GameControl.NameToId(idString);
 	}
 
 	// Update is called once per frame

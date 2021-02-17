@@ -20,7 +20,7 @@ public class HeldItem : MonoBehaviour
         if (ItemIcon.held.id != 0)
         {
             img.color = Color.white;
-            img.sprite = gameControll.itemTypes[ItemIcon.held.id].icon;
+            img.sprite = GameControl.itemTypes[ItemIcon.held.id].icon;
 			amountText.enabled = true;
 			amountText.text = ItemIcon.held.amount > 1 ? ItemIcon.held.amount.ToString() : "";
             transform.position = Input.mousePosition;

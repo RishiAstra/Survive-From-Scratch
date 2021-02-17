@@ -10,29 +10,19 @@ using bobStuff;
 
 //TODO: save the path to player-controlled to the player's data file
 //TODO: save player data file including crafting inventory etc.
-public class Save : MonoBehaviour
+public class SaveEntity : Save
 {
-	public static List<Save> saves;
-
+	public static List<SaveEntity> saves;
+	
 	const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
-			//if(customSavePath == "")
-			//{
-				return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Entities/";
-			//}
-			//else
-			//{
-			//	return Application.persistentDataPath + "/" + customSavePath;
-			//}
+			return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Entities/";
 		}
 	}
 
-	public static long nextId = 1;
-	public static bool readNextId;
 	public string playerOwnerName;
 
-    public long id;
 	public string type;
 	public string customSavePath;
 
@@ -41,7 +31,7 @@ public class Save : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		if (saves == null) saves = new List<Save>();
+		if (saves == null) saves = new List<SaveEntity>();
 		saves.Add(this);
 
 		if (!readNextId)
@@ -107,9 +97,9 @@ public class Save : MonoBehaviour
 		transform.position = data.position;
 		transform.eulerAngles = data.rotation;
 		playerOwnerName = data.playerOwnerName;
-		if(playerOwnerName == gameControll.username)
+		if(playerOwnerName == GameControl.username)
 		{
-			gameControll.main.SetUpPlayer(gameObject);
+			GameControl.main.SetUpPlayer(gameObject);
 		}
 		List<Item> tempItems = data.items;
 		Inventory inventory = GetComponent<Inventory>();
@@ -151,7 +141,7 @@ public class Save : MonoBehaviour
 				GameObject g = Instantiate(toSpawn);
 				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
 				g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
-				g.GetComponent<Save>().SetData(saveData);
+				g.GetComponent<SaveEntity>().SetData(saveData);
 			}
 		}
 		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
@@ -160,7 +150,7 @@ public class Save : MonoBehaviour
 
 	public static void SaveAll()
 	{
-		foreach(Save s in saves)
+		foreach(SaveEntity s in saves)
 		{
 			s.SaveDataToFile();
 		}
