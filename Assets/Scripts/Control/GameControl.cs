@@ -264,7 +264,7 @@ public class GameControl : MonoBehaviour
 		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
-			CreatePlayerObject();
+			SetUpPlayer(CreatePlayerObject());
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
 		}

@@ -66,11 +66,14 @@ public class Abilities : MonoBehaviour
 	public int currentAttackTransform;
 	public Transform[] attackTranforms;
 
+	private void Awake()
+	{
+		if (resetOnStart) Reset();//reset before anythign else can happen
 
+	}
 	// Start is called before the first frame update
 	void Start()
 	{
-		if(resetOnStart) Reset();
 	}
 
 	public void Reset()
