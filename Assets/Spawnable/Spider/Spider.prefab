@@ -2559,6 +2559,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa444949664c8741bbed5aabb7b5394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loots:
+  - minAmount: 1
+    maxAmount: 2
+    chance: 1
+    item:
+      id: 2
+      amount: 1
+      strength: 0
+      currentStrength: 0
 --- !u!1 &9089679403127632744
 GameObject:
   m_ObjectHideFlags: 0

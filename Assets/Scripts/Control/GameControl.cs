@@ -197,19 +197,23 @@ public class GameControl : MonoBehaviour
 
 	public static int NameToId(string s)
 	{
+		if (StringIdMap == null) InitializeItemTypeMap();
 		return StringIdMap[s];
 	}
 
 	#region Item Types
-
-	private void InitializeItemTypes()
+	public static void InitializeItemTypeMap()
 	{
 		StringIdMap = new Dictionary<string, int>(itemTypes.Count);
-		for(int i = 0; i < itemTypes.Count; i++)
+		for (int i = 0; i < itemTypes.Count; i++)
 		{
 			//add to the dictionary to convert names to ids
 			StringIdMap.Add(itemTypes[i].name, i);
 		}
+	}
+
+	private void InitializeItemTypes()
+	{
 		StartCoroutine(LoadItemData());
 	}
 
@@ -538,6 +542,7 @@ public class GameControl : MonoBehaviour
 				itemTypes.Add(new ItemType());
 				Debug.LogError("No itemtypes list, made a new one");
 			}
+			InitializeItemTypeMap();
 		}
 	}
 

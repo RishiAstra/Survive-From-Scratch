@@ -18,7 +18,7 @@ public class gameControllEditor : Editor
 	{
 		t = (GameControl)target;
 		GameControl.CheckItemTypes();
-
+		bool refreshItemTypeMap = false;
 		DrawDefaultInspector();
 		UpdateShowList();		
 			
@@ -54,17 +54,22 @@ public class gameControllEditor : Editor
 					//{
 					//	changed = true;
 					//}
-
+					if (item.name != GameControl.itemTypes[i].name)
+					{
+						refreshItemTypeMap = true;
+					}
 					GameControl.itemTypes[i] = item;
 					EditorGUILayout.LabelField("Add or Remove ItemType", EditorStyles.boldLabel);
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button("+"))
 					{
 						GameControl.itemTypes.Insert(i + 1, new ItemType());
+						refreshItemTypeMap = true;
 					}
 					if (GUILayout.Button("-"))
 					{
 						GameControl.itemTypes.RemoveAt(i);
+						refreshItemTypeMap = true;
 					}
 					GUILayout.EndHorizontal();
 					EditorGUI.indentLevel -= 2;
@@ -77,6 +82,7 @@ public class gameControllEditor : Editor
 			if (GUILayout.Button("+ Append ItemType"))
 			{
 				GameControl.itemTypes.Add(new ItemType());
+				refreshItemTypeMap = true;
 			}
 
 			if (GUILayout.Button("Save"))
@@ -85,6 +91,8 @@ public class gameControllEditor : Editor
 			}
 		}
 		EditorGUI.indentLevel -= 2;
+
+		if(refreshItemTypeMap) GameControl.InitializeItemTypeMap();
 	}
 
 	void UpdateShowList()
