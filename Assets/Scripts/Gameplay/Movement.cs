@@ -38,8 +38,8 @@ public class Movement : MonoBehaviour
 	//private Vector3 ArmatureStartRot;
 	//private Vector3 dir;
 	//private float lastA;
-	private float lastArmatureRot;
-	public Transform Armature;
+	//private float lastArmatureRot;
+	//public Transform Armature;
 	[Space(40)]
 	public bool targetPos;//target position or direcion?
 	public Vector3 direction;//the direction to move
@@ -65,7 +65,7 @@ public class Movement : MonoBehaviour
 			totalIdleWeight += idleWeights[i];
 		}
 		//ArmatureStartRot = Armature.localEulerAngles;
-		lastArmatureRot = Armature.localEulerAngles.y;
+		//lastArmatureRot = Armature.localEulerAngles.y;
 		//yRot = transform.eulerAngles.y;
 		rig = GetComponent<Rigidbody>();
 		angle = transform.rotation;

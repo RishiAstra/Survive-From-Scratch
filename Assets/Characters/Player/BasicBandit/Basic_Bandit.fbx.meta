@@ -1,376 +1,1060 @@
 fileFormatVersion: 2
 guid: fe55e5a0c1bcd72488aa4508bea6f93b
-timeCreated: 1495748942
-licenseType: Store
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: Armature
-    100002: BasicBandit_Body
-    100004: BasicBandit_Clothes
-    100006: BasicBandit_Eye
-    100008: BasicBandit_Mask
-    100010: //RootNode
-    100012: Chest
-    100014: Eye.L
-    100016: Eye.L_end
-    100018: Eye.R
-    100020: Eye.R_end
-    100022: Foot.L
-    100024: Foot.R
-    100026: Hand.L
-    100028: Hand.R
-    100030: Head
-    100032: Hips
-    100034: IndexDistal.L
-    100036: IndexDistal.L_end
-    100038: IndexDistal.R
-    100040: IndexDistal.R_end
-    100042: IndexMiddle.L
-    100044: IndexMiddle.R
-    100046: IndexProximal.L
-    100048: IndexProximal.R
-    100050: Jaw
-    100052: Jaw_end
-    100054: LittleDistal.L
-    100056: LittleDistal.L_end
-    100058: LittleDistal.R
-    100060: LittleDistal.R_end
-    100062: LittleMiddle.L
-    100064: LittleMiddle.R
-    100066: LittleProximal.L
-    100068: LittleProximal.R
-    100070: LowerArm.L
-    100072: LowerArm.R
-    100074: LowerLeg.L
-    100076: LowerLeg.R
-    100078: MiddleDistal.L
-    100080: MiddleDistal.L_end
-    100082: MiddleDistal.R
-    100084: MiddleDistal.R_end
-    100086: MiddleMiddle.L
-    100088: MiddleMiddle.R
-    100090: MiddleProximal.L
-    100092: MiddleProximal.R
-    100094: Neck
-    100096: RingDistal.L
-    100098: RingDistal.L_end
-    100100: RingDistal.R
-    100102: RingDistal.R_end
-    100104: RingMiddle.L
-    100106: RingMiddle.R
-    100108: RingProximal.L
-    100110: RingProximal.R
-    100112: Shoulder.L
-    100114: Shoulder.R
-    100116: Spine
-    100118: ThumbDistal.L
-    100120: ThumbDistal.L_end
-    100122: ThumbDistal.R
-    100124: ThumbDistal.R_end
-    100126: ThumbMiddle.L
-    100128: ThumbMiddle.R
-    100130: ThumbProximal.L
-    100132: ThumbProximal.R
-    100134: Toe.L
-    100136: Toe.L_end
-    100138: Toe.R
-    100140: Toe.R_end
-    100142: UpperArm.L
-    100144: UpperArm.R
-    100146: UpperLeg.L
-    100148: UpperLeg.R
-    100150: Eye.L_end_end
-    100152: Eye.R_end_end
-    100154: IndexDistal.L_end_end
-    100156: IndexDistal.R_end_end
-    100158: Jaw_end_end
-    100160: LittleDistal.L_end_end
-    100162: LittleDistal.R_end_end
-    100164: MiddleDistal.L_end_end
-    100166: MiddleDistal.R_end_end
-    100168: RingDistal.L_end_end
-    100170: RingDistal.R_end_end
-    100172: ThumbDistal.L_end_end
-    100174: ThumbDistal.R_end_end
-    100176: Toe.L_end_end
-    100178: Toe.R_end_end
-    100180: Eye.L_end_end_end
-    100182: Eye.R_end_end_end
-    100184: IndexDistal.L_end_end_end
-    100186: IndexDistal.R_end_end_end
-    100188: Jaw_end_end_end
-    100190: LittleDistal.L_end_end_end
-    100192: LittleDistal.R_end_end_end
-    100194: MiddleDistal.L_end_end_end
-    100196: MiddleDistal.R_end_end_end
-    100198: RingDistal.L_end_end_end
-    100200: RingDistal.R_end_end_end
-    100202: ThumbDistal.L_end_end_end
-    100204: ThumbDistal.R_end_end_end
-    100206: Toe.L_end_end_end
-    100208: Toe.R_end_end_end
-    100210: Eye.L_end_end_end_end
-    100212: Eye.R_end_end_end_end
-    100214: IndexDistal.L_end_end_end_end
-    100216: IndexDistal.R_end_end_end_end
-    100218: Jaw_end_end_end_end
-    100220: LittleDistal.L_end_end_end_end
-    100222: LittleDistal.R_end_end_end_end
-    100224: MiddleDistal.L_end_end_end_end
-    100226: MiddleDistal.R_end_end_end_end
-    100228: RingDistal.L_end_end_end_end
-    100230: RingDistal.R_end_end_end_end
-    100232: ThumbDistal.L_end_end_end_end
-    100234: ThumbDistal.R_end_end_end_end
-    100236: Toe.L_end_end_end_end
-    100238: Toe.R_end_end_end_end
-    100240: BasicBandit_Clothes.001
-    100242: Eye.L_end_end_end_end_end
-    100244: Eye.R_end_end_end_end_end
-    100246: IndexDistal.L_end_end_end_end_end
-    100248: IndexDistal.R_end_end_end_end_end
-    100250: Jaw_end_end_end_end_end
-    100252: LittleDistal.L_end_end_end_end_end
-    100254: LittleDistal.R_end_end_end_end_end
-    100256: MiddleDistal.L_end_end_end_end_end
-    100258: MiddleDistal.R_end_end_end_end_end
-    100260: RingDistal.L_end_end_end_end_end
-    100262: RingDistal.R_end_end_end_end_end
-    100264: ThumbDistal.L_end_end_end_end_end
-    100266: ThumbDistal.R_end_end_end_end_end
-    100268: Toe.L_end_end_end_end_end
-    100270: Toe.R_end_end_end_end_end
-    100272: Eye.L_end_end_end_end_end_end
-    100274: Eye.R_end_end_end_end_end_end
-    100276: IndexDistal.L_end_end_end_end_end_end
-    100278: IndexDistal.R_end_end_end_end_end_end
-    100280: Jaw_end_end_end_end_end_end
-    100282: LittleDistal.L_end_end_end_end_end_end
-    100284: LittleDistal.R_end_end_end_end_end_end
-    100286: MiddleDistal.L_end_end_end_end_end_end
-    100288: MiddleDistal.R_end_end_end_end_end_end
-    100290: RingDistal.L_end_end_end_end_end_end
-    100292: RingDistal.R_end_end_end_end_end_end
-    100294: ThumbDistal.L_end_end_end_end_end_end
-    100296: ThumbDistal.R_end_end_end_end_end_end
-    100298: Toe.L_end_end_end_end_end_end
-    100300: Toe.R_end_end_end_end_end_end
-    100302: Eye.L_end_end_end_end_end_end_end
-    100304: Eye.R_end_end_end_end_end_end_end
-    100306: IndexDistal.L_end_end_end_end_end_end_end
-    100308: IndexDistal.R_end_end_end_end_end_end_end
-    100310: Jaw_end_end_end_end_end_end_end
-    100312: LittleDistal.L_end_end_end_end_end_end_end
-    100314: LittleDistal.R_end_end_end_end_end_end_end
-    100316: MiddleDistal.L_end_end_end_end_end_end_end
-    100318: MiddleDistal.R_end_end_end_end_end_end_end
-    100320: RingDistal.L_end_end_end_end_end_end_end
-    100322: RingDistal.R_end_end_end_end_end_end_end
-    100324: ThumbDistal.L_end_end_end_end_end_end_end
-    100326: ThumbDistal.R_end_end_end_end_end_end_end
-    100328: Toe.L_end_end_end_end_end_end_end
-    100330: Toe.R_end_end_end_end_end_end_end
-    400000: Armature
-    400002: BasicBandit_Body
-    400004: BasicBandit_Clothes
-    400006: BasicBandit_Eye
-    400008: BasicBandit_Mask
-    400010: //RootNode
-    400012: Chest
-    400014: Eye.L
-    400016: Eye.L_end
-    400018: Eye.R
-    400020: Eye.R_end
-    400022: Foot.L
-    400024: Foot.R
-    400026: Hand.L
-    400028: Hand.R
-    400030: Head
-    400032: Hips
-    400034: IndexDistal.L
-    400036: IndexDistal.L_end
-    400038: IndexDistal.R
-    400040: IndexDistal.R_end
-    400042: IndexMiddle.L
-    400044: IndexMiddle.R
-    400046: IndexProximal.L
-    400048: IndexProximal.R
-    400050: Jaw
-    400052: Jaw_end
-    400054: LittleDistal.L
-    400056: LittleDistal.L_end
-    400058: LittleDistal.R
-    400060: LittleDistal.R_end
-    400062: LittleMiddle.L
-    400064: LittleMiddle.R
-    400066: LittleProximal.L
-    400068: LittleProximal.R
-    400070: LowerArm.L
-    400072: LowerArm.R
-    400074: LowerLeg.L
-    400076: LowerLeg.R
-    400078: MiddleDistal.L
-    400080: MiddleDistal.L_end
-    400082: MiddleDistal.R
-    400084: MiddleDistal.R_end
-    400086: MiddleMiddle.L
-    400088: MiddleMiddle.R
-    400090: MiddleProximal.L
-    400092: MiddleProximal.R
-    400094: Neck
-    400096: RingDistal.L
-    400098: RingDistal.L_end
-    400100: RingDistal.R
-    400102: RingDistal.R_end
-    400104: RingMiddle.L
-    400106: RingMiddle.R
-    400108: RingProximal.L
-    400110: RingProximal.R
-    400112: Shoulder.L
-    400114: Shoulder.R
-    400116: Spine
-    400118: ThumbDistal.L
-    400120: ThumbDistal.L_end
-    400122: ThumbDistal.R
-    400124: ThumbDistal.R_end
-    400126: ThumbMiddle.L
-    400128: ThumbMiddle.R
-    400130: ThumbProximal.L
-    400132: ThumbProximal.R
-    400134: Toe.L
-    400136: Toe.L_end
-    400138: Toe.R
-    400140: Toe.R_end
-    400142: UpperArm.L
-    400144: UpperArm.R
-    400146: UpperLeg.L
-    400148: UpperLeg.R
-    400150: Eye.L_end_end
-    400152: Eye.R_end_end
-    400154: IndexDistal.L_end_end
-    400156: IndexDistal.R_end_end
-    400158: Jaw_end_end
-    400160: LittleDistal.L_end_end
-    400162: LittleDistal.R_end_end
-    400164: MiddleDistal.L_end_end
-    400166: MiddleDistal.R_end_end
-    400168: RingDistal.L_end_end
-    400170: RingDistal.R_end_end
-    400172: ThumbDistal.L_end_end
-    400174: ThumbDistal.R_end_end
-    400176: Toe.L_end_end
-    400178: Toe.R_end_end
-    400180: Eye.L_end_end_end
-    400182: Eye.R_end_end_end
-    400184: IndexDistal.L_end_end_end
-    400186: IndexDistal.R_end_end_end
-    400188: Jaw_end_end_end
-    400190: LittleDistal.L_end_end_end
-    400192: LittleDistal.R_end_end_end
-    400194: MiddleDistal.L_end_end_end
-    400196: MiddleDistal.R_end_end_end
-    400198: RingDistal.L_end_end_end
-    400200: RingDistal.R_end_end_end
-    400202: ThumbDistal.L_end_end_end
-    400204: ThumbDistal.R_end_end_end
-    400206: Toe.L_end_end_end
-    400208: Toe.R_end_end_end
-    400210: Eye.L_end_end_end_end
-    400212: Eye.R_end_end_end_end
-    400214: IndexDistal.L_end_end_end_end
-    400216: IndexDistal.R_end_end_end_end
-    400218: Jaw_end_end_end_end
-    400220: LittleDistal.L_end_end_end_end
-    400222: LittleDistal.R_end_end_end_end
-    400224: MiddleDistal.L_end_end_end_end
-    400226: MiddleDistal.R_end_end_end_end
-    400228: RingDistal.L_end_end_end_end
-    400230: RingDistal.R_end_end_end_end
-    400232: ThumbDistal.L_end_end_end_end
-    400234: ThumbDistal.R_end_end_end_end
-    400236: Toe.L_end_end_end_end
-    400238: Toe.R_end_end_end_end
-    400240: BasicBandit_Clothes.001
-    400242: Eye.L_end_end_end_end_end
-    400244: Eye.R_end_end_end_end_end
-    400246: IndexDistal.L_end_end_end_end_end
-    400248: IndexDistal.R_end_end_end_end_end
-    400250: Jaw_end_end_end_end_end
-    400252: LittleDistal.L_end_end_end_end_end
-    400254: LittleDistal.R_end_end_end_end_end
-    400256: MiddleDistal.L_end_end_end_end_end
-    400258: MiddleDistal.R_end_end_end_end_end
-    400260: RingDistal.L_end_end_end_end_end
-    400262: RingDistal.R_end_end_end_end_end
-    400264: ThumbDistal.L_end_end_end_end_end
-    400266: ThumbDistal.R_end_end_end_end_end
-    400268: Toe.L_end_end_end_end_end
-    400270: Toe.R_end_end_end_end_end
-    400272: Eye.L_end_end_end_end_end_end
-    400274: Eye.R_end_end_end_end_end_end
-    400276: IndexDistal.L_end_end_end_end_end_end
-    400278: IndexDistal.R_end_end_end_end_end_end
-    400280: Jaw_end_end_end_end_end_end
-    400282: LittleDistal.L_end_end_end_end_end_end
-    400284: LittleDistal.R_end_end_end_end_end_end
-    400286: MiddleDistal.L_end_end_end_end_end_end
-    400288: MiddleDistal.R_end_end_end_end_end_end
-    400290: RingDistal.L_end_end_end_end_end_end
-    400292: RingDistal.R_end_end_end_end_end_end
-    400294: ThumbDistal.L_end_end_end_end_end_end
-    400296: ThumbDistal.R_end_end_end_end_end_end
-    400298: Toe.L_end_end_end_end_end_end
-    400300: Toe.R_end_end_end_end_end_end
-    400302: Eye.L_end_end_end_end_end_end_end
-    400304: Eye.R_end_end_end_end_end_end_end
-    400306: IndexDistal.L_end_end_end_end_end_end_end
-    400308: IndexDistal.R_end_end_end_end_end_end_end
-    400310: Jaw_end_end_end_end_end_end_end
-    400312: LittleDistal.L_end_end_end_end_end_end_end
-    400314: LittleDistal.R_end_end_end_end_end_end_end
-    400316: MiddleDistal.L_end_end_end_end_end_end_end
-    400318: MiddleDistal.R_end_end_end_end_end_end_end
-    400320: RingDistal.L_end_end_end_end_end_end_end
-    400322: RingDistal.R_end_end_end_end_end_end_end
-    400324: ThumbDistal.L_end_end_end_end_end_end_end
-    400326: ThumbDistal.R_end_end_end_end_end_end_end
-    400328: Toe.L_end_end_end_end_end_end_end
-    400330: Toe.R_end_end_end_end_end_end_end
-    4300000: BasicBandit_Mask
-    4300002: BasicBandit_Eye
-    4300004: BasicBandit_Body
-    4300006: BasicBandit_Clothes
-    4300008: BasicBandit_Clothes.001
-    9500000: //RootNode
-    13700000: BasicBandit_Body
-    13700002: BasicBandit_Clothes
-    13700004: BasicBandit_Eye
-    13700006: BasicBandit_Mask
-    13700008: BasicBandit_Clothes.001
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Armature
+  - first:
+      1: 100002
+    second: BasicBandit_Body
+  - first:
+      1: 100004
+    second: BasicBandit_Clothes
+  - first:
+      1: 100006
+    second: BasicBandit_Eye
+  - first:
+      1: 100008
+    second: BasicBandit_Mask
+  - first:
+      1: 100010
+    second: //RootNode
+  - first:
+      1: 100012
+    second: Chest
+  - first:
+      1: 100014
+    second: Eye.L
+  - first:
+      1: 100016
+    second: Eye.L_end
+  - first:
+      1: 100018
+    second: Eye.R
+  - first:
+      1: 100020
+    second: Eye.R_end
+  - first:
+      1: 100022
+    second: Foot.L
+  - first:
+      1: 100024
+    second: Foot.R
+  - first:
+      1: 100026
+    second: Hand.L
+  - first:
+      1: 100028
+    second: Hand.R
+  - first:
+      1: 100030
+    second: Head
+  - first:
+      1: 100032
+    second: Hips
+  - first:
+      1: 100034
+    second: IndexDistal.L
+  - first:
+      1: 100036
+    second: IndexDistal.L_end
+  - first:
+      1: 100038
+    second: IndexDistal.R
+  - first:
+      1: 100040
+    second: IndexDistal.R_end
+  - first:
+      1: 100042
+    second: IndexMiddle.L
+  - first:
+      1: 100044
+    second: IndexMiddle.R
+  - first:
+      1: 100046
+    second: IndexProximal.L
+  - first:
+      1: 100048
+    second: IndexProximal.R
+  - first:
+      1: 100050
+    second: Jaw
+  - first:
+      1: 100052
+    second: Jaw_end
+  - first:
+      1: 100054
+    second: LittleDistal.L
+  - first:
+      1: 100056
+    second: LittleDistal.L_end
+  - first:
+      1: 100058
+    second: LittleDistal.R
+  - first:
+      1: 100060
+    second: LittleDistal.R_end
+  - first:
+      1: 100062
+    second: LittleMiddle.L
+  - first:
+      1: 100064
+    second: LittleMiddle.R
+  - first:
+      1: 100066
+    second: LittleProximal.L
+  - first:
+      1: 100068
+    second: LittleProximal.R
+  - first:
+      1: 100070
+    second: LowerArm.L
+  - first:
+      1: 100072
+    second: LowerArm.R
+  - first:
+      1: 100074
+    second: LowerLeg.L
+  - first:
+      1: 100076
+    second: LowerLeg.R
+  - first:
+      1: 100078
+    second: MiddleDistal.L
+  - first:
+      1: 100080
+    second: MiddleDistal.L_end
+  - first:
+      1: 100082
+    second: MiddleDistal.R
+  - first:
+      1: 100084
+    second: MiddleDistal.R_end
+  - first:
+      1: 100086
+    second: MiddleMiddle.L
+  - first:
+      1: 100088
+    second: MiddleMiddle.R
+  - first:
+      1: 100090
+    second: MiddleProximal.L
+  - first:
+      1: 100092
+    second: MiddleProximal.R
+  - first:
+      1: 100094
+    second: Neck
+  - first:
+      1: 100096
+    second: RingDistal.L
+  - first:
+      1: 100098
+    second: RingDistal.L_end
+  - first:
+      1: 100100
+    second: RingDistal.R
+  - first:
+      1: 100102
+    second: RingDistal.R_end
+  - first:
+      1: 100104
+    second: RingMiddle.L
+  - first:
+      1: 100106
+    second: RingMiddle.R
+  - first:
+      1: 100108
+    second: RingProximal.L
+  - first:
+      1: 100110
+    second: RingProximal.R
+  - first:
+      1: 100112
+    second: Shoulder.L
+  - first:
+      1: 100114
+    second: Shoulder.R
+  - first:
+      1: 100116
+    second: Spine
+  - first:
+      1: 100118
+    second: ThumbDistal.L
+  - first:
+      1: 100120
+    second: ThumbDistal.L_end
+  - first:
+      1: 100122
+    second: ThumbDistal.R
+  - first:
+      1: 100124
+    second: ThumbDistal.R_end
+  - first:
+      1: 100126
+    second: ThumbMiddle.L
+  - first:
+      1: 100128
+    second: ThumbMiddle.R
+  - first:
+      1: 100130
+    second: ThumbProximal.L
+  - first:
+      1: 100132
+    second: ThumbProximal.R
+  - first:
+      1: 100134
+    second: Toe.L
+  - first:
+      1: 100136
+    second: Toe.L_end
+  - first:
+      1: 100138
+    second: Toe.R
+  - first:
+      1: 100140
+    second: Toe.R_end
+  - first:
+      1: 100142
+    second: UpperArm.L
+  - first:
+      1: 100144
+    second: UpperArm.R
+  - first:
+      1: 100146
+    second: UpperLeg.L
+  - first:
+      1: 100148
+    second: UpperLeg.R
+  - first:
+      1: 100150
+    second: Eye.L_end_end
+  - first:
+      1: 100152
+    second: Eye.R_end_end
+  - first:
+      1: 100154
+    second: IndexDistal.L_end_end
+  - first:
+      1: 100156
+    second: IndexDistal.R_end_end
+  - first:
+      1: 100158
+    second: Jaw_end_end
+  - first:
+      1: 100160
+    second: LittleDistal.L_end_end
+  - first:
+      1: 100162
+    second: LittleDistal.R_end_end
+  - first:
+      1: 100164
+    second: MiddleDistal.L_end_end
+  - first:
+      1: 100166
+    second: MiddleDistal.R_end_end
+  - first:
+      1: 100168
+    second: RingDistal.L_end_end
+  - first:
+      1: 100170
+    second: RingDistal.R_end_end
+  - first:
+      1: 100172
+    second: ThumbDistal.L_end_end
+  - first:
+      1: 100174
+    second: ThumbDistal.R_end_end
+  - first:
+      1: 100176
+    second: Toe.L_end_end
+  - first:
+      1: 100178
+    second: Toe.R_end_end
+  - first:
+      1: 100180
+    second: Eye.L_end_end_end
+  - first:
+      1: 100182
+    second: Eye.R_end_end_end
+  - first:
+      1: 100184
+    second: IndexDistal.L_end_end_end
+  - first:
+      1: 100186
+    second: IndexDistal.R_end_end_end
+  - first:
+      1: 100188
+    second: Jaw_end_end_end
+  - first:
+      1: 100190
+    second: LittleDistal.L_end_end_end
+  - first:
+      1: 100192
+    second: LittleDistal.R_end_end_end
+  - first:
+      1: 100194
+    second: MiddleDistal.L_end_end_end
+  - first:
+      1: 100196
+    second: MiddleDistal.R_end_end_end
+  - first:
+      1: 100198
+    second: RingDistal.L_end_end_end
+  - first:
+      1: 100200
+    second: RingDistal.R_end_end_end
+  - first:
+      1: 100202
+    second: ThumbDistal.L_end_end_end
+  - first:
+      1: 100204
+    second: ThumbDistal.R_end_end_end
+  - first:
+      1: 100206
+    second: Toe.L_end_end_end
+  - first:
+      1: 100208
+    second: Toe.R_end_end_end
+  - first:
+      1: 100210
+    second: Eye.L_end_end_end_end
+  - first:
+      1: 100212
+    second: Eye.R_end_end_end_end
+  - first:
+      1: 100214
+    second: IndexDistal.L_end_end_end_end
+  - first:
+      1: 100216
+    second: IndexDistal.R_end_end_end_end
+  - first:
+      1: 100218
+    second: Jaw_end_end_end_end
+  - first:
+      1: 100220
+    second: LittleDistal.L_end_end_end_end
+  - first:
+      1: 100222
+    second: LittleDistal.R_end_end_end_end
+  - first:
+      1: 100224
+    second: MiddleDistal.L_end_end_end_end
+  - first:
+      1: 100226
+    second: MiddleDistal.R_end_end_end_end
+  - first:
+      1: 100228
+    second: RingDistal.L_end_end_end_end
+  - first:
+      1: 100230
+    second: RingDistal.R_end_end_end_end
+  - first:
+      1: 100232
+    second: ThumbDistal.L_end_end_end_end
+  - first:
+      1: 100234
+    second: ThumbDistal.R_end_end_end_end
+  - first:
+      1: 100236
+    second: Toe.L_end_end_end_end
+  - first:
+      1: 100238
+    second: Toe.R_end_end_end_end
+  - first:
+      1: 100240
+    second: BasicBandit_Clothes.001
+  - first:
+      1: 100242
+    second: Eye.L_end_end_end_end_end
+  - first:
+      1: 100244
+    second: Eye.R_end_end_end_end_end
+  - first:
+      1: 100246
+    second: IndexDistal.L_end_end_end_end_end
+  - first:
+      1: 100248
+    second: IndexDistal.R_end_end_end_end_end
+  - first:
+      1: 100250
+    second: Jaw_end_end_end_end_end
+  - first:
+      1: 100252
+    second: LittleDistal.L_end_end_end_end_end
+  - first:
+      1: 100254
+    second: LittleDistal.R_end_end_end_end_end
+  - first:
+      1: 100256
+    second: MiddleDistal.L_end_end_end_end_end
+  - first:
+      1: 100258
+    second: MiddleDistal.R_end_end_end_end_end
+  - first:
+      1: 100260
+    second: RingDistal.L_end_end_end_end_end
+  - first:
+      1: 100262
+    second: RingDistal.R_end_end_end_end_end
+  - first:
+      1: 100264
+    second: ThumbDistal.L_end_end_end_end_end
+  - first:
+      1: 100266
+    second: ThumbDistal.R_end_end_end_end_end
+  - first:
+      1: 100268
+    second: Toe.L_end_end_end_end_end
+  - first:
+      1: 100270
+    second: Toe.R_end_end_end_end_end
+  - first:
+      1: 100272
+    second: Eye.L_end_end_end_end_end_end
+  - first:
+      1: 100274
+    second: Eye.R_end_end_end_end_end_end
+  - first:
+      1: 100276
+    second: IndexDistal.L_end_end_end_end_end_end
+  - first:
+      1: 100278
+    second: IndexDistal.R_end_end_end_end_end_end
+  - first:
+      1: 100280
+    second: Jaw_end_end_end_end_end_end
+  - first:
+      1: 100282
+    second: LittleDistal.L_end_end_end_end_end_end
+  - first:
+      1: 100284
+    second: LittleDistal.R_end_end_end_end_end_end
+  - first:
+      1: 100286
+    second: MiddleDistal.L_end_end_end_end_end_end
+  - first:
+      1: 100288
+    second: MiddleDistal.R_end_end_end_end_end_end
+  - first:
+      1: 100290
+    second: RingDistal.L_end_end_end_end_end_end
+  - first:
+      1: 100292
+    second: RingDistal.R_end_end_end_end_end_end
+  - first:
+      1: 100294
+    second: ThumbDistal.L_end_end_end_end_end_end
+  - first:
+      1: 100296
+    second: ThumbDistal.R_end_end_end_end_end_end
+  - first:
+      1: 100298
+    second: Toe.L_end_end_end_end_end_end
+  - first:
+      1: 100300
+    second: Toe.R_end_end_end_end_end_end
+  - first:
+      1: 100302
+    second: Eye.L_end_end_end_end_end_end_end
+  - first:
+      1: 100304
+    second: Eye.R_end_end_end_end_end_end_end
+  - first:
+      1: 100306
+    second: IndexDistal.L_end_end_end_end_end_end_end
+  - first:
+      1: 100308
+    second: IndexDistal.R_end_end_end_end_end_end_end
+  - first:
+      1: 100310
+    second: Jaw_end_end_end_end_end_end_end
+  - first:
+      1: 100312
+    second: LittleDistal.L_end_end_end_end_end_end_end
+  - first:
+      1: 100314
+    second: LittleDistal.R_end_end_end_end_end_end_end
+  - first:
+      1: 100316
+    second: MiddleDistal.L_end_end_end_end_end_end_end
+  - first:
+      1: 100318
+    second: MiddleDistal.R_end_end_end_end_end_end_end
+  - first:
+      1: 100320
+    second: RingDistal.L_end_end_end_end_end_end_end
+  - first:
+      1: 100322
+    second: RingDistal.R_end_end_end_end_end_end_end
+  - first:
+      1: 100324
+    second: ThumbDistal.L_end_end_end_end_end_end_end
+  - first:
+      1: 100326
+    second: ThumbDistal.R_end_end_end_end_end_end_end
+  - first:
+      1: 100328
+    second: Toe.L_end_end_end_end_end_end_end
+  - first:
+      1: 100330
+    second: Toe.R_end_end_end_end_end_end_end
+  - first:
+      4: 400000
+    second: Armature
+  - first:
+      4: 400002
+    second: BasicBandit_Body
+  - first:
+      4: 400004
+    second: BasicBandit_Clothes
+  - first:
+      4: 400006
+    second: BasicBandit_Eye
+  - first:
+      4: 400008
+    second: BasicBandit_Mask
+  - first:
+      4: 400010
+    second: //RootNode
+  - first:
+      4: 400012
+    second: Chest
+  - first:
+      4: 400014
+    second: Eye.L
+  - first:
+      4: 400016
+    second: Eye.L_end
+  - first:
+      4: 400018
+    second: Eye.R
+  - first:
+      4: 400020
+    second: Eye.R_end
+  - first:
+      4: 400022
+    second: Foot.L
+  - first:
+      4: 400024
+    second: Foot.R
+  - first:
+      4: 400026
+    second: Hand.L
+  - first:
+      4: 400028
+    second: Hand.R
+  - first:
+      4: 400030
+    second: Head
+  - first:
+      4: 400032
+    second: Hips
+  - first:
+      4: 400034
+    second: IndexDistal.L
+  - first:
+      4: 400036
+    second: IndexDistal.L_end
+  - first:
+      4: 400038
+    second: IndexDistal.R
+  - first:
+      4: 400040
+    second: IndexDistal.R_end
+  - first:
+      4: 400042
+    second: IndexMiddle.L
+  - first:
+      4: 400044
+    second: IndexMiddle.R
+  - first:
+      4: 400046
+    second: IndexProximal.L
+  - first:
+      4: 400048
+    second: IndexProximal.R
+  - first:
+      4: 400050
+    second: Jaw
+  - first:
+      4: 400052
+    second: Jaw_end
+  - first:
+      4: 400054
+    second: LittleDistal.L
+  - first:
+      4: 400056
+    second: LittleDistal.L_end
+  - first:
+      4: 400058
+    second: LittleDistal.R
+  - first:
+      4: 400060
+    second: LittleDistal.R_end
+  - first:
+      4: 400062
+    second: LittleMiddle.L
+  - first:
+      4: 400064
+    second: LittleMiddle.R
+  - first:
+      4: 400066
+    second: LittleProximal.L
+  - first:
+      4: 400068
+    second: LittleProximal.R
+  - first:
+      4: 400070
+    second: LowerArm.L
+  - first:
+      4: 400072
+    second: LowerArm.R
+  - first:
+      4: 400074
+    second: LowerLeg.L
+  - first:
+      4: 400076
+    second: LowerLeg.R
+  - first:
+      4: 400078
+    second: MiddleDistal.L
+  - first:
+      4: 400080
+    second: MiddleDistal.L_end
+  - first:
+      4: 400082
+    second: MiddleDistal.R
+  - first:
+      4: 400084
+    second: MiddleDistal.R_end
+  - first:
+      4: 400086
+    second: MiddleMiddle.L
+  - first:
+      4: 400088
+    second: MiddleMiddle.R
+  - first:
+      4: 400090
+    second: MiddleProximal.L
+  - first:
+      4: 400092
+    second: MiddleProximal.R
+  - first:
+      4: 400094
+    second: Neck
+  - first:
+      4: 400096
+    second: RingDistal.L
+  - first:
+      4: 400098
+    second: RingDistal.L_end
+  - first:
+      4: 400100
+    second: RingDistal.R
+  - first:
+      4: 400102
+    second: RingDistal.R_end
+  - first:
+      4: 400104
+    second: RingMiddle.L
+  - first:
+      4: 400106
+    second: RingMiddle.R
+  - first:
+      4: 400108
+    second: RingProximal.L
+  - first:
+      4: 400110
+    second: RingProximal.R
+  - first:
+      4: 400112
+    second: Shoulder.L
+  - first:
+      4: 400114
+    second: Shoulder.R
+  - first:
+      4: 400116
+    second: Spine
+  - first:
+      4: 400118
+    second: ThumbDistal.L
+  - first:
+      4: 400120
+    second: ThumbDistal.L_end
+  - first:
+      4: 400122
+    second: ThumbDistal.R
+  - first:
+      4: 400124
+    second: ThumbDistal.R_end
+  - first:
+      4: 400126
+    second: ThumbMiddle.L
+  - first:
+      4: 400128
+    second: ThumbMiddle.R
+  - first:
+      4: 400130
+    second: ThumbProximal.L
+  - first:
+      4: 400132
+    second: ThumbProximal.R
+  - first:
+      4: 400134
+    second: Toe.L
+  - first:
+      4: 400136
+    second: Toe.L_end
+  - first:
+      4: 400138
+    second: Toe.R
+  - first:
+      4: 400140
+    second: Toe.R_end
+  - first:
+      4: 400142
+    second: UpperArm.L
+  - first:
+      4: 400144
+    second: UpperArm.R
+  - first:
+      4: 400146
+    second: UpperLeg.L
+  - first:
+      4: 400148
+    second: UpperLeg.R
+  - first:
+      4: 400150
+    second: Eye.L_end_end
+  - first:
+      4: 400152
+    second: Eye.R_end_end
+  - first:
+      4: 400154
+    second: IndexDistal.L_end_end
+  - first:
+      4: 400156
+    second: IndexDistal.R_end_end
+  - first:
+      4: 400158
+    second: Jaw_end_end
+  - first:
+      4: 400160
+    second: LittleDistal.L_end_end
+  - first:
+      4: 400162
+    second: LittleDistal.R_end_end
+  - first:
+      4: 400164
+    second: MiddleDistal.L_end_end
+  - first:
+      4: 400166
+    second: MiddleDistal.R_end_end
+  - first:
+      4: 400168
+    second: RingDistal.L_end_end
+  - first:
+      4: 400170
+    second: RingDistal.R_end_end
+  - first:
+      4: 400172
+    second: ThumbDistal.L_end_end
+  - first:
+      4: 400174
+    second: ThumbDistal.R_end_end
+  - first:
+      4: 400176
+    second: Toe.L_end_end
+  - first:
+      4: 400178
+    second: Toe.R_end_end
+  - first:
+      4: 400180
+    second: Eye.L_end_end_end
+  - first:
+      4: 400182
+    second: Eye.R_end_end_end
+  - first:
+      4: 400184
+    second: IndexDistal.L_end_end_end
+  - first:
+      4: 400186
+    second: IndexDistal.R_end_end_end
+  - first:
+      4: 400188
+    second: Jaw_end_end_end
+  - first:
+      4: 400190
+    second: LittleDistal.L_end_end_end
+  - first:
+      4: 400192
+    second: LittleDistal.R_end_end_end
+  - first:
+      4: 400194
+    second: MiddleDistal.L_end_end_end
+  - first:
+      4: 400196
+    second: MiddleDistal.R_end_end_end
+  - first:
+      4: 400198
+    second: RingDistal.L_end_end_end
+  - first:
+      4: 400200
+    second: RingDistal.R_end_end_end
+  - first:
+      4: 400202
+    second: ThumbDistal.L_end_end_end
+  - first:
+      4: 400204
+    second: ThumbDistal.R_end_end_end
+  - first:
+      4: 400206
+    second: Toe.L_end_end_end
+  - first:
+      4: 400208
+    second: Toe.R_end_end_end
+  - first:
+      4: 400210
+    second: Eye.L_end_end_end_end
+  - first:
+      4: 400212
+    second: Eye.R_end_end_end_end
+  - first:
+      4: 400214
+    second: IndexDistal.L_end_end_end_end
+  - first:
+      4: 400216
+    second: IndexDistal.R_end_end_end_end
+  - first:
+      4: 400218
+    second: Jaw_end_end_end_end
+  - first:
+      4: 400220
+    second: LittleDistal.L_end_end_end_end
+  - first:
+      4: 400222
+    second: LittleDistal.R_end_end_end_end
+  - first:
+      4: 400224
+    second: MiddleDistal.L_end_end_end_end
+  - first:
+      4: 400226
+    second: MiddleDistal.R_end_end_end_end
+  - first:
+      4: 400228
+    second: RingDistal.L_end_end_end_end
+  - first:
+      4: 400230
+    second: RingDistal.R_end_end_end_end
+  - first:
+      4: 400232
+    second: ThumbDistal.L_end_end_end_end
+  - first:
+      4: 400234
+    second: ThumbDistal.R_end_end_end_end
+  - first:
+      4: 400236
+    second: Toe.L_end_end_end_end
+  - first:
+      4: 400238
+    second: Toe.R_end_end_end_end
+  - first:
+      4: 400240
+    second: BasicBandit_Clothes.001
+  - first:
+      4: 400242
+    second: Eye.L_end_end_end_end_end
+  - first:
+      4: 400244
+    second: Eye.R_end_end_end_end_end
+  - first:
+      4: 400246
+    second: IndexDistal.L_end_end_end_end_end
+  - first:
+      4: 400248
+    second: IndexDistal.R_end_end_end_end_end
+  - first:
+      4: 400250
+    second: Jaw_end_end_end_end_end
+  - first:
+      4: 400252
+    second: LittleDistal.L_end_end_end_end_end
+  - first:
+      4: 400254
+    second: LittleDistal.R_end_end_end_end_end
+  - first:
+      4: 400256
+    second: MiddleDistal.L_end_end_end_end_end
+  - first:
+      4: 400258
+    second: MiddleDistal.R_end_end_end_end_end
+  - first:
+      4: 400260
+    second: RingDistal.L_end_end_end_end_end
+  - first:
+      4: 400262
+    second: RingDistal.R_end_end_end_end_end
+  - first:
+      4: 400264
+    second: ThumbDistal.L_end_end_end_end_end
+  - first:
+      4: 400266
+    second: ThumbDistal.R_end_end_end_end_end
+  - first:
+      4: 400268
+    second: Toe.L_end_end_end_end_end
+  - first:
+      4: 400270
+    second: Toe.R_end_end_end_end_end
+  - first:
+      4: 400272
+    second: Eye.L_end_end_end_end_end_end
+  - first:
+      4: 400274
+    second: Eye.R_end_end_end_end_end_end
+  - first:
+      4: 400276
+    second: IndexDistal.L_end_end_end_end_end_end
+  - first:
+      4: 400278
+    second: IndexDistal.R_end_end_end_end_end_end
+  - first:
+      4: 400280
+    second: Jaw_end_end_end_end_end_end
+  - first:
+      4: 400282
+    second: LittleDistal.L_end_end_end_end_end_end
+  - first:
+      4: 400284
+    second: LittleDistal.R_end_end_end_end_end_end
+  - first:
+      4: 400286
+    second: MiddleDistal.L_end_end_end_end_end_end
+  - first:
+      4: 400288
+    second: MiddleDistal.R_end_end_end_end_end_end
+  - first:
+      4: 400290
+    second: RingDistal.L_end_end_end_end_end_end
+  - first:
+      4: 400292
+    second: RingDistal.R_end_end_end_end_end_end
+  - first:
+      4: 400294
+    second: ThumbDistal.L_end_end_end_end_end_end
+  - first:
+      4: 400296
+    second: ThumbDistal.R_end_end_end_end_end_end
+  - first:
+      4: 400298
+    second: Toe.L_end_end_end_end_end_end
+  - first:
+      4: 400300
+    second: Toe.R_end_end_end_end_end_end
+  - first:
+      4: 400302
+    second: Eye.L_end_end_end_end_end_end_end
+  - first:
+      4: 400304
+    second: Eye.R_end_end_end_end_end_end_end
+  - first:
+      4: 400306
+    second: IndexDistal.L_end_end_end_end_end_end_end
+  - first:
+      4: 400308
+    second: IndexDistal.R_end_end_end_end_end_end_end
+  - first:
+      4: 400310
+    second: Jaw_end_end_end_end_end_end_end
+  - first:
+      4: 400312
+    second: LittleDistal.L_end_end_end_end_end_end_end
+  - first:
+      4: 400314
+    second: LittleDistal.R_end_end_end_end_end_end_end
+  - first:
+      4: 400316
+    second: MiddleDistal.L_end_end_end_end_end_end_end
+  - first:
+      4: 400318
+    second: MiddleDistal.R_end_end_end_end_end_end_end
+  - first:
+      4: 400320
+    second: RingDistal.L_end_end_end_end_end_end_end
+  - first:
+      4: 400322
+    second: RingDistal.R_end_end_end_end_end_end_end
+  - first:
+      4: 400324
+    second: ThumbDistal.L_end_end_end_end_end_end_end
+  - first:
+      4: 400326
+    second: ThumbDistal.R_end_end_end_end_end_end_end
+  - first:
+      4: 400328
+    second: Toe.L_end_end_end_end_end_end_end
+  - first:
+      4: 400330
+    second: Toe.R_end_end_end_end_end_end_end
+  - first:
+      43: 4300000
+    second: BasicBandit_Mask
+  - first:
+      43: 4300002
+    second: BasicBandit_Eye
+  - first:
+      43: 4300004
+    second: BasicBandit_Body
+  - first:
+      43: 4300006
+    second: BasicBandit_Clothes
+  - first:
+      43: 4300008
+    second: BasicBandit_Clothes.001
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: BasicBandit_Body
+  - first:
+      137: 13700002
+    second: BasicBandit_Clothes
+  - first:
+      137: 13700004
+    second: BasicBandit_Eye
+  - first:
+      137: 13700006
+    second: BasicBandit_Mask
+  - first:
+      137: 13700008
+    second: BasicBandit_Clothes.001
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BasicBandit_Body.003
-    second: {fileID: 2100000, guid: b5335444767332a45a645a8a38541faa, type: 2}
+    second: {fileID: 2100000, guid: 8f5c3b642ded6124784be386e307536c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BasicBandit_Cloth.004
-    second: {fileID: 2100000, guid: 85dd6808958ecbb448cd188b14041bd5, type: 2}
+    second: {fileID: 2100000, guid: 66ec692f146bc7648b57a7cbbc044ccb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BasicBandit_Cloth.005
-    second: {fileID: 2100000, guid: 48eda1aaded2e0947ae83bca14fbfd7f, type: 2}
+    second: {fileID: 2100000, guid: d67ec7af143f33c4c8438cd7735e50ad, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BasicBandit_EyeMAt.003
-    second: {fileID: 2100000, guid: 1484c2c5e225ba14ea0aa55a14d95ac3, type: 2}
+    second: {fileID: 2100000, guid: 1e60c2b274873644bb53ccf320314d0d, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 0
@@ -387,6 +1071,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -401,17 +1086,23 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
@@ -423,12 +1114,396 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 0
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Basic_Bandit(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Armature
+      parentName: Basic_Bandit(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+      scale: {x: 99.999985, y: 99.999985, z: 99.999985}
+    - name: Hips
+      parentName: Armature
+      position: {x: 5.521544e-21, y: -0.00022380137, z: 0.009019016}
+      rotation: {x: 0.7231792, y: 2.4594883e-25, z: 6.245579e-19, w: 0.6906604}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: Spine
+      parentName: Hips
+      position: {x: 1.1535292e-26, y: 0.002133405, z: -3.352761e-10}
+      rotation: {x: -0.038521357, y: 1.7674941e-21, z: -3.1580208e-20, w: 0.9992578}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Chest
+      parentName: Spine
+      position: {x: 8.425092e-20, y: 0.002123542, z: 9.313225e-11}
+      rotation: {x: -0.055000607, y: 1.9656331e-10, z: 2.0277428e-10, w: 0.99848634}
+      scale: {x: 1, y: 1.0000002, z: 1.0000001}
+    - name: Neck
+      parentName: Chest
+      position: {x: 3.917439e-17, y: 0.0021263873, z: -4.5634804e-10}
+      rotation: {x: 0.25864762, y: 0.000000018289915, z: 0.000000018360568, w: 0.96597177}
+      scale: {x: 1, y: 0.99999946, z: 0.9999995}
+    - name: Head
+      parentName: Neck
+      position: {x: 3.8857805e-17, y: 0.0009956859, z: -0.0000000018440186}
+      rotation: {x: -0.16685444, y: 0.0000000021438062, z: 0.0000000014196587, w: 0.9859816}
+      scale: {x: 1, y: 1.0000004, z: 1.0000004}
+    - name: Eye.L
+      parentName: Head
+      position: {x: -0.00034940336, y: 0.0010014758, z: 0.0007528038}
+      rotation: {x: 0.6884892, y: 0.00011057722, z: 0.00010548243, w: 0.72524667}
+      scale: {x: 0.9999997, y: 0.99999976, z: 0.99999946}
+    - name: Eye.L_end
+      parentName: Eye.L
+      position: {x: -0, y: 0.00015118963, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Jaw
+      parentName: Head
+      position: {x: -1.878408e-11, y: 0.0002525456, z: 0.00068705046}
+      rotation: {x: 0.70806515, y: 0.000000052231453, z: 0.000000052497146, w: 0.70614713}
+      scale: {x: 1, y: 0.99999934, z: 0.99999905}
+    - name: Jaw_end
+      parentName: Jaw
+      position: {x: -0, y: 0.0005164958, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eye.R
+      parentName: Head
+      position: {x: 0.00034940327, y: 0.0010014782, z: 0.0007528035}
+      rotation: {x: 0.68848896, y: 0.000110047, z: 0.000104979066, w: 0.7252468}
+      scale: {x: 0.9999997, y: 0.99999946, z: 0.99999946}
+    - name: Eye.R_end
+      parentName: Eye.R
+      position: {x: -0, y: 0.00015118955, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder.L
+      parentName: Chest
+      position: {x: -0.0007708714, y: 0.0013016319, z: -0.00011717355}
+      rotation: {x: 0.5362785, y: -0.45260638, z: -0.5214537, w: -0.4854266}
+      scale: {x: 0.9999989, y: 0.9999997, z: 0.99999964}
+    - name: UpperArm.L
+      parentName: Shoulder.L
+      position: {x: 0.0000000010430813, y: 0.0015451831, z: 0.0000000058312435}
+      rotation: {x: 0.02659455, y: 0.32500595, z: 0.03241977, w: 0.9447819}
+      scale: {x: 0.9999998, y: 1, z: 0.99999964}
+    - name: LowerArm.L
+      parentName: UpperArm.L
+      position: {x: 0.0000000025890767, y: 0.0028880504, z: -0.0000000018114223}
+      rotation: {x: 0.0022593772, y: -0.061147116, z: 0.048135906, w: 0.9969649}
+      scale: {x: 0.99999994, y: 1.0000005, z: 0.99999994}
+    - name: Hand.L
+      parentName: LowerArm.L
+      position: {x: -4.4703483e-10, y: 0.0030746707, z: 5.2154064e-10}
+      rotation: {x: -0.033009924, y: 0.21354866, z: -0.10563762, w: 0.97064316}
+      scale: {x: 1.0000004, y: 1, z: 0.9999997}
+    - name: ThumbProximal.L
+      parentName: Hand.L
+      position: {x: -0.00023635477, y: 0.00046360664, z: -0.00043130055}
+      rotation: {x: -0.3946509, y: 0.48702744, z: -0.09464113, w: 0.77336806}
+      scale: {x: 0.99999994, y: 0.99999976, z: 0.9999998}
+    - name: ThumbMiddle.L
+      parentName: ThumbProximal.L
+      position: {x: 3.0733643e-10, y: 0.0003866522, z: 4.4703483e-10}
+      rotation: {x: 0.036915697, y: 0.013241582, z: 0.0020499665, w: 0.9992286}
+      scale: {x: 0.9999998, y: 0.99999964, z: 0.9999995}
+    - name: ThumbDistal.L
+      parentName: ThumbMiddle.L
+      position: {x: 3.5390257e-10, y: 0.00030001663, z: 5.9604643e-10}
+      rotation: {x: 0.033736985, y: 0.10065824, z: -0.01710605, w: 0.9942017}
+      scale: {x: 1.0000001, y: 0.99999964, z: 1.0000001}
+    - name: ThumbDistal.L_end
+      parentName: ThumbDistal.L
+      position: {x: -0, y: 0.00028024582, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IndexProximal.L
+      parentName: Hand.L
+      position: {x: -0.00018929988, y: 0.0012227438, z: -0.00034089282}
+      rotation: {x: -0.060261227, y: 0.15919258, z: -0.040490918, w: 0.98457444}
+      scale: {x: 0.9999994, y: 0.9999995, z: 0.9999998}
+    - name: IndexMiddle.L
+      parentName: IndexProximal.L
+      position: {x: 4.842877e-10, y: 0.00033246045, z: 5.2154064e-10}
+      rotation: {x: 0.005460335, y: 0.4359121, z: -0.023985358, w: 0.8996531}
+      scale: {x: 0.99999976, y: 1, z: 0.9999999}
+    - name: IndexDistal.L
+      parentName: IndexMiddle.L
+      position: {x: -7.4505804e-11, y: 0.0002927038, z: -2.2351741e-10}
+      rotation: {x: 0.027368627, y: 0.19908558, z: -0.019345919, w: 0.97940886}
+      scale: {x: 0.9999997, y: 0.9999999, z: 0.9999995}
+    - name: IndexDistal.L_end
+      parentName: IndexDistal.L
+      position: {x: -0, y: 0.00026780917, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MiddleProximal.L
+      parentName: Hand.L
+      position: {x: -0.00011016979, y: 0.0012458649, z: -0.00009100809}
+      rotation: {x: -0.029981215, y: 0.19282891, z: -0.03862299, w: 0.9800135}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999997}
+    - name: MiddleMiddle.L
+      parentName: MiddleProximal.L
+      position: {x: -5.401671e-10, y: 0.0003340766, z: 1.0244548e-10}
+      rotation: {x: 0.0035464854, y: 0.2944079, z: -0.028590782, w: 0.95524555}
+      scale: {x: 0.99999976, y: 0.9999996, z: 1.0000005}
+    - name: MiddleDistal.L
+      parentName: MiddleMiddle.L
+      position: {x: 3.72529e-10, y: 0.00030822732, z: 0}
+      rotation: {x: 0.02296574, y: 0.18925601, z: -0.024322584, w: 0.9813578}
+      scale: {x: 1, y: 0.99999976, z: 1.0000006}
+    - name: MiddleDistal.L_end
+      parentName: MiddleDistal.L
+      position: {x: -0, y: 0.00025739273, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RingProximal.L
+      parentName: Hand.L
+      position: {x: -0.000015293695, y: 0.0011780792, z: 0.0001139}
+      rotation: {x: -0.013021278, y: 0.17835765, z: -0.029607117, w: 0.983434}
+      scale: {x: 1.0000002, y: 1.0000002, z: 0.99999976}
+    - name: RingMiddle.L
+      parentName: RingProximal.L
+      position: {x: -4.656613e-10, y: 0.0002740572, z: -7.4505804e-11}
+      rotation: {x: 0.003894338, y: 0.28460798, z: -0.026781194, w: 0.95826197}
+      scale: {x: 0.99999976, y: 0.9999994, z: 1.0000001}
+    - name: RingDistal.L
+      parentName: RingMiddle.L
+      position: {x: -1.4901161e-10, y: 0.00029442686, z: -6.705522e-10}
+      rotation: {x: 0.012940685, y: 0.10856765, z: -0.03501572, w: 0.99338794}
+      scale: {x: 0.99999964, y: 0.9999999, z: 0.99999994}
+    - name: RingDistal.L_end
+      parentName: RingDistal.L
+      position: {x: -0, y: 0.00021127393, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LittleProximal.L
+      parentName: Hand.L
+      position: {x: 0.0001289323, y: 0.0010396264, z: 0.0003164371}
+      rotation: {x: -0.009110351, y: 0.17725441, z: -0.02556857, w: 0.9837907}
+      scale: {x: 0.99999964, y: 1, z: 0.9999995}
+    - name: LittleMiddle.L
+      parentName: LittleProximal.L
+      position: {x: 1.3038516e-10, y: 0.00025124793, z: 7.4505804e-11}
+      rotation: {x: 0.0039510033, y: 0.2484942, z: -0.0273802, w: 0.96823823}
+      scale: {x: 0.99999976, y: 0.9999995, z: 0.99999994}
+    - name: LittleDistal.L
+      parentName: LittleMiddle.L
+      position: {x: -6.519258e-10, y: 0.00024180546, z: 3.72529e-10}
+      rotation: {x: 0.0024159015, y: 0.14305413, z: -0.034020305, w: 0.9891271}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: LittleDistal.L_end
+      parentName: LittleDistal.L
+      position: {x: -0, y: 0.00016499031, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shoulder.R
+      parentName: Chest
+      position: {x: 0.00077087135, y: 0.0013016319, z: -0.00011717395}
+      rotation: {x: 0.5362788, y: 0.45260608, z: 0.5214541, w: -0.4854261}
+      scale: {x: 0.99999875, y: 0.99999964, z: 0.99999964}
+    - name: UpperArm.R
+      parentName: Shoulder.R
+      position: {x: -5.587935e-10, y: 0.0015451838, z: 0.000000008181669}
+      rotation: {x: 0.026600566, y: -0.32481948, z: -0.032399025, w: 0.94484663}
+      scale: {x: 0.99999994, y: 0.99999964, z: 1}
+    - name: LowerArm.R
+      parentName: UpperArm.R
+      position: {x: 1.8859282e-10, y: 0.0028874534, z: 0.0000000025797635}
+      rotation: {x: 0.0022874433, y: 0.061216757, z: -0.04814764, w: 0.99696}
+      scale: {x: 1, y: 1.0000004, z: 1.0000005}
+    - name: Hand.R
+      parentName: LowerArm.R
+      position: {x: 7.45058e-10, y: 0.0030738025, z: 9.313226e-10}
+      rotation: {x: -0.032967634, y: -0.21357164, z: 0.105734, w: 0.970629}
+      scale: {x: 0.9999997, y: 1.0000001, z: 0.9999998}
+    - name: ThumbProximal.R
+      parentName: Hand.R
+      position: {x: 0.00023682557, y: 0.00046298731, z: -0.00043133408}
+      rotation: {x: -0.39479557, y: -0.48717582, z: 0.0945777, w: 0.7732084}
+      scale: {x: 1.0000005, y: 0.9999998, z: 0.99999994}
+    - name: ThumbMiddle.R
+      parentName: ThumbProximal.R
+      position: {x: -3.1664968e-10, y: 0.00038633458, z: 7.45058e-10}
+      rotation: {x: 0.036901608, y: -0.013251002, z: -0.0020502352, w: 0.999229}
+      scale: {x: 0.99999976, y: 0.99999994, z: 0.9999999}
+    - name: ThumbDistal.R
+      parentName: ThumbMiddle.R
+      position: {x: 1.4901161e-10, y: 0.0002997688, z: 1.4901161e-10}
+      rotation: {x: 0.0337378, y: -0.10069981, z: 0.01708991, w: 0.9941978}
+      scale: {x: 1.0000001, y: 1, z: 0.9999999}
+    - name: ThumbDistal.R_end
+      parentName: ThumbDistal.R
+      position: {x: -0, y: 0.00028005362, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: IndexProximal.R
+      parentName: Hand.R
+      position: {x: 0.0001896745, y: 0.0012218755, z: -0.00034091918}
+      rotation: {x: -0.060281664, y: -0.15918456, z: 0.040417276, w: 0.98457754}
+      scale: {x: 1.0000001, y: 1, z: 0.9999995}
+    - name: IndexMiddle.R
+      parentName: IndexProximal.R
+      position: {x: -0.0000000041350723, y: 0.0003322618, z: -4.749745e-10}
+      rotation: {x: 0.005458642, y: -0.43592995, z: 0.023976179, w: 0.8996447}
+      scale: {x: 1, y: 0.9999998, z: 1.0000001}
+    - name: IndexDistal.R
+      parentName: IndexMiddle.R
+      position: {x: -4.4703483e-10, y: 0.00029256396, z: 3.72529e-10}
+      rotation: {x: 0.027371334, y: -0.19899157, z: 0.019342916, w: 0.97942793}
+      scale: {x: 1.0000001, y: 0.9999999, z: 1.0000001}
+    - name: IndexDistal.R_end
+      parentName: IndexDistal.R
+      position: {x: -0, y: 0.00026775218, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MiddleProximal.R
+      parentName: Hand.R
+      position: {x: 0.00011029929, y: 0.0012452293, z: -0.000091024114}
+      rotation: {x: -0.03000886, y: -0.19283473, z: 0.038543735, w: 0.9800146}
+      scale: {x: 0.9999998, y: 1.0000001, z: 0.99999994}
+    - name: MiddleMiddle.R
+      parentName: MiddleProximal.R
+      position: {x: -1.8626451e-11, y: 0.00033392862, z: 1.3969838e-11}
+      rotation: {x: 0.0035489043, y: -0.29432797, z: 0.02858552, w: 0.9552703}
+      scale: {x: 0.9999998, y: 0.99999946, z: 1.0000005}
+    - name: MiddleDistal.R
+      parentName: MiddleMiddle.R
+      position: {x: 7.4505804e-11, y: 0.00030810692, z: -4.4703483e-10}
+      rotation: {x: 0.022960933, y: -0.18913908, z: 0.024318488, w: 0.9813806}
+      scale: {x: 0.9999997, y: 0.99999994, z: 1.0000004}
+    - name: MiddleDistal.R_end
+      parentName: MiddleDistal.R
+      position: {x: -0, y: 0.00025736121, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: RingProximal.R
+      parentName: Hand.R
+      position: {x: 0.000015207901, y: 0.001177674, z: 0.000113897244}
+      rotation: {x: -0.013064385, y: -0.17836672, z: 0.029523224, w: 0.98343426}
+      scale: {x: 0.99999976, y: 1.0000001, z: 1}
+    - name: RingMiddle.R
+      parentName: RingProximal.R
+      position: {x: 1.862645e-10, y: 0.00027399516, z: -2.2351741e-10}
+      rotation: {x: 0.0038972548, y: -0.28442568, z: 0.026776807, w: 0.9583162}
+      scale: {x: 0.9999998, y: 1, z: 0.99999976}
+    - name: RingDistal.R
+      parentName: RingMiddle.R
+      position: {x: -5.2154064e-10, y: 0.00029439194, z: -2.2351741e-10}
+      rotation: {x: 0.012933749, y: -0.10851013, z: 0.035012633, w: 0.99339443}
+      scale: {x: 1.0000002, y: 0.9999997, z: 0.9999997}
+    - name: RingDistal.R_end
+      parentName: RingDistal.R
+      position: {x: -0, y: 0.00021124238, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LittleProximal.R
+      parentName: Hand.R
+      position: {x: -0.00012925635, y: 0.0010394767, z: 0.00031645648}
+      rotation: {x: -0.009159394, y: -0.17725982, z: 0.025492208, w: 0.98379123}
+      scale: {x: 1.0000001, y: 1, z: 1.0000001}
+    - name: LittleMiddle.R
+      parentName: LittleProximal.R
+      position: {x: 1.4901161e-10, y: 0.00025122144, z: 5.9604643e-10}
+      rotation: {x: 0.0039515756, y: -0.24829389, z: 0.027383294, w: 0.9682896}
+      scale: {x: 1, y: 0.9999998, z: 0.99999976}
+    - name: LittleDistal.R
+      parentName: LittleMiddle.R
+      position: {x: 4.656613e-10, y: 0.00024180613, z: 3.72529e-10}
+      rotation: {x: 0.0024118496, y: -0.14298862, z: 0.0340132, w: 0.9891368}
+      scale: {x: 0.9999999, y: 0.9999996, z: 0.9999992}
+    - name: LittleDistal.R_end
+      parentName: LittleDistal.R
+      position: {x: -0, y: 0.00016496159, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: UpperLeg.L
+      parentName: Hips
+      position: {x: -0.0010146054, y: -0.00022663931, z: -0.00016056224}
+      rotation: {x: 0.9975176, y: -0.04350954, z: -0.04171747, w: -0.036405098}
+      scale: {x: 0.9999975, y: 1.0000001, z: 0.9999984}
+    - name: LowerLeg.L
+      parentName: UpperLeg.L
+      position: {x: 2.2351741e-10, y: 0.0040105246, z: -8.381903e-11}
+      rotation: {x: -0.060149524, y: 0.009187403, z: -0.00486763, w: 0.99813527}
+      scale: {x: 0.9999997, y: 0.9999996, z: 0.9999999}
+    - name: Foot.L
+      parentName: LowerLeg.L
+      position: {x: -3.259629e-11, y: 0.00439642, z: 5.464244e-11}
+      rotation: {x: -0.17999612, y: -0.6033724, z: 0.61510617, w: 0.47453943}
+      scale: {x: 1.0000001, y: 0.9999999, z: 1.0000002}
+    - name: Toe.L
+      parentName: Foot.L
+      position: {x: -1.4901161e-10, y: 0.0010289387, z: -3.7252902e-11}
+      rotation: {x: -0.02170038, y: 0.109113835, z: -0.00014095232, w: 0.99379236}
+      scale: {x: 0.9999996, y: 1.0000005, z: 0.9999995}
+    - name: Toe.L_end
+      parentName: Toe.L
+      position: {x: -0, y: 0.0009193121, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: UpperLeg.R
+      parentName: Hips
+      position: {x: 0.001014606, y: -0.00022663931, z: -0.00016056221}
+      rotation: {x: 0.9975069, y: 0.04381441, z: 0.041711427, w: -0.036338974}
+      scale: {x: 1.0000104, y: 1.0000001, z: 1.0000054}
+    - name: LowerLeg.R
+      parentName: UpperLeg.R
+      position: {x: -9.546056e-11, y: 0.00401052, z: -7.4505804e-11}
+      rotation: {x: -0.060148306, y: -0.009187454, z: 0.004867705, w: 0.9981353}
+      scale: {x: 0.9999997, y: 0.99999964, z: 0.99999976}
+    - name: Foot.R
+      parentName: LowerLeg.R
+      position: {x: 1.5599652e-10, y: 0.004396419, z: 1.6989361e-11}
+      rotation: {x: 0.17999442, y: -0.60337335, z: 0.615106, w: -0.474539}
+      scale: {x: 0.9999999, y: 1.0000006, z: 1.0000006}
+    - name: Toe.R
+      parentName: Foot.R
+      position: {x: 1.6763806e-10, y: 0.0010289036, z: 8.381903e-11}
+      rotation: {x: -0.02170176, y: -0.10911409, z: 0.00014078263, w: 0.9937923}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999997}
+    - name: Toe.R_end
+      parentName: Toe.R
+      position: {x: -0, y: 0.0009193032, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BasicBandit_Mask
+      parentName: Basic_Bandit(Clone)
+      position: {x: 0.000000004768374, y: 0.00000019311906, z: 0.03564092}
+      rotation: {x: -0.7071068, y: 0.000000006532762, z: -0.000000048890357, w: 0.7071067}
+      scale: {x: 99.99999, y: 99.999985, z: 100}
+    - name: BasicBandit_Eye
+      parentName: Basic_Bandit(Clone)
+      position: {x: 0.000000004768374, y: 0.00000019311906, z: 0.03564092}
+      rotation: {x: -0.7071068, y: 0.000000006532762, z: -0.000000048890357, w: 0.7071067}
+      scale: {x: 99.99999, y: 99.999985, z: 100}
+    - name: BasicBandit_Clothes.001
+      parentName: Basic_Bandit(Clone)
+      position: {x: -0.000000007152551, y: 0.00000009298324, z: 0.000000014901161}
+      rotation: {x: -0.7071068, y: 0.0000000069542354, z: -0.000000038142907, w: 0.7071067}
+      scale: {x: 100, y: 99.99999, z: 100.000015}
+    - name: BasicBandit_Body
+      parentName: Basic_Bandit(Clone)
+      position: {x: -0.0000000071525545, y: 0.00000009298324, z: 0.000000014901159}
+      rotation: {x: -0.000000004172322, y: -0.000000009685757, z: -0.000000028610232,
+        w: 1}
+      scale: {x: 99.99999, y: 99.99999, z: 99.999985}
+    - name: BasicBandit_Clothes
+      parentName: Basic_Bandit(Clone)
+      position: {x: -0.0000000071525577, y: 0.00000009298324, z: 0.000000014901161}
+      rotation: {x: -0.7071068, y: 0.000000006532762, z: -0.000000048890357, w: 0.7071067}
+      scale: {x: 99.99999, y: 99.999985, z: 100}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -436,14 +1511,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
