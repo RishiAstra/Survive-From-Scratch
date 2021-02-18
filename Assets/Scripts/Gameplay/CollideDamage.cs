@@ -10,7 +10,7 @@ public class CollideDamage : MonoBehaviour
 	public float minDamage;
 	public float maxVelocity;
 	public float minVelocity;
-	public Abilities.AttackType attackType;
+	public AttackType attackType;
     // Start is called before the first frame update
     void Start()
     {

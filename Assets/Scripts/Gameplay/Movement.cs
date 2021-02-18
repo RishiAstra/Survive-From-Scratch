@@ -87,8 +87,10 @@ public class Movement : MonoBehaviour
 
 	public void SetAngleFromDirection()
 	{
+		Vector3 targetDirection = direction;
+		targetDirection.y = 0;
 		//only change the angle if actually moving
-		if(direction.magnitude > SMALL_INPUT) SetAngle(Quaternion.LookRotation(direction, transform.up));
+		if(direction.magnitude > SMALL_INPUT) SetAngle(Quaternion.LookRotation(targetDirection, Vector3.up));
 	}
 
 	public void SetAngle(float a) { SetAngle(Quaternion.Euler(0, a, 0)); }

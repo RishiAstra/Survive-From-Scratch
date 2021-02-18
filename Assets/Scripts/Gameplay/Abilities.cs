@@ -41,17 +41,21 @@ public struct Armor
 		return col.Contains(c);
 	}
 }
+
+public enum AttackType
+{
+	Pierce = 1,
+	Blunt = 2,
+	Slash = 4,
+	Magic = 8
+};
+
 public class Abilities : MonoBehaviour
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
 
 
-	public enum AttackType {
-		Pierce = 1,
-		Blunt = 2,
-		Slash = 4,
-		Magic = 8
-	};
+
 	public bool dead;//TODO: consider stopping all attacks already happening when it dies
 	public bool resetOnStart = true;
 	public Stat maxStat;
@@ -65,6 +69,8 @@ public class Abilities : MonoBehaviour
 
 	public int currentAttackTransform;
 	public Transform[] attackTranforms;
+
+	public string[] enemyString;
 
 	private void Awake()
 	{
@@ -181,6 +187,7 @@ public class Abilities : MonoBehaviour
 			GameObject g = Instantiate(a.spawn);
 			if (a.spawnAsChild) g.transform.SetParent(attackTranforms[a.spawnTransform]);
 			g.transform.position = attackTranforms[a.spawnTransform].position;
+			g.GetComponent<SkillObject>().parent = this;
 		}
 		
 		yield return new WaitForSeconds(a.time);

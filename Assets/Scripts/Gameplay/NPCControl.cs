@@ -8,7 +8,6 @@ public class NPCControl : MonoBehaviour
 	public LayerMask targetMask;
 	public Movement movement;
 	public float spotRange;
-	public string[] enemyString;
 	public Transform checkAttack;
 	public float checkAttackRadius;
 
@@ -50,7 +49,7 @@ public class NPCControl : MonoBehaviour
 			{
 				TagScript tagScript = col.GetComponent<TagScript>();
 				//TODO: make targets a struct or something that has tagscript and abilities
-				if (tagScript != null && tagScript.ContainsTag(enemyString))
+				if (tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 				{
 
 					Abilities temp = col.GetComponent<Abilities>();
@@ -75,7 +74,7 @@ public class NPCControl : MonoBehaviour
 		foreach(Collider col in Physics.OverlapSphere(transform.position, spotRange, targetMask))
 		{
 			TagScript tagScript = col.GetComponent<TagScript>();
-			if(tagScript != null && tagScript.ContainsTag(enemyString))
+			if(tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 			{
 
 				Abilities temp = col.GetComponent<Abilities>();

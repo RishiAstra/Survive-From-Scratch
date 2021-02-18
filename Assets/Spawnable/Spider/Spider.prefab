@@ -2391,8 +2391,6 @@ MonoBehaviour:
     m_Bits: 4608
   movement: {fileID: 1734245064739394383}
   spotRange: 10
-  enemyString:
-  - humanoid
   checkAttack: {fileID: 1453039034}
   checkAttackRadius: 0.25
   targets: []
@@ -2422,7 +2420,6 @@ MonoBehaviour:
   rig: {fileID: 0}
   anim: {fileID: 5323454491581019214}
   jumping: 0
-  Armature: {fileID: 9089679403127729864}
   targetPos: 0
   direction: {x: 0, y: 0, z: 0}
   pos: {x: 0, y: 0, z: 0}
@@ -2506,9 +2503,12 @@ MonoBehaviour:
   busy: 0
   attackAllowed: 0
   anim: {fileID: 5323454491581019214}
+  dieTime: 2.5
   currentAttackTransform: 0
   attackTranforms:
   - {fileID: 1453039034}
+  enemyString:
+  - humanoid
 --- !u!114 &447233516
 MonoBehaviour:
   m_ObjectHideFlags: 0
