@@ -6,19 +6,19 @@ using System.Collections.Generic;
 using bobStuff;
 using System.IO;
 
-[CustomEditor(typeof(gameControll))]
+[CustomEditor(typeof(GameControl))]
 [System.Serializable]
 public class gameControllEditor : Editor
 {
 	public static bool showTypes = false;
 
 	public static List<bool> show = new List<bool>();
-	gameControll t;
+	GameControl t;
 	public override void OnInspectorGUI()
 	{
-		t = (gameControll)target;
-		gameControll.CheckItemTypes();
-
+		t = (GameControl)target;
+		GameControl.CheckItemTypes();
+		bool refreshItemTypeMap = false;
 		DrawDefaultInspector();
 		UpdateShowList();		
 			
@@ -27,13 +27,13 @@ public class gameControllEditor : Editor
 		if (showTypes)
 		{
 			//bool changed = false;
-			for(int i = 0; i < gameControll.itemTypes.Count; i++)
+			for(int i = 0; i < GameControl.itemTypes.Count; i++)
 			{
-				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + gameControll.itemTypes[i].name);
+				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + GameControl.itemTypes[i].name);
 				if (show[i])
 				{
 					EditorGUI.indentLevel += 2;
-					ItemType item = gameControll.itemTypes[i];
+					ItemType item = GameControl.itemTypes[i];
 					item.name = EditorGUILayout.TextField("name", item.name);
 					//public Texture2D Icon;//icon to display in inventory
 					//public ItemCatagory Cat;
@@ -54,17 +54,22 @@ public class gameControllEditor : Editor
 					//{
 					//	changed = true;
 					//}
-
-					gameControll.itemTypes[i] = item;
+					if (item.name != GameControl.itemTypes[i].name)
+					{
+						refreshItemTypeMap = true;
+					}
+					GameControl.itemTypes[i] = item;
 					EditorGUILayout.LabelField("Add or Remove ItemType", EditorStyles.boldLabel);
 					GUILayout.BeginHorizontal();
 					if (GUILayout.Button("+"))
 					{
-						gameControll.itemTypes.Insert(i + 1, new ItemType());
+						GameControl.itemTypes.Insert(i + 1, new ItemType());
+						refreshItemTypeMap = true;
 					}
 					if (GUILayout.Button("-"))
 					{
-						gameControll.itemTypes.RemoveAt(i);
+						GameControl.itemTypes.RemoveAt(i);
+						refreshItemTypeMap = true;
 					}
 					GUILayout.EndHorizontal();
 					EditorGUI.indentLevel -= 2;
@@ -76,24 +81,27 @@ public class gameControllEditor : Editor
 
 			if (GUILayout.Button("+ Append ItemType"))
 			{
-				gameControll.itemTypes.Add(new ItemType());
+				GameControl.itemTypes.Add(new ItemType());
+				refreshItemTypeMap = true;
 			}
 
 			if (GUILayout.Button("Save"))
 			{
-				gameControll.SaveItemTypes();
+				GameControl.SaveItemTypes();
 			}
 		}
 		EditorGUI.indentLevel -= 2;
+
+		if(refreshItemTypeMap) GameControl.InitializeItemTypeMap();
 	}
 
 	void UpdateShowList()
 	{
-		while (show.Count < gameControll.itemTypes.Count)
+		while (show.Count < GameControl.itemTypes.Count)
 		{
 			show.Add(false);
 		}
-		while (show.Count > gameControll.itemTypes.Count)
+		while (show.Count > GameControl.itemTypes.Count)
 		{
 			show.RemoveAt(show.Count - 1);
 		}

@@ -176,11 +176,11 @@ public class Player : MonoBehaviour
 			}
 		}
 		//TODO: is this necessary?
-		if (gameControll.itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
+		if (GameControl.itemTypes[inv.items[invSel].id].tags.Contains(TagScript.rhEquip))
 		{
-			if (gameControll.itemTypes[inv.items[invSel].id].equipPrefab != null)
+			if (GameControl.itemTypes[inv.items[invSel].id].equipPrefab != null)
 			{
-				GameObject g = (GameObject)Instantiate(gameControll.itemTypes[inv.items[invSel].id].equipPrefab);
+				GameObject g = (GameObject)Instantiate(GameControl.itemTypes[inv.items[invSel].id].equipPrefab);
 				g.transform.SetParent(rightHand, false);
 				g.GetComponent<Equip>().bob = this;
 				//print("Selected equipable object");
@@ -204,12 +204,12 @@ public class Player : MonoBehaviour
 		}
 
 		//Right Hand Equippable item
-		if (gameControll.itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
+		if (GameControl.itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
 		{
 			if (invSel != index) {
-				if(gameControll.itemTypes[inv.items[index].id].equipPrefab != null)
+				if(GameControl.itemTypes[inv.items[index].id].equipPrefab != null)
 				{
-					GameObject g = (GameObject)Instantiate(gameControll.itemTypes[inv.items[index].id].equipPrefab);
+					GameObject g = (GameObject)Instantiate(GameControl.itemTypes[inv.items[index].id].equipPrefab);
 					g.transform.SetParent(rightHand, false);
 					g.GetComponent<Equip>().bob = this;
 					//print("Selected equipable object");
@@ -221,13 +221,13 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		if (gameControll.itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
+		if (GameControl.itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
 		{
 			if (invSel != index)
 			{
 				//TODO: should this equip it?
 				//TODO: placing prefab should be different from final prefab. The placing prefab could have a placing script that spawns the final
-				placeing = (GameObject)Instantiate(gameControll.itemTypes[inv.items[index].id].prefab);
+				placeing = (GameObject)Instantiate(GameControl.itemTypes[inv.items[index].id].prefab);
 				foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
 				{
 					m.enabled = false;
@@ -399,7 +399,7 @@ public class Player : MonoBehaviour
 		//} else {
 		//	scoreBoard.gameObject.SetActive(false);
 		//}
-		if (!gameControll.main.myAbilities.dead) {
+		if (!GameControl.main.myAbilities.dead) {
 			
 			//if (Physics.CheckSphere(groundCheck.position, 0.05f, ground))
 			//{
@@ -524,7 +524,7 @@ public class Player : MonoBehaviour
 		}
 		for (int i = 0; i < inv.items.Count; i++) {
 			if(inv.items[i].id == 0){
-				inv.items [i] = new Item (id, amount, gameControll.itemTypes[id].strength, gameControll.itemTypes[id].strength);
+				inv.items [i] = new Item (id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
 				if (invSel == i) {
 					
 					RefreshSelected();

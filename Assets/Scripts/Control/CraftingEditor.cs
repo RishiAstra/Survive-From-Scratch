@@ -20,7 +20,7 @@ public class CraftingEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		//TODO: do this in better way
-		if (gameControll.main == null) gameControll.main = GameObject.FindObjectOfType<gameControll>();
+		if (GameControl.main == null) GameControl.main = GameObject.FindObjectOfType<GameControl>();
 		t = (Crafting)target;
 		DrawDefaultInspector();
 		UpdateShowList();
@@ -31,7 +31,7 @@ public class CraftingEditor : Editor
 		{
 			for (int i = 0; i < t.recipies.Count; i++)
 			{
-				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + gameControll.itemTypes[t.recipies[i].result.id].name);
+				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + GameControl.itemTypes[t.recipies[i].result.id].name);
 				if (show[i])
 				{
 					EditorGUI.indentLevel += 2;
@@ -96,7 +96,7 @@ public class CraftingEditor : Editor
 	public static Item ItemEditorUI(Item item)
 	{
 		//TODO: do this in a better way
-		if (gameControll.main == null) gameControll.main = GameObject.FindObjectOfType<gameControll>();
+		if (GameControl.main == null) GameControl.main = GameObject.FindObjectOfType<GameControl>();
 		//deal with id
 		int indentLevel = EditorGUI.indentLevel;
 		EditorGUI.indentLevel = 0;
@@ -104,13 +104,13 @@ public class CraftingEditor : Editor
 		item.id = EditorGUILayout.IntField(item.id, GUILayout.MaxWidth(50.0f));
 
 		bool suc = false;
-		string temp = EditorGUILayout.TextArea(gameControll.itemTypes[item.id].name);
+		string temp = EditorGUILayout.TextArea(GameControl.itemTypes[item.id].name);
 
-		if(temp != gameControll.itemTypes[item.id].name)
+		if(temp != GameControl.itemTypes[item.id].name)
 		{
-			for (int i = 0; i < gameControll.itemTypes.Count; i++)
+			for (int i = 0; i < GameControl.itemTypes.Count; i++)
 			{
-				if (gameControll.itemTypes[i].name == temp)
+				if (GameControl.itemTypes[i].name == temp)
 				{
 					item.id = i;
 					suc = true;

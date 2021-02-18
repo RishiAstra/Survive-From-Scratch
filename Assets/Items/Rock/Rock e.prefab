@@ -91,8 +91,9 @@ GameObject:
   - component: {fileID: 114059216726773934}
   - component: {fileID: 114240540421501478}
   - component: {fileID: -9044304219445018973}
+  - component: {fileID: -80691721080924577}
   m_Layer: 0
-  m_Name: Rock-e
+  m_Name: Rock e
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,8 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bob: {fileID: 0}
-  idString: Rock
-  id: -1
+  myID: {fileID: 0}
 --- !u!114 &-9044304219445018973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,3 +156,17 @@ MonoBehaviour:
   me: {fileID: 114240540421501478}
   spawnDist: 0.5
   velocity: 25
+--- !u!114 &-80691721080924577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382041385227520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ac6605c0fe45243942002a3f238b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idString: Rock
+  id: -1

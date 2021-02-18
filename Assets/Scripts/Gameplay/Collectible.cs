@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ID))]
 public class Collectible : MonoBehaviour
 {
 	//public static Transform cam;
-	public string idString;
-	public int id;
+	//public string idString;
+	//public int id;
 	public int amount;
+
+	public ID myID;
 	//public LayerMask layerMask;
 
 	//private Rigidbody rig;
@@ -21,7 +24,8 @@ public class Collectible : MonoBehaviour
 	// Use this for initialization
 	void Awake()
 	{
-		id = gameControll.NameToId(idString);
+		myID = GetComponent<ID>();
+		//id = gameControll.NameToId(idString);
 		//rig = GetComponent<Rigidbody>();
 		//rig.sleepThreshold = sleepThreshold;
 		//cam = Camera.main.transform;
@@ -51,7 +55,7 @@ public class Collectible : MonoBehaviour
 	{
 		if (Player.main != null)
 		{
-			Player.main.GetItem(id, amount);
+			Player.main.GetItem(myID.id, amount);
 			Destroy(gameObject);
 			return;
 		}

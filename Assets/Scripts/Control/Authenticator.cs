@@ -34,7 +34,7 @@ public class Authenticator : MonoBehaviour
 
 	public static string GetAccountPath(string username)
 	{
-		return Application.persistentDataPath + authFilePath + username + "\\";
+		return Application.persistentDataPath + authFilePath + username + @"\";
 	}
 
 	public static string GetAccountDataFile(string username, string datafile)
@@ -149,7 +149,7 @@ public class Authenticator : MonoBehaviour
 		sessionIds.Add(username, temp);
 		sessionIdsInverse.Add(temp, username);
 		print("New session with username: " + username + ", id: " + string.Join(",", temp));
-		gameControll.username = username;
+		GameControl.username = username;
 		output = null;//TODO: output a temporary code that will be used to verify this identity
 	}
 

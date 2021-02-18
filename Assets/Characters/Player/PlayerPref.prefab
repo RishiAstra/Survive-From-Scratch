@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 7022186050305224707}
   - component: {fileID: 9144992822705144503}
   - component: {fileID: 8140287808217058764}
+  - component: {fileID: -453695833806950689}
   m_Layer: 9
   m_Name: PlayerPref
   m_TagString: Untagged
@@ -380,6 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dead: 0
+  resetOnStart: 0
   maxStat:
     hp: 25
     mp: 0
@@ -473,6 +475,22 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 1559415070924045712}
+--- !u!114 &-453695833806950689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054728911991326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d19f5f7da5436143af7fc67cc2fe63d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerOwnerName: 
+  id: 0
+  type: Player
+  a: {fileID: 924814010}
 --- !u!1 &1064236654853702
 GameObject:
   m_ObjectHideFlags: 0

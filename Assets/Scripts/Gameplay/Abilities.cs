@@ -14,6 +14,18 @@ public struct Stat
 	//TODO: defence should be implemented in colliders that can have different defence values and resistances
 	public float def;//defence
 	public float mag;//
+
+	public static bool StatEquals(Stat c1, Stat c2)
+	{
+		return
+			c1.hp == c2.hp &&
+			c1.mp == c2.mp &&
+			c1.eng == c2.eng &&
+			c1.mor == c2.mor &&
+			c1.atk == c2.atk &&
+			c1.def == c2.def &&
+			c1.mag == c2.mag;
+	}
 }
 [System.Serializable]
 public struct Armor
@@ -33,6 +45,7 @@ public class Abilities : MonoBehaviour
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
 
+
 	public enum AttackType {
 		Pierce = 1,
 		Blunt = 2,
@@ -40,6 +53,7 @@ public class Abilities : MonoBehaviour
 		Magic = 8
 	};
 	public bool dead;//TODO: consider stopping all attacks already happening when it dies
+	public bool resetOnStart = true;
 	public Stat maxStat;
 	public Stat stat;
 	public List<Skill> skills;
@@ -47,15 +61,19 @@ public class Abilities : MonoBehaviour
 	public bool busy;
 	public bool attackAllowed;
 	public Animator anim;
+	public float dieTime = 2.5f;
 
 	public int currentAttackTransform;
 	public Transform[] attackTranforms;
 
+	private void Awake()
+	{
+		if (resetOnStart) Reset();//reset before anythign else can happen
 
+	}
 	// Start is called before the first frame update
 	void Start()
 	{
-		Reset();
 	}
 
 	public void Reset()
@@ -66,9 +84,14 @@ public class Abilities : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		dead = stat.hp <= 0;
+		if(stat.hp <= 0 && !dead)
+		{
+			dead = true;
+			Destroy(gameObject, dieTime);
+		}
 	}
 
+	#region Attack and Defense
 
 	public void Attack()
 	{
@@ -130,7 +153,7 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteSkill(int i)
 	{
-		print("using skill " + i);
+		//print("using skill " + i);
 		Skill s = skills[i];
 		foreach(Action a in s.actions)
 		{
@@ -142,7 +165,7 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteAction(Action a)
 	{
-		print("using action ");
+		//print("using action ");
 		if (a.useWeapons)
 		{
 			currentAttackTransform = a.spawnTransform;
@@ -162,8 +185,11 @@ public class Abilities : MonoBehaviour
 		
 		yield return new WaitForSeconds(a.time);
 		attackAllowed = false;
-		print("finished action ");
+		//print("finished action ");
 	}
+
+	#endregion
+
 }
 
 [System.Serializable]
