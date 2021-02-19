@@ -7,6 +7,7 @@ using UnityEngine;
 public class DamageText : MonoBehaviour
 {
     public AnimationCurve occupacity;
+    public float riseSpeed;
     public float lifeTime;
     public TextMeshPro text;
 
@@ -50,5 +51,7 @@ public class DamageText : MonoBehaviour
 		Color color = text.color;
 		color.a = occupacity.Evaluate(timepassed / lifeTime);
         text.color = color;
+
+        transform.Translate(0, riseSpeed * Time.deltaTime, 0);
     }
 }

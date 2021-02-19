@@ -30,15 +30,20 @@ public class CollideDamage : MonoBehaviour
     void Update()
     {
 		timeActive += Time.deltaTime;
-		if (timeActive > minTimeAcive && collisionCount >= collisionsTilldeactive)
+		if (shouldExist())
 		{
 			Destroy(this);//no longer want to deal dmg on collision
 		}
 	}
 
+	private bool shouldExist()
+	{
+		return so.parent == null || (timeActive > minTimeAcive && collisionCount >= collisionsTilldeactive);
+	}
+
 	void OnCollisionEnter(Collision collision)
 	{
-		if (timeActive > minTimeAcive && collisionCount >= collisionsTilldeactive) return;
+		if (shouldExist()) return;
 		timeActive -= bonusActiveTime;
 		if (timeActive < 0) timeActive = 0;
 		collisionCount++;
