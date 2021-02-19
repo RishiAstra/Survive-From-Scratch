@@ -51,7 +51,7 @@ public class GameControl : MonoBehaviour
 	private float mapSceneLoadProgress;
 
 	public LayerMask collectibleLayerMask;
-	public GameObject player;
+	public GameObject playerPrefab;
 	public GameObject camPref;
 	public Transform camPos;//start the camera here
 	public InventoryUI hotBarUI;
@@ -478,7 +478,7 @@ public class GameControl : MonoBehaviour
 		position = sp [chosen].transform.position;
 
 		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
-		return Instantiate(player, position, Quaternion.identity);
+		return Instantiate(playerPrefab, position, Quaternion.identity);
 
 		//Save save = newPlayerObject.GetComponent<Save>();
 		//save.playerOwnerName = username;
