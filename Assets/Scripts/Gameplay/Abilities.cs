@@ -129,7 +129,9 @@ public class Abilities : MonoBehaviour
 				a = t;
 			}
 		}
-		stat.hp -= GetDamageAmount(dmg, type, a);
+		float damageTaken = GetDamageAmount(dmg, type, a);
+		stat.hp -= damageTaken;
+		DamageTextControl.PutDamageText(cols.bounds.center, damageTaken);
 	}
 	public float GetDamageAmount(float damage, AttackType type, Armor armor)
 	{

@@ -12,27 +12,43 @@ public class DamageText : MonoBehaviour
 
     private Stopwatch sw;
     // Start is called before the first frame update
-    void Start()
+    //need awake to initialize it before sw is used
+    void Awake()
     {
         sw = new Stopwatch();
     }
 
-	public void ResetText(int damageAmount)
+	public void ResetText(float damageAmount)
 	{
         sw.Restart();
-        text.text = damageAmount.ToString();
+        string toDisplay;
+        //use 2 decimal places for 1 digit numbers, 1 for 2 digit numbers, otherwise no decimal
+		if (damageAmount < 10f)
+		{
+            toDisplay = damageAmount.ToString("F2");
+		}else if (damageAmount < 100f)
+		{
+            toDisplay = damageAmount.ToString("F1");
+        }
+		else
+		{
+            toDisplay = damageAmount.ToString("F0");
+        }
+        text.text = toDisplay;
     }
 
 	// Update is called once per frame
 	void Update()
     {
-		if ()
+        float timepassed = sw.ElapsedMilliseconds / 1000f;
+		if (timepassed > lifeTime)
 		{
-
+            gameObject.SetActive(false);
+            return;
 		}
 
 		Color color = text.color;
-		color.a = occupacity.Evaluate(sw.ElapsedMilliseconds);
+		color.a = occupacity.Evaluate(timepassed / lifeTime);
         text.color = color;
     }
 }

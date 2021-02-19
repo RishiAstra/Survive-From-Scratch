@@ -23,6 +23,8 @@ public class Throwable : MonoBehaviour
 			{
 				me.bob.RemoveItem(me.bob.invSel, 1);
 				GameObject g = Instantiate(GameControl.itemTypes[me.myID.id].prefab, transform.position + me.bob.cam.forward * spawnDist, transform.rotation);
+				SkillObject so = g.GetComponent<SkillObject>();
+				if (so != null) so.parent = me.bob.GetComponent<Abilities>();
 				Rigidbody rig = g.GetComponent<Rigidbody>();
 				if (rig != null)
 				{

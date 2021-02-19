@@ -30,7 +30,7 @@ public class DamageTextControl : MonoBehaviour
         damageTextsReady = new List<DamageText>();
     }
 
-    public static void PutDamageText(Vector3 position, int damageAmount)
+    public static void PutDamageText(Vector3 position, float damageAmount)
 	{
         GameObject g;
         DamageText d;
