@@ -34,7 +34,8 @@ public class NPCControl : MonoBehaviour
 
 		//TODO: can spot through things
 		//float angle = abilities.skills[0].useAngle;
-		Spot();
+		//TODO: optimize spotting
+		if(Time.frameCount % 5 == 0) Spot();//only spot sometimes
 		if(targets.Count > 0)
 		{
 			Abilities t = targets[0];//TODO: find optimal target, depending on intelligence

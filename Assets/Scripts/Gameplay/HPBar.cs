@@ -86,7 +86,7 @@ public class HPBar : MonoBehaviour
 				else color = new Color(0, 0, 0);
 			}
 
-			string tempText = Mathf.Round(a.stat.hp) + "/" + Mathf.Round(a.maxStat.hp);//TODO: use Math.Round(hp, 2) to make it 2 decimal places
+			string tempText = Mathf.RoundToInt(a.stat.hp) + "/" + Mathf.RoundToInt(a.maxStat.hp);//TODO: use Math.Round(hp, 2) to make it 2 decimal places
 
 			if (text)
 			{
