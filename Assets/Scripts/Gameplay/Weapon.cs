@@ -4,7 +4,7 @@ using UnityEngine;
 //TODO: allow hitting multiple enemies
 public class Weapon : MonoBehaviour
 {
-	public Abilities.AttackType attackType;
+	public AttackType attackType;
 	public Abilities parent;
 	[Range(0, 2)]public float dmg;
 	public bool canDmg;
@@ -66,13 +66,20 @@ public class Weapon : MonoBehaviour
 			//LayerMask mask = gameControll.main.weaponHit.value;
 			//if (mask == (mask | (1 << other.gameObject.layer)))//if included in the mask
 			//{
-				Abilities bg = other.GetComponentInParent<Abilities>();
-				if (bg != null && bg != parent && ! hit.Contains(bg))
+
+			//if this is an enemy...
+			TagScript ts = other.GetComponentInParent<TagScript>();
+			if (ts != null &&ts.ContainsTag(parent.enemyString))
+			{
+				Abilities bg = ts.GetComponent<Abilities>();
+				if (bg != null && bg != parent && !hit.Contains(bg))
 				{
 					hit.Add(bg);
 					bg.Damage(dmg * parent.stat.atk, other, attackType);
 					//canDmg = false;
 				}
+			}
+				
 				
 			//}
 		}

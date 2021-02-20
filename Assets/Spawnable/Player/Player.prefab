@@ -336,7 +336,6 @@ MonoBehaviour:
   rig: {fileID: 0}
   anim: {fileID: 95955619351916386}
   jumping: 0
-  Armature: {fileID: 4763892944487974}
   targetPos: 0
   direction: {x: 0, y: 0, z: 0}
   pos: {x: 0, y: 0, z: 0}
@@ -424,6 +423,8 @@ MonoBehaviour:
   currentAttackTransform: 0
   attackTranforms:
   - {fileID: 4245163473704240}
+  enemyString:
+  - monster
 --- !u!114 &7022186050305224707
 MonoBehaviour:
   m_ObjectHideFlags: 0

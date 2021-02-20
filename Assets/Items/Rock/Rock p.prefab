@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: -1896069519953418611}
   - component: {fileID: -6248278214273926748}
   - component: {fileID: -1766440262681767289}
+  - component: {fileID: -5131753376953231676}
   m_Layer: 0
   m_Name: Rock p
   m_TagString: Untagged
@@ -224,6 +225,9 @@ MonoBehaviour:
   maxVelocity: 20
   minVelocity: 15
   attackType: 2
+  collisionsTilldeactive: 1
+  minTimeAcive: 5
+  bonusActiveTime: 1
 --- !u!114 &-6248278214273926748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +254,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cda53ed458790b42adec8452496d453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
+  a: {fileID: 0}
+  myID: {fileID: 0}
+--- !u!114 &-5131753376953231676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382041385227520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deedad6907e18c447bbc734dc3491905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 0}
 --- !u!1 &1906345214569322
 GameObject:
   m_ObjectHideFlags: 0

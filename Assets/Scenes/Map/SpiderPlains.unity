@@ -330,7 +330,7 @@ PrefabInstance:
     - target: {fileID: 114530824292345588, guid: 121c8708833cfd442ab95eab60f8d121,
         type: 3}
       propertyPath: maxAmount
-      value: 300
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 121c8708833cfd442ab95eab60f8d121, type: 3}
@@ -441,9 +441,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnThis: {fileID: 9089679403127632740, guid: 10bc437d6e081b64db16e6142699830a,
     type: 3}
-  delay: 5
-  radius: 300
-  maxAmount: 10
+  delay: 0.5
+  radius: 100
+  maxAmount: 25
   removeNullObjectsSpeed: 0
 --- !u!4 &1803451688
 Transform:
@@ -522,7 +522,7 @@ PrefabInstance:
     - target: {fileID: 114059993019174600, guid: 5e32f55e3e26c96489ad86c77704c241,
         type: 3}
       propertyPath: maxAmount
-      value: 1000
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e32f55e3e26c96489ad86c77704c241, type: 3}

@@ -38,8 +38,8 @@ public class Movement : MonoBehaviour
 	//private Vector3 ArmatureStartRot;
 	//private Vector3 dir;
 	//private float lastA;
-	private float lastArmatureRot;
-	public Transform Armature;
+	//private float lastArmatureRot;
+	//public Transform Armature;
 	[Space(40)]
 	public bool targetPos;//target position or direcion?
 	public Vector3 direction;//the direction to move
@@ -65,7 +65,7 @@ public class Movement : MonoBehaviour
 			totalIdleWeight += idleWeights[i];
 		}
 		//ArmatureStartRot = Armature.localEulerAngles;
-		lastArmatureRot = Armature.localEulerAngles.y;
+		//lastArmatureRot = Armature.localEulerAngles.y;
 		//yRot = transform.eulerAngles.y;
 		rig = GetComponent<Rigidbody>();
 		angle = transform.rotation;
@@ -87,8 +87,10 @@ public class Movement : MonoBehaviour
 
 	public void SetAngleFromDirection()
 	{
+		Vector3 targetDirection = direction;
+		targetDirection.y = 0;
 		//only change the angle if actually moving
-		if(direction.magnitude > SMALL_INPUT) SetAngle(Quaternion.LookRotation(direction, transform.up));
+		if(direction.magnitude > SMALL_INPUT) SetAngle(Quaternion.LookRotation(targetDirection, Vector3.up));
 	}
 
 	public void SetAngle(float a) { SetAngle(Quaternion.Euler(0, a, 0)); }
