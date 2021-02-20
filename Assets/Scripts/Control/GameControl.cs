@@ -567,16 +567,22 @@ public class GameControl : MonoBehaviour
 	public IEnumerator LoadSavedStuffHelper()
 	{
 		LoadPlayer(this);
-		yield return SaveItem.LoadAll();//load items (inc. buildings maybe) first
-		yield return SaveEntity.LoadAll();
+		yield return Save.LoadAllData();
+
+		//yield return SaveItem.LoadAll();//load items (inc. buildings maybe) first
+		//yield return SaveEntity.LoadAll();
+
 		print("loaded saved entities and items...");
 	}
 
 	public void SaveStuff()
 	{
 		SavePlayer(this);
-		SaveEntity.SaveAll();
-		SaveItem.SaveAll();
+
+		Save.SaveAllData();
+		//SaveEntity.SaveAll();
+		//SaveItem.SaveAll();
+
 		print("saved entities and items...");
 	}
 
