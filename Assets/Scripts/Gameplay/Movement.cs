@@ -117,52 +117,55 @@ public class Movement : MonoBehaviour
 		}
 		angleOff = Quaternion.Angle(transform.rotation, angle);
 		idle = (direction.magnitude < 0.01f) && (angleOff < ANGLE_THRESHOLD) && (rig.velocity.magnitude < 0.05f);//move very slow and be on target to be idle
-		if (true)//abilities == null)  || !abilities.busy)
+
+		if (anim.IsInTransition(0))
 		{
-			if (anim.IsInTransition(0))
+			if (!transitionCaptured)
 			{
-				if (!transitionCaptured)
+				if (idle)
 				{
-					if (idle)
+					float rand = Random.Range(0, totalIdleWeight);
+					int index = -1;
+					for (int i = 0; i < idleWeights.Length; i++)
 					{
-						float rand = Random.Range(0, totalIdleWeight);
-						int index = -1;
-						for (int i = 0; i < idleWeights.Length; i++)
+						rand -= idleWeights[i];
+						if (rand <= 0)
 						{
-							rand -= idleWeights[i];
-							if (rand <= 0)
-							{
-								index = i;
-								break;
-							}
+							index = i;
+							break;
 						}
-						anim.SetInteger("IdleIndex", index);
 					}
-
-
-					transitionCaptured = true;
+					anim.SetInteger("IdleIndex", index);
 				}
 
-			}
-			else
-			{
-				transitionCaptured = false;
+
+				transitionCaptured = true;
 			}
 
-			if (previouslyIdle && !idle)//used to be idle, but not anymore
-			{
-				anim.SetTrigger("IdleEnd");
-			}
-
-			previouslyIdle = idle;
-			HandleMove();
-			HandleJump();
 		}
-		
+		else
+		{
+			transitionCaptured = false;
+		}
+
+		if (previouslyIdle && !idle)//used to be idle, but not anymore
+		{
+			anim.SetTrigger("IdleEnd");
+		}
+
+		previouslyIdle = idle;
+
+		HandleMove();
+		HandleJump();		
 
 		CheckGround();
 		
 
+	}
+
+	private void Update()
+	{
+		
 	}
 
 	void CheckGround()
@@ -170,7 +173,9 @@ public class Movement : MonoBehaviour
 		grounded = false;
 		foreach(Transform t in groundCheck)
 		{
-			if(Physics.CheckSphere(t.position, GROUND_THRESHOLD, ground))
+			//TODO: make this better or faster
+			//Physics.Raycast(t.position + Vector3.up * 0.1f, -Vector3.up, GROUND_THRESHOLD, ground))//
+			if (Physics.CheckSphere(t.position, GROUND_THRESHOLD, ground))
 			{
 				grounded = true;
 				return;

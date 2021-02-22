@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
+using System;
 
 //TODO: link to collectible or something to remove it from list automatically
 //TODO: save the path to player-controlled to the player's data file
@@ -39,12 +40,15 @@ public class SaveItem : Save
 
 		myID = GetComponent<ID>();
 
-		if (!readNextId)
-		{
-			string path = Application.persistentDataPath + "/nextidItems.txt";
-			if (File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
-			readNextId = true;
-		}
+		//if (!readNextId)
+		//{
+		//	TryReadNextID();
+		//	//string path = Application.persistentDataPath + "/nextidItems.txt";
+		//	//if (File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
+		//	//readNextId = true;
+		//}
+		TryReadNextID();
+
 
 		if (id == 0)
 		{
@@ -95,31 +99,45 @@ public class SaveItem : Save
 			string type = typeString.Substring(savePath.Length);
 			print("fetching item prefab: " + type);
 			//TODO: save change to auto do this maybe
-			//AsyncOperationHandle<GameObject> toSpawnAsync = Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
-			//yield return toSpawnAsync;
-			//GameObject toSpawn = toSpawnAsync.Result;
+			AsyncOperationHandle<GameObject> toSpawnAsync = GetItemPrefab(type);
+			yield return toSpawnAsync;
+			GameObject toSpawn = toSpawnAsync.Result;
 			//TODO: saving takes too long!
-			GameObject toSpawn = GameControl.itemTypes[GameControl.StringIdMap[type]].prefab;
+			//GameObject toSpawn = GetItemPrefab(type);
 			string typeFilePath = typeString + "/" + type + ".json";
 			if (File.Exists(typeFilePath))
 			{
 				List<SaveDataItem> tempData = JsonConvert.DeserializeObject<List<SaveDataItem>>(File.ReadAllText(typeFilePath));
-
+				List<Save> loadedSaves = new List<Save>();
 				foreach (SaveDataItem s in tempData)
 				{
 					itemCount++;
 					GameObject g = Instantiate(toSpawn);
 					g.GetComponent<SaveItem>().SetData(s);
+					loadedSaves.Add(g.GetComponent<Save>());
 				}
+				Save.CallOnLoadedtype(type, loadedSaves);
 			}
 			else
 			{
 				Debug.LogWarning("No file for type:" + type);
-			}			
+			}
 		}
 		print("Loaded items: " + itemCount + ", " + typeCount + "types");
 		yield return null;
 	}
+
+	public static AsyncOperationHandle<GameObject> GetItemPrefab(string type)
+	{
+		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + " p.prefab");
+		//return GameControl.itemTypes[GameControl.StringIdMap[type]].prefab;
+	}
+
+
+	//internal static AsyncOperationHandle<GameObject> GetItemPrefab(string type)
+	//{
+	//	throw new NotImplementedException();
+	//}
 
 	public static void SaveAll()
 	{
@@ -161,9 +179,9 @@ public class SaveItem : Save
 			File.WriteAllText(path + i.Key + ".json", JsonConvert.SerializeObject(toSave[i.Value], Formatting.Indented));
 		}
 
-		//save next id
-		string nextIdPath = Application.persistentDataPath + "/nextidItems.txt";
-		File.WriteAllText(nextIdPath, nextId.ToString());
+		////save next id
+		//string nextIdPath = Application.persistentDataPath + "/nextidItems.txt";
+		//File.WriteAllText(nextIdPath, nextId.ToString());
 	}
 }
 

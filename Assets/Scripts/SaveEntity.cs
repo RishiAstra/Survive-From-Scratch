@@ -38,19 +38,22 @@ public class SaveEntity : Save
 
 
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
     {
 		if (saves == null) saves = new List<SaveEntity>();
 		indexInSaves = saves.Count;
 		saves.Add(this);
 
-		if (!readNextId)
-		{
-			string path = Application.persistentDataPath + "/nextid.txt";
-			//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
-			if(File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
-			readNextId = true;
-		}
+		//if (!readNextId)
+		//{
+		//	//TryReadNextID();
+		//	//string path = Application.persistentDataPath + "/nextid.txt";
+		//	////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
+		//	//if(File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
+		//	//readNextId = true;
+		//}
+		TryReadNextID();
+
 
 		//if (saveAbilities) a = GetComponent<Abilities>();
 		if (id == 0)
@@ -159,12 +162,15 @@ public class SaveEntity : Save
 
 		foreach (string typeString in Directory.GetDirectories(savePath))
 		{
+			//TODO: check if this type even exists (if it has a prefab)
 			typeCount++;
 			string type = typeString.Substring(savePath.Length);
 			print("fetching entity prefab: " + type);
-			AsyncOperationHandle<GameObject> toSpawnAsync = Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
+			AsyncOperationHandle<GameObject> toSpawnAsync = GetEntityPrefab(type);
 			yield return toSpawnAsync;
 			GameObject toSpawn = toSpawnAsync.Result;
+
+			List<Save> loadedSaves = new List<Save>();
 			foreach (string idPath in Directory.GetFiles(typeString))
 			{
 				entityCount++;
@@ -172,10 +178,20 @@ public class SaveEntity : Save
 				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
 				g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
 				g.GetComponent<SaveEntity>().SetData(saveData);
+
+				//TODO: warning: should check if null
+				//add the save
+				loadedSaves.Add(g.GetComponent<Save>());
 			}
+			Save.CallOnLoadedtype(type, loadedSaves);
 		}
 		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
 		yield return null;
+	}
+
+	public static AsyncOperationHandle<GameObject> GetEntityPrefab(string type)
+	{
+		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
 	}
 
 	public static void SaveAll()
@@ -184,9 +200,10 @@ public class SaveEntity : Save
 		{
 			if (saves[i] != null) saves[i].SaveDataToFile();
 		}
-		string path = Application.persistentDataPath + "/nextid.txt";
-		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
-		File.WriteAllText(path, nextId.ToString());
+
+		//string path = Application.persistentDataPath + "/nextid.txt";
+		////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
+		//File.WriteAllText(path, nextId.ToString());
 	}
 }
 

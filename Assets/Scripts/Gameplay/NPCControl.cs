@@ -34,32 +34,45 @@ public class NPCControl : MonoBehaviour
 
 		//TODO: can spot through things
 		//float angle = abilities.skills[0].useAngle;
-		Spot();
+		//TODO: optimize spotting
+		if(Time.frameCount % 5 == 0) Spot();//only spot sometimes
 		if(targets.Count > 0)
 		{
-			Abilities t = targets[0];//TODO: find optimal target, depending on intelligence
-			Transform attackPlace = abilities.attackTranforms[0];
-			Vector3 off = t.transform.position - attackPlace.position;
-			Quaternion targetAngle = Quaternion.LookRotation(off, transform.up);
-			//float angleOff = Quaternion.Angle(transform.rotation, targetAngle);
-			//movement.SetAngle(targetAngle);
-			movement.SetDirection(off.normalized);
-			movement.SetAngleFromDirection();
-			foreach (Collider col in Physics.OverlapSphere(checkAttack.position, checkAttackRadius, targetMask))//TODO: this can change depending on intelligence, dumb can attack at wrong distance. This should be based off of the skill's attack area/dist.
+			int index = -1;
+			for(int i = 0;i < targets.Count; i++)
 			{
-				TagScript tagScript = col.GetComponent<TagScript>();
-				//TODO: make targets a struct or something that has tagscript and abilities
-				if (tagScript != null && tagScript.ContainsTag(abilities.enemyString))
+				if(targets[i] != null)
 				{
-
-					Abilities temp = col.GetComponent<Abilities>();
-					if (temp != null)
-					{
-						abilities.UseSkill(0);
-					}
+					index = i;
 				}
-
 			}
+			if(index != -1)
+			{
+				Abilities t = targets[index];//TODO: find optimal target, depending on intelligence
+				Transform attackPlace = abilities.attackTranforms[0];
+				Vector3 off = t.transform.position - attackPlace.position;
+				Quaternion targetAngle = Quaternion.LookRotation(off, transform.up);
+				//float angleOff = Quaternion.Angle(transform.rotation, targetAngle);
+				//movement.SetAngle(targetAngle);
+				movement.SetDirection(off.normalized);
+				movement.SetAngleFromDirection();
+				foreach (Collider col in Physics.OverlapSphere(checkAttack.position, checkAttackRadius, targetMask))//TODO: this can change depending on intelligence, dumb can attack at wrong distance. This should be based off of the skill's attack area/dist.
+				{
+					TagScript tagScript = col.GetComponent<TagScript>();
+					//TODO: make targets a struct or something that has tagscript and abilities
+					if (tagScript != null && tagScript.ContainsTag(abilities.enemyString))
+					{
+
+						Abilities temp = col.GetComponent<Abilities>();
+						if (temp != null)
+						{
+							abilities.UseSkill(0);
+						}
+					}
+
+				}
+			}
+			
 		}
 		else
 		{

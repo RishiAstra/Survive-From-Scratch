@@ -12,10 +12,4 @@ public class ID : MonoBehaviour
 	{
 		id = GameControl.NameToId(idString);
 	}
-
-	// Update is called once per frame
-	void Update()
-    {
-        
-    }
 }
