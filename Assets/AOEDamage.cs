@@ -37,10 +37,12 @@ public class AOEDamage : MonoBehaviour
             //tag script is on the root character gameobject, so no need to search parents
             Abilities a = t.GetComponent<Abilities>();
             //only attack each one once unless hitSameEnemyMultipleTimes
-            if (a != null && (hitSameEnemyMultipleTimes || !hit.Contains(a)))
+            if (a != null)
             {
-                hit.Add(a);
-                a.Damage(so.parent.stat.atk, other, type);
+                if (hitSameEnemyMultipleTimes || !hit.Contains(a)){
+                    hit.Add(a);
+                    a.Damage(so.parent.stat.atk, other, type);
+                }
             }
 			else
 			{
