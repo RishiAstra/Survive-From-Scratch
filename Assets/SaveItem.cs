@@ -129,7 +129,7 @@ public class SaveItem : Save
 
 	public static AsyncOperationHandle<GameObject> GetItemPrefab(string type)
 	{
-		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
+		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + " p.prefab");
 		//return GameControl.itemTypes[GameControl.StringIdMap[type]].prefab;
 	}
 

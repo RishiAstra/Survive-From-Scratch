@@ -580,6 +580,8 @@ public class GameControl : MonoBehaviour
 		SavePlayer(this);
 
 		Save.SaveAllData();
+
+		spawner.SaveAllSpawners();
 		//SaveEntity.SaveAll();
 		//SaveItem.SaveAll();
 

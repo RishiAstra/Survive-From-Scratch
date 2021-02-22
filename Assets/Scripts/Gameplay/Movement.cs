@@ -173,7 +173,9 @@ public class Movement : MonoBehaviour
 		grounded = false;
 		foreach(Transform t in groundCheck)
 		{
-			if(Physics.Raycast(t.position, -Vector3.up, GROUND_THRESHOLD, ground))//Physics.CheckSphere(t.position, GROUND_THRESHOLD, ground))
+			//TODO: make this better or faster
+			//Physics.Raycast(t.position + Vector3.up * 0.1f, -Vector3.up, GROUND_THRESHOLD, ground))//
+			if (Physics.CheckSphere(t.position, GROUND_THRESHOLD, ground))
 			{
 				grounded = true;
 				return;

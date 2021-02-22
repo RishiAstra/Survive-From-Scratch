@@ -38,7 +38,7 @@ public class SaveEntity : Save
 
 
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
     {
 		if (saves == null) saves = new List<SaveEntity>();
 		indexInSaves = saves.Count;
