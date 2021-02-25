@@ -7,6 +7,10 @@ using UnityEngine;
 public class PersistantSaveID : MonoBehaviour
 {
     public static long nextId = 1;
+	public static string filePath
+	{
+		get { return Application.streamingAssetsPath + "/PersistandSaveIDnextid.txt"; }//Application.persistentDataPath + "/PersistandSaveIDnextid.txt";
+	}
 
     public static bool readNextId;
     public long id;
@@ -14,6 +18,23 @@ public class PersistantSaveID : MonoBehaviour
     void Awake()
     {
 		TryReadNextID();//make sure that this has been read
+		CheckID();
+		//else
+		//{
+		//	if (id >= nextId)
+		//	{
+		//		nextId = id + 1;//correct the count
+		//	}
+		//}
+	}
+
+	private void Reset()
+	{
+		CheckID();
+	}
+
+	void CheckID()
+	{
 		if (id == 0)
 		{
 			id = nextId;
@@ -26,19 +47,21 @@ public class PersistantSaveID : MonoBehaviour
 	public static void TryReadNextID()
 	{
 		//don't read the next id if already has
-		if (readNextId) return;
+		//if (readNextId) return;
 
-		string path = Application.persistentDataPath + "/PersistandSaveIDnextid.txt";
+		//string path = Application.persistentDataPath + "/PersistandSaveIDnextid.txt";
 		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
-		if (File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
+		if (File.Exists(filePath)) nextId = int.Parse(File.ReadAllText(filePath));
 		readNextId = true;
+		print("loaded nextid");
 	}
 
 	public static void SaveNextID()
 	{
 		//save next id
-		string nextIdPath = Application.persistentDataPath + "/PersistandSaveIDnextid.txt";
-		File.WriteAllText(nextIdPath, nextId.ToString());
+		//string nextIdPath = ;
+		File.WriteAllText(filePath, nextId.ToString());
+		print("saved nextid");
 	}
 
 	// Update is called once per frame
