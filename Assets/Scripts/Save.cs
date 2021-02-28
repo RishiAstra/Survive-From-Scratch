@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -74,4 +75,9 @@ public abstract class Save : MonoBehaviour
 		TryReadNextID();
 	}
 
+	public static void Initialize()
+	{
+		SaveItem.InitializeStatic();
+		SaveEntity.InitializeStatic();
+	}
 }

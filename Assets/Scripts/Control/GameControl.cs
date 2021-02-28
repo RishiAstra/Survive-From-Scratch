@@ -86,6 +86,7 @@ public class GameControl : MonoBehaviour
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
 		InitializeItemTypes();
+		Save.Initialize();
 	}
 
 	private void HideMenus()

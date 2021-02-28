@@ -85,6 +85,7 @@ public class spawner : MonoBehaviour {
 
 	public static void SaveAllSpawners()
 	{
+		if(spawners != null)
 		foreach(spawner s in spawners)
 		{
 			s.SaveDataToFile();

@@ -31,10 +31,15 @@ public class SaveItem : Save
 
 	private int indexInSaves;
 
+	public static void InitializeStatic()
+	{
+		saves = new List<SaveItem>();
+	}
+
 	// Start is called before the first frame update
 	void Start()
 	{
-		if (saves == null) saves = new List<SaveItem>();
+		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);
 
