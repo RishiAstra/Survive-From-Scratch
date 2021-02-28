@@ -16,6 +16,10 @@ public class VersionHandler : MonoBehaviour
 	{
 		get { return Application.streamingAssetsPath + "/Versions/" + version + ".txt"; }
 	}
+	public string versionInfoPath
+	{
+		get { return Application.streamingAssetsPath + "/Versions/current.txt"; }
+	}
 
 	public string version;
 	public TextMeshProUGUI changeLogText;
@@ -23,11 +27,16 @@ public class VersionHandler : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-		if (changeLogText != null && File.Exists(versionFilePath))
+		if (File.Exists(versionInfoPath))
 		{
-			changeLogText.text = File.ReadAllText(versionFilePath);
-			LayoutRebuilder.ForceRebuildLayoutImmediate(changeLogPanel);
+			version = File.ReadAllText(versionInfoPath);
+			if (changeLogText != null && File.Exists(versionFilePath))
+			{
+				changeLogText.text = File.ReadAllText(versionFilePath);
+				LayoutRebuilder.ForceRebuildLayoutImmediate(changeLogPanel);
+			}
 		}
+		
     }
 
     // Update is called once per frame
