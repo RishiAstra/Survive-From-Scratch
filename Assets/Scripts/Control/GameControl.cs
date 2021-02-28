@@ -523,7 +523,7 @@ public class GameControl : MonoBehaviour
 
 	public static void LoadPlayer(GameControl p)
 	{
-		Crafting crafting = p.GetComponent<Crafting>();
+		Crafting crafting = Crafting.main;// p.GetComponent<Crafting>();
 		string path = Authenticator.GetAccountPath(username) + "data.json";
 		if (File.Exists(path))
 		{
