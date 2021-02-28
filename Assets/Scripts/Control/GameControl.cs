@@ -246,7 +246,7 @@ public class GameControl : MonoBehaviour
 		}
 		initialized = true;
 		craftInventory.SetActive(true);
-		GetComponent<Crafting>().InitializeUI();
+		Crafting.main.InitializeUI();
 		craftInventory.SetActive(false);
 		//print("reached");
 		yield return null;
@@ -509,7 +509,7 @@ public class GameControl : MonoBehaviour
 	#region save
 	public static void SavePlayer(GameControl p)
 	{
-		Crafting crafting = p.GetComponent<Crafting>();
+		Crafting crafting = Crafting.main;
 		PlayerSaveData s = new PlayerSaveData()
 		{
 			username = username,

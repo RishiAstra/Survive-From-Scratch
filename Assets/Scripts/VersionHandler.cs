@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteInEditMode]
 public class VersionHandler : MonoBehaviour
@@ -17,13 +18,15 @@ public class VersionHandler : MonoBehaviour
 	}
 
 	public string version;
-	public TextMeshProUGUI text;
+	public TextMeshProUGUI changeLogText;
+	public RectTransform changeLogPanel;
     // Start is called before the first frame update
     void OnEnable()
     {
-		if (text != null && File.Exists(versionFilePath))
+		if (changeLogText != null && File.Exists(versionFilePath))
 		{
-			text.text = File.ReadAllText(versionFilePath);
+			changeLogText.text = File.ReadAllText(versionFilePath);
+			LayoutRebuilder.ForceRebuildLayoutImmediate(changeLogPanel);
 		}
     }
 
