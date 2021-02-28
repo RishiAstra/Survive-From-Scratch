@@ -127,10 +127,10 @@ public class spawner : MonoBehaviour {
 			removeNullTimeLeft += removeNullObjectsSpeed;
 		}
 
-		if(spawnThis != null)
+		if(Save.readEverything && spawnThis != null)
 		{
 			int maxPerFrame = 10;
-			while (reload < 0 && spawnedThese.Count < maxAmount-1 && maxPerFrame >= 0) {
+			while (reload < 0 && spawnedThese.Count < maxAmount && maxPerFrame >= 0) {
 				float a = Random.Range (0, 360);
 				float dist = Random.Range (radius, 0);
 				Vector3 target = new Vector3(Mathf.Cos(a) * dist, transform.position.y + 10, Mathf.Sin(a) * dist) + transform.position;

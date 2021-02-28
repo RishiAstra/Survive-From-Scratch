@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public abstract class Save : MonoBehaviour
 {
-
+	public static bool readEverything;
 	public static long nextId = 1;
 	public static bool readNextId;
 	public long id;
@@ -73,6 +73,7 @@ public abstract class Save : MonoBehaviour
 
 		//remember the next id
 		TryReadNextID();
+		readEverything = true;
 	}
 
 	public static void Initialize()
