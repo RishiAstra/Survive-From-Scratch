@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
+using UnityEngine.EventSystems;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
@@ -292,8 +293,19 @@ public class GameControl : MonoBehaviour
 			!tempUnlockMouse
 			)
 		{
-			Cursor.lockState = CursorLockMode.Locked;
-			middleCursor.SetActive(true);
+			PointerEventData data = new PointerEventData(EventSystem.current);
+			data.position = Input.mousePosition;
+			List<RaycastResult> results = new List<RaycastResult>();
+			mainCanvas.GetComponent<GraphicRaycaster>().Raycast(data, results);
+			if(results.Count == 0)
+			{
+				Cursor.lockState = CursorLockMode.Locked;
+				middleCursor.SetActive(true);
+			}
+			else
+			{
+				print("failed to lock mouse: over ui");
+			}
 		}
 	}
 
@@ -311,7 +323,10 @@ public class GameControl : MonoBehaviour
 			TryUnlockCursor();
 		}
 		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
-		if (tempUnlockMouse && (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
+		bool ctrlReleased = Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt);
+		bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+		bool releaseBecauseMouseClickAndNotKey = !ctrlHeld && Input.GetMouseButtonDown(0);
+		if (tempUnlockMouse && (ctrlReleased || releaseBecauseMouseClickAndNotKey))
 		{
 			tempUnlockMouse = false;
 			TryLockCursor();
