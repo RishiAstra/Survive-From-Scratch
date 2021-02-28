@@ -36,11 +36,15 @@ public class SaveEntity : Save
 	private int indexInSaves;
 	private Stat pStat;
 
+	public static void InitializeStatic()
+	{
+		saves = new List<SaveEntity>();
+	}
 
 	// Start is called before the first frame update
 	void Awake()
     {
-		if (saves == null) saves = new List<SaveEntity>();
+		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);
 

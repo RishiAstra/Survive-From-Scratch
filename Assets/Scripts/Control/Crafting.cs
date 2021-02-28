@@ -25,6 +25,8 @@ public struct Recipie
 
 public class Crafting : MonoBehaviour
 {
+    public static Crafting main;
+
     public Inventory craftInventory;
     public Inventory craftResult;
 	public InventoryUI craftInventoryUI;
@@ -32,11 +34,13 @@ public class Crafting : MonoBehaviour
 
     public List<Recipie> recipies;
 
-    private GameControl me;
+    public GameControl me;
     // Start is called before the first frame update
     public void Start()
     {
-        me = GetComponent<GameControl>();
+        if (main != null) Debug.LogError("Two Crafting");
+        main = this;
+        //me = GetComponent<GameControl>();
         if (GameControl.main == null) GameControl.main = me;
 
         craftInventory.invChange.AddListener(OnCraftInventoryChanged);
