@@ -23,6 +23,7 @@ public class VersionHandler : MonoBehaviour
 
 	public string version;
 	public TextMeshProUGUI changeLogText;
+	public TextMeshProUGUI changeLogVersionText;
 	public RectTransform changeLogPanel;
     // Start is called before the first frame update
     void OnEnable()
@@ -33,6 +34,7 @@ public class VersionHandler : MonoBehaviour
 			if (changeLogText != null && File.Exists(versionFilePath))
 			{
 				changeLogText.text = File.ReadAllText(versionFilePath);
+				changeLogVersionText.text = version;
 				LayoutRebuilder.ForceRebuildLayoutImmediate(changeLogPanel);
 			}
 		}
