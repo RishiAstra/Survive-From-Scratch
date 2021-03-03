@@ -26,7 +26,7 @@ public class SaveItem : Save
 		}
 	}
 
-	public Abilities a;
+	//public Abilities a;
 	public ID myID;
 
 	private int indexInSaves;

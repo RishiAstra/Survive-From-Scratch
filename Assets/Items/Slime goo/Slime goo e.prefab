@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2210575579398243294}
   - component: {fileID: 3813394822540525828}
-  - component: {fileID: 8028532489076650587}
-  - component: {fileID: 745173004902372401}
   - component: {fileID: 5879629229792812872}
   - component: {fileID: 2699885899210853895}
   - component: {fileID: 5927446399558293852}
@@ -46,8 +44,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578048132457945444}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: -0.04703939, y: 0.12132242, z: 0.089282274}
-  m_Size: 2.7445183
+  m_LocalReferencePoint: {x: -0.004703939, y: 0.012132246, z: 0.008928239}
+  m_Size: 0.27445185
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
@@ -61,35 +59,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 1605551998563601868}
   m_Enabled: 1
---- !u!54 &8028532489076650587
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578048132457945444}
-  serializedVersion: 2
-  m_Mass: 0.1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &745173004902372401
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1578048132457945444}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.357532, y: 0.9407661, z: 2.3315794}
-  m_Center: {x: -0.025086403, y: 0.12639964, z: 0.11068165}
 --- !u!114 &5879629229792812872
 MonoBehaviour:
   m_ObjectHideFlags: 0

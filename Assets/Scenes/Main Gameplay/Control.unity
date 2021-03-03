@@ -38,13 +38,13 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1362111558}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028396, g: 0.22571427, b: 0.30692327, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -3745,7 +3745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1362111558
 Light:
   m_ObjectHideFlags: 0
@@ -6373,12 +6373,12 @@ PrefabInstance:
     - target: {fileID: 2111583128633860684, guid: 9a73b2642656d70488668084edeee4de,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00006498828
+      value: -0.00003134856
       objectReference: {fileID: 0}
     - target: {fileID: 2111583128633860684, guid: 9a73b2642656d70488668084edeee4de,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000011431508
+      value: -0.000027974851
       objectReference: {fileID: 0}
     - target: {fileID: 2111583128764958807, guid: 9a73b2642656d70488668084edeee4de,
         type: 3}
