@@ -14,10 +14,10 @@ public class Collectible : MonoBehaviour
 	//public LayerMask layerMask;
 
 	//private Rigidbody rig;
-	public float sleepThreshold;
-	public int contacts;
-	public int ac;
-	public float checkRad;
+	//public float sleepThreshold;
+	//public int contacts;
+	//public int ac;
+	//public float checkRad;
 	//public GameObject sign;
 	//public float signDist;
 
