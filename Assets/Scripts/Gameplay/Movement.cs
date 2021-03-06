@@ -76,6 +76,7 @@ public class Movement : MonoBehaviour
 	public void SetDirection(float x, float y, float z) { SetDirection(new Vector3(x, y, z)); }
 	public void SetDirection(Vector3 dir)
 	{
+		dir.y = 0;
 		direction = dir;
 	}
 
@@ -346,7 +347,7 @@ public class Movement : MonoBehaviour
 				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
 				float velDot = Vector3.Dot(rig.velocity, direction.normalized);
 				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
-				if (direction.magnitude < SMALL_INPUT || velDot < -0.5f)//if you are moving in a really wrong direction, slow down
+				if (rig.velocity.magnitude > 0.01f && (direction.magnitude < SMALL_INPUT || velDot < -0.5f))//if you are moving in a really wrong direction, slow down
 				{
 					rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
 				}

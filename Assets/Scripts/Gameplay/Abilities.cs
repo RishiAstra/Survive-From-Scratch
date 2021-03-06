@@ -161,12 +161,13 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteSkill(int i)
 	{
-		//print("using skill " + i);
+		print("using skill " + i);
 		Skill s = skills[i];
 		foreach(Action a in s.actions)
 		{
 			yield return ExecuteAction(a);
 		}
+		anim.speed = 1;
 		yield return new WaitForEndOfFrame();
 		anim.SetBool("Attacking", false);
 		busy = false;

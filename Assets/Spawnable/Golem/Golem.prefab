@@ -63,8 +63,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596891623449604899}
-  m_LocalRotation: {x: 0, y: -0.12615569, z: 0, w: 0.9920105}
-  m_LocalPosition: {x: -0.3, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7187773162484326494}
@@ -74,7 +74,7 @@ Transform:
   - {fileID: 7652437171531802073}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -14.495001, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &655701660160705547
 Animator:
   serializedVersion: 3
@@ -295,7 +295,7 @@ MonoBehaviour:
   playerOwnerName: 
   type: Golem
   customSavePath: 
-  a: {fileID: 0}
+  a: {fileID: 8971401870697438763}
   deleteOnDeath: 1
 --- !u!114 &5932179878940791774
 MonoBehaviour:

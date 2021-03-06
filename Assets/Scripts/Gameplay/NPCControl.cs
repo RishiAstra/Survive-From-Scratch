@@ -49,16 +49,16 @@ public class NPCControl : MonoBehaviour
 			if(index != -1)
 			{
 				Abilities t = targets[index];//TODO: find optimal target, depending on intelligence
-				Transform attackPlace = abilities.attackTranforms[0];
+				Transform attackPlace = checkAttack;// abilities.attackTranforms[0];
 				Vector3 off = t.transform.position - attackPlace.position;
 				Quaternion targetAngle = Quaternion.LookRotation(off, transform.up);
 				//float angleOff = Quaternion.Angle(transform.rotation, targetAngle);
 				//movement.SetAngle(targetAngle);
-				movement.SetDirection(off.normalized);
-				movement.SetAngleFromDirection();
+				bool usedAttack = false;
 				foreach (Collider col in Physics.OverlapSphere(checkAttack.position, checkAttackRadius, targetMask))//TODO: this can change depending on intelligence, dumb can attack at wrong distance. This should be based off of the skill's attack area/dist.
 				{
-					TagScript tagScript = col.GetComponent<TagScript>();
+					TagScript tagScript = col.GetComponent<TagScript>();//TODO: consider GetComponentInParent
+
 					//TODO: make targets a struct or something that has tagscript and abilities
 					if (tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 					{
@@ -66,10 +66,27 @@ public class NPCControl : MonoBehaviour
 						Abilities temp = col.GetComponent<Abilities>();
 						if (temp != null)
 						{
-							abilities.UseSkill(0);
+							
+							usedAttack = true;
+							break;
 						}
 					}
 
+				}
+				if (usedAttack)
+				{
+					abilities.UseSkill(0);
+					movement.SetDirection(Vector3.zero);
+				}
+				else
+				{
+
+					movement.SetDirection(off.normalized);
+					//movement.SetAngleFromDirection();
+					Vector3 dir = t.transform.position - transform.position;
+					dir.y = 0;
+					Quaternion ta = Quaternion.LookRotation(dir, Vector3.up);
+					movement.SetAngle(ta);
 				}
 			}
 			
