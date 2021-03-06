@@ -261,7 +261,7 @@ MonoBehaviour:
   toSpawnType: Slime
   delay: 0.5
   radius: 50
-  maxAmount: 15
+  maxAmount: 10
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   spawnedThese: []
@@ -661,8 +661,8 @@ MonoBehaviour:
   thingType: 1
   toSpawnType: Spider
   delay: 0.5
-  radius: 100
-  maxAmount: 25
+  radius: 60
+  maxAmount: 10
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   spawnedThese: []
@@ -831,7 +831,7 @@ MonoBehaviour:
   toSpawnType: Golem
   delay: 0.5
   radius: 50
-  maxAmount: 15
+  maxAmount: 5
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   spawnedThese: []
