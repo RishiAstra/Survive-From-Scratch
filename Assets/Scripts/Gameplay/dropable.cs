@@ -42,9 +42,9 @@ public class dropable : MonoBehaviour {
 				{
 					rig.AddForce(me.bob.rig.velocity, ForceMode.VelocityChange);
 				}
-				print("before");
+				//print("before");
 				yield return null;
-				print("after");
+				//print("after");
 			}
 		}
 		yield return null;

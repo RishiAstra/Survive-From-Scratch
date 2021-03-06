@@ -136,10 +136,10 @@ public class Abilities : MonoBehaviour
 	public float GetDamageAmount(float damage, AttackType type, Armor armor)
 	{
 		float armorValue = 0;
-		if (type == AttackType.Pierce) armorValue = armor.pierceResist;
-		if (type == AttackType.Blunt) armorValue = armor.bluntResist;
-		if (type == AttackType.Slash) armorValue = armor.slashResist;
-		if (type == AttackType.Magic) armorValue = armor.magicResist;
+		if (type == AttackType.Pierce)	armorValue = armor.pierceResist;
+		if (type == AttackType.Blunt)	armorValue = armor.bluntResist;
+		if (type == AttackType.Slash)	armorValue = armor.slashResist;
+		if (type == AttackType.Magic)	armorValue = armor.magicResist;
 		float mult = 1 - Mathf.Pow(RESIST_EXPONENT_BASE, -damage / armorValue);
 		return damage * mult;
 	}
@@ -161,12 +161,13 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteSkill(int i)
 	{
-		//print("using skill " + i);
+		print("using skill " + i);
 		Skill s = skills[i];
 		foreach(Action a in s.actions)
 		{
 			yield return ExecuteAction(a);
 		}
+		anim.speed = 1;
 		yield return new WaitForEndOfFrame();
 		anim.SetBool("Attacking", false);
 		busy = false;

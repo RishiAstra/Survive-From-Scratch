@@ -8,6 +8,7 @@ public class Weapon : MonoBehaviour
 	public Abilities parent;
 	[Range(0, 2)]public float dmg;
 	public bool canDmg;
+	public bool multipleHits = true;//can it hit multiple enemies with same swing etc.
 	public float attackDuriation;//StopAttack() will prevent this, so no need. Set it to large value, larger than realistic attack duriation (e.g. if sword takes 1 sec to swing, set to 2 sec)
 	//public Equip eq;
 
@@ -69,14 +70,14 @@ public class Weapon : MonoBehaviour
 
 			//if this is an enemy...
 			TagScript ts = other.GetComponentInParent<TagScript>();
-			if (ts != null &&ts.ContainsTag(parent.enemyString))
+			if (ts != null && ts.ContainsTag(parent.enemyString))
 			{
 				Abilities bg = ts.GetComponent<Abilities>();
 				if (bg != null && bg != parent && !hit.Contains(bg))
 				{
 					hit.Add(bg);
 					bg.Damage(dmg * parent.stat.atk, other, attackType);
-					//canDmg = false;
+					if(!multipleHits) canDmg = false;
 				}
 			}
 				
