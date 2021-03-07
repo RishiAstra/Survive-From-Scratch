@@ -4608,7 +4608,7 @@ GameObject:
   - component: {fileID: 1491955542}
   - component: {fileID: 1491955541}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Options Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6735,17 +6735,19 @@ PrefabInstance:
     - target: {fileID: 8095629480792341893, guid: f9dc48c939010374ca199c10562c43a1,
         type: 3}
       propertyPath: m_text
-      value: Settings
+      value: 'Options
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 8095629480792341893, guid: f9dc48c939010374ca199c10562c43a1,
         type: 3}
       propertyPath: m_fontSize
-      value: 20.7
+      value: 21.7
       objectReference: {fileID: 0}
     - target: {fileID: 8095629481644731478, guid: f9dc48c939010374ca199c10562c43a1,
         type: 3}
       propertyPath: m_Name
-      value: Settings Button
+      value: Options Button
       objectReference: {fileID: 0}
     - target: {fileID: 8095629481644731479, guid: f9dc48c939010374ca199c10562c43a1,
         type: 3}
@@ -6856,7 +6858,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 9a58f5069a59d1644b55a5aadc5dd58b,
+      objectReference: {fileID: 21300000, guid: 32a4f33563139ce4da97630a9d7a3722,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9dc48c939010374ca199c10562c43a1, type: 3}

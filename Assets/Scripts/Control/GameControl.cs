@@ -80,9 +80,9 @@ public class GameControl : MonoBehaviour
 		mainCamera = Camera.main;
 		//craftInventory.SetActive(false);
 
-		//itemHoverInfo.SetActive(false);
-		//HideMenus();
-		//mapScreen.SetActive(true);
+		itemHoverInfo.SetActive(false);
+		HideMenus();
+		mapScreen.SetActive(true);
 
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
