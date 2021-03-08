@@ -21,7 +21,9 @@ public class CraftingEditor : Editor
 	{
 		//TODO: do this in better way
 		if (GameControl.main == null) GameControl.main = GameObject.FindObjectOfType<GameControl>();
+		GameControl.CheckItemTypes();
 		t = (Crafting)target;
+		t.CheckRecipies();
 		DrawDefaultInspector();
 		UpdateShowList();
 
@@ -89,6 +91,13 @@ public class CraftingEditor : Editor
 			{
 				t.recipies.Add(new Recipie());
 			}
+
+		}
+
+
+		if (GUILayout.Button("Save Recipies"))
+		{
+			t.SaveRecipies();
 		}
 		EditorGUI.indentLevel -= 2;
 	}
