@@ -19,12 +19,20 @@ public class HelpControl : MonoBehaviour
 	//}
 	public string helpFolderPath
 	{
-		get { return Application.streamingAssetsPath + "/Help/"; }
+		get { return Application.streamingAssetsPath + "/Help/helptxts/"; }
+	}
+
+	public string helpCtrlFile
+	{
+		get { return Application.streamingAssetsPath + "/Help/helplist.txt"; }
 	}
 
 	public List<string> helps;
 	public TextMeshProUGUI helpLogText;
 	public RectTransform helpLogPanel;
+	public GameObject helpPrefab;
+	public RectTransform helpSelecterParent;
+	public Vector3 helpSelecterSpacing;
 
 	public int helpSelectedIndex;
 
@@ -36,33 +44,76 @@ public class HelpControl : MonoBehaviour
 	// Start is called before the first frame update
 	void OnEnable()
 	{
-		if (Directory.Exists(helpFolderPath))
-		{
-			string[] temp = Directory.GetFiles(helpFolderPath);
-			for(int i = 0; i < temp.Length; i++)
-			{
-				string s = temp[i];
-				if(s.IndexOf(".txt") == s.Length - ".txt".Length)
-				{
-					helps.Add(temp[i].Substring(0, temp[i].Length - ".txt".Length));
-				}
-			}
-		}
-
-		//if (File.Exists(helpFolderPath) && helpLogText != null)
+		//if (Directory.Exists(helpFolderPath))
 		//{
-		//	helps = File.ReadAllLines(helpFolderPath);
-		//	StringBuilder sb = new StringBuilder();
-		//	for (int i = 0; i < helps.Length; i++)
+		//	string[] temp = Directory.GetFiles(helpFolderPath);
+		//	int amountMade = 0;
+		//	for(int i = 0; i < temp.Length; i++)
 		//	{
-		//		if (File.Exists(GetHelpFilePath(helps[i])))
+		//		string s = temp[i];
+		//		if(s.IndexOf(".txt") == s.Length - ".txt".Length)
 		//		{
-		//			sb.Append("<b>" + helps[i] + "</b>\n" + File.ReadAllText(GetHelpFilePath(helps[i])) + "\n");
+		//			helps.Add(temp[i].Substring(0, temp[i].Length - ".txt".Length));
 		//		}
+				
+		//		GameObject g = Instantiate(helpPrefab, helpSelecterParent);
+		//		g.transform.localPosition = helpSelecterSpacing * amountMade;
+		//		amountMade++;
 		//	}
-		//	helpLogText.text = sb.ToString();
-		//	LayoutRebuilder.ForceRebuildLayoutImmediate(helpLogPanel);
 		//}
+
+		if (File.Exists(helpCtrlFile) && helpPrefab != null&& helpSelecterParent != null && helpLogText != null)
+		{
+			string[] temp = File.ReadAllLines(helpCtrlFile);
+
+			for(int j = helpSelecterParent.childCount - 1; j > 0; j--)
+			{
+				DestroyImmediate(helpSelecterParent.GetChild(j).gameObject);
+			}
+
+			if (Directory.Exists(helpFolderPath))
+			{
+				//string[] temp = Directory.GetFiles(helpFolderPath);
+				int amountMade = 0;
+
+				for (int i = 0; i < temp.Length; i++)
+				{
+					if (File.Exists(GetHelpFilePath(temp[i])))
+					{
+						//sb.Append("<b>" + temp[i] + "</b>\n" + File.ReadAllText(GetHelpFilePath(temp[i])) + "\n");
+						helps.Add(temp[i]);
+
+						GameObject g = Instantiate(helpPrefab, helpSelecterParent);
+						g.transform.localPosition = helpSelecterSpacing * amountMade;
+						g.GetComponentInChildren<TextMeshProUGUI>().text = temp[i];
+						g.GetComponentInChildren<Button>().onClick.AddListener(() => ChangeIndexSelected(i));
+						amountMade++;
+					}
+				}
+
+				//for (int i = 0; i < temp.Length; i++)
+				//{
+				//	string s = temp[i];
+				//	if (s.IndexOf(".txt") == s.Length - ".txt".Length)
+				//	{
+				//		helps.Add(temp[i].Substring(0, temp[i].Length - ".txt".Length));
+				//	}
+
+				//	GameObject g = Instantiate(helpPrefab, helpSelecterParent);
+				//	g.transform.localPosition = helpSelecterSpacing * amountMade;
+				//	amountMade++;
+				//}
+			}
+			LayoutRebuilder.ForceRebuildLayoutImmediate(helpSelecterParent);
+			ChangeIndexSelected(0);
+		}
+	}
+
+	public void ChangeIndexSelected(int index)
+	{
+		helpSelectedIndex = index;
+		helpLogText.text = File.ReadAllText(GetHelpFilePath(helps[helpSelectedIndex]));
+		LayoutRebuilder.ForceRebuildLayoutImmediate(helpLogPanel);
 	}
 
 	// Update is called once per frame
