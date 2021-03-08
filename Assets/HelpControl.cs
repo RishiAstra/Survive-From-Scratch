@@ -44,25 +44,9 @@ public class HelpControl : MonoBehaviour
 	// Start is called before the first frame update
 	void OnEnable()
 	{
-		//if (Directory.Exists(helpFolderPath))
-		//{
-		//	string[] temp = Directory.GetFiles(helpFolderPath);
-		//	int amountMade = 0;
-		//	for(int i = 0; i < temp.Length; i++)
-		//	{
-		//		string s = temp[i];
-		//		if(s.IndexOf(".txt") == s.Length - ".txt".Length)
-		//		{
-		//			helps.Add(temp[i].Substring(0, temp[i].Length - ".txt".Length));
-		//		}
-				
-		//		GameObject g = Instantiate(helpPrefab, helpSelecterParent);
-		//		g.transform.localPosition = helpSelecterSpacing * amountMade;
-		//		amountMade++;
-		//	}
-		//}
+		helps = new List<string>();
 
-		if (File.Exists(helpCtrlFile) && helpPrefab != null&& helpSelecterParent != null && helpLogText != null)
+		if (File.Exists(helpCtrlFile) && helpPrefab != null && helpSelecterParent != null && helpLogText != null)
 		{
 			string[] temp = File.ReadAllLines(helpCtrlFile);
 
@@ -75,18 +59,20 @@ public class HelpControl : MonoBehaviour
 			{
 				//string[] temp = Directory.GetFiles(helpFolderPath);
 				int amountMade = 0;
-
+				List<int> tempIndexes = new List<int>();
 				for (int i = 0; i < temp.Length; i++)
 				{
 					if (File.Exists(GetHelpFilePath(temp[i])))
 					{
 						//sb.Append("<b>" + temp[i] + "</b>\n" + File.ReadAllText(GetHelpFilePath(temp[i])) + "\n");
 						helps.Add(temp[i]);
+						tempIndexes.Add(i);
+						int? tempInt = i;
 
 						GameObject g = Instantiate(helpPrefab, helpSelecterParent);
 						g.transform.localPosition = helpSelecterSpacing * amountMade;
 						g.GetComponentInChildren<TextMeshProUGUI>().text = temp[i];
-						g.GetComponentInChildren<Button>().onClick.AddListener(() => ChangeIndexSelected(i));
+						g.GetComponentInChildren<Button>().onClick.AddListener(() => ChangeIndexSelected((int)tempInt));
 						amountMade++;
 					}
 				}
