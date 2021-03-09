@@ -99,6 +99,11 @@ public class CraftingEditor : Editor
 		{
 			t.SaveRecipies();
 		}
+		GUILayout.Space(20);
+		if (GUILayout.Button("Load Recipies"))
+		{
+			t.LoadRecipies();
+		}
 		EditorGUI.indentLevel -= 2;
 	}
 

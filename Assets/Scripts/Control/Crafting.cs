@@ -164,22 +164,27 @@ public class Crafting : MonoBehaviour
     public void CheckRecipies()
     {
         if (recipies == null)
-        {
-            if (File.Exists(recipiesPath))
-            {
-                Debug.Log("read ItemTypes");
-                recipies = JsonConvert.DeserializeObject<Recipie[]>(File.ReadAllText(recipiesPath)).ToList();
-            }
-            else
-            {
-                recipies = new List<Recipie>();
-                recipies.Add(new Recipie());
-                Debug.LogError("No recipie list, made a new one");
-            }
-        }
-    }
+		{
+			LoadRecipies();
+		}
+	}
 
-    public void SaveRecipies()
+	public void LoadRecipies()
+	{
+		if (File.Exists(recipiesPath))
+		{
+			Debug.Log("read ItemTypes");
+			recipies = JsonConvert.DeserializeObject<Recipie[]>(File.ReadAllText(recipiesPath)).ToList();
+		}
+		else
+		{
+			recipies = new List<Recipie>();
+			recipies.Add(new Recipie());
+			Debug.LogError("No recipie list, made a new one");
+		}
+	}
+
+	public void SaveRecipies()
     {
         File.WriteAllText(recipiesPath, JsonConvert.SerializeObject(recipies.ToArray(), Formatting.Indented));
         Debug.Log("Saved Recipies");
