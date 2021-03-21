@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HeldItem : MonoBehaviour
+public class MouseHeldItem : MonoBehaviour
 {
     public Image img;
     public TextMeshProUGUI amountText;
