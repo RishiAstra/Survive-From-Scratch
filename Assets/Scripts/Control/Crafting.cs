@@ -1,7 +1,10 @@
 ﻿using bobStuff;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 //TODO: consider making Item a struct
 //TODO: make recipie class or struct, check if for craftable things, remove items when crafted
@@ -25,6 +28,9 @@ public struct Recipie
 
 public class Crafting : MonoBehaviour
 {
+    public static string recipiesPath = Application.streamingAssetsPath + @"/Items/recipies.json";//@"Assets\Resources\item types.json";
+
+
     public static Crafting main;
 
     public Inventory craftInventory;
@@ -154,4 +160,34 @@ public class Crafting : MonoBehaviour
 		craftInventoryUI.InitializeSlots();
 		craftResultUI.InitializeSlots();
 	}
+
+    public void CheckRecipies()
+    {
+        if (recipies == null)
+		{
+			LoadRecipies();
+		}
+	}
+
+	public void LoadRecipies()
+	{
+		if (File.Exists(recipiesPath))
+		{
+			Debug.Log("read ItemTypes");
+			recipies = JsonConvert.DeserializeObject<Recipie[]>(File.ReadAllText(recipiesPath)).ToList();
+		}
+		else
+		{
+			recipies = new List<Recipie>();
+			recipies.Add(new Recipie());
+			Debug.LogError("No recipie list, made a new one");
+		}
+	}
+
+	public void SaveRecipies()
+    {
+        File.WriteAllText(recipiesPath, JsonConvert.SerializeObject(recipies.ToArray(), Formatting.Indented));
+        Debug.Log("Saved Recipies");
+    }
+
 }
