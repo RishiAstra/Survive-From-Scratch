@@ -19,7 +19,7 @@ public class InventoryUI : MonoBehaviour
     private List<ItemIcon> slotI;
 
     private float slotSize;
-    private int pSize = 0;
+    private int pSize = -1;
     private float size;
     private float initialHeight;
     private float maxSlotSizeX;

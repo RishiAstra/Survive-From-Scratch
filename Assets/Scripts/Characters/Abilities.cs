@@ -74,7 +74,7 @@ public class Abilities : MonoBehaviour
 
 	private void Awake()
 	{
-		if (resetOnStart) Reset();//reset before anythign else can happen
+		if (resetOnStart) ResetStats();//reset before anythign else can happen
 
 	}
 	// Start is called before the first frame update
@@ -82,7 +82,7 @@ public class Abilities : MonoBehaviour
 	{
 	}
 
-	public void Reset()
+	public void ResetStats()
 	{
 		stat = maxStat;
 	}
@@ -161,7 +161,7 @@ public class Abilities : MonoBehaviour
 	}
 	public IEnumerator ExecuteSkill(int i)
 	{
-		print("using skill " + i);
+		//print("using skill " + i);
 		Skill s = skills[i];
 		foreach(Action a in s.actions)
 		{
