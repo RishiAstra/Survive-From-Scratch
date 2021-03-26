@@ -20,7 +20,7 @@ public class SaveEntity : Save
 	const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
-			return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Entities/";
+			return Application.persistentDataPath + "/Save/Entities/";
 		}
 	}
 
@@ -103,6 +103,34 @@ public class SaveEntity : Save
 		string path = GetPath();
 		Directory.CreateDirectory(path);
 		File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
+		//File.WriteAllText(path + , SceneManager.GetActiveScene().name);
+	}
+
+	public static void TeleportEntityBetweenScenes(long idToMove, string nextScene)
+	{
+		if (!Directory.Exists(savePath))
+		{
+			Debug.LogWarning("No save folder");
+			return;
+		}
+
+		foreach (string typeString in Directory.GetDirectories(savePath))
+		{
+			string type = typeString.Substring(savePath.Length);
+			//print("fetching entity prefab: " + type);
+
+			List<Save> loadedSaves = new List<Save>();
+			foreach (string idPath in Directory.GetFiles(typeString))
+			{
+
+				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+				if (saveData.id == idToMove)
+				{
+					saveData.scene = nextScene;
+					File.WriteAllText(idPath, JsonConvert.SerializeObject(saveData, Formatting.Indented));
+				}
+			}
+		}
 	}
 
 	//public void GetDataFromFile()
@@ -117,6 +145,7 @@ public class SaveEntity : Save
 		return new SaveData
 		{
 			id = id,
+			scene = SceneManager.GetActiveScene().name,
 			maxStat = a.maxStat,
 			stat = a.stat,
 			position = transform.position,
@@ -177,15 +206,19 @@ public class SaveEntity : Save
 			List<Save> loadedSaves = new List<Save>();
 			foreach (string idPath in Directory.GetFiles(typeString))
 			{
-				entityCount++;
-				GameObject g = Instantiate(toSpawn);
+				
 				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-				g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
-				g.GetComponent<SaveEntity>().SetData(saveData);
+				if(saveData.scene == SceneManager.GetActiveScene().name)
+				{
+					entityCount++;
+					GameObject g = Instantiate(toSpawn);
+					g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
+					g.GetComponent<SaveEntity>().SetData(saveData);
 
-				//TODO: warning: should check if null
-				//add the save
-				loadedSaves.Add(g.GetComponent<Save>());
+					//TODO: warning: should check if null
+					//add the save
+					loadedSaves.Add(g.GetComponent<Save>());
+				}				
 			}
 			Save.CallOnLoadedtype(type, loadedSaves);
 		}
@@ -200,6 +233,7 @@ public class SaveEntity : Save
 
 	public static void SaveAll()
 	{
+		
 		for(int i = 0; i < saves.Count; i++)
 		{
 			if (saves[i] != null) saves[i].SaveDataToFile();
@@ -216,6 +250,7 @@ public class SaveEntity : Save
 public class SaveData
 {
     public long id;
+	public string scene;
     public Stat maxStat;
     public Stat stat;
     public Vector3 position;

@@ -132,6 +132,10 @@ public class GameControl : MonoBehaviour
 		//remove other scenes if they aren't the control scene
 		loading = true;
 		TryUnlockCursor();
+		mapLoadText.text = "Saving";
+		yield return null;//wait a frame
+		SaveStuff();
+		yield return null;//wait a frame
 		mapLoadText.text = "Unloading scenes";
 		SetMapLoadProgress(0);
 		mapLoadScreen.SetActive(true);
