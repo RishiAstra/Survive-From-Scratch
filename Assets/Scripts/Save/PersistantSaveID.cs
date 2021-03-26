@@ -53,7 +53,7 @@ public class PersistantSaveID : MonoBehaviour
 		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 		if (File.Exists(filePath)) nextId = int.Parse(File.ReadAllText(filePath));
 		readNextId = true;
-		print("loaded nextid");
+		//print("loaded nextid");
 	}
 
 	public static void SaveNextID()

@@ -69,6 +69,7 @@ public class GameControl : MonoBehaviour
 	
 //	public RPGCamera Camera;
 	private Player me;
+	private long myPlayersId = -1;
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
@@ -88,6 +89,14 @@ public class GameControl : MonoBehaviour
 		CheckItemTypes();
 		InitializeItemTypes();
 		Save.Initialize();
+
+		StartCoroutine(LoadPlayerInitial());
+	}
+
+	IEnumerator LoadPlayerInitial()
+	{
+		yield return new WaitForEndOfFrame();
+		LoadPlayer(this);
 	}
 
 	private void HideMenus()
@@ -127,11 +136,24 @@ public class GameControl : MonoBehaviour
 
 	public IEnumerator LoadMapLocation(string name)
     {
-		if(!initialized)
+		if (!initialized) yield break;
 		//TODO:test this
 		//remove other scenes if they aren't the control scene
 		loading = true;
 		TryUnlockCursor();
+		mapLoadText.text = "Saving";
+		yield return null;//wait a frame
+		SaveStuff();
+		yield return null;
+		if (myPlayersId == -1)
+		{
+			Debug.LogWarning("Didn't teleport player because player doesn't exist");
+		}
+		else
+		{
+			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, name);
+		}
+		yield return null;//wait a frame
 		mapLoadText.text = "Unloading scenes";
 		SetMapLoadProgress(0);
 		mapLoadScreen.SetActive(true);
@@ -191,7 +213,7 @@ public class GameControl : MonoBehaviour
 
 		HideMenus();
 
-		if(me == null) SetUpPlayer(CreatePlayerObject());
+		if(me == null) MakeAndSetUpPlayer();
 
 		playerExists = true;
 		inWorld = true;
@@ -259,6 +281,11 @@ public class GameControl : MonoBehaviour
 	//{
 	//	CreatePlayerObject();
 	//}
+	void MakeAndSetUpPlayer()
+	{
+		SetUpPlayer(CreatePlayerObject());
+
+	}
 
 	void Respawn()
 	{
@@ -266,7 +293,7 @@ public class GameControl : MonoBehaviour
 		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
-			SetUpPlayer(CreatePlayerObject());
+			MakeAndSetUpPlayer();
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
 		}
@@ -463,6 +490,7 @@ public class GameControl : MonoBehaviour
 	{
 		SaveEntity save = newPlayerObject.GetComponent<SaveEntity>();
 		save.playerOwnerName = username;
+		myPlayersId = save.id;
 
 		me = newPlayerObject.GetComponent<Player>();
 		HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
@@ -492,6 +520,37 @@ public class GameControl : MonoBehaviour
 		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
 		int chosen = UnityEngine.Random.Range (0, sp.Length);
 		position = sp [chosen].transform.position;
+
+		if(myPlayersId != -1)
+		{
+			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
+			if (pathOfThisEntity == null)
+			{
+				Debug.LogError("This id could not be found to teleport: id: " + myPlayersId);
+			}
+
+			SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(pathOfThisEntity));
+			if (saveData.id == myPlayersId)
+			{
+				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
+				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
+				g.transform.position = position;
+				g.transform.rotation = Quaternion.identity;
+				g.GetComponent<Abilities>().ResetStats();
+				return g;
+				//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
+				//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
+				//saveData.scene = SceneManager.GetActiveScene().name;
+				//File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
+			}
+			else
+			{
+				Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
+				//return null;
+			}
+		}
+
+		Debug.LogWarning("Failed to find player, making new one");
 
 		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
 		return Instantiate(playerPrefab, position, Quaternion.identity);
@@ -528,6 +587,7 @@ public class GameControl : MonoBehaviour
 		PlayerSaveData s = new PlayerSaveData()
 		{
 			username = username,
+			myId = GameControl.main.myPlayersId,
 			craftInventoryItems = crafting.craftInventory.items,
 		};
 		string path1 = Authenticator.GetAccountPath(username);
@@ -545,6 +605,7 @@ public class GameControl : MonoBehaviour
 			PlayerSaveData s = JsonConvert.DeserializeObject<PlayerSaveData>(File.ReadAllText(path));
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
+			GameControl.main.myPlayersId = s.myId;
 			print("Loaded player: " + username);
 		}
 
@@ -616,5 +677,6 @@ public class GameControl : MonoBehaviour
 public class PlayerSaveData
 {
 	public string username;
+	public long myId;//the id of the player owned, use this to load it
 	public List<Item> craftInventoryItems;
 }
