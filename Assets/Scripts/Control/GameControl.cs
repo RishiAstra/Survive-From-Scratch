@@ -413,25 +413,28 @@ public class GameControl : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.M))
 			{
-				if (mapScreen.activeSelf)
-				{
-					mapScreen.SetActive(false);
-					TryLockCursor();
-				}
-				else
-				{
-					mapScreen.SetActive(true);
-					TryUnlockCursor();
-				}
+				mapScreen.ToggleMenu();
+
+				//if (mapScreen.activeSelf)
+				//{
+				//	mapScreen.SetActive(false);
+				//	TryLockCursor();
+				//}
+				//else
+				//{
+				//	mapScreen.SetActive(true);
+				//	TryUnlockCursor();
+				//}
 			}
 
 			if (myAbilities.dead)
 			{
+				craftInventory.DeactivateMenu();
 				//deactivate crafting if dead
-				if (craftInventory.activeSelf)
-				{
-					craftInventory.SetActive(false);
-				}
+				//if (craftInventory.activeSelf)
+				//{
+				//	craftInventory.SetActive(false);
+				//}
 				TryUnlockCursor();
 			}
 			else

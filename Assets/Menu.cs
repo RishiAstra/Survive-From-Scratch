@@ -33,24 +33,31 @@ public class Menu : MonoBehaviour
 
     public void ActivateMenu()
 	{
-        openMenuCount++;
-        gameObject.SetActive(true);
-        if (pauseOnActive)
-        {
-            TimeControl.main.SetTimeScale(0, "menu");
-        }
-        GameControl.main.TryUnlockCursor();
+		if (!gameObject.activeSelf)
+		{
+            openMenuCount++;
+            gameObject.SetActive(true);
+            if (pauseOnActive)
+            {
+                TimeControl.main.SetTimeScale(0, "menu");
+            }
+            GameControl.main.TryUnlockCursor();
+		}
+        
     }
 
     public void DeactivateMenu()
 	{
-        openMenuCount--;
-        gameObject.SetActive(false);
-        if (pauseOnActive)
-        {
-            TimeControl.main.RemoveTimeScale("menu");
-        }
-        GameControl.main.TryLockCursor();
+		if (gameObject.activeSelf)
+		{
+            openMenuCount--;
+            gameObject.SetActive(false);
+            if (pauseOnActive)
+            {
+                TimeControl.main.RemoveTimeScale("menu");
+            }
+            GameControl.main.TryLockCursor();
+        }        
     }
 
 }
