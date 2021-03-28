@@ -88,6 +88,7 @@ public class SaveEntity : Save
 		string filePath = GetPath() + id + ".json";
 		if (a.dead){
 			if (deleteOnDeath){
+				if (type == "Player") Debug.LogError("no");
 				if (File.Exists(filePath))
 				{
 					File.Delete(filePath);
