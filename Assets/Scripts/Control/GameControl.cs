@@ -45,8 +45,8 @@ public class GameControl : MonoBehaviour
 
 	public TextMeshProUGUI mapLoadText;
 	public RectTransform mapLoadBar;
-	public GameObject mapLoadScreen;
-	public GameObject mapScreen;
+	public Menu mapLoadScreen;
+	public Menu mapScreen;
 	//private AsyncOperation mapSceneProg;
 	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
@@ -56,7 +56,7 @@ public class GameControl : MonoBehaviour
 	public GameObject camPref;
 	public Transform camPos;//start the camera here
 	public InventoryUI hotBarUI;
-	public GameObject craftInventory;
+	public Menu craftInventory;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
@@ -83,7 +83,8 @@ public class GameControl : MonoBehaviour
 
 		itemHoverInfo.SetActive(false);
 		HideMenus();
-		mapScreen.SetActive(true);
+		mapScreen.TryActivateMenu();
+		//mapScreen.SetActive(true);
 
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
@@ -101,21 +102,28 @@ public class GameControl : MonoBehaviour
 
 	private void HideMenus()
 	{
-		mapLoadScreen.SetActive(false);
-		mapScreen.SetActive(false);
-		craftInventory.SetActive(false);
+		mapLoadScreen.TryDeactivateMenu();
+		mapScreen.TryDeactivateMenu();
+		craftInventory.TryDeactivateMenu();
+
+		//mapLoadScreen.SetActive(false);
+		//mapScreen.SetActive(false);
+		//craftInventory.SetActive(false);
 	}
 
+	
 	/// <summary>
 	/// returns if any menu is open (crafting, map, etc.)
 	/// </summary>
 	/// <returns></returns>
 	private bool MenuActive()
 	{
-		return
-			mapLoadScreen.activeInHierarchy ||
-			mapScreen.activeInHierarchy ||
-			craftInventory.activeInHierarchy;
+		return Menu.openMenuCount > 0;
+		
+		//return
+		//	mapLoadScreen.activeInHierarchy ||
+		//	mapScreen.activeInHierarchy ||
+		//	craftInventory.activeInHierarchy;
 	}
 
 	#region Map Functions
@@ -156,7 +164,9 @@ public class GameControl : MonoBehaviour
 		yield return null;//wait a frame
 		mapLoadText.text = "Unloading scenes";
 		SetMapLoadProgress(0);
-		mapLoadScreen.SetActive(true);
+		mapLoadScreen.TryActivateMenu();
+		mapScreen.TryDeactivateMenu();
+		//mapLoadScreen.SetActive(true);
 		playerExists = false;
 		yield return null;//wait a frame before starting
 
@@ -268,9 +278,11 @@ public class GameControl : MonoBehaviour
 			itemTypes[i] = item;
 		}
 		initialized = true;
-		craftInventory.SetActive(true);
+		craftInventory.TryActivateMenu();
+		//craftInventory.SetActive(true);
 		Crafting.main.InitializeUI();
-		craftInventory.SetActive(false);
+		craftInventory.TryDeactivateMenu();
+		//craftInventory.SetActive(false);
 		//print("reached");
 		yield return null;
 	}
@@ -312,11 +324,11 @@ public class GameControl : MonoBehaviour
 
 	#region Mouse
 
-	void TryLockCursor()
+	public void TryLockCursor()
 	{
-		if (
-			!craftInventory.activeSelf &&
-			!mapScreen.activeSelf &&
+		if (Menu.openMenuCount == 0 &&
+			//!craftInventory.activeSelf &&
+			//!mapScreen.activeSelf &&
 			!tempUnlockMouse
 			)
 		{
@@ -331,12 +343,12 @@ public class GameControl : MonoBehaviour
 			}
 			else
 			{
-				print("failed to lock mouse: over ui");
+				//print("failed to lock mouse: over ui");
 			}
 		}
 	}
 
-	void TryUnlockCursor()
+	public void TryUnlockCursor()
 	{
 		Cursor.lockState = CursorLockMode.None;
 		middleCursor.SetActive(false);
@@ -386,39 +398,44 @@ public class GameControl : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.E))
 			{
-				if (craftInventory.activeSelf)
-				{
-					craftInventory.SetActive(false);
-					TryLockCursor();
-				}
-				else
-				{
-					craftInventory.SetActive(true);
-					TryUnlockCursor();
-				}
+				craftInventory.ToggleMenu();
+				
+				//if (craftInventory.activeSelf)
+				//{
+				//	craftInventory.SetActive(false);
+				//	TryLockCursor();
+				//}
+				//else
+				//{
+				//	craftInventory.SetActive(true);
+				//	TryUnlockCursor();
+				//}
 			}
 
 			if (Input.GetKeyDown(KeyCode.M))
 			{
-				if (mapScreen.activeSelf)
-				{
-					mapScreen.SetActive(false);
-					TryLockCursor();
-				}
-				else
-				{
-					mapScreen.SetActive(true);
-					TryUnlockCursor();
-				}
+				mapScreen.ToggleMenu();
+
+				//if (mapScreen.activeSelf)
+				//{
+				//	mapScreen.SetActive(false);
+				//	TryLockCursor();
+				//}
+				//else
+				//{
+				//	mapScreen.SetActive(true);
+				//	TryUnlockCursor();
+				//}
 			}
 
 			if (myAbilities.dead)
 			{
+				craftInventory.TryDeactivateMenu();
 				//deactivate crafting if dead
-				if (craftInventory.activeSelf)
-				{
-					craftInventory.SetActive(false);
-				}
+				//if (craftInventory.activeSelf)
+				//{
+				//	craftInventory.SetActive(false);
+				//}
 				TryUnlockCursor();
 			}
 			else

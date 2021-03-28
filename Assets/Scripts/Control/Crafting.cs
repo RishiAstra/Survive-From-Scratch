@@ -144,7 +144,7 @@ public class Crafting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (GameControl.main.craftInventory.activeSelf)
+		if (GameControl.main.craftInventory.gameObject.activeSelf)
 		{
             
             RefreshCraftableRecipies();

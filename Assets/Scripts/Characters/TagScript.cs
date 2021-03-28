@@ -88,7 +88,7 @@ public class TagScript : MonoBehaviour
 			}
 
 		}
-		print("Initialized tags with " + invalidLines + " invalid tags");
+		//print("Initialized tags with " + invalidLines + " invalid tags");
 		initialized = true;
 
 		rhEquip = TagToId("rh equip", out _);
