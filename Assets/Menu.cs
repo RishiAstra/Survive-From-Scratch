@@ -7,7 +7,8 @@ public class Menu : MonoBehaviour
     public static int openMenuCount;
 
     public bool pauseOnActive = true;
-	public bool initialized;
+
+	private bool initialized;
     // Start is called before the first frame update
     void Awake()
     {
