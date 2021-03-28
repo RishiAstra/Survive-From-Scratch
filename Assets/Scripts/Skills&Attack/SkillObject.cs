@@ -6,14 +6,4 @@ public class SkillObject : MonoBehaviour
 {
     public Abilities parent;//used to calculate damage etc.
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
