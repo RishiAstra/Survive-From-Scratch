@@ -91,7 +91,7 @@ public class SaveEntity : Save
 				if (File.Exists(filePath))
 				{
 					File.Delete(filePath);
-					print("Deleted dead entity id: " + id);
+					print("Deleted dead entity id: " + id + ", type: " + type);
 				}
 			}
 			else
