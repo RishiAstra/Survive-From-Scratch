@@ -152,15 +152,8 @@ public class GameControl : MonoBehaviour
 		mapLoadText.text = "Saving";
 		yield return null;//wait a frame
 		SaveStuff();
-		yield return null;
-		if (myPlayersId == -1)
-		{
-			Debug.LogWarning("Didn't teleport player because player doesn't exist");
-		}
-		else
-		{
-			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, name);
-		}
+		//yield return null;
+		
 		yield return null;//wait a frame
 		mapLoadText.text = "Unloading scenes";
 		SetMapLoadProgress(0);
@@ -189,6 +182,17 @@ public class GameControl : MonoBehaviour
 			SetMapLoadProgress((sceneCount - i) * m);
 			yield return null;
 		}
+
+		if (myPlayersId == -1)
+		{
+			Debug.LogWarning("Didn't teleport player because player doesn't exist");
+		}
+		else
+		{
+			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, name);
+		}
+
+		yield return null;
 
 		string path = mapScenePath + "/" + name;
 		
@@ -316,7 +320,7 @@ public class GameControl : MonoBehaviour
 		//TODO: warning, there could be other reasons for me being null, not just death
 		//TODO: actually this might be great, use this to select your respawn point, etc.
 		//TODO: probably won't work with multiple player characters
-		if (inWorld && me == null)
+		if (inWorld && playerExists && me == null)
 		{// && me.ph.isMine
 			Respawn();
 		}
