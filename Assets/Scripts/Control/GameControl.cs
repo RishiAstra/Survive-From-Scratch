@@ -83,7 +83,7 @@ public class GameControl : MonoBehaviour
 
 		itemHoverInfo.SetActive(false);
 		HideMenus();
-		mapScreen.ActivateMenu();
+		mapScreen.TryActivateMenu();
 		//mapScreen.SetActive(true);
 
 		//TODO: consider setting mapScreen to active
@@ -102,9 +102,9 @@ public class GameControl : MonoBehaviour
 
 	private void HideMenus()
 	{
-		mapLoadScreen.DeactivateMenu();
-		mapScreen.DeactivateMenu();
-		craftInventory.DeactivateMenu();
+		mapLoadScreen.TryDeactivateMenu();
+		mapScreen.TryDeactivateMenu();
+		craftInventory.TryDeactivateMenu();
 
 		//mapLoadScreen.SetActive(false);
 		//mapScreen.SetActive(false);
@@ -164,7 +164,8 @@ public class GameControl : MonoBehaviour
 		yield return null;//wait a frame
 		mapLoadText.text = "Unloading scenes";
 		SetMapLoadProgress(0);
-		mapLoadScreen.ActivateMenu();
+		mapLoadScreen.TryActivateMenu();
+		mapScreen.TryDeactivateMenu();
 		//mapLoadScreen.SetActive(true);
 		playerExists = false;
 		yield return null;//wait a frame before starting
@@ -277,10 +278,10 @@ public class GameControl : MonoBehaviour
 			itemTypes[i] = item;
 		}
 		initialized = true;
-		craftInventory.ActivateMenu();
+		craftInventory.TryActivateMenu();
 		//craftInventory.SetActive(true);
 		Crafting.main.InitializeUI();
-		craftInventory.DeactivateMenu();
+		craftInventory.TryDeactivateMenu();
 		//craftInventory.SetActive(false);
 		//print("reached");
 		yield return null;
@@ -342,7 +343,7 @@ public class GameControl : MonoBehaviour
 			}
 			else
 			{
-				print("failed to lock mouse: over ui");
+				//print("failed to lock mouse: over ui");
 			}
 		}
 	}
@@ -429,7 +430,7 @@ public class GameControl : MonoBehaviour
 
 			if (myAbilities.dead)
 			{
-				craftInventory.DeactivateMenu();
+				craftInventory.TryDeactivateMenu();
 				//deactivate crafting if dead
 				//if (craftInventory.activeSelf)
 				//{

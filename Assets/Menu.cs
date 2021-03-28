@@ -7,10 +7,14 @@ public class Menu : MonoBehaviour
     public static int openMenuCount;
 
     public bool pauseOnActive = true;
+	public bool initialized;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        if (gameObject.activeSelf) ActivateMenu();
+        if (!initialized && gameObject.activeSelf)
+		{
+			ActivateMenu();
+		}
     }
 
     // Update is called once per frame
@@ -23,41 +27,53 @@ public class Menu : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            DeactivateMenu();
+            TryDeactivateMenu();
         }
         else
         {
-            ActivateMenu();
+            TryActivateMenu();
         }
     }
 
-    public void ActivateMenu()
+    public void TryActivateMenu()
 	{
 		if (!gameObject.activeSelf)
 		{
-            openMenuCount++;
-            gameObject.SetActive(true);
-            if (pauseOnActive)
-            {
-                TimeControl.main.SetTimeScale(0, "menu");
-            }
-            GameControl.main.TryUnlockCursor();
+			ActivateMenu();
 		}
-        
-    }
 
-    public void DeactivateMenu()
+	}
+
+	private void ActivateMenu()
+	{
+		initialized = true;
+		openMenuCount++;
+		gameObject.SetActive(true);
+		if (pauseOnActive)
+		{
+			TimeControl.main.SetTimeScale(0, "menu");
+		}
+		GameControl.main.TryUnlockCursor();
+		print("activated menu: " + gameObject.name + ", " + openMenuCount);
+	}
+
+	public void TryDeactivateMenu()
 	{
 		if (gameObject.activeSelf)
 		{
-            openMenuCount--;
-            gameObject.SetActive(false);
-            if (pauseOnActive)
-            {
-                TimeControl.main.RemoveTimeScale("menu");
-            }
-            GameControl.main.TryLockCursor();
-        }        
-    }
+			DeactivateMenu();
+		}
+	}
 
+	private void DeactivateMenu()
+	{
+		openMenuCount--;
+		gameObject.SetActive(false);
+		if (pauseOnActive)
+		{
+			TimeControl.main.RemoveTimeScale("menu");
+		}
+		GameControl.main.TryLockCursor();
+		print("deactivated menu: " + gameObject.name + ", " + openMenuCount);
+	}
 }

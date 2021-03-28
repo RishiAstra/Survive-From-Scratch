@@ -23,19 +23,21 @@ public struct floatstring
 public class TimeControl : MonoBehaviour
 {
     public static TimeControl main;
+
     public List<floatstring> times;
     // Start is called before the first frame update
     void Awake()
     {
         if (main != null) Debug.LogError("two TimeControl");
         main = this;
-        
+        times = new List<floatstring>();
     }
 
     public void SetTimeScale(float scale, string id)
 	{
         times.Add(new floatstring(scale, id));
         UpdateTimeScale();
+        //print("made time scale: " + id + ", scale: " + scale);
 	}
 
     public void RemoveTimeScale(string id)
@@ -45,10 +47,13 @@ public class TimeControl : MonoBehaviour
             if(times[i].s == id)
 			{
                 times.RemoveAt(i);
+                //print("removed time scale: " + id);
+                UpdateTimeScale();
                 return;
 			}
 		}
         Debug.LogError("tried to remove a timescale but it didn't exist");
+        UpdateTimeScale();
 	}
 
 	private void UpdateTimeScale()
