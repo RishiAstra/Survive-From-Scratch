@@ -344,21 +344,44 @@ public class Movement : MonoBehaviour
 
 				//find the velocity in the direction
 
-				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
-				float velDot = Vector3.Dot(rig.velocity, direction.normalized);
-				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
-				if (rig.velocity.magnitude > 0.01f && (direction.magnitude < SMALL_INPUT || velDot < -0.5f))//if you are moving in a really wrong direction, slow down
+				Vector3 v = rig.velocity;
+				v.y = 0;
+				//v = transform.InverseTransformVector(v);
+				Vector3 d = direction;
+				d.y = 0;
+				d = d.normalized * maxSpeed;
+				Vector3 off = v - d;
+				if(off.magnitude < acceleration * Time.fixedDeltaTime)
 				{
-					rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
+					v = d;
 				}
 				else
 				{
-					if (rig.velocity.magnitude < maxSpeed * mult)
-					{
-						//print(transform.InverseTransformDirection(rig.velocity).z / (maxSpeed * mult));
-						rig.AddForce(direction.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
-					}
+					v -= off.normalized * Time.fixedDeltaTime * acceleration;
 				}
+
+				//v = transform.TransformVector(v);
+				rig.velocity = v;
+				
+
+				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
+				//float velDot = Vector3.Dot(rig.velocity, direction.normalized);
+				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
+				//if (rig.velocity.magnitude > 0.01f && (direction.magnitude < SMALL_INPUT || velDot < -0.5f))//if you are moving in a really wrong direction, slow down
+				//{
+				//	Vector3 v = rig.velocity;
+				//	v.y = 0;
+				//	if(v.magnitude < acceleration)
+				//	rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
+				//}
+				//else
+				//{
+				//	if (rig.velocity.magnitude < maxSpeed * mult)
+				//	{
+				//		//print(transform.InverseTransformDirection(rig.velocity).z / (maxSpeed * mult));
+				//		rig.AddForce(direction.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
+				//	}
+				//}
 			}
 		}
 		
