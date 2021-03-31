@@ -982,7 +982,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164153826729503817}
-  m_LocalRotation: {x: -0.00065169175, y: -0.00010728996, z: 0.00014222608, w: 0.99999976}
+  m_LocalRotation: {x: -0.0006519008, y: -0.00010728996, z: 0.00014227834, w: 0.99999976}
   m_LocalPosition: {x: 8.8475643e-11, y: 0.0012726688, z: 1.1757947e-10}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_Children:
@@ -1866,6 +1866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 164153826729537627}
   - component: {fileID: 1867768419871620985}
+  - component: {fileID: 1162351546003975746}
   m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
@@ -1910,7 +1911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9ac8d30c6a0d9642a11e5be4c440740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Root: {fileID: 164153826729537627}
+  m_Root: {fileID: 164153826729537621}
   m_UpdateRate: 1000
   m_UpdateMode: 1
   m_Damping: 0.982
@@ -2033,16 +2034,29 @@ MonoBehaviour:
   m_Force: {x: 0, y: 0, z: 0}
   m_Colliders:
   - {fileID: 7748937850091694245}
-  - {fileID: 2929687439859951438}
-  m_Exclusions:
-  - {fileID: 164153826729537565}
-  - {fileID: 164153826729537561}
-  - {fileID: 164153826729537925}
-  - {fileID: 164153826729538013}
+  - {fileID: 1162351546003975746}
+  m_Exclusions: []
   m_FreezeAxis: 0
   m_DistantDisable: 0
   m_ReferenceObject: {fileID: 0}
   m_DistanceToObject: 20
+--- !u!114 &1162351546003975746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164153826729503867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baedd976e12657241bf7ff2d1c685342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.0012, z: 0}
+  m_Bound: 0
+  m_Radius: 0.0007
+  m_Height: 0.0018
 --- !u!1 &164153826729503869
 GameObject:
   m_ObjectHideFlags: 0
@@ -3398,7 +3412,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 164153826729537953}
-  - component: {fileID: 2929687439859951438}
   m_Layer: 9
   m_Name: Neck
   m_TagString: Untagged
@@ -3421,23 +3434,6 @@ Transform:
   m_Father: {fileID: 164153826729537567}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2929687439859951438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 164153826729504193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baedd976e12657241bf7ff2d1c685342, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.0015, z: -0.0001}
-  m_Bound: 0
-  m_Radius: 0.001
-  m_Height: 0
 --- !u!1 &164153826729504195
 GameObject:
   m_ObjectHideFlags: 0
