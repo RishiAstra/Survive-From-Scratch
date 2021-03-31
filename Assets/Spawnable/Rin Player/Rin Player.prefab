@@ -982,7 +982,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164153826729503817}
-  m_LocalRotation: {x: -0.00065160246, y: -0.00010728996, z: 0.00014220376, w: 0.99999976}
+  m_LocalRotation: {x: -0.00065169175, y: -0.00010728996, z: 0.00014222608, w: 0.99999976}
   m_LocalPosition: {x: 8.8475643e-11, y: 0.0012726688, z: 1.1757947e-10}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
   m_Children:
@@ -2020,7 +2020,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Radius: 0
+  m_Radius: 0.0001
   m_RadiusDistrib:
     serializedVersion: 2
     m_Curve: []
@@ -3434,7 +3434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Direction: 1
-  m_Center: {x: 0, y: 0.0017, z: -0.0002}
+  m_Center: {x: 0, y: 0.0015, z: -0.0001}
   m_Bound: 0
   m_Radius: 0.001
   m_Height: 0
