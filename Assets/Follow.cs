@@ -13,8 +13,12 @@ public class Follow : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
-        if(target != null) transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed);
-    }
+    //void FixedUpdate()
+    //{
+    //    if(target != null) transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed);
+    //}
+	void LateUpdate()
+	{
+		if (target != null) transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed);
+	}
 }

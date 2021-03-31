@@ -21,18 +21,10 @@ public class PlayerControl : MonoBehaviour
 		//cam = Instantiate(camPref, camPos.position, camPos.rotation).GetComponentInChildren<Cam>();
     }
 
-	private void FixedUpdate()
+	private void LateUpdate()
 	{
-		//chase position
-		cam.pivot.position = camPos.position;// Vector3.Lerp(cam.pivot.position, camPos.position, CAM_LERP_SPEED);
-
-	}
-
-
-	// Update is called once per frame
-	void Update()
-    {
-		if(Cursor.lockState == CursorLockMode.Locked)
+		cam.pivot.position = camPos.position;
+		if (Cursor.lockState == CursorLockMode.Locked)
 		{
 			//set y rotation (horizontal)
 			Vector3 temp = cam.pivot.eulerAngles;
@@ -48,6 +40,29 @@ public class PlayerControl : MonoBehaviour
 			//change distance and pitch
 			cam.AddDist(Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity);
 			cam.AddPitch(Input.GetAxis("Mouse Y") * sensitivity.y * Time.deltaTime);
+		}
+	}
+
+
+	// Update is called once per frame
+	void Update()
+    {
+		if(Cursor.lockState == CursorLockMode.Locked)
+		{
+			////set y rotation (horizontal)
+			//Vector3 temp = cam.pivot.eulerAngles;
+			//temp.y += Input.GetAxis("Mouse X") * sensitivity.x * Time.deltaTime;
+			//cam.pivot.eulerAngles = temp;
+
+			//use the attack
+			if (Input.GetMouseButton(0))
+			{
+				abilities.UseSkill(0);
+			}
+
+			////change distance and pitch
+			//cam.AddDist(Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity);
+			//cam.AddPitch(Input.GetAxis("Mouse Y") * sensitivity.y * Time.deltaTime);
 		}
 		
 

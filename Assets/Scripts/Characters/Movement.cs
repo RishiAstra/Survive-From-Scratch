@@ -156,10 +156,12 @@ public class Movement : MonoBehaviour
 
 		previouslyIdle = idle;
 
+		CheckGround();
+
 		HandleMove();
 		HandleJump();		
 
-		CheckGround();
+		//CheckGround();
 		
 
 	}
@@ -202,43 +204,53 @@ public class Movement : MonoBehaviour
 
 	void HandleJump()
 	{
-		if (grounded)
+		if (attemptJump)
 		{
-
-			if (attemptJump && jumpCooldownLeft < 0)
+			if (grounded && rig.velocity.y < jumpForce)
 			{
-				anim.ResetTrigger("JumpStart");
-				anim.SetTrigger("JumpStart");
-				anim.ResetTrigger("JumpEnd");
-				Jump();//TODO: organize this
-				//tryingToJump = true;
-				jumpCooldownLeft = jumpCooldown;
-				//jumpInProg = true;
-				//anim.SetBool("JumpEnd", false);
-				//StartCoroutine(TakeOff());
-				//jumping = true;
-				//rig.AddForce(transform.up * jumpForce);
-				//Jump();
-			}
-
-			if (jumping)
-			{
-				jumping = false;
-				//anim.SetBool("JumpStart", false);
-				anim.ResetTrigger("JumpEnd");
-				anim.SetTrigger("JumpEnd");
-				anim.ResetTrigger("JumpStart");
-				//jumping = false;
-				//StartCoroutine(LandFromJump());
+				Vector3 tempV = rig.velocity;
+				tempV.y = jumpForce;
+				rig.velocity = tempV;
 			}
 			attemptJump = false;
+		}
+		//if (grounded)
+		//{
 
-		}
-		else if (prevJump)
-		{
-			jumping = true;
-		}
-		prevJump = grounded;
+		//	if (attemptJump && jumpCooldownLeft < 0)
+		//	{
+		//		anim.ResetTrigger("JumpStart");
+		//		anim.SetTrigger("JumpStart");
+		//		anim.ResetTrigger("JumpEnd");
+		//		Jump();//TODO: organize this
+		//		//tryingToJump = true;
+		//		jumpCooldownLeft = jumpCooldown;
+		//		//jumpInProg = true;
+		//		//anim.SetBool("JumpEnd", false);
+		//		//StartCoroutine(TakeOff());
+		//		//jumping = true;
+		//		//rig.AddForce(transform.up * jumpForce);
+		//		//Jump();
+		//	}
+
+		//	if (jumping)
+		//	{
+		//		jumping = false;
+		//		//anim.SetBool("JumpStart", false);
+		//		anim.ResetTrigger("JumpEnd");
+		//		anim.SetTrigger("JumpEnd");
+		//		anim.ResetTrigger("JumpStart");
+		//		//jumping = false;
+		//		//StartCoroutine(LandFromJump());
+		//	}
+		//	attemptJump = false;
+
+		//}
+		//else if (prevJump)
+		//{
+		//	jumping = true;
+		//}
+		//prevJump = grounded;
 	}
 	bool idle;
 	bool previouslyIdle;

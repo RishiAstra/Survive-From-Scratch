@@ -5,16 +5,29 @@ using UnityEngine;
 public class PositionLimiter : MonoBehaviour
 {
     public Vector3 min, max;
+	[Range(0, 1)]
+	public float bounce;
     public float scaleMult;
     public Transform relativeTo;
+	public Rigidbody rig;
+
+	private Vector3 p;
+	private Vector3 v;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+	private void FixedUpdate()
+	{
+		v = relativeTo.position - p;
+		v /= Time.fixedDeltaTime;
+		p = relativeTo.position;
+	}
+
+	// Update is called once per frame
+	void LateUpdate()
     {
         //Vector3 p = transform.position;
         Vector3 d = transform.position - relativeTo.position;
