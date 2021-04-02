@@ -95,6 +95,7 @@ public class Player : MonoBehaviour
 		//			Destroy (transform.GetChild (0).gameObject);
 		////			GetComponent<Renderer> ().material = notMe;
 		//		}
+		SelectInv(0);//TODO: this will cause eating a consumable
 	}
 
 	//called by animations
