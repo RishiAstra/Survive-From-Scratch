@@ -156,10 +156,12 @@ public class Movement : MonoBehaviour
 
 		previouslyIdle = idle;
 
+		CheckGround();
+
 		HandleMove();
 		HandleJump();		
 
-		CheckGround();
+		//CheckGround();
 		
 
 	}
@@ -202,43 +204,53 @@ public class Movement : MonoBehaviour
 
 	void HandleJump()
 	{
-		if (grounded)
+		if (attemptJump)
 		{
-
-			if (attemptJump && jumpCooldownLeft < 0)
+			if (grounded && rig.velocity.y < jumpForce)
 			{
-				anim.ResetTrigger("JumpStart");
-				anim.SetTrigger("JumpStart");
-				anim.ResetTrigger("JumpEnd");
-				Jump();//TODO: organize this
-				//tryingToJump = true;
-				jumpCooldownLeft = jumpCooldown;
-				//jumpInProg = true;
-				//anim.SetBool("JumpEnd", false);
-				//StartCoroutine(TakeOff());
-				//jumping = true;
-				//rig.AddForce(transform.up * jumpForce);
-				//Jump();
-			}
-
-			if (jumping)
-			{
-				jumping = false;
-				//anim.SetBool("JumpStart", false);
-				anim.ResetTrigger("JumpEnd");
-				anim.SetTrigger("JumpEnd");
-				anim.ResetTrigger("JumpStart");
-				//jumping = false;
-				//StartCoroutine(LandFromJump());
+				Vector3 tempV = rig.velocity;
+				tempV.y = jumpForce;
+				rig.velocity = tempV;
 			}
 			attemptJump = false;
+		}
+		//if (grounded)
+		//{
 
-		}
-		else if (prevJump)
-		{
-			jumping = true;
-		}
-		prevJump = grounded;
+		//	if (attemptJump && jumpCooldownLeft < 0)
+		//	{
+		//		anim.ResetTrigger("JumpStart");
+		//		anim.SetTrigger("JumpStart");
+		//		anim.ResetTrigger("JumpEnd");
+		//		Jump();//TODO: organize this
+		//		//tryingToJump = true;
+		//		jumpCooldownLeft = jumpCooldown;
+		//		//jumpInProg = true;
+		//		//anim.SetBool("JumpEnd", false);
+		//		//StartCoroutine(TakeOff());
+		//		//jumping = true;
+		//		//rig.AddForce(transform.up * jumpForce);
+		//		//Jump();
+		//	}
+
+		//	if (jumping)
+		//	{
+		//		jumping = false;
+		//		//anim.SetBool("JumpStart", false);
+		//		anim.ResetTrigger("JumpEnd");
+		//		anim.SetTrigger("JumpEnd");
+		//		anim.ResetTrigger("JumpStart");
+		//		//jumping = false;
+		//		//StartCoroutine(LandFromJump());
+		//	}
+		//	attemptJump = false;
+
+		//}
+		//else if (prevJump)
+		//{
+		//	jumping = true;
+		//}
+		//prevJump = grounded;
 	}
 	bool idle;
 	bool previouslyIdle;
@@ -344,21 +356,44 @@ public class Movement : MonoBehaviour
 
 				//find the velocity in the direction
 
-				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
-				float velDot = Vector3.Dot(rig.velocity, direction.normalized);
-				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
-				if (rig.velocity.magnitude > 0.01f && (direction.magnitude < SMALL_INPUT || velDot < -0.5f))//if you are moving in a really wrong direction, slow down
+				Vector3 v = rig.velocity;
+				v.y = 0;
+				//v = transform.InverseTransformVector(v);
+				Vector3 d = direction;
+				d.y = 0;
+				d = d.normalized * maxSpeed;
+				Vector3 off = v - d;
+				if(off.magnitude < acceleration * Time.fixedDeltaTime)
 				{
-					rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
+					v = d;
 				}
 				else
 				{
-					if (rig.velocity.magnitude < maxSpeed * mult)
-					{
-						//print(transform.InverseTransformDirection(rig.velocity).z / (maxSpeed * mult));
-						rig.AddForce(direction.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
-					}
+					v -= off.normalized * Time.fixedDeltaTime * acceleration;
 				}
+
+				//v = transform.TransformVector(v);
+				rig.velocity = v;
+				
+
+				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
+				//float velDot = Vector3.Dot(rig.velocity, direction.normalized);
+				//Vector3 newDir = direction * (1-velDot) + velOff * velDot;
+				//if (rig.velocity.magnitude > 0.01f && (direction.magnitude < SMALL_INPUT || velDot < -0.5f))//if you are moving in a really wrong direction, slow down
+				//{
+				//	Vector3 v = rig.velocity;
+				//	v.y = 0;
+				//	if(v.magnitude < acceleration)
+				//	rig.AddForce(-rig.velocity.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
+				//}
+				//else
+				//{
+				//	if (rig.velocity.magnitude < maxSpeed * mult)
+				//	{
+				//		//print(transform.InverseTransformDirection(rig.velocity).z / (maxSpeed * mult));
+				//		rig.AddForce(direction.normalized * acceleration * Time.fixedDeltaTime, ForceMode.VelocityChange);// * mult
+				//	}
+				//}
 			}
 		}
 		

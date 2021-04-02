@@ -53,6 +53,8 @@ public class GameControl : MonoBehaviour
 
 	public LayerMask collectibleLayerMask;
 	public GameObject playerPrefab;
+	public GameObject playerPrefab2;
+	public bool usePlayerPrefab2;
 	public GameObject camPref;
 	public Transform camPos;//start the camera here
 	public InventoryUI hotBarUI;
@@ -73,6 +75,7 @@ public class GameControl : MonoBehaviour
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
+		if (usePlayerPrefab2) playerPrefab = playerPrefab2;
 		if (main != null) Debug.LogError("two gameControls");
 		main = this;
 		TryUnlockCursor();

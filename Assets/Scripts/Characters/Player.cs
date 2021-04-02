@@ -187,6 +187,22 @@ public class Player : MonoBehaviour
 			}
 		}
 	}
+
+	private void SetSelected(int index)
+	{
+		List<ItemIcon> tempI = GameControl.main.hotBarUI.slotI;
+		foreach(ItemIcon i in tempI)
+		{
+			i.selected = false;
+			//TODO:update it here (and below)
+		}
+		invSel = index;
+		if(index >= 0 && index < tempI.Count)
+		{
+			tempI[index].selected = true;
+		}
+	}
+
 	/// <summary>
 	/// Select an Item in the inventory. Some actions such as eating a consumable item may happen.
 	/// </summary>
@@ -214,10 +230,12 @@ public class Player : MonoBehaviour
 					g.GetComponent<Equip>().bob = this;
 					//print("Selected equipable object");
 				}
-				invSel = index;
+				SetSelected(index);
+				//invSel = index;
 			}else
 			{
-				invSel = -1;
+				SetSelected(-1);
+				//invSel = -1;
 			}
 		}
 
