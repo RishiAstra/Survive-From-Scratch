@@ -14,13 +14,15 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public Inventory parent;
     public int index;
+	[Tooltip("the gameobject to activate when selected")]
+	public GameObject selectedGameObject;
 
     public Image img;
     public TextMeshProUGUI amountText;
     //TODO: show strength/durability remaining
 
     private bool mouseOver;
-    private bool selected;
+    public bool selected;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +35,14 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		{
             img.color = Color.clear;
             amountText.text = "";
+			selectedGameObject.SetActive(false);
 		}
 		else
 		{
             img.color = Color.white;
             img.sprite = GameControl.itemTypes[parent.items[index].id].icon;
             amountText.text = parent.items[index].amount.ToString();
+			selectedGameObject.SetActive(selected);
         }        
 	}
 

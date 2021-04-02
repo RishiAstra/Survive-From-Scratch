@@ -1017,7 +1017,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164153826729503817}
-  m_LocalRotation: {x: -0.0006511253, y: -0.000107231615, z: 0.00014200248, w: 0.99999976}
+  m_LocalRotation: {x: -0.00065112946, y: -0.000107231615, z: 0.00014200353, w: 0.99999976}
   m_LocalPosition: {x: 3.259629e-11, y: 0.0012726663, z: 2.7939677e-11}
   m_LocalScale: {x: 1.0000001, y: 1, z: 1.0000002}
   m_Children:
@@ -4587,7 +4587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabDist: 20
-  rightHand: {fileID: 164153826729538015}
+  rightHand: {fileID: 1070042149194032133}
   invStuff:
     invButtonSize: 50
     invBackground: {fileID: 2800000, guid: 7537841ef9875c94da9a1aa73388053d, type: 3}
@@ -4729,8 +4729,40 @@ Transform:
   - {fileID: 164153826729537983}
   - {fileID: 164153826729537989}
   - {fileID: 164153826729538035}
+  - {fileID: 1070042149194032133}
   m_Father: {fileID: 164153826729537963}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &923229067020937660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070042149194032133}
+  m_Layer: 9
+  m_Name: Equip Location
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1070042149194032133
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923229067020937660}
+  m_LocalRotation: {x: 0.0000000037252899, y: -0.00000001862645, z: -0.000000069616355,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.010000001, y: 0.009999997, z: 0.010000004}
+  m_Children: []
+  m_Father: {fileID: 164153826729538015}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1267451432978680186
 GameObject:

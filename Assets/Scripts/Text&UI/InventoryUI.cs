@@ -16,7 +16,7 @@ public class InventoryUI : MonoBehaviour
     public bool overflowDown;
 
     public List<RectTransform> slotT;
-    private List<ItemIcon> slotI;
+    public List<ItemIcon> slotI;
 
     private float slotSize;
     private int pSize = -1;
