@@ -515,7 +515,7 @@ public class GameControl : MonoBehaviour
 	public void SetUpPlayer(GameObject newPlayerObject)
 	{
 		SaveEntity save = newPlayerObject.GetComponent<SaveEntity>();
-		save.playerOwnerName = username;
+		//save.playerOwnerName = username;
 		myPlayersId = save.id;
 
 		me = newPlayerObject.GetComponent<Player>();
@@ -526,6 +526,7 @@ public class GameControl : MonoBehaviour
 
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
 		print("set up player camera");
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
 
