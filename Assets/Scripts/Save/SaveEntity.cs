@@ -36,7 +36,7 @@ public class SaveEntity : Save, ISaveable
 		}
 	}
 
-	public string playerOwnerName;
+	//public string playerOwnerName;
 
 	public string type;
 	public string customSavePath;
