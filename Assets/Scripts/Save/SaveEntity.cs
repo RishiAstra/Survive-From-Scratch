@@ -148,33 +148,62 @@ public class SaveEntity : Save, ISaveable
 			return null;
 		}
 
-		foreach (string typeString in Directory.GetDirectories(savePath))
+		//find type of this by searching scene entity map, then calculate and return path
+		foreach (string sceneString in Directory.GetDirectories(entitySceneMapPath))
 		{
-			foreach (string idPath in Directory.GetFiles(typeString))
-			{
+			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString + ".json"));
 
-				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-				if (saveData.id == id)
+			for (int i = 0; i < mapData.Count; i++)
+			{
+				EntityMapData d = mapData[i];
+				if (d.id == id)
 				{
-					return idPath;
+					return savePath + d.type + "/" + d.id + "/data.json";
 				}
+				
+
+				//load the data
+				
 			}
 		}
 
 		return null;
+
+		//foreach (string typeString in Directory.GetDirectories(savePath))
+		//{
+		//	foreach (string idPath in Directory.GetFiles(typeString))
+		//	{
+
+		//		SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+		//		if (saveData.id == id)
+		//		{
+		//			return idPath;
+		//		}
+		//	}
+		//}
+
+		//return null;
 	}
 
 	public static string GetTypeFromPath(string path)
 	{
+		//cut after last /
 		int i1 = path.LastIndexOf("/");
 		if (i1 == -1) return null;
 		string s2 = path.Substring(0, i1);
+
+		//cut after last /
 		int i2 = s2.LastIndexOf("/");
 		if (i2 == -1) return null;
-		return s2.Substring(i2 + 1);
+		string s3 = s2.Substring(0, i2);
+
+		//return from last / to end
+		int i3 = s3.LastIndexOf("/");
+		if (i3 == -1) return null;
+		return s3.Substring(i3 + 1);
 	}
 
-	public static void TeleportEntityBetweenScenes(long idToMove, string nextScene)
+	public static void TeleportEntityBetweenScenes(long idToMove, int nextScene)
 	{
 		if (!Directory.Exists(savePath))
 		{
@@ -182,24 +211,46 @@ public class SaveEntity : Save, ISaveable
 			return;
 		}
 
-		string pathOfThisEntity = GetPathFromId(idToMove);
-		if (pathOfThisEntity == null)
+		//find type of this by searching scene entity map, then calculate and return path
+		foreach (string sceneString in Directory.GetDirectories(entitySceneMapPath))
 		{
-			Debug.LogError("This id could not be found to teleport: id: " + idToMove);
-			return;
+			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString + ".json"));
+
+			for (int i = 0; i < mapData.Count; i++)
+			{
+				EntityMapData d = mapData[i];
+				if (d.id == idToMove)
+				{
+					d.sceneIndex = nextScene;
+					mapData[i] = d;
+					File.WriteAllText(sceneString + ".json", JsonConvert.SerializeObject(mapData));
+					return;
+				}
+				//load the data
+
+			}
 		}
 
-		SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(pathOfThisEntity));
-		if (saveData.id == idToMove)
-		{
-			saveData.scene = nextScene;
-			File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
-		}
-		else
-		{
-			Debug.LogError("Somehow wrong id: expected: " + idToMove + ", found: " + saveData.id);
-			return;
-		}
+		Debug.LogError("This id could not be found to teleport: id: " + idToMove);
+
+
+		//string pathOfThisEntity = GetPathFromId(idToMove);
+		//if (pathOfThisEntity == null)
+		//{
+		//	Debug.LogError("This id could not be found to teleport: id: " + idToMove);
+		//	return;
+		//}
+		//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(pathOfThisEntity));
+		//if (saveData.id == idToMove)
+		//{
+		//	saveData.scene = nextScene;
+		//	File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
+		//}
+		//else
+		//{
+		//	Debug.LogError("Somehow wrong id: expected: " + idToMove + ", found: " + saveData.id);
+		//	return;
+		//}
 
 		//foreach (string typeString in Directory.GetDirectories(savePath))
 		//{
@@ -319,18 +370,13 @@ public class SaveEntity : Save, ISaveable
 				toSpawn = a.Result;
 			}
 
-
-			string thisEntityPath = savePath + d.type + "/data.json";
-			//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+			//load the data
+			string thisEntityPath = savePath + d.type + "/" + d.id + "/data.json";
 			object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(thisEntityPath));
-
-
 			entityCount++;
-			//LoadEntity(toSpawn, saveData);
-			GameObject g = LoadEntity(toSpawn, saveData); //Instantiate(toSpawn);
-														  //g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
-														  //g.GetComponent<SaveEntity>().SetData(saveData);
+			GameObject g = LoadEntity(toSpawn, saveData);
 
+			//add to newSaves
 			int newSavesIndex = typesLoaded.IndexOf(d.type);
 			if(newSavesIndex == -1)
 			{
@@ -340,57 +386,52 @@ public class SaveEntity : Save, ISaveable
 				newSaves.Add(new List<Save>());				
 			}
 			newSaves[newSavesIndex].Add(g.GetComponent<Save>());
-
-			//TODO: warning: should check if null
-			//add the save
-			loadedSaves.Add(g.GetComponent<Save>());
-
-
-			Save.CallOnLoadedtype(type, loadedSaves);
-
-
-
-			saves.Add();
-				mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
 		}
+
+		//do this now
+		for(int i = 0; i < typesLoaded.Count; i++)
+		{
+			Save.CallOnLoadedtype(typesLoaded[i], newSaves[i]);
+		}
+		typeCount = typesLoaded.Count;
 
 		
 
 
-		foreach (string typeString in Directory.GetDirectories(savePath))
-		{
-			//TODO: check if this type even exists (if it has a prefab)
-			typeCount++;
-			string type = typeString.Substring(savePath.Length);
-			print("fetching entity prefab: " + type);
-			AsyncOperationHandle<GameObject> toSpawnAsync = GetEntityPrefab(type);
-			yield return toSpawnAsync;
-			GameObject toSpawn = toSpawnAsync.Result;
+		//foreach (string typeString in Directory.GetDirectories(savePath))
+		//{
+		//	//TODO: check if this type even exists (if it has a prefab)
+		//	typeCount++;
+		//	string type = typeString.Substring(savePath.Length);
+		//	print("fetching entity prefab: " + type);
+		//	AsyncOperationHandle<GameObject> toSpawnAsync = GetEntityPrefab(type);
+		//	yield return toSpawnAsync;
+		//	GameObject toSpawn = toSpawnAsync.Result;
 
-			List<Save> loadedSaves = new List<Save>();
-			foreach (string idPath in Directory.GetDirectories(typeString))//GetFiles()
-			{
+		//	List<Save> loadedSaves = new List<Save>();
+		//	foreach (string idPath in Directory.GetDirectories(typeString))//GetFiles()
+		//	{
 				
-				//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-				object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(idPath));
+		//		//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+		//		object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(idPath));
 
 
 
-				if (saveData.scene == SceneManager.GetActiveScene().name)
-				{
-					entityCount++;
-					//LoadEntity(toSpawn, saveData);
-					GameObject g = LoadEntity(toSpawn, saveData); //Instantiate(toSpawn);
-																  //g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
-																  //g.GetComponent<SaveEntity>().SetData(saveData);
+		//		if (saveData.scene == SceneManager.GetActiveScene().name)
+		//		{
+		//			entityCount++;
+		//			//LoadEntity(toSpawn, saveData);
+		//			GameObject g = LoadEntity(toSpawn, saveData); //Instantiate(toSpawn);
+		//														  //g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
+		//														  //g.GetComponent<SaveEntity>().SetData(saveData);
 
-					//TODO: warning: should check if null
-					//add the save
-					loadedSaves.Add(g.GetComponent<Save>());
-				}				
-			}
-			Save.CallOnLoadedtype(type, loadedSaves);
-		}
+		//			//TODO: warning: should check if null
+		//			//add the save
+		//			loadedSaves.Add(g.GetComponent<Save>());
+		//		}				
+		//	}
+		//	Save.CallOnLoadedtype(type, loadedSaves);
+		//}
 		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
 		yield return null;
 	}
@@ -505,6 +546,9 @@ public interface ISaveable
 public class SaveDataBasic
 {
 	public long id;
+	/// <summary>
+	/// unused
+	/// </summary>
 	public int sceneIndex;
 	public Vector3 position;
 	public Vector3 rotation;

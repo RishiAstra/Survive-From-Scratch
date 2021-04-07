@@ -192,7 +192,7 @@ public class GameControl : MonoBehaviour
 		}
 		else
 		{
-			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, name);
+			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, SceneManager.GetSceneByName(name).buildIndex);
 		}
 
 		yield return null;
@@ -554,25 +554,25 @@ public class GameControl : MonoBehaviour
 			}
 			else
 			{
-				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(pathOfThisEntity));
-				if (saveData.id == myPlayersId)
-				{
-					string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
-					GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
-					g.transform.position = position;
-					g.transform.rotation = Quaternion.identity;
-					g.GetComponent<Abilities>().ResetStats();
-					return g;
+				object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(pathOfThisEntity));
+				//if (saveData.id == myPlayersId)
+				//{
+				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
+				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
+				g.transform.position = position;
+				g.transform.rotation = Quaternion.identity;
+				g.GetComponent<Abilities>().ResetStats();
+				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
 					//saveData.scene = SceneManager.GetActiveScene().name;
 					//File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
-				}
-				else
-				{
-					Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
-					//return null;
-				}
+				//}
+				//else
+				//{
+				//	Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
+				//	//return null;
+				//}
 			}			
 		}
 
