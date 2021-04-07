@@ -312,6 +312,7 @@ public class GameControl : MonoBehaviour
 		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
+			SaveStuff();
 			MakeAndSetUpPlayer();
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
@@ -550,7 +551,7 @@ public class GameControl : MonoBehaviour
 			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
 			if (pathOfThisEntity == null)
 			{
-				Debug.LogError("This id could not be found to teleport: id: " + myPlayersId);
+				Debug.LogError("This id could not be found to load player: id: " + myPlayersId);
 			}
 			else
 			{

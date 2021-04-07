@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
+using System;
 
 //TODO: link to abilities to update when damaged or killed
 //TODO: organize all of the paths in a well-defined mannar
@@ -41,7 +42,7 @@ public class SaveEntity : Save, ISaveable
 	public Abilities a;
 	public bool deleteOnDeath;
 
-	public ISaveable[] toSave;
+	public Component[] toSave;
 
 	private int indexInSaves;
 	private Stat pStat;
@@ -58,6 +59,20 @@ public class SaveEntity : Save, ISaveable
 		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);
+
+		//add ISaveables
+		//start with this SaveEntity
+		int c = toSave.Length;//current length
+		int s = c;//start length
+
+		//increase current length
+		c++;//yay the horrifying name has been written
+
+		//resize array
+		Array.Resize(ref toSave, c);
+		//add this
+		toSave[s] = this;
+
 
 		//if (!readNextId)
 		//{
@@ -109,7 +124,7 @@ public class SaveEntity : Save, ISaveable
 				//}
 				if (Directory.Exists(filePath))
 				{
-					Directory.Delete(filePath);
+					Directory.Delete(filePath, true);
 					print("Deleted dead entity id: " + id + ", type: " + type);
 				}
 			}
@@ -147,11 +162,16 @@ public class SaveEntity : Save, ISaveable
 			Debug.LogWarning("No save folder");
 			return null;
 		}
+		if (!Directory.Exists(entitySceneMapPath))
+		{
+			Debug.LogWarning("No entity scene map folder");
+			return null;
+		}
 
 		//find type of this by searching scene entity map, then calculate and return path
-		foreach (string sceneString in Directory.GetDirectories(entitySceneMapPath))
+		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
 		{
-			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString + ".json"));
+			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
 
 			for (int i = 0; i < mapData.Count; i++)
 			{
@@ -211,10 +231,12 @@ public class SaveEntity : Save, ISaveable
 			return;
 		}
 
+
+		//TODO:won't work
 		//find type of this by searching scene entity map, then calculate and return path
-		foreach (string sceneString in Directory.GetDirectories(entitySceneMapPath))
+		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
 		{
-			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString + ".json"));
+			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
 
 			for (int i = 0; i < mapData.Count; i++)
 			{
@@ -344,6 +366,12 @@ public class SaveEntity : Save, ISaveable
 			yield break;
 		}
 
+		if (!Directory.Exists(entitySceneMapPath))
+		{
+			Debug.LogWarning("No entity scene map to load");
+			yield break;
+		}
+
 		List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json"));
 		int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 		List<List<Save>> newSaves = new List<List<Save>>();
@@ -461,6 +489,7 @@ public class SaveEntity : Save, ISaveable
 			}
 		}
 
+		Directory.CreateDirectory(entitySceneMapPath);
 		File.WriteAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json", JsonConvert.SerializeObject(mapData, Formatting.Indented));
 
 		//string path = Application.persistentDataPath + "/nextid.txt";
@@ -495,7 +524,7 @@ public class SaveEntity : Save, ISaveable
 		object[] data = new object[toSave.Length];
 		for (int i = 0; i < toSave.Length; i++)
 		{
-			data[i] = toSave[i].GetData();
+			data[i] = ((ISaveable)toSave[i]).GetData();
 		}
 		return data;
 	}
@@ -506,7 +535,7 @@ public class SaveEntity : Save, ISaveable
 		//object[] data = new object[toSave.Length];
 		for (int i = 0; i < toSave.Length; i++)
 		{
-			toSave[i].SetData(data[i]);
+			((ISaveable)toSave[i]).SetData(data[i]);
 		}
 	}
 }
