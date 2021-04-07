@@ -446,7 +446,7 @@ public class SaveEntity : Save, ISaveable
 			string[] saveData = new string[orderedFiles.Count()];
 			for (int j = 0; j < orderedFiles.Count(); j++)
 			{
-				saveData[i] = JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
+				saveData[i] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
 			}
 			//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
 			entityCount++;
@@ -520,7 +520,7 @@ public class SaveEntity : Save, ISaveable
 		string[] data = GetAllData();
 		for(int i = 0; i < data.Length; i++)
 		{
-			File.WriteAllText(path + "Component_" + i + ".json", JsonConvert.SerializeObject(data, Formatting.Indented));
+			File.WriteAllText(path + "Component_" + i + ".json", data[i]);// JsonConvert.SerializeObject(data, Formatting.Indented));
 		}
 
 		//File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));

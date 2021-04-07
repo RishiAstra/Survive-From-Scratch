@@ -186,18 +186,20 @@ public class GameControl : MonoBehaviour
 			yield return null;
 		}
 
+		string path = mapScenePath + "/" + name;
+
 		if (myPlayersId == -1)
 		{
 			Debug.LogWarning("Didn't teleport player because player doesn't exist");
 		}
 		else
 		{
-			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, SceneManager.GetSceneByName(name).buildIndex);
+			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, SceneUtility.GetBuildIndexByScenePath(path));
 		}
 
 		yield return null;
 
-		string path = mapScenePath + "/" + name;
+		
 		
 		AsyncOperation a = SceneManager.LoadSceneAsync(path, LoadSceneMode.Additive);
 		//don't load the scene fully
@@ -215,13 +217,18 @@ public class GameControl : MonoBehaviour
 		a.allowSceneActivation = true;
 		yield return a;
 
-		Scene toLoad = SceneManager.GetSceneByName(name);
-		if (toLoad == null || toLoad.buildIndex == -1)
+		//Scene toLoad = SceneManager.GetSceneByName(name);//TODO: warning, this will fail if the scene isn't loaded
+		int toLoad = SceneUtility.GetBuildIndexByScenePath(path);
+		//if (toLoad == null || toLoad.buildIndex == -1)
+		//{
+		//	throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
+		//}
+		if (toLoad == -1)
 		{
-			throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
+			throw new Exception("toLoad scene is not good. Index: " + toLoad + ". Path: " + path);
 		}
 
-		SceneManager.SetActiveScene(toLoad);
+		SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(toLoad));
 
 		//LoadPlayer(this);
 		//TODO: save by map
