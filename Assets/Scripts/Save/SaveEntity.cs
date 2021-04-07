@@ -16,11 +16,20 @@ using bobStuff;
 public class SaveEntity : Save, ISaveable
 {
 	public static List<SaveEntity> saves;
+	public static Dictionary<string, GameObject> spawnObjects;
 	
 	const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
 			return Application.persistentDataPath + "/Save/Entities/";
+		}
+	}
+
+	public static string entitySceneMapPath
+	{
+		get
+		{
+			return Application.persistentDataPath + "/Save/Map/";
 		}
 	}
 
@@ -40,6 +49,7 @@ public class SaveEntity : Save, ISaveable
 	public static void InitializeStatic()
 	{
 		saves = new List<SaveEntity>();
+		spawnObjects = new Dictionary<string, GameObject>();
 	}
 
 	// Start is called before the first frame update
@@ -88,13 +98,18 @@ public class SaveEntity : Save, ISaveable
 	{
 		//TODO:GetPath broken
 		//TODO: this will break with new saving
-		string filePath = GetPath() + id + ".json";
+		string filePath = GetPath();// + id + ".json";
 		if (a.dead){
 			if (deleteOnDeath){
 				if (type == "Player") Debug.LogError("no");
-				if (File.Exists(filePath))
+				//if (File.Exists(filePath))
+				//{
+				//	File.Delete(filePath);
+				//	print("Deleted dead entity id: " + id + ", type: " + type);
+				//}
+				if (Directory.Exists(filePath))
 				{
-					File.Delete(filePath);
+					Directory.Delete(filePath);
 					print("Deleted dead entity id: " + id + ", type: " + type);
 				}
 			}
@@ -115,6 +130,11 @@ public class SaveEntity : Save, ISaveable
 		//TODO:GetPath broken
 		string path = GetPath();
 		Directory.CreateDirectory(path);
+
+		object[] data = GetAllData();
+
+		File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));
+
 		//File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
 		//TODO: GetData() above
 		//File.WriteAllText(path + , SceneManager.GetActiveScene().name);
@@ -250,11 +270,15 @@ public class SaveEntity : Save, ISaveable
 	//	}
 	//}
 
-	public static GameObject LoadEntity(GameObject typePrefab, SaveData saveData)
+	public static GameObject LoadEntity(GameObject typePrefab, object[] saveData)
 	{
 		GameObject g = Instantiate(typePrefab);
-		g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
-		//TODO://g.GetComponent<SaveEntity>().SetData(saveData);
+
+		Abilities a = g.GetComponent<Abilities>();
+		if(a != null) a.resetOnStart = false;//prevent resetting of hp etc
+
+		//TODO:see below
+		g.GetComponent<SaveEntity>().SetAllData(saveData);
 		//saves.Add(g.GetComponent<SaveEntity>());
 		return g;
 	}
@@ -269,6 +293,70 @@ public class SaveEntity : Save, ISaveable
 			yield break;
 		}
 
+		List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json"));
+		int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+		List<List<Save>> newSaves = new List<List<Save>>();
+		List<string> typesLoaded = new List<string>();
+
+		for (int i = 0; i < mapData.Count; i++)
+		{
+			EntityMapData d = mapData[i];
+			if(d.sceneIndex != currentSceneIndex)
+			{
+				Debug.LogError("entity wrong scene");
+				continue;
+			}
+
+
+			//get the gameobject to spawn
+			GameObject toSpawn;
+			bool succeed = GetEntityPrefabCached(d.type, out toSpawn);
+			if (!succeed)
+			{
+				AsyncOperationHandle<GameObject> a = GetEntityPrefab(d.type);
+				yield return a;
+				spawnObjects.Add(d.type, a.Result);
+				toSpawn = a.Result;
+			}
+
+
+			string thisEntityPath = savePath + d.type + "/data.json";
+			//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+			object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(thisEntityPath));
+
+
+			entityCount++;
+			//LoadEntity(toSpawn, saveData);
+			GameObject g = LoadEntity(toSpawn, saveData); //Instantiate(toSpawn);
+														  //g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
+														  //g.GetComponent<SaveEntity>().SetData(saveData);
+
+			int newSavesIndex = typesLoaded.IndexOf(d.type);
+			if(newSavesIndex == -1)
+			{
+				newSavesIndex = newSaves.Count;
+
+				typesLoaded.Add(d.type);
+				newSaves.Add(new List<Save>());				
+			}
+			newSaves[newSavesIndex].Add(g.GetComponent<Save>());
+
+			//TODO: warning: should check if null
+			//add the save
+			loadedSaves.Add(g.GetComponent<Save>());
+
+
+			Save.CallOnLoadedtype(type, loadedSaves);
+
+
+
+			saves.Add();
+				mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
+		}
+
+		
+
+
 		foreach (string typeString in Directory.GetDirectories(savePath))
 		{
 			//TODO: check if this type even exists (if it has a prefab)
@@ -280,11 +368,15 @@ public class SaveEntity : Save, ISaveable
 			GameObject toSpawn = toSpawnAsync.Result;
 
 			List<Save> loadedSaves = new List<Save>();
-			foreach (string idPath in Directory.GetFiles(typeString))
+			foreach (string idPath in Directory.GetDirectories(typeString))//GetFiles()
 			{
 				
-				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-				if(saveData.scene == SceneManager.GetActiveScene().name)
+				//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+				object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(idPath));
+
+
+
+				if (saveData.scene == SceneManager.GetActiveScene().name)
 				{
 					entityCount++;
 					//LoadEntity(toSpawn, saveData);
@@ -303,6 +395,12 @@ public class SaveEntity : Save, ISaveable
 		yield return null;
 	}
 
+	public static bool GetEntityPrefabCached(string type, out GameObject result)
+	{
+		bool succeed = spawnObjects.TryGetValue(type, out result);
+		return succeed;
+	}
+
 	public static AsyncOperationHandle<GameObject> GetEntityPrefab(string type)
 	{
 		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
@@ -310,11 +408,19 @@ public class SaveEntity : Save, ISaveable
 
 	public static void SaveAll()
 	{
-		
-		for(int i = 0; i < saves.Count; i++)
+		List<EntityMapData> mapData = new List<EntityMapData>();
+		int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+		for (int i = 0; i < saves.Count; i++)
 		{
-			if (saves[i] != null) saves[i].SaveDataToFile();
+			if (saves[i] != null)
+			{
+				saves[i].SaveDataToFile();
+				mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
+			}
 		}
+
+		File.WriteAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json", JsonConvert.SerializeObject(mapData, Formatting.Indented));
 
 		//string path = Application.persistentDataPath + "/nextid.txt";
 		////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
@@ -374,13 +480,27 @@ public class SaveEntity : Save, ISaveable
 //	void SetDataFromGameObject(ISaveable g);
 //}
 
+public struct EntityMapData
+{
+	public long id;
+	public string type;
+	public int sceneIndex;
+
+	public EntityMapData(long id, string type, int sceneIndex)
+	{
+		this.id = id;
+		this.type = type;
+		this.sceneIndex = sceneIndex;
+	}
+}
+
 public interface ISaveable
 {
 	object GetData();
 	void SetData(object data);
 }
 
-//TODO: split into inventory and abilities etc.
+//TODO: [in progress] split into inventory and abilities etc.
 [System.Serializable]
 public class SaveDataBasic
 {
@@ -409,7 +529,6 @@ public class SaveDataControl
 	public string playerOwnerName;//TODO: use player id
 }
 
-//TODO: split into inventory and abilities etc.
 //[System.Serializable]
 //public class SaveData
 //{
