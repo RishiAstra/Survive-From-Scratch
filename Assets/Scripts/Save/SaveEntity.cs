@@ -149,7 +149,7 @@ public class SaveEntity : Save, ISaveable
 		string path = GetPath();
 		Directory.CreateDirectory(path);
 
-		object[] data = GetAllData();
+		string[] data = GetAllData();//TODO:this will make already json stuff put into json as a string
 
 		File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));
 
@@ -250,7 +250,7 @@ public class SaveEntity : Save, ISaveable
 				{
 					d.sceneIndex = nextScene;
 					mapData[i] = d;
-					File.WriteAllText(sceneString + ".json", JsonConvert.SerializeObject(mapData));
+					File.WriteAllText(sceneString, JsonConvert.SerializeObject(mapData));// + ".json"
 					return;
 				}
 				//load the data
@@ -348,7 +348,7 @@ public class SaveEntity : Save, ISaveable
 	//	}
 	//}
 
-	public static GameObject LoadEntity(GameObject typePrefab, object[] saveData)
+	public static GameObject LoadEntity(GameObject typePrefab, string[] saveData)
 	{
 		GameObject g = Instantiate(typePrefab);
 
@@ -387,7 +387,7 @@ public class SaveEntity : Save, ISaveable
 			EntityMapData d = mapData[i];
 			if(d.sceneIndex != currentSceneIndex)
 			{
-				Debug.LogError("entity wrong scene");
+				Debug.LogError("entity wrong scene, probably due to teleportation");
 				continue;
 			}
 
@@ -405,7 +405,7 @@ public class SaveEntity : Save, ISaveable
 
 			//load the data
 			string thisEntityPath = savePath + d.type + "/" + d.id + "/data.json";
-			object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(thisEntityPath));
+			string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
 			entityCount++;
 			GameObject g = LoadEntity(toSpawn, saveData);
 
@@ -482,8 +482,13 @@ public class SaveEntity : Save, ISaveable
 
 	public static void SaveAll()
 	{
+		print(toSaveMapData.ToString());
 		List<EntityMapData> mapData = new List<EntityMapData>();
 		mapData.AddRange(toSaveMapData);
+
+		//these will now be saved, so delete them to prevent double saving later on when this function is called again
+		toSaveMapData = new List<EntityMapData>();
+
 		int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
 		for (int i = 0; i < saves.Count; i++)
@@ -505,29 +510,30 @@ public class SaveEntity : Save, ISaveable
 
 	const string baseDataPath = "";
 
-	public object GetData()
+	public string GetData()
 	{
-		return new SaveDataBasic()
+		SaveDataBasic s = new SaveDataBasic()
 		{
 			id = id,
 			sceneIndex = SceneManager.GetActiveScene().buildIndex,
 			position = transform.position,
 			rotation = transform.eulerAngles,
 		};
+		return JsonConvert.SerializeObject(s, Formatting.Indented);
 	}
 
-	public void SetData(object data)
+	public void SetData(string data)
 	{
-		SaveDataBasic s = (SaveDataBasic)data;
+		SaveDataBasic s = JsonConvert.DeserializeObject<SaveDataBasic>(data);
 		//TODO: warning, sceneindex not considered here
 		id = s.id;
 		transform.position = s.position;
 		transform.eulerAngles = s.rotation;
 	}
 
-	public object[] GetAllData()
+	public string[] GetAllData()
 	{
-		object[] data = new object[toSave.Length];
+		string[] data = new string[toSave.Length];
 		for (int i = 0; i < toSave.Length; i++)
 		{
 			data[i] = ((ISaveable)toSave[i]).GetData();
@@ -535,7 +541,7 @@ public class SaveEntity : Save, ISaveable
 		return data;
 	}
 
-	public void SetAllData(object[] data)
+	public void SetAllData(string[] data)
 	{
 		if (data.Length != toSave.Length) Debug.LogError("wrong data, data.Length: " + data.Length + ", toSave.Length: " + toSave.Length);
 		//object[] data = new object[toSave.Length];
@@ -572,8 +578,8 @@ public struct EntityMapData
 
 public interface ISaveable
 {
-	object GetData();
-	void SetData(object data);
+	string GetData();
+	void SetData(string data);
 }
 
 //TODO: [in progress] split into inventory and abilities etc.

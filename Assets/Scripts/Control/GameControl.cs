@@ -235,6 +235,7 @@ public class GameControl : MonoBehaviour
 		playerExists = true;
 		inWorld = true;
 		loading = false;
+		print("loaded map location");
     }
 
 	#endregion
@@ -525,6 +526,7 @@ public class GameControl : MonoBehaviour
 
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+		print("set up player camera");
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
 
 		//bind hotbar to character and initialize
@@ -555,14 +557,16 @@ public class GameControl : MonoBehaviour
 			}
 			else
 			{
-				object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(pathOfThisEntity));
+				string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(pathOfThisEntity));
 				//if (saveData.id == myPlayersId)
 				//{
 				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
 				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
-				g.transform.position = position;
-				g.transform.rotation = Quaternion.identity;
-				g.GetComponent<Abilities>().ResetStats();
+				//TODO: consider below and if it should be uncommented
+				//commented out this to prevent resetting player position on game load
+				//g.transform.position = position;
+				//g.transform.rotation = Quaternion.identity;
+				//g.GetComponent<Abilities>().ResetStats();
 				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
