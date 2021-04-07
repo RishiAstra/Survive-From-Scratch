@@ -18,7 +18,8 @@ public class SaveEntity : Save, ISaveable
 {
 	public static List<SaveEntity> saves;
 	public static Dictionary<string, GameObject> spawnObjects;
-	
+	public static List<EntityMapData> toSaveMapData;
+
 	const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
@@ -51,6 +52,7 @@ public class SaveEntity : Save, ISaveable
 	{
 		saves = new List<SaveEntity>();
 		spawnObjects = new Dictionary<string, GameObject>();
+		toSaveMapData = new List<EntityMapData>();
 	}
 
 	// Start is called before the first frame update
@@ -130,6 +132,7 @@ public class SaveEntity : Save, ISaveable
 			}
 			else
 			{
+				toSaveMapData.Add(new EntityMapData(this.id, this.type, SceneManager.GetActiveScene().buildIndex));
 				SaveDataToFile();
 			}
 		}
@@ -167,15 +170,17 @@ public class SaveEntity : Save, ISaveable
 			Debug.LogWarning("No entity scene map folder");
 			return null;
 		}
-
+		print(entitySceneMapPath);
 		//find type of this by searching scene entity map, then calculate and return path
 		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
 		{
+			print(sceneString);
 			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
 
 			for (int i = 0; i < mapData.Count; i++)
 			{
 				EntityMapData d = mapData[i];
+				print(d.id);
 				if (d.id == id)
 				{
 					return savePath + d.type + "/" + d.id + "/data.json";
@@ -478,6 +483,7 @@ public class SaveEntity : Save, ISaveable
 	public static void SaveAll()
 	{
 		List<EntityMapData> mapData = new List<EntityMapData>();
+		mapData.AddRange(toSaveMapData);
 		int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
 		for (int i = 0; i < saves.Count; i++)
