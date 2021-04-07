@@ -439,23 +439,26 @@ public class SaveEntity : Save, ISaveable
 				toSpawn = a.Result;
 			}
 			string thisEntityPath = GetFilePathFromEntity(d);// data.json";
-
-			string[] saveData = GetSaveDataFromFilePath(thisEntityPath);
-
-			//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
-			entityCount++;
-			GameObject g = LoadEntity(toSpawn, saveData);
-
-			//add to newSaves
-			int newSavesIndex = typesLoaded.IndexOf(d.type);
-			if (newSavesIndex == -1)
+			if (Directory.Exists(thisEntityPath))
 			{
-				newSavesIndex = newSaves.Count;
+				string[] saveData = GetSaveDataFromFilePath(thisEntityPath);
 
-				typesLoaded.Add(d.type);
-				newSaves.Add(new List<Save>());
+				//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
+				entityCount++;
+				GameObject g = LoadEntity(toSpawn, saveData);
+
+				//add to newSaves
+				int newSavesIndex = typesLoaded.IndexOf(d.type);
+				if (newSavesIndex == -1)
+				{
+					newSavesIndex = newSaves.Count;
+
+					typesLoaded.Add(d.type);
+					newSaves.Add(new List<Save>());
+				}
+				newSaves[newSavesIndex].Add(g.GetComponent<Save>());
 			}
-			newSaves[newSavesIndex].Add(g.GetComponent<Save>());
+			
 		}
 
 		//do this now
@@ -516,6 +519,7 @@ public class SaveEntity : Save, ISaveable
 	public static string[] GetSaveDataFromFilePath(string thisEntityPath)
 	{
 		DirectoryInfo di = new DirectoryInfo(thisEntityPath);
+		print(thisEntityPath);
 		FileSystemInfo[] files = di.GetFileSystemInfos();
 		IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(f => f.CreationTime);
 		string[] saveData = new string[orderedFiles.Count()];

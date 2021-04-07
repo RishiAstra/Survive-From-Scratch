@@ -559,7 +559,7 @@ public class GameControl : MonoBehaviour
 		if(myPlayersId != -1)
 		{
 			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
-			if (pathOfThisEntity == null)
+			if (pathOfThisEntity == null || !Directory.Exists(pathOfThisEntity))
 			{
 				Debug.LogError("This id could not be found to load player: id: " + myPlayersId);
 			}
