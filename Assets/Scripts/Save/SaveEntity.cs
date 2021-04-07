@@ -88,6 +88,7 @@ public class SaveEntity : Save, ISaveable
 
 	private void InitializeToSave()
 	{
+		//TODO: WARNING: order is imporant
 		List<Component> toSaveTemp = toSave.ToList();
 
 		toSaveTemp.Add(this);
@@ -163,21 +164,6 @@ public class SaveEntity : Save, ISaveable
 	public string GetPath()
 	{
 		return savePath + type + "/" + id + "/";
-	}
-
-	public void SaveDataToFile()
-	{
-		//TODO:GetPath broken
-		string path = GetPath();
-		Directory.CreateDirectory(path);
-
-		string[] data = GetAllData();//TODO:this will make already json stuff put into json as a string
-
-		File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));
-
-		//File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
-		//TODO: GetData() above
-		//File.WriteAllText(path + , SceneManager.GetActiveScene().name);
 	}
 
 	public static string GetPathFromId(long id)
@@ -257,8 +243,9 @@ public class SaveEntity : Save, ISaveable
 			Debug.LogWarning("No save folder");
 			return;
 		}
+		//TODO:warning, requires entitySceneMapPath to exist in file system
 
-
+		EntityMapData toMove;
 		//TODO:won't work
 		//find type of this by searching scene entity map, then calculate and return path
 		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
@@ -271,16 +258,40 @@ public class SaveEntity : Save, ISaveable
 				if (d.id == idToMove)
 				{
 					d.sceneIndex = nextScene;
-					mapData[i] = d;
+					toMove = d;
+					//remove this one and write the updated
+					mapData.RemoveAt(i);
 					File.WriteAllText(sceneString, JsonConvert.SerializeObject(mapData));// + ".json"
-					return;
+					goto FoundID;
 				}
 				//load the data
 
 			}
 		}
-
+		//if the goto wasn't activated, failed
 		Debug.LogError("This id could not be found to teleport: id: " + idToMove);
+		return;
+		//goto was activated, success
+		FoundID:
+		//btw because of the goto and for loops, the directory entitySceneMapPath must exist or function would have returned or errored
+
+		//put the data in target scene
+		string newPath = entitySceneMapPath + SceneManager.GetSceneByBuildIndex(nextScene) + ".json";
+		List<EntityMapData> targetMapData;
+
+		//if there is a file for entities in this scene, load it, otherwise create it
+		if (File.Exists(newPath))
+		{
+			targetMapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(newPath));
+		}
+		else
+		{
+			targetMapData = new List<EntityMapData>();
+		}
+		targetMapData.Add(toMove);
+		File.WriteAllText(newPath, JsonConvert.SerializeObject(targetMapData));
+
+
 
 
 		//string pathOfThisEntity = GetPathFromId(idToMove);
@@ -319,7 +330,8 @@ public class SaveEntity : Save, ISaveable
 		//	}
 		//}
 	}
-
+	
+	/*
 	//public void GetDataFromFile()
 	//{
 
@@ -369,6 +381,7 @@ public class SaveEntity : Save, ISaveable
 	//		}
 	//	}
 	//}
+	*/
 
 	public static GameObject LoadEntity(GameObject typePrefab, string[] saveData)
 	{
@@ -393,9 +406,9 @@ public class SaveEntity : Save, ISaveable
 			yield break;
 		}
 
-		if (!Directory.Exists(entitySceneMapPath))
+		if (!File.Exists(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json"))
 		{
-			Debug.LogWarning("No entity scene map to load");
+			Debug.LogWarning("No entity scene map file to load");
 			yield break;
 		}
 
@@ -409,8 +422,8 @@ public class SaveEntity : Save, ISaveable
 			EntityMapData d = mapData[i];
 			if(d.sceneIndex != currentSceneIndex)
 			{
-				Debug.LogError("entity wrong scene, probably due to teleportation");
-				continue;
+				Debug.LogError("entity wrong scene, probably due to teleportation. Continueing anyways");
+				//continue;
 			}
 
 
@@ -426,8 +439,16 @@ public class SaveEntity : Save, ISaveable
 			}
 
 			//load the data
-			string thisEntityPath = savePath + d.type + "/" + d.id + "/data.json";
-			string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
+			string thisEntityPath = savePath + d.type + "/" + d.id + "/";// data.json";
+			DirectoryInfo di = new DirectoryInfo(thisEntityPath);
+			FileSystemInfo[] files = di.GetFileSystemInfos();
+			IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(f => f.CreationTime);
+			string[] saveData = new string[orderedFiles.Count()];
+			for (int j = 0; j < orderedFiles.Count(); j++)
+			{
+				saveData[i] = JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
+			}
+			//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
 			entityCount++;
 			GameObject g = LoadEntity(toSpawn, saveData);
 
@@ -490,16 +511,23 @@ public class SaveEntity : Save, ISaveable
 		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
 		yield return null;
 	}
-
-	public static bool GetEntityPrefabCached(string type, out GameObject result)
+	public void SaveDataToFile()
 	{
-		bool succeed = spawnObjects.TryGetValue(type, out result);
-		return succeed;
-	}
+		//TODO:GetPath broken
+		string path = GetPath();
+		Directory.CreateDirectory(path);
 
-	public static AsyncOperationHandle<GameObject> GetEntityPrefab(string type)
-	{
-		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
+		string[] data = GetAllData();
+		for(int i = 0; i < data.Length; i++)
+		{
+			File.WriteAllText(path + "Component_" + i + ".json", JsonConvert.SerializeObject(data, Formatting.Indented));
+		}
+
+		//File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));
+
+		//File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
+		//TODO: GetData() above
+		//File.WriteAllText(path + , SceneManager.GetActiveScene().name);
 	}
 
 	public static void SaveAll()
@@ -528,6 +556,17 @@ public class SaveEntity : Save, ISaveable
 		//string path = Application.persistentDataPath + "/nextid.txt";
 		////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 		//File.WriteAllText(path, nextId.ToString());
+	}
+
+	public static bool GetEntityPrefabCached(string type, out GameObject result)
+	{
+		bool succeed = spawnObjects.TryGetValue(type, out result);
+		return succeed;
+	}
+
+	public static AsyncOperationHandle<GameObject> GetEntityPrefab(string type)
+	{
+		return Addressables.LoadAssetAsync<GameObject>(spawnPath + type + "/" + type + ".prefab");
 	}
 
 	const string baseDataPath = "";
