@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public struct Stat
@@ -50,7 +51,7 @@ public enum AttackType
 	Magic = 8
 };
 
-public class Abilities : MonoBehaviour
+public class Abilities : MonoBehaviour, ISaveable
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
 
@@ -198,8 +199,22 @@ public class Abilities : MonoBehaviour
 		//print("finished action ");
 	}
 
+
 	#endregion
 
+	public string GetData()
+	{
+		SaveDataAbilities s = new SaveDataAbilities(stat, maxStat);
+		return JsonConvert.SerializeObject(s, Formatting.Indented);
+	}
+
+	public void SetData(string data)
+	{
+		SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
+		//TODO: warning, sceneindex not considered here
+		this.stat = s.stat;
+		this.maxStat = s.maxStat;
+	}
 }
 
 [System.Serializable]

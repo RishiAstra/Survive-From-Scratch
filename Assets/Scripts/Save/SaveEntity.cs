@@ -8,6 +8,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
 using System;
+using System.Linq;
 
 //TODO: link to abilities to update when damaged or killed
 //TODO: organize all of the paths in a well-defined mannar
@@ -57,23 +58,11 @@ public class SaveEntity : Save, ISaveable
 
 	// Start is called before the first frame update
 	void Awake()
-    {
+	{
 		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);
-
-		//add ISaveables
-		//start with this SaveEntity
-		int c = toSave.Length;//current length
-		int s = c;//start length
-
-		//increase current length
-		c++;//yay the horrifying name has been written
-
-		//resize array
-		Array.Resize(ref toSave, c);
-		//add this
-		toSave[s] = this;
+		InitializeToSave();
 
 
 		//if (!readNextId)
@@ -97,8 +86,41 @@ public class SaveEntity : Save, ISaveable
 		pStat = a.stat;
 	}
 
-    // Update is called once per frame
-    void Update()
+	private void InitializeToSave()
+	{
+		List<Component> toSaveTemp = toSave.ToList();
+
+		toSaveTemp.Add(this);
+		Abilities a = GetComponent<Abilities>();
+		if (a != null) toSaveTemp.Add(a);
+		Inventory i = GetComponent<Inventory>();
+		if (i != null) toSaveTemp.Add(i);
+		PlayerControl p = GetComponent<PlayerControl>();
+		if (p != null) toSaveTemp.Add(p);
+
+		toSave = toSaveTemp.ToArray();
+
+		////add ISaveables
+		////start with this SaveEntity
+		//int c = toSave.Length;//current length
+		//int s = c;//start length
+
+		////increase current length
+		//c++;//yay the horrifying name has been written
+
+		//Abilities a = GetComponent<Abilities>();
+		//if (a != null) c++;
+		//Inventory i = GetComponent<Inventory>();
+		//if (i != null) c++;
+
+		////resize array
+		//Array.Resize(ref toSave, c);
+		////add this
+		//toSave[s] = this;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
 		//TODO: find a better way to detect changes
 		//Autosave the entity if stat was changed
@@ -600,6 +622,12 @@ public class SaveDataAbilities
 {
 	public Stat maxStat;
 	public Stat stat;
+
+	public SaveDataAbilities(Stat stat, Stat maxStat)
+	{
+		this.stat = stat;
+		this.maxStat = maxStat;
+	}
 }
 
 [System.Serializable]
@@ -607,11 +635,20 @@ public class SaveDataInventory
 {
 	public List<Item> items;
 
+	public SaveDataInventory(List<Item> items)
+	{
+		this.items = items;
+	}
 }
 
-public class SaveDataControl
+public class SaveDataPlayerControl
 {
 	public string playerOwnerName;//TODO: use player id
+
+	public SaveDataPlayerControl(string playerOwnerName)
+	{
+		this.playerOwnerName = playerOwnerName;
+	}
 }
 
 //[System.Serializable]

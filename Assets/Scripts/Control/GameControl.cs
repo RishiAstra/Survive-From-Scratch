@@ -562,11 +562,10 @@ public class GameControl : MonoBehaviour
 				//{
 				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
 				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
-				//TODO: consider below and if it should be uncommented
-				//commented out this to prevent resetting player position on game load
-				//g.transform.position = position;
-				//g.transform.rotation = Quaternion.identity;
-				//g.GetComponent<Abilities>().ResetStats();
+				//TODO: consider below and if it should be also for loading player
+				g.transform.position = position;
+				g.transform.rotation = Quaternion.identity;
+				g.GetComponent<Abilities>().ResetStats();
 				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
