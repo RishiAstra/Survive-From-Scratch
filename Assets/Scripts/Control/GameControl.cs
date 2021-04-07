@@ -565,7 +565,7 @@ public class GameControl : MonoBehaviour
 			}
 			else
 			{
-				string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(pathOfThisEntity));
+				string[] saveData = SaveEntity.GetSaveDataFromFilePath(pathOfThisEntity);//JsonConvert.DeserializeObject<string[]>(File.ReadAllText(pathOfThisEntity));
 				//if (saveData.id == myPlayersId)
 				//{
 				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);

@@ -191,7 +191,7 @@ public class SaveEntity : Save, ISaveable
 				print(d.id);
 				if (d.id == id)
 				{
-					return savePath + d.type + "/" + d.id + "/data.json";
+					return GetFilePathFromEntity(d);// savePath + d.type + "/" + d.id + "/";//data.json
 				}
 				
 
@@ -396,6 +396,7 @@ public class SaveEntity : Save, ISaveable
 		return g;
 	}
 
+
 	public static IEnumerator LoadAll()
 	{
 		int typeCount = 0;
@@ -420,7 +421,7 @@ public class SaveEntity : Save, ISaveable
 		for (int i = 0; i < mapData.Count; i++)
 		{
 			EntityMapData d = mapData[i];
-			if(d.sceneIndex != currentSceneIndex)
+			if (d.sceneIndex != currentSceneIndex)
 			{
 				Debug.LogError("entity wrong scene, probably due to teleportation. Continueing anyways");
 				//continue;
@@ -437,35 +438,28 @@ public class SaveEntity : Save, ISaveable
 				spawnObjects.Add(d.type, a.Result);
 				toSpawn = a.Result;
 			}
+			string thisEntityPath = GetFilePathFromEntity(d);// data.json";
 
-			//load the data
-			string thisEntityPath = savePath + d.type + "/" + d.id + "/";// data.json";
-			DirectoryInfo di = new DirectoryInfo(thisEntityPath);
-			FileSystemInfo[] files = di.GetFileSystemInfos();
-			IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(f => f.CreationTime);
-			string[] saveData = new string[orderedFiles.Count()];
-			for (int j = 0; j < orderedFiles.Count(); j++)
-			{
-				saveData[i] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
-			}
+			string[] saveData = GetSaveDataFromFilePath(thisEntityPath);
+
 			//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
 			entityCount++;
 			GameObject g = LoadEntity(toSpawn, saveData);
 
 			//add to newSaves
 			int newSavesIndex = typesLoaded.IndexOf(d.type);
-			if(newSavesIndex == -1)
+			if (newSavesIndex == -1)
 			{
 				newSavesIndex = newSaves.Count;
 
 				typesLoaded.Add(d.type);
-				newSaves.Add(new List<Save>());				
+				newSaves.Add(new List<Save>());
 			}
 			newSaves[newSavesIndex].Add(g.GetComponent<Save>());
 		}
 
 		//do this now
-		for(int i = 0; i < typesLoaded.Count; i++)
+		for (int i = 0; i < typesLoaded.Count; i++)
 		{
 			Save.CallOnLoadedtype(typesLoaded[i], newSaves[i]);
 		}
@@ -511,6 +505,28 @@ public class SaveEntity : Save, ISaveable
 		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
 		yield return null;
 	}
+
+	public static string GetFilePathFromEntity(EntityMapData d)
+	{
+
+		//load the data
+		return savePath + d.type + "/" + d.id + "/";
+	}
+
+	public static string[] GetSaveDataFromFilePath(string thisEntityPath)
+	{
+		DirectoryInfo di = new DirectoryInfo(thisEntityPath);
+		FileSystemInfo[] files = di.GetFileSystemInfos();
+		IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(f => f.CreationTime);
+		string[] saveData = new string[orderedFiles.Count()];
+		for (int j = 0; j < orderedFiles.Count(); j++)
+		{
+			saveData[j] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
+		}
+
+		return saveData;
+	}
+
 	public void SaveDataToFile()
 	{
 		//TODO:GetPath broken
