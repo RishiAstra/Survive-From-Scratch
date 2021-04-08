@@ -30,6 +30,7 @@ public class spawner : MonoBehaviour {
 	public int maxAmount;
 	public int removeNullObjectsSpeed;
 	public List<long> IDsOfSpawned;
+	public float heightOffset;
 
 	private float reload;
 	public List<GameObject> spawnedThese = new List<GameObject>();
@@ -138,6 +139,7 @@ public class spawner : MonoBehaviour {
 				if (Physics.Raycast (target, -Vector3.up, out hit)) {
 					target = hit.point;		
 				}
+				target += Vector3.up * heightOffset;
 				GameObject g = (GameObject)Instantiate(spawnThis, target, Quaternion.Euler(0, Random.Range(0, 360), 0));
 				spawnedThese.Add(g);
 				IDsOfSpawned.Add(g.GetComponent<Save>().id);

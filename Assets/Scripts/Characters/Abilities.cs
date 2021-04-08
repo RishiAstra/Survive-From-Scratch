@@ -215,6 +215,11 @@ public class Abilities : MonoBehaviour, ISaveable
 		this.stat = s.stat;
 		this.maxStat = s.maxStat;
 	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "Stats";
+	}
 }
 
 [System.Serializable]

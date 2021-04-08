@@ -521,7 +521,11 @@ public class SaveEntity : Save, ISaveable
 		DirectoryInfo di = new DirectoryInfo(thisEntityPath);
 		print(thisEntityPath);
 		FileSystemInfo[] files = di.GetFileSystemInfos();
-		IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(f => f.CreationTime);
+		IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(
+			(f) => int.Parse(new string(f.Name.Where(Char.IsDigit).ToArray()))
+		);
+
+
 		string[] saveData = new string[orderedFiles.Count()];
 		for (int j = 0; j < orderedFiles.Count(); j++)
 		{
@@ -540,7 +544,7 @@ public class SaveEntity : Save, ISaveable
 		string[] data = GetAllData();
 		for(int i = 0; i < data.Length; i++)
 		{
-			File.WriteAllText(path + "Component_" + i + ".json", data[i]);// JsonConvert.SerializeObject(data, Formatting.Indented));
+			File.WriteAllText(path + ((ISaveable)toSave[i]).GetFileNameBaseForSavingThisComponent() + "_Component_" + i + ".json", data[i]);// JsonConvert.SerializeObject(data, Formatting.Indented));
 		}
 
 		//File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));
@@ -622,6 +626,16 @@ public class SaveEntity : Save, ISaveable
 		return data;
 	}
 
+	//public string[] GetAllDataFileNames()
+	//{
+	//	string[] data = new string[toSave.Length];
+	//	for (int i = 0; i < toSave.Length; i++)
+	//	{
+	//		data[i] = ((ISaveable)toSave[i]).GetData();
+	//	}
+	//	return data;
+	//}
+
 	public void SetAllData(string[] data)
 	{
 		if (data.Length != toSave.Length) Debug.LogError("wrong data, data.Length: " + data.Length + ", toSave.Length: " + toSave.Length);
@@ -630,6 +644,11 @@ public class SaveEntity : Save, ISaveable
 		{
 			((ISaveable)toSave[i]).SetData(data[i]);
 		}
+	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "SaveData";
 	}
 }
 
@@ -661,6 +680,7 @@ public interface ISaveable
 {
 	string GetData();
 	void SetData(string data);
+	string GetFileNameBaseForSavingThisComponent();
 }
 
 //TODO: [in progress] split into inventory and abilities etc.

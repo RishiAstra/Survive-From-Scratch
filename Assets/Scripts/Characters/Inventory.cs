@@ -64,4 +64,9 @@ public class Inventory : MonoBehaviour, ISaveable
 		//TODO: warning, sceneindex not considered here
 		this.items = s.items;
 	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "Inventory";
+	}
 }

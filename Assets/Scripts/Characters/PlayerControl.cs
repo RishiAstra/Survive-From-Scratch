@@ -108,4 +108,9 @@ public class PlayerControl : MonoBehaviour, ISaveable
 			Debug.LogWarning("spawned someone else's player, their username: " + playerOwnerName + ", my username: " + GameControl.username);
 		}
 	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "PlayerControlled";
+	}
 }
