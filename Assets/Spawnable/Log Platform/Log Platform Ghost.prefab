@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2707950398995063313}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0.1, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5644551222003002283}
@@ -105,7 +105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3114798841570137657}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0.1, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5644551222003002283}
@@ -184,7 +184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4494831061518026985}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0.1, z: -0.1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5644551222003002283}
@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 5644551222003002283}
   - component: {fileID: 580795883922316506}
   m_Layer: 0
-  m_Name: log platform ghost
+  m_Name: Log Platform Ghost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,8 +279,8 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4980604891782983953}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0.09701644, z: -0.99683416}
-  m_Size: 2.0146978
+  m_LocalReferencePoint: {x: 0, y: 0.09701644, z: 0.0031659603}
+  m_Size: 2.014698
   m_FadeMode: 0
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0

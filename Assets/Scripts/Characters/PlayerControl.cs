@@ -69,7 +69,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 			//cam.pivot.eulerAngles = temp;
 
 			//use the attack
-			if (Input.GetMouseButton(0))
+			if (Input.GetMouseButton(0) && !BuildControl.main.building)
 			{
 				abilities.UseSkill(0);
 			}

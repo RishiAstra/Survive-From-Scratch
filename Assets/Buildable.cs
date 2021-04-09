@@ -15,8 +15,10 @@ public class Buildable : MonoBehaviour
 	public float buildRange = 10f;//TODO: see above
 
 	public GameObject ghost;
+	public BuildingGhost gh;
 
 	private Camera mainCamera;
+	private Vector3 pRot;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,7 @@ public class Buildable : MonoBehaviour
 	void OnDestroy()
 	{
 		BuildControl.main.building = false;
+		Destroy(ghost);
 	}
 
 	// Update is called once per frame
@@ -41,6 +44,7 @@ public class Buildable : MonoBehaviour
 
 			if (hitAnything)
 			{
+				ghost.SetActive(true);
 				if (Input.GetKeyDown(KeyCode.R))
 				{
 					float toRotate = rotationSnap;
@@ -65,32 +69,64 @@ public class Buildable : MonoBehaviour
 
 
 				Vector3 pos = rh.point;
-				pos.x = Mathf.Round(pos.x / positionSnap) * positionSnap;
-				pos.y = Mathf.Round(pos.y / positionSnap) * positionSnap;
-				pos.z = Mathf.Round(pos.z / positionSnap) * positionSnap;
+
+				Vector3 relPos = pos - me.bob.cam.transform.position;
+				relPos.Normalize();
+				relPos *= 0.1f * positionSnap;
+
+				Vector3 size = gh.GetSize();
+				pos.x = relPos.x > 0 ? pos.x - size.x/2 : pos.x + size.x/2;
+				pos.y = relPos.y > 0 ? pos.y - size.y / 2 : pos.y + size.y / 2;
+				pos.z = relPos.z > 0 ? pos.z - size.z / 2 : pos.z + size.z / 2;
+
+				Vector3 roundedValues = new Vector3(
+					Mathf.Round((pos.x - relPos.x) / positionSnap) * positionSnap,
+					Mathf.Round((pos.y - relPos.y) / positionSnap) * positionSnap,
+					Mathf.Round((pos.z - relPos.z) / positionSnap) * positionSnap
+				);
+
+				//favor closer positions when rounding
+				pos = roundedValues;
+				//pos.x = relPos.x > 0 ? (Mathf.Floor(pos.x / positionSnap) * positionSnap) : (Mathf.Ceil(pos.x / positionSnap) * positionSnap);
+				//pos.y = relPos.y > 0 ? (Mathf.Floor(pos.y / positionSnap) * positionSnap) : (Mathf.Ceil(pos.y / positionSnap) * positionSnap);
+				//pos.z = relPos.z > 0 ? (Mathf.Floor(pos.z / positionSnap) * positionSnap) : (Mathf.Ceil(pos.z / positionSnap) * positionSnap);
 
 
-				//Vector3 relPos = rh.position - me.bob.transform.position;//
-				//Quaternion r = Quaternion.LookRotation(relPos.normalized, Vector3.up);
-				Vector3 euler = me.bob.transform.eulerAngles;
+				Vector3 rp = rh.point - me.bob.transform.position;
+				rp.y = 0;
+				//Quaternion r = Quaternion.LookRotation(rp.normalized, Vector3.up);
+
+				//offset the rotation by the player's current rotation
+				Vector3 euler = Quaternion.LookRotation(rp.normalized, Vector3.up).eulerAngles;// me.bob.transform.eulerAngles;
 				euler.x = 0;// Mathf.Round(euler.x / 90f) * 90f;
 				euler.y = Mathf.Round(euler.y / rotationSnap) * rotationSnap;
 				euler.z = 0;// Mathf.Round(euler.z / 90f) * 90f;
-				Quaternion rot = Quaternion.Euler(euler);
+
+				if (euler != pRot)
+				{
+					Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(Quaternion.Euler(pRot));
+					ghost.transform.rotation *= rot;
+					pRot = euler;
+				}
+				//Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(relRot);
+				//relRot = rot;
 
 				ghost.transform.position = pos;
-				ghost.transform.rotation = rot;
 				BuildControl.main.transform.position = pos;
 
-				if (Input.GetMouseButton(0))
+				if (Input.GetMouseButtonUp(0))
 				{
-					GameObject g = Instantiate(finalPrefab, pos, rot);
+					GameObject g = Instantiate(finalPrefab, pos, ghost.transform.rotation);
 					me.bob.RemoveItem(me.bob.invSel);
 					if(me.bob.inv.items[me.bob.invSel].amount <= 0)
 					{
 						me.bob.RefreshSelected();
 					}
 				}
+			}
+			else
+			{
+				ghost.SetActive(false);
 			}			
 		}		
 	}

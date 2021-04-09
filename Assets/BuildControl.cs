@@ -34,15 +34,15 @@ public class BuildControl : MonoBehaviour
 
 		if (a == Axis.x)
 		{
-			x.SetActive(false);
+			x.SetActive(true);
 		}
 		else if (a == Axis.y)
 		{
-			y.SetActive(false);
+			y.SetActive(true);
 		}
 		else if (a == Axis.z)
 		{
-			z.SetActive(false);
+			z.SetActive(true);
 		}
 	}
 
@@ -58,7 +58,8 @@ public class BuildControl : MonoBehaviour
     {
 		if (building)
 		{
-			if (Input.GetKeyDown(KeyCode.E))
+			SetAxis(a);//TODO: this is wasteful
+			if (Input.GetKeyDown(KeyCode.T))
 			{
 				if (a == Axis.x)
 				{
