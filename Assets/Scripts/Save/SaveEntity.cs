@@ -181,13 +181,13 @@ public class SaveEntity : Save, ISaveable
 		//find type of this by searching scene entity map, then calculate and return path
 		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
 		{
-			print(sceneString);
+			//print(sceneString);
 			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
 
 			for (int i = 0; i < mapData.Count; i++)
 			{
 				EntityMapData d = mapData[i];
-				print(d.id);
+				//print(d.id);
 				if (d.id == id)
 				{
 					return GetFilePathFromEntity(d);// savePath + d.type + "/" + d.id + "/";//data.json
@@ -437,6 +437,9 @@ public class SaveEntity : Save, ISaveable
 				spawnObjects.Add(d.type, a.Result);
 				toSpawn = a.Result;
 			}
+
+			//this will check if the entity exists, otherwise it'll skip.
+			//TODO: delete entities in the scene map if they don't exist
 			string thisEntityPath = GetFilePathFromEntity(d);// data.json";
 			if (Directory.Exists(thisEntityPath))
 			{
