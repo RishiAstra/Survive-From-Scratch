@@ -521,7 +521,7 @@ public class SaveEntity : Save, ISaveable
 	public static string[] GetSaveDataFromFilePath(string thisEntityPath)
 	{
 		DirectoryInfo di = new DirectoryInfo(thisEntityPath);
-		print(thisEntityPath);
+		//print(thisEntityPath);
 		FileSystemInfo[] files = di.GetFileSystemInfos();
 		IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(
 			(f) => int.Parse(new string(f.Name.Where(Char.IsDigit).ToArray()))

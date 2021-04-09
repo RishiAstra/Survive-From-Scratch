@@ -35,7 +35,7 @@ public class Buildable : MonoBehaviour
 	{
 		BuildControl.main.building = false;
 		Destroy(ghost);
-		BuildControl.main.ghostFollower.gameObject.SetActive(false);
+		if(BuildControl.main.ghostFollower != null) BuildControl.main.ghostFollower.gameObject.SetActive(false);
 
 	}
 
@@ -90,7 +90,7 @@ public class Buildable : MonoBehaviour
 				if (Mathf.Abs(Vector3.Dot(n, Vector3.right)		) > normalThreshold) pos.x += (relPos.x > 0 ? -size.x / 2 : size.x / 2);
 				if (Mathf.Abs(Vector3.Dot(n, Vector3.up)		) > normalThreshold) pos.y += (relPos.y > 0 ? -size.y / 2 : size.y / 2);
 				if (Mathf.Abs(Vector3.Dot(n, Vector3.forward)	) > normalThreshold) pos.z += (relPos.z > 0 ? -size.z / 2 : size.z / 2);
-				print(size);
+				//print(size);
 				BuildControl.main.ghostFollower.position = pos;
 
 				//if (size.x < positionSnap) pos.x = relPos.x > 0 ? Mathf.Floor(pos.x / positionSnap) * positionSnap : Mathf.Ceil(pos.x / positionSnap) * positionSnap;
@@ -128,8 +128,9 @@ public class Buildable : MonoBehaviour
 
 				if (euler != pRot)
 				{
-					Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(Quaternion.Euler(pRot));
-					ghost.transform.rotation *= rot;
+					//Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(Quaternion.Euler(pRot));
+					//ghost.transform.rotation *= rot;
+					ghost.transform.Rotate(Vector3.up, euler.y - pRot.y, Space.World);
 					pRot = euler;
 				}
 				//Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(relRot);
@@ -138,7 +139,7 @@ public class Buildable : MonoBehaviour
 				ghost.transform.position = pos;
 				BuildControl.main.transform.position = pos;
 
-				if (Input.GetMouseButtonUp(0))
+				if (Input.GetMouseButtonUp(0) && ! gh.overlapping)
 				{
 					GameObject g = Instantiate(finalPrefab, pos, ghost.transform.rotation);
 					me.bob.RemoveItem(me.bob.invSel);
@@ -150,6 +151,9 @@ public class Buildable : MonoBehaviour
 			}
 			else
 			{
+				//clear overlaps because it will now sleep and won't receive ontriggerexit
+				gh.overlaps = new List<Transform>();
+				gh.overlapping = false;
 				ghost.SetActive(false);
 			}			
 		}		
