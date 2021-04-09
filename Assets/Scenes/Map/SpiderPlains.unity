@@ -214,6 +214,72 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &116080001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 116080004}
+  - component: {fileID: 116080003}
+  - component: {fileID: 116080002}
+  m_Layer: 0
+  m_Name: Branch Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &116080002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116080001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 11
+--- !u!114 &116080003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116080001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43e2c94a924fc54fbfa9e4bf4e3d7b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thingType: 0
+  toSpawnType: Log
+  delay: 0.5
+  radius: 30
+  maxAmount: 10
+  removeNullObjectsSpeed: 1
+  IDsOfSpawned: 
+  heightOffset: 1
+  spawnedThese: []
+--- !u!4 &116080004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 116080001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 18.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &233569247
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +330,7 @@ MonoBehaviour:
   maxAmount: 10
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
+  heightOffset: 0
   spawnedThese: []
 --- !u!4 &233569250
 Transform:
@@ -613,6 +680,7 @@ MonoBehaviour:
   maxAmount: 3
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
+  heightOffset: 0
   spawnedThese: []
 --- !u!4 &1767101029
 Transform:
@@ -665,6 +733,7 @@ MonoBehaviour:
   maxAmount: 10
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
+  heightOffset: 0
   spawnedThese: []
 --- !u!4 &1803451688
 Transform:
@@ -834,6 +903,7 @@ MonoBehaviour:
   maxAmount: 2
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
+  heightOffset: 0
   spawnedThese: []
 --- !u!4 &2106121465
 Transform:

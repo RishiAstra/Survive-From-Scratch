@@ -761,14 +761,14 @@ MonoBehaviour:
   m_Root: {fileID: 164153826729537567}
   m_UpdateRate: 1000
   m_UpdateMode: 1
-  m_Damping: 0.648
+  m_Damping: 0.91
   m_DampingDistrib:
     serializedVersion: 2
     m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Elasticity: 0.194
+  m_Elasticity: 0.35
   m_ElasticityDistrib:
     serializedVersion: 2
     m_Curve:
@@ -866,6 +866,8 @@ MonoBehaviour:
   - {fileID: 164153826729537953}
   - {fileID: 164153826729537949}
   - {fileID: 164153826729538005}
+  - {fileID: 164153826729537655}
+  - {fileID: 164153826729537639}
   m_FreezeAxis: 0
   m_DistantDisable: 0
   m_ReferenceObject: {fileID: 0}
@@ -1017,7 +1019,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164153826729503817}
-  m_LocalRotation: {x: -0.00065112946, y: -0.000107231615, z: 0.00014200353, w: 0.99999976}
+  m_LocalRotation: {x: -0.0006511373, y: -0.000107231615, z: 0.00014200549, w: 0.99999976}
   m_LocalPosition: {x: 3.259629e-11, y: 0.0012726663, z: 2.7939677e-11}
   m_LocalScale: {x: 1.0000001, y: 1, z: 1.0000002}
   m_Children:
@@ -4574,6 +4576,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   sensitivity: {x: 100, y: -60}
   scrollSencitivity: 1
+  playerOwnerName: 
 --- !u!114 &-8149921408223489936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4612,11 +4615,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  playerOwnerName: 
   type: Rin Player
   customSavePath: 
   a: {fileID: 8437588072177896211}
   deleteOnDeath: 0
+  toSave: []
 --- !u!114 &2717048042600724878
 MonoBehaviour:
   m_ObjectHideFlags: 0

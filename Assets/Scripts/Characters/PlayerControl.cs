@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //TODO: in all scripts if performance is bad, consider replacing List<> with HashSet<>
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : MonoBehaviour, ISaveable
 {
 	public const float CAM_LERP_SPEED = 0.02f;
 	//public const float INPUT_THRESHOLD = 0.01f;
@@ -14,6 +15,12 @@ public class PlayerControl : MonoBehaviour
 	public Cam cam;
 	public Vector2 sensitivity;
 	public float scrollSencitivity;
+	public string playerOwnerName;
+
+	void Awake()
+	{
+		
+	}
 
 	// Start is called before the first frame update
 	void Start()
@@ -34,7 +41,14 @@ public class PlayerControl : MonoBehaviour
 			//use the attack
 			if (Input.GetMouseButton(0))
 			{
-				abilities.UseSkill(0);
+				if (BuildControl.main.building)
+				{
+					//BuildControl.main.PlaceBuilding();
+				}
+				else
+				{
+					abilities.UseSkill(0);
+				}
 			}
 
 			//change distance and pitch
@@ -55,7 +69,7 @@ public class PlayerControl : MonoBehaviour
 			//cam.pivot.eulerAngles = temp;
 
 			//use the attack
-			if (Input.GetMouseButton(0))
+			if (Input.GetMouseButton(0) && !BuildControl.main.building)
 			{
 				abilities.UseSkill(0);
 			}
@@ -76,5 +90,34 @@ public class PlayerControl : MonoBehaviour
 		//if (dir.magnitude > INPUT_THRESHOLD) movement.SetAngle(Quaternion.LookRotation(dir, transform.up));
 		movement.SetDirection(dir);
 		movement.SetAngleFromDirection();
+	}
+
+
+	public string GetData()
+	{
+		SaveDataPlayerControl s = new SaveDataPlayerControl(playerOwnerName);
+		return JsonConvert.SerializeObject(s, Formatting.Indented);
+	}
+
+	public void SetData(string data)
+	{
+		SaveDataPlayerControl s = JsonConvert.DeserializeObject<SaveDataPlayerControl>(data);
+		//TODO: warning, sceneindex not considered here
+		this.playerOwnerName = s.playerOwnerName;
+
+
+		if (playerOwnerName == GameControl.username)
+		{
+			GameControl.main.SetUpPlayer(gameObject);
+		}
+		else
+		{
+			Debug.LogWarning("spawned someone else's player, their username: " + playerOwnerName + ", my username: " + GameControl.username);
+		}
+	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "PlayerControlled";
 	}
 }

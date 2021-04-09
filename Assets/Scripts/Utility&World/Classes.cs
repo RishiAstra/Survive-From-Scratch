@@ -5,12 +5,6 @@ using UnityEngine;
 using System;
 namespace bobStuff
 {
-	//TODO: not used right now
-	public interface ISaveable
-	{
-		byte[] GetData();
-		void SetData(byte[] data);
-	}
 
 	/// <summary>
 	/// Item Catagorys. Usefull when deciding if you can equip something, place, ect.

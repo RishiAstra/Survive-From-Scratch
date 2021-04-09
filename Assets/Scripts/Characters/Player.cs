@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
 	//		hp = (float)stream.ReceiveNext ();
 	//	}
 	//}
-	void RefreshSelected()
+	public void RefreshSelected()
 	{
 		//TODO: should this really destroy the current equip gameobjects, or should it check if they changed first
 		if (invSel >= inv.items.Count || invSel < 0) return;
@@ -211,7 +211,7 @@ public class Player : MonoBehaviour
 	void SelectInv(int index) {
 		if (index >= inv.items.Count) return;// || invSel < 0
 		//destroy thing if previously placing thing, see todos below
-		Destroy(placeing);
+		//Destroy(placeing);
 
 		if (rightHand.childCount != 0) {
 			//TODO: this might cause errors if children are deleted instantly
@@ -240,26 +240,28 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		if (GameControl.itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
-		{
-			if (invSel != index)
-			{
-				//TODO: should this equip it?
-				//TODO: placing prefab should be different from final prefab. The placing prefab could have a placing script that spawns the final
-				placeing = (GameObject)Instantiate(GameControl.itemTypes[inv.items[index].id].prefab);
-				foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
-				{
-					m.enabled = false;
-				}
-			}
-			else
-			{
-				////see above todos
-				//invSel = -1;
-			}
-		}
+		//if (GameControl.itemTypes[inv.items[index].id].tags.Contains(TagScript.placeable))
+		//{
+		//	if (invSel != index)
+		//	{
+		//		//TODO: should this equip it?
+		//		//TODO: placing prefab should be different from final prefab. The placing prefab could have a placing script that spawns the final
+		//		placeing = (GameObject)Instantiate(GameControl.itemTypes[inv.items[index].id].prefab);
+		//		foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>())
+		//		{
+		//			m.enabled = false;
+		//		}
+		//	}
+		//	else
+		//	{
+		//		////see above todos
+		//		//invSel = -1;
+		//	}
+		//}
 		//print(invSel);
 	}
+
+	/*
 
 	//TODO: remove this inventory display, it should be replaced with UI gameobjects
 	//void OnGUI()
@@ -340,10 +342,14 @@ public class Player : MonoBehaviour
 
 	//}
 
+	*/
+
 	private void Update()
 	{
 		CheckHotBar();
 	}
+
+	/*
 
 	// Update is called once per frame
 	void FixedUpdate()
@@ -418,72 +424,72 @@ public class Player : MonoBehaviour
 		//} else {
 		//	scoreBoard.gameObject.SetActive(false);
 		//}
-		if (!GameControl.main.myAbilities.dead) {
+		//if (!GameControl.main.myAbilities.dead) {
 			
-			//if (Physics.CheckSphere(groundCheck.position, 0.05f, ground))
-			//{
+		//	//if (Physics.CheckSphere(groundCheck.position, 0.05f, ground))
+		//	//{
 				
-			//	if (Input.GetKey(KeyCode.Space)&&!jumping)
-			//	{
+		//	//	if (Input.GetKey(KeyCode.Space)&&!jumping)
+		//	//	{
 
-			//		anim.ResetTrigger("JumpStart");
-			//		anim.SetTrigger("JumpStart");
-			//		anim.ResetTrigger("JumpEnd");
-			//		//anim.SetBool("JumpEnd", false);
-			//		//StartCoroutine(TakeOff());
-			//		//jumping = true;
-			//		//rig.AddForce(transform.up * jumpForce);
-			//		//Jump();
-			//	}
+		//	//		anim.ResetTrigger("JumpStart");
+		//	//		anim.SetTrigger("JumpStart");
+		//	//		anim.ResetTrigger("JumpEnd");
+		//	//		//anim.SetBool("JumpEnd", false);
+		//	//		//StartCoroutine(TakeOff());
+		//	//		//jumping = true;
+		//	//		//rig.AddForce(transform.up * jumpForce);
+		//	//		//Jump();
+		//	//	}
 
-			//	if (jumping)
-			//	{
-			//		jumping = false;
-			//		//anim.SetBool("JumpStart", false);
-			//		anim.ResetTrigger("JumpEnd");
-			//		anim.SetTrigger("JumpEnd");
-			//		anim.ResetTrigger("JumpStart");
-			//		//jumping = false;
-			//		//StartCoroutine(LandFromJump());
-			//	}
+		//	//	if (jumping)
+		//	//	{
+		//	//		jumping = false;
+		//	//		//anim.SetBool("JumpStart", false);
+		//	//		anim.ResetTrigger("JumpEnd");
+		//	//		anim.SetTrigger("JumpEnd");
+		//	//		anim.ResetTrigger("JumpStart");
+		//	//		//jumping = false;
+		//	//		//StartCoroutine(LandFromJump());
+		//	//	}
 
 
-			//}else if (prevJump)
-			//{
-			//	jumping = true;
-			//}
-			//prevJump = Physics.CheckSphere(groundCheck.position, 0.05f, ground);
-			//if (hp <= 0) {
-			//	hp = maxHp;
-			//	isDead = true;
-			//}
+		//	//}else if (prevJump)
+		//	//{
+		//	//	jumping = true;
+		//	//}
+		//	//prevJump = Physics.CheckSphere(groundCheck.position, 0.05f, ground);
+		//	//if (hp <= 0) {
+		//	//	hp = maxHp;
+		//	//	isDead = true;
+		//	//}
 
-			//				transform.GetChild (transform.childCount-1).localScale = new Vector3 (hp / maxHp, 1, 1);
+		//	//				transform.GetChild (transform.childCount-1).localScale = new Vector3 (hp / maxHp, 1, 1);
 
-			if (Input.GetMouseButtonDown(0) && invSel != -1) {
-				//TODO: change placing system
-				if (placeing == null) {
-					//Player[] hitThese = GameObject.FindObjectsOfType<Player>();
-					////					bool[] couldHit = new bool[hitThese.Length];
-					//for (int i = 0; i < hitThese.Length; i++) {
-					//	float dist = Vector3.Distance(hitThese[i].transform.position, transform.position);
-					//	if (dist < range && dist > 0.01f) {
-					//		//						hitThese [i].GetComponent<PhotonView> ().RPC ("takeDmg",PhotonTargets.All,damage);
-					//		//hitThese[i].hp -= damage;//damage other players
-					//		//this.photonView.RPC ("setHp", PhotonTargets.All, hitThese [i].hp);
-					//	}
-					//}
-				} else {
-					foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>()) {
-						m.enabled = false;
-					}
-					RemoveItem(invSel);
-					placeing = null;
-				}
-			}
-		} else {//isdead
-				//				respawn();
-		}
+		//	if (Input.GetMouseButtonDown(0) && invSel != -1) {
+		//		//TODO: change placing system
+		//		if (placeing == null) {
+		//			//Player[] hitThese = GameObject.FindObjectsOfType<Player>();
+		//			////					bool[] couldHit = new bool[hitThese.Length];
+		//			//for (int i = 0; i < hitThese.Length; i++) {
+		//			//	float dist = Vector3.Distance(hitThese[i].transform.position, transform.position);
+		//			//	if (dist < range && dist > 0.01f) {
+		//			//		//						hitThese [i].GetComponent<PhotonView> ().RPC ("takeDmg",PhotonTargets.All,damage);
+		//			//		//hitThese[i].hp -= damage;//damage other players
+		//			//		//this.photonView.RPC ("setHp", PhotonTargets.All, hitThese [i].hp);
+		//			//	}
+		//			//}
+		//		} else {
+		//			foreach (MonoBehaviour m in placeing.GetComponentsInChildren<MonoBehaviour>()) {
+		//				m.enabled = false;
+		//			}
+		//			RemoveItem(invSel);
+		//			placeing = null;
+		//		}
+		//	}
+		//} else {//isdead
+		//		//				respawn();
+		//}
 		//Move();
 		//idk what this is
 		//if (Input.GetMouseButtonDown(0))
@@ -497,6 +503,8 @@ public class Player : MonoBehaviour
 		//clickedThisFrame = false;
 		//}
 	}
+
+	*/
 
 	//private void Die()
 	//{

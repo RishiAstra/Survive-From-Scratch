@@ -69,9 +69,9 @@ public class SaveItem : Save
 	//	File.WriteAllText(path + id + ".json", JsonConvert.SerializeObject(GetData(), Formatting.Indented));
 	//}
 
-	public SaveDataItem GetData()
+	public SaveDataBasic GetData()
 	{
-		return new SaveDataItem
+		return new SaveDataBasic
 		{
 			id = id,
 			position = transform.position,
@@ -79,7 +79,7 @@ public class SaveItem : Save
 		};
 	}
 
-	public void SetData(SaveDataItem data)
+	public void SetData(SaveDataBasic data)
 	{
 		id = data.id;
 		transform.position = data.position;
@@ -112,9 +112,9 @@ public class SaveItem : Save
 			string typeFilePath = typeString + "/" + type + ".json";
 			if (File.Exists(typeFilePath))
 			{
-				List<SaveDataItem> tempData = JsonConvert.DeserializeObject<List<SaveDataItem>>(File.ReadAllText(typeFilePath));
+				List<SaveDataBasic> tempData = JsonConvert.DeserializeObject<List<SaveDataBasic>>(File.ReadAllText(typeFilePath));
 				List<Save> loadedSaves = new List<Save>();
-				foreach (SaveDataItem s in tempData)
+				foreach (SaveDataBasic s in tempData)
 				{
 					itemCount++;
 					GameObject g = Instantiate(toSpawn);
@@ -149,7 +149,7 @@ public class SaveItem : Save
 		int saveCount = saves.Count;//keep this constant during saving i guess
 
 		//keep track of data to be saved
-		List<List<SaveDataItem>> toSave = new List<List<SaveDataItem>>();
+		List<List<SaveDataBasic>> toSave = new List<List<SaveDataBasic>>();
 		Dictionary<string, int> typeToIndex = new Dictionary<string, int>();
 
 		//go through all the things to be saved
@@ -168,7 +168,7 @@ public class SaveItem : Save
 			if (!typeToIndex.TryGetValue(tempId, out index))
 			{
 				index = toSave.Count;
-				toSave.Add(new List<SaveDataItem>());
+				toSave.Add(new List<SaveDataBasic>());
 				typeToIndex.Add(tempId, index);
 			}
 
@@ -190,12 +190,5 @@ public class SaveItem : Save
 	}
 }
 
-//TODO: split into inventory and abilities etc.
-[System.Serializable]
-public class SaveDataItem
-{
-	public long id;
-	public Vector3 position;
-	public Vector3 rotation;
-}
+
 

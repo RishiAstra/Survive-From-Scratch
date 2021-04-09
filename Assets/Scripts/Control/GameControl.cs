@@ -186,18 +186,20 @@ public class GameControl : MonoBehaviour
 			yield return null;
 		}
 
+		string path = mapScenePath + "/" + name;
+
 		if (myPlayersId == -1)
 		{
 			Debug.LogWarning("Didn't teleport player because player doesn't exist");
 		}
 		else
 		{
-			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, name);
+			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, SceneUtility.GetBuildIndexByScenePath(path));
 		}
 
 		yield return null;
 
-		string path = mapScenePath + "/" + name;
+		
 		
 		AsyncOperation a = SceneManager.LoadSceneAsync(path, LoadSceneMode.Additive);
 		//don't load the scene fully
@@ -215,13 +217,18 @@ public class GameControl : MonoBehaviour
 		a.allowSceneActivation = true;
 		yield return a;
 
-		Scene toLoad = SceneManager.GetSceneByName(name);
-		if (toLoad == null || toLoad.buildIndex == -1)
+		//Scene toLoad = SceneManager.GetSceneByName(name);//TODO: warning, this will fail if the scene isn't loaded
+		int toLoad = SceneUtility.GetBuildIndexByScenePath(path);
+		//if (toLoad == null || toLoad.buildIndex == -1)
+		//{
+		//	throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
+		//}
+		if (toLoad == -1)
 		{
-			throw new Exception("toLoad scene is not good. Exists: " + (toLoad != null).ToString() + ". Path: " + path + ". Name: " + toLoad.name);
+			throw new Exception("toLoad scene is not good. Index: " + toLoad + ". Path: " + path);
 		}
 
-		SceneManager.SetActiveScene(toLoad);
+		SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(toLoad));
 
 		//LoadPlayer(this);
 		//TODO: save by map
@@ -235,6 +242,7 @@ public class GameControl : MonoBehaviour
 		playerExists = true;
 		inWorld = true;
 		loading = false;
+		print("loaded map location");
     }
 
 	#endregion
@@ -312,6 +320,7 @@ public class GameControl : MonoBehaviour
 		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
+			SaveStuff();
 			MakeAndSetUpPlayer();
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
@@ -513,7 +522,7 @@ public class GameControl : MonoBehaviour
 	public void SetUpPlayer(GameObject newPlayerObject)
 	{
 		SaveEntity save = newPlayerObject.GetComponent<SaveEntity>();
-		save.playerOwnerName = username;
+		//save.playerOwnerName = username;
 		myPlayersId = save.id;
 
 		me = newPlayerObject.GetComponent<Player>();
@@ -524,6 +533,8 @@ public class GameControl : MonoBehaviour
 
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
+		print("set up player camera");
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
 
 		//bind hotbar to character and initialize
@@ -548,31 +559,32 @@ public class GameControl : MonoBehaviour
 		if(myPlayersId != -1)
 		{
 			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
-			if (pathOfThisEntity == null)
+			if (pathOfThisEntity == null || !Directory.Exists(pathOfThisEntity))
 			{
-				Debug.LogError("This id could not be found to teleport: id: " + myPlayersId);
+				Debug.LogError("This id could not be found to load player: id: " + myPlayersId);
 			}
 			else
 			{
-				SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(pathOfThisEntity));
-				if (saveData.id == myPlayersId)
-				{
-					string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
-					GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
-					g.transform.position = position;
-					g.transform.rotation = Quaternion.identity;
-					g.GetComponent<Abilities>().ResetStats();
-					return g;
+				string[] saveData = SaveEntity.GetSaveDataFromFilePath(pathOfThisEntity);//JsonConvert.DeserializeObject<string[]>(File.ReadAllText(pathOfThisEntity));
+				//if (saveData.id == myPlayersId)
+				//{
+				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
+				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
+				//TODO: consider below and if it should be also for loading player
+				g.transform.position = position;
+				g.transform.rotation = Quaternion.identity;
+				g.GetComponent<Abilities>().ResetStats();
+				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
 					//saveData.scene = SceneManager.GetActiveScene().name;
 					//File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
-				}
-				else
-				{
-					Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
-					//return null;
-				}
+				//}
+				//else
+				//{
+				//	Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
+				//	//return null;
+				//}
 			}			
 		}
 

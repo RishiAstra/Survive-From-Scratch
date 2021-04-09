@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using bobStuff;
 using UnityEngine.Events;
+using Newtonsoft.Json;
 
 [System.Serializable]
 public class IntUnityEvent: UnityEvent<int>
@@ -10,7 +11,7 @@ public class IntUnityEvent: UnityEvent<int>
 
 }
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, ISaveable
 {
     public bool take;//permissions for if the current player can take and place items in this inventory
     public bool put;//TODO: permissions might be a list of players who can access
@@ -43,11 +44,29 @@ public class Inventory : MonoBehaviour
         items[index] = item;
 	}
 
- //   void RefreshUI()
+	//   void RefreshUI()
 	//{
- //       if(ui != null && ui.gameObject.activeInHierarchy)
+	//       if(ui != null && ui.gameObject.activeInHierarchy)
 	//	{
- //           ui.Refresh();
+	//           ui.Refresh();
 	//	}
 	//}
+
+	public string GetData()
+	{
+		SaveDataInventory s = new SaveDataInventory(items);
+		return JsonConvert.SerializeObject(s, Formatting.Indented);
+	}
+
+	public void SetData(string data)
+	{
+		SaveDataInventory s = JsonConvert.DeserializeObject<SaveDataInventory>(data);
+		//TODO: warning, sceneindex not considered here
+		this.items = s.items;
+	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "Inventory";
+	}
 }
