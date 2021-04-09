@@ -247,6 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5644551222003002283}
   - component: {fileID: 580795883922316506}
+  - component: {fileID: 8482343794768450535}
   m_Layer: 0
   m_Name: Log Platform Ghost
   m_TagString: Untagged
@@ -298,3 +299,17 @@ LODGroup:
     renderers:
     - renderer: {fileID: 8163897467487579241}
   m_Enabled: 1
+--- !u!114 &8482343794768450535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4980604891782983953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8508ec15d475c014da68cadc47553c53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  b: {x: 2, y: 0, z: 2}
+  linkPoints: []

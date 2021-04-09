@@ -24,6 +24,7 @@ public class Buildable : MonoBehaviour
     {
 		me = GetComponent<Equip>();
 		ghost = Instantiate(ghostPrefab);
+		gh = ghost.GetComponent<BuildingGhost>();
 		mainCamera = Camera.main;
 		BuildControl.main.building = true;
     }
@@ -75,9 +76,7 @@ public class Buildable : MonoBehaviour
 				relPos *= 0.1f * positionSnap;
 
 				Vector3 size = gh.GetSize();
-				pos.x = relPos.x > 0 ? pos.x - size.x/2 : pos.x + size.x/2;
-				pos.y = relPos.y > 0 ? pos.y - size.y / 2 : pos.y + size.y / 2;
-				pos.z = relPos.z > 0 ? pos.z - size.z / 2 : pos.z + size.z / 2;
+				
 
 				Vector3 roundedValues = new Vector3(
 					Mathf.Round((pos.x - relPos.x) / positionSnap) * positionSnap,
@@ -87,6 +86,10 @@ public class Buildable : MonoBehaviour
 
 				//favor closer positions when rounding
 				pos = roundedValues;
+
+				pos.x = relPos.x > 0 ? pos.x - size.x / 2 : pos.x + size.x / 2;
+				pos.y = relPos.y > 0 ? pos.y - size.y / 2 : pos.y + size.y / 2;
+				pos.z = relPos.z > 0 ? pos.z - size.z / 2 : pos.z + size.z / 2;
 				//pos.x = relPos.x > 0 ? (Mathf.Floor(pos.x / positionSnap) * positionSnap) : (Mathf.Ceil(pos.x / positionSnap) * positionSnap);
 				//pos.y = relPos.y > 0 ? (Mathf.Floor(pos.y / positionSnap) * positionSnap) : (Mathf.Ceil(pos.y / positionSnap) * positionSnap);
 				//pos.z = relPos.z > 0 ? (Mathf.Floor(pos.z / positionSnap) * positionSnap) : (Mathf.Ceil(pos.z / positionSnap) * positionSnap);
