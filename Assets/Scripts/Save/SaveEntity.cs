@@ -14,7 +14,6 @@ using System.Linq;
 //TODO: organize all of the paths in a well-defined mannar
 //TODO: save the path to player-controlled to the player's data file
 //TODO: save player data file including crafting inventory etc.
-[RequireComponent(typeof(Abilities))]
 public class SaveEntity : Save, ISaveable
 {
 	public static List<SaveEntity> saves;
@@ -83,7 +82,7 @@ public class SaveEntity : Save, ISaveable
 			nextId++;
 		}
 
-		pStat = a.stat;
+		if(a!=null) pStat = a.stat;
 	}
 
 	private void InitializeToSave()
@@ -92,7 +91,7 @@ public class SaveEntity : Save, ISaveable
 		List<Component> toSaveTemp = toSave.ToList();
 
 		toSaveTemp.Add(this);
-		Abilities a = GetComponent<Abilities>();
+		Abilities a = GetComponent<Abilities>();//might be null if none are attached, but null checks are used for "a"
 		if (a != null) toSaveTemp.Add(a);
 		Inventory i = GetComponent<Inventory>();
 		if (i != null) toSaveTemp.Add(i);
@@ -125,7 +124,7 @@ public class SaveEntity : Save, ISaveable
     {
 		//TODO: find a better way to detect changes
 		//Autosave the entity if stat was changed
-		if (!Stat.StatEquals(pStat, a.stat))
+		if (a != null &&!Stat.StatEquals(pStat, a.stat))
 		{
 			//print("autosaved data for entity id: " + id);
 			pStat = a.stat;
@@ -139,7 +138,7 @@ public class SaveEntity : Save, ISaveable
 		//TODO:GetPath broken
 		//TODO: this will break with new saving
 		string filePath = GetPath();// + id + ".json";
-		if (a.dead){
+		if (a == null || a.dead){
 			if (deleteOnDeath){
 				if (type == "Player") Debug.LogError("no");
 				//if (File.Exists(filePath))

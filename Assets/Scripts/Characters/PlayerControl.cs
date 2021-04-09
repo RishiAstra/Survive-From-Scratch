@@ -41,7 +41,14 @@ public class PlayerControl : MonoBehaviour, ISaveable
 			//use the attack
 			if (Input.GetMouseButton(0))
 			{
-				abilities.UseSkill(0);
+				if (BuildControl.main.building)
+				{
+					//BuildControl.main.PlaceBuilding();
+				}
+				else
+				{
+					abilities.UseSkill(0);
+				}
 			}
 
 			//change distance and pitch
