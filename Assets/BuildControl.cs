@@ -19,9 +19,11 @@ public class BuildControl : MonoBehaviour
 	public GameObject x;
 	public GameObject y;
 	public GameObject z;
+	public Transform ghostFollower;
 
-    // Start is called before the first frame update
-    void Awake()
+
+	// Start is called before the first frame update
+	void Awake()
     {
 		if (main != null) Debug.LogError("two BuildControls");
 		main = this;

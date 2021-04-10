@@ -6,7 +6,7 @@ using UnityEngine;
 public class Buildable : MonoBehaviour
 {
 	private const float rotationSnap = 90f;
-	private const float positionSnap = 2f;
+	private const float positionSnap = 1f;
 
 	public Equip me;
 	public GameObject ghostPrefab;
@@ -27,12 +27,16 @@ public class Buildable : MonoBehaviour
 		gh = ghost.GetComponent<BuildingGhost>();
 		mainCamera = Camera.main;
 		BuildControl.main.building = true;
-    }
+		BuildControl.main.ghostFollower.gameObject.SetActive(true);
+
+	}
 
 	void OnDestroy()
 	{
 		BuildControl.main.building = false;
 		Destroy(ghost);
+		if(BuildControl.main.ghostFollower != null) BuildControl.main.ghostFollower.gameObject.SetActive(false);
+
 	}
 
 	// Update is called once per frame
@@ -46,6 +50,8 @@ public class Buildable : MonoBehaviour
 			if (hitAnything)
 			{
 				ghost.SetActive(true);
+
+				//rotate
 				if (Input.GetKeyDown(KeyCode.R))
 				{
 					float toRotate = rotationSnap;
@@ -56,40 +62,72 @@ public class Buildable : MonoBehaviour
 
 					if (BuildControl.main.a == Axis.x)
 					{
-						ghost.transform.Rotate(Vector3.right, toRotate);
+						ghost.transform.Rotate(Vector3.right, toRotate, Space.World);
 					}
 					else if (BuildControl.main.a == Axis.y)
 					{
-						ghost.transform.Rotate(Vector3.up, toRotate);
+						ghost.transform.Rotate(Vector3.up, toRotate, Space.World);
 					}
 					else if (BuildControl.main.a == Axis.z)
 					{
-						ghost.transform.Rotate(Vector3.forward, toRotate);
+						ghost.transform.Rotate(Vector3.forward, toRotate, Space.World);
 					}
 				}
 
 
 				Vector3 pos = rh.point;
 
-				Vector3 relPos = pos - me.bob.cam.transform.position;
-				relPos.Normalize();
-				relPos *= 0.1f * positionSnap;
+				BuildingLinks bl = rh.collider.transform.root.GetComponent<BuildingLinks>();
+				BuildingLinks mybl = gh.GetComponent<BuildingLinks>();
 
-				Vector3 size = gh.GetSize();
+				if (mybl != null && bl != null)
+				{
+					pos = mybl.GetBestLinkedPosition(bl, pos);
+				}
+
+
+				//Vector3 relPos = pos - me.bob.cam.transform.position;
+				//relPos.Normalize();
+				//relPos *= 0.1f * positionSnap;
+
+				//if a dimension of the building is smaller than the snap size, round towards the player's position. 
+				//This will prevent floors from being underground and prevent walls from being in cliffs
 				
+				//commented out this because new buildinglink system.
 
-				Vector3 roundedValues = new Vector3(
-					Mathf.Round((pos.x - relPos.x) / positionSnap) * positionSnap,
-					Mathf.Round((pos.y - relPos.y) / positionSnap) * positionSnap,
-					Mathf.Round((pos.z - relPos.z) / positionSnap) * positionSnap
+				/*
+				Vector3 size = gh.GetSize();
+				Vector3 n = rh.normal;
+				float normalThreshold = 0.8f;
+
+
+				//if placing against a flat surface, move building so it rests against the flat surface rather than centering it at the point
+				if (Mathf.Abs(Vector3.Dot(n, Vector3.right)) > normalThreshold) pos.x += (relPos.x > 0 ? -size.x / 2 : size.x / 2);
+				if (Mathf.Abs(Vector3.Dot(n, Vector3.up)) > normalThreshold) pos.y += (relPos.y > 0 ? -size.y / 2 : size.y / 2);
+				if (Mathf.Abs(Vector3.Dot(n, Vector3.forward)) > normalThreshold) pos.z += (relPos.z > 0 ? -size.z / 2 : size.z / 2);
+				*/
+
+				//print(size);
+				BuildControl.main.ghostFollower.position = pos;
+
+				//if (size.x < positionSnap) pos.x = relPos.x > 0 ? Mathf.Floor(pos.x / positionSnap) * positionSnap : Mathf.Ceil(pos.x / positionSnap) * positionSnap;
+				//if (size.y < positionSnap) pos.y = relPos.y > 0 ? Mathf.Floor(pos.y / positionSnap) * positionSnap : Mathf.Ceil(pos.y / positionSnap) * positionSnap;
+				//if (size.z < positionSnap) pos.z = relPos.z > 0 ? Mathf.Floor(pos.z / positionSnap) * positionSnap : Mathf.Ceil(pos.z / positionSnap) * positionSnap;
+
+				//if (size.x < positionSnap) pos.x = relPos.x > 0 ? pos.x - size.x / 2 : pos.x + size.x / 2;
+				//if (size.y < positionSnap) pos.y = relPos.y > 0 ? pos.y - size.y / 2 : pos.y + size.y / 2;
+				//if (size.z < positionSnap) pos.z = relPos.z > 0 ? pos.z - size.z / 2 : pos.z + size.z / 2;
+
+				pos = new Vector3(
+					Mathf.Round(pos.x / positionSnap) * positionSnap,
+					Mathf.Round(pos.y / positionSnap) * positionSnap,
+					Mathf.Round(pos.z / positionSnap) * positionSnap
 				);
 
-				//favor closer positions when rounding
-				pos = roundedValues;
+				////favor closer positions when rounding
+				//pos = roundedValues;
 
-				pos.x = relPos.x > 0 ? pos.x - size.x / 2 : pos.x + size.x / 2;
-				pos.y = relPos.y > 0 ? pos.y - size.y / 2 : pos.y + size.y / 2;
-				pos.z = relPos.z > 0 ? pos.z - size.z / 2 : pos.z + size.z / 2;
+
 				//pos.x = relPos.x > 0 ? (Mathf.Floor(pos.x / positionSnap) * positionSnap) : (Mathf.Ceil(pos.x / positionSnap) * positionSnap);
 				//pos.y = relPos.y > 0 ? (Mathf.Floor(pos.y / positionSnap) * positionSnap) : (Mathf.Ceil(pos.y / positionSnap) * positionSnap);
 				//pos.z = relPos.z > 0 ? (Mathf.Floor(pos.z / positionSnap) * positionSnap) : (Mathf.Ceil(pos.z / positionSnap) * positionSnap);
@@ -107,8 +145,9 @@ public class Buildable : MonoBehaviour
 
 				if (euler != pRot)
 				{
-					Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(Quaternion.Euler(pRot));
-					ghost.transform.rotation *= rot;
+					//Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(Quaternion.Euler(pRot));
+					//ghost.transform.rotation *= rot;
+					ghost.transform.Rotate(Vector3.up, euler.y - pRot.y, Space.World);
 					pRot = euler;
 				}
 				//Quaternion rot = Quaternion.Euler(euler) * Quaternion.Inverse(relRot);
@@ -117,7 +156,7 @@ public class Buildable : MonoBehaviour
 				ghost.transform.position = pos;
 				BuildControl.main.transform.position = pos;
 
-				if (Input.GetMouseButtonUp(0))
+				if (Input.GetMouseButtonUp(0) && ! gh.overlapping)
 				{
 					GameObject g = Instantiate(finalPrefab, pos, ghost.transform.rotation);
 					me.bob.RemoveItem(me.bob.invSel);
@@ -129,6 +168,9 @@ public class Buildable : MonoBehaviour
 			}
 			else
 			{
+				//clear overlaps because it will now sleep and won't receive ontriggerexit
+				gh.overlaps = new List<Transform>();
+				gh.overlapping = false;
 				ghost.SetActive(false);
 			}			
 		}		

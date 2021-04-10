@@ -4,27 +4,59 @@ using UnityEngine;
 
 public class BuildingGhost : MonoBehaviour
 {
-	public Vector3 b;
-	public Transform[] linkPoints;
+
+	//these are used to prevent placing buildings in overlapping positions
+	public bool overlapping;
+	//public LayerMask overlapMask;
+
+	public List<Transform> overlaps;
+	//private List<BuildingGhost> bgs;
     // Start is called before the first frame update
     void Start()
     {
-        
+		overlapping = false;
+		overlaps = new List<Transform>();
+		//bgs = new List<BuildingGhost>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+		//overlapping = false;
+  //      foreach(BuildingGhost b in bgs)
+		//{
+
+		//}
     }
 
-	public Vector3 GetSize()
+	private void OnTriggerEnter(Collider other)
 	{
-		return transform.TransformVector(b);
+		//if contained in overlapMask
+		//if((overlapMask & (1 << other.gameObject.layer)) > 0 && ! overlaps.Contains(other.transform))
+		//{
+		if (overlaps.Contains(other.transform)) Debug.LogError("e1");
+		overlaps.Add(other.transform);
+		UpdateOverlapBool();
+			//BuildingGhost bg = other.GetComponent<BuildingGhost>();
+			//if (bg != null) bgs.Add(bg);
+		//}
 	}
 
-	private void OnDrawGizmos()
+	private void UpdateOverlapBool()
 	{
-		Gizmos.DrawCube(transform.position, b);
+		overlapping = overlaps.Count > 0;
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		//if contained in overlapMask
+		//if ((overlapMask & (1 << other.gameObject.layer)) > 0)
+		//{
+			bool s = overlaps.Remove(other.transform);
+			if (!s) Debug.LogError("e");
+			UpdateOverlapBool();
+			//BuildingGhost bg = other.GetComponent<BuildingGhost>();
+			//if (bg != null) bgs.Remove(bg);
+		//}
 	}
 }
