@@ -50,6 +50,8 @@ public class Buildable : MonoBehaviour
 			if (hitAnything)
 			{
 				ghost.SetActive(true);
+
+				//rotate
 				if (Input.GetKeyDown(KeyCode.R))
 				{
 					float toRotate = rotationSnap;
@@ -75,21 +77,36 @@ public class Buildable : MonoBehaviour
 
 				Vector3 pos = rh.point;
 
-				Vector3 relPos = pos - me.bob.cam.transform.position;
+				BuildingLinks bl = rh.collider.transform.root.GetComponent<BuildingLinks>();
+				BuildingLinks mybl = gh.GetComponent<BuildingLinks>();
+
+				if (mybl != null && bl != null)
+				{
+					pos = mybl.GetBestLinkedPosition(bl, pos);
+				}
+
+
+				//Vector3 relPos = pos - me.bob.cam.transform.position;
 				//relPos.Normalize();
 				//relPos *= 0.1f * positionSnap;
 
 				//if a dimension of the building is smaller than the snap size, round towards the player's position. 
 				//This will prevent floors from being underground and prevent walls from being in cliffs
+				
+				//commented out this because new buildinglink system.
 
+				/*
 				Vector3 size = gh.GetSize();
 				Vector3 n = rh.normal;
 				float normalThreshold = 0.8f;
 
+
 				//if placing against a flat surface, move building so it rests against the flat surface rather than centering it at the point
-				if (Mathf.Abs(Vector3.Dot(n, Vector3.right)		) > normalThreshold) pos.x += (relPos.x > 0 ? -size.x / 2 : size.x / 2);
-				if (Mathf.Abs(Vector3.Dot(n, Vector3.up)		) > normalThreshold) pos.y += (relPos.y > 0 ? -size.y / 2 : size.y / 2);
-				if (Mathf.Abs(Vector3.Dot(n, Vector3.forward)	) > normalThreshold) pos.z += (relPos.z > 0 ? -size.z / 2 : size.z / 2);
+				if (Mathf.Abs(Vector3.Dot(n, Vector3.right)) > normalThreshold) pos.x += (relPos.x > 0 ? -size.x / 2 : size.x / 2);
+				if (Mathf.Abs(Vector3.Dot(n, Vector3.up)) > normalThreshold) pos.y += (relPos.y > 0 ? -size.y / 2 : size.y / 2);
+				if (Mathf.Abs(Vector3.Dot(n, Vector3.forward)) > normalThreshold) pos.z += (relPos.z > 0 ? -size.z / 2 : size.z / 2);
+				*/
+
 				//print(size);
 				BuildControl.main.ghostFollower.position = pos;
 

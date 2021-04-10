@@ -55,7 +55,7 @@ public class Menu : MonoBehaviour
 			TimeControl.main.SetTimeScale(0, "menu");
 		}
 		GameControl.main.TryUnlockCursor();
-		print("activated menu: " + gameObject.name + ", " + openMenuCount);
+		//print("activated menu: " + gameObject.name + ", " + openMenuCount);
 	}
 
 	public void TryDeactivateMenu()
