@@ -55,6 +55,8 @@ public class Movement : MonoBehaviour
 
 	private Abilities abilities;//used to determine if need to pause to use a skill
 	private bool died;
+
+	private List<Collider> groundOverlaps;
 	//public bool canFly;//TODO: add flying
 	// Start is called before the first frame update
 	void Start()
@@ -407,6 +409,20 @@ public class Movement : MonoBehaviour
 		//StartCoroutine(CheckJump());
 		//jumpInProg = false;
 		//jumpCooldownLeft = jumpCooldown;
+	}
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		GameObject g = collision.gameObject;
+		if ((ground & (1 << g.layer)) > 0 && !overlaps.Contains(other.transform))
+		{
+
+		}
+	}
+
+	private void OnCollisionExit(Collision collision)
+	{
+		
 	}
 
 	private void OnDrawGizmos()
