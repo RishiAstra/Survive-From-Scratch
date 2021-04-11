@@ -12,7 +12,10 @@ public class Movement : MonoBehaviour
 
 	public float jumpForce;
 	public LayerMask ground;
-	public Transform[] groundCheck;
+	public Vector3 groundNormal;
+	public GroundCheck[] groundCheck;
+	[Range(0f, 90f)]
+	public float maxMoveAngle;
 
 	public float maxSpeed;
 	public float acceleration;
@@ -119,7 +122,7 @@ public class Movement : MonoBehaviour
 			return;
 		}
 		angleOff = Quaternion.Angle(transform.rotation, angle);
-		idle = (direction.magnitude < 0.01f) && (angleOff < ANGLE_THRESHOLD) && (rig.velocity.magnitude < 0.05f);//move very slow and be on target to be idle
+		idle = (direction.magnitude < 0.01f) && (angleOff < ANGLE_THRESHOLD) && (rig.IsSleeping());//not moving and on target required to be idle
 
 		if (anim.IsInTransition(0))
 		{
@@ -161,33 +164,37 @@ public class Movement : MonoBehaviour
 		CheckGround();
 
 		HandleMove();
-		HandleJump();		
+		HandleJump();
 
 		//CheckGround();
-		
 
-	}
-
-	private void Update()
-	{
-		
 	}
 
 	void CheckGround()
 	{
 		grounded = false;
-		foreach(Transform t in groundCheck)
+		foreach(GroundCheck t in groundCheck)
 		{
-			//TODO: make this better or faster
-			//Physics.Raycast(t.position + Vector3.up * 0.1f, -Vector3.up, GROUND_THRESHOLD, ground))//
-			if (Physics.CheckSphere(t.position, GROUND_THRESHOLD, ground))
+			RaycastHit hit;
+			bool hitSomething = Physics.SphereCast(t.transform.position, t.radius, t.transform.up, out hit, t.distance);
+			if (hitSomething)
 			{
-				grounded = true;
-				return;
+				//-hit.normal should be the normal of the point on this "collider"/spherecast that hit (that's why negative)
+				float angle = Vector3.Angle(-hit.normal, Vector3.down);
+				//print(angle);
+				if (angle < maxMoveAngle)
+				{
+					//print("Grounded");
+					grounded = true;
+					groundNormal = -hit.normal;
+					return;
+				}
 			}
+			
 		}
-		
 	}
+
+	/*
 	//IEnumerator CheckJump()
 	//{
 	//	yield return new WaitForSeconds(0.1f);//wait a little before checking, allowing the ground check points to exit the ground if they can
@@ -197,6 +204,7 @@ public class Movement : MonoBehaviour
 	//		tryingToJump = false;
 	//	}
 	//}
+	*/
 
 	public bool attemptJump;
 	public void AttemptJump()
@@ -254,7 +262,7 @@ public class Movement : MonoBehaviour
 		//}
 		//prevJump = grounded;
 	}
-	bool idle;
+	public bool idle;
 	bool previouslyIdle;
 	public float jumpCooldownLeft;
 	public bool jumpInProg;
@@ -359,15 +367,20 @@ public class Movement : MonoBehaviour
 				//find the velocity in the direction
 
 				Vector3 v = rig.velocity;
-				v.y = 0;
+				//v.y = 0;
 				//v = transform.InverseTransformVector(v);
 				Vector3 d = direction;
 				d.y = 0;
+				//adjust the direction to account for uphill/downhill
+				//this will remove any component of d that is parallel to groundNormal
+				d -= groundNormal * Vector3.Dot(groundNormal, d);
+
 				d = d.normalized * maxSpeed;
 				Vector3 off = v - d;
 				if(off.magnitude < acceleration * Time.fixedDeltaTime)
 				{
 					v = d;
+					//print("(" + v.x + ", " + v.y + ", " + v.z + ")");
 				}
 				else
 				{
@@ -376,6 +389,7 @@ public class Movement : MonoBehaviour
 
 				//v = transform.TransformVector(v);
 				rig.velocity = v;
+				if (v == Vector3.zero) rig.Sleep();
 				
 
 				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
@@ -411,19 +425,43 @@ public class Movement : MonoBehaviour
 		//jumpCooldownLeft = jumpCooldown;
 	}
 
-	private void OnCollisionEnter(Collision collision)
-	{
-		GameObject g = collision.gameObject;
-		if ((ground & (1 << g.layer)) > 0 && !overlaps.Contains(other.transform))
-		{
-
-		}
-	}
-
-	private void OnCollisionExit(Collision collision)
-	{
+	//private void OnCollisionEnter(Collision collision)
+	//{
 		
-	}
+	//}
+
+	//private void OnCollisionStay(Collision collision)
+	//{
+	//	if (grounded) return;//don't need extra ground checking if we already know that it's grounded
+
+	//	GameObject g = collision.gameObject;
+	//	if ((ground & (1 << g.layer)) > 0)// && !groundOverlaps.Contains(other.transform))
+	//	{
+	//		foreach (ContactPoint c in collision.contacts)
+	//		{
+	//			//TODO: I'm unsure about c.normal, whether it's my normal or the other collider's normal.
+	//			//right now, I'm supposing that it's the other collider's normal
+	//			//Vector3.Angle returns the unsigned angle, <= 180
+	//			float angle = Vector3.Angle(-c.normal, Vector3.down);
+	//			print(angle);
+	//			if (angle < maxMoveAngle)
+	//			{
+	//				print("Grounded");
+	//				grounded = true;
+	//				return;
+	//			}
+	//		}
+	//	}
+	//}
+
+	//private void OnCollisionExit(Collision collision)
+	//{
+	//	//GameObject g = collision.gameObject;
+	//	//if ((ground & (1 << g.layer)) > 0 && !groundOverlaps.Contains(other.transform))
+	//	//{
+
+	//	//}
+	//}
 
 	private void OnDrawGizmos()
 	{
@@ -431,5 +469,16 @@ public class Movement : MonoBehaviour
 		Gizmos.DrawLine(transform.position, transform.position + angle * Vector3.forward);
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + direction + Vector3.up * 0.1f);
+
+		Gizmos.color = Color.blue;
+		Vector3 d = direction;
+		d.y = 0;
+		//adjust the direction to account for uphill/downhill
+		//this will remove any component of d that is parallel to groundNormal
+		d -= groundNormal * Vector3.Dot(groundNormal, d);
+
+		d = d.normalized * maxSpeed;
+
+		Gizmos.DrawLine(transform.position, transform.position + d);
 	}
 }
