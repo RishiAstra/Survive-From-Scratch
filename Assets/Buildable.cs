@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Equip))]
 public class Buildable : MonoBehaviour
 {
-	private const float rotationSnap = 90f;
+	private const float rotationSnap = 90f;//TODO: move this to a centeral settings/constants class
 	private const float positionSnap = 1f;
 
 	public Equip me;
@@ -25,10 +25,7 @@ public class Buildable : MonoBehaviour
 		me = GetComponent<Equip>();
 		ghost = Instantiate(ghostPrefab);
 		gh = ghost.GetComponent<BuildingGhost>();
-		mainCamera = Camera.main;
-		BuildControl.main.building = true;
-		BuildControl.main.ghostFollower.gameObject.SetActive(true);
-
+		mainCamera = Camera.main;		
 	}
 
 	void OnDestroy()
@@ -42,6 +39,8 @@ public class Buildable : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+		BuildControl.main.building = true;
+		if (BuildControl.main.ghostFollower != null) BuildControl.main.ghostFollower.gameObject.SetActive(true);
 		if (Cursor.lockState == CursorLockMode.Locked)
 		{
 			RaycastHit rh;

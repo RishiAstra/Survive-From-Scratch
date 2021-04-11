@@ -19,7 +19,8 @@ public abstract class Save : MonoBehaviour
 
 	public static void CallOnLoadedtype(string type, List<Save> loaded)
 	{
-		OnLoadedType.Invoke(type, loaded);
+		if (OnLoadedType != null) OnLoadedType.Invoke(type, loaded);
+		else Debug.LogWarning("No listeners for OnLoadedType");
 	}
 
 	public static void TryReadNextID()
