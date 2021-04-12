@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BuildingLinks : MonoBehaviour
 {
+    private const float MaxDirectionFactor = 2f;
+
     public Transform[] linkPoints;
     public Vector3 b;
 
@@ -93,7 +95,7 @@ public class BuildingLinks : MonoBehaviour
             LinkPointMatch other = obj as LinkPointMatch;
             if (other != null)
             {
-                float diff = this.GetDistance() - other.GetDistance();
+                float diff = this.GetDistanceScore() - other.GetDistanceScore();
                 if (diff > 0.01f)
                 {
                     return 1;
@@ -106,13 +108,19 @@ public class BuildingLinks : MonoBehaviour
             }
             else
             {
-                throw new System.ArgumentException("Object is not a Temperature");
+                throw new System.ArgumentException("Object is not a LinkPointMatch");
             }
 		}
 
-        public float GetDistance()
+        public float GetDistanceScore()
 		{
-            return Vector3.Distance(myLinkPoint, theirLinkPoint);
+            //TODO: don't depend on the camera pivot being the parent of the camera
+            //get the dot between camera's forward and direction to where this option will place
+            float dot = Vector3.Dot(Player.main.cam.forward, ((theirLinkPoint - relativePos) - Player.main.cam.parent.position).normalized);
+            //1 if parallel, more if perpendicular (capped at perpendicular, further than 90 deg apart doesn't do more)
+            float mult = 1 + Mathf.Clamp01(1-dot) * MaxDirectionFactor;
+
+            return Vector3.Distance(myLinkPoint, theirLinkPoint) * mult;
 		}
 	}
 

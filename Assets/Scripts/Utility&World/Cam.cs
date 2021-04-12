@@ -44,6 +44,6 @@ public class Cam : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		transform.localPosition = offset * Mathf.Lerp(transform.localPosition.magnitude, dist, ZOOM_LERP_SPEED);
+		transform.localPosition = offset * Mathf.Clamp(Mathf.Lerp(transform.localPosition.magnitude, dist, ZOOM_LERP_SPEED), minDist, maxDist);
 	}
 }
