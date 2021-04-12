@@ -116,11 +116,12 @@ public class BuildingLinks : MonoBehaviour
 		{
             //TODO: don't depend on the camera pivot being the parent of the camera
             //get the dot between camera's forward and direction to where this option will place
-            float dot = Vector3.Dot(Player.main.cam.forward, ((theirLinkPoint - relativePos) - Player.main.cam.parent.position).normalized);
-            //1 if parallel, more if perpendicular (capped at perpendicular, further than 90 deg apart doesn't do more)
-            float mult = 1 + Mathf.Clamp01(1-dot) * MaxDirectionFactor;
+            //float dot = Vector3.Dot(Player.main.cam.forward, ((theirLinkPoint - relativePos) - Player.main.cam.parent.position).normalized);
+            //Vector3 diff = 
+            ////1 if parallel, more if perpendicular (capped at perpendicular, further than 90 deg apart doesn't do more)
+            //float mult = 1 + Mathf.Clamp01(1-dot) * MaxDirectionFactor;
 
-            return Vector3.Distance(myLinkPoint, theirLinkPoint) * mult;
+            return Vector3.Distance(myLinkPoint, theirLinkPoint);// * mult;
 		}
 	}
 
