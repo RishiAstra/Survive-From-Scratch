@@ -443,7 +443,7 @@ MonoBehaviour:
   - {fileID: 8569130362330552901}
   - {fileID: 7495956216334387344}
   - {fileID: 5980549439757382690}
-  b: {x: 1.8, y: 0.15, z: 1.8}
+  b: {x: 1.8, y: 0.05, z: 1.8}
 --- !u!1 &7271442664838343729
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +540,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: overlap prevention trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972458634646828249, guid: 4c8da6ac5dc8a414c84b523c184ba060,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c8da6ac5dc8a414c84b523c184ba060, type: 3}

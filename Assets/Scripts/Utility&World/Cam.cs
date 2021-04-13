@@ -39,11 +39,12 @@ public class Cam : MonoBehaviour
 	public void AddDist(float d)
 	{
 		dist += d;
+		dist = Mathf.Clamp(dist, minDist, maxDist);
 	}
 
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		transform.localPosition = offset * Mathf.Clamp(Mathf.Lerp(transform.localPosition.magnitude, dist, ZOOM_LERP_SPEED), minDist, maxDist);
+		transform.localPosition = offset * Mathf.Lerp(transform.localPosition.magnitude, dist, ZOOM_LERP_SPEED);
 	}
 }
