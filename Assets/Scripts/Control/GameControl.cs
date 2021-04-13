@@ -416,6 +416,12 @@ public class GameControl : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.E))
 			{
 				craftInventory.ToggleMenu();
+				if (!craftInventory.gameObject.activeSelf)
+				{
+					//try transfering to the hotbar first, then to the main inventory
+					Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
+					Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
+				}
 				
 				//if (craftInventory.activeSelf)
 				//{
