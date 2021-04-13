@@ -49,6 +49,7 @@ MonoBehaviour:
   parent: {fileID: 0}
   dmg: 1
   canDmg: 0
+  multipleHits: 1
   attackDuriation: 3
 --- !u!135 &905467516
 SphereCollider:
@@ -110,7 +111,7 @@ Transform:
   m_Father: {fileID: 9089679403127729886}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8135796984842030769
+--- !u!1 &4110259929745137148
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,28 +119,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5403440052474396707}
-  m_Layer: 12
-  m_Name: Ground Check
+  - component: {fileID: 7708147492535474253}
+  - component: {fileID: 9015949630585041097}
+  m_Layer: 9
+  m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5403440052474396707
+--- !u!4 &7708147492535474253
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8135796984842030769}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 4110259929745137148}
+  m_LocalRotation: {x: 0.99429333, y: -0, z: 0.10668084, w: 0}
+  m_LocalPosition: {x: 0, y: 0.479, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 9089679403127729988}
   m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+--- !u!114 &9015949630585041097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4110259929745137148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d78dd35b04d464b839fdd6f2febe73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.45
+  distance: 0.1
 --- !u!1 &9089679403127632512
 GameObject:
   m_ObjectHideFlags: 0
@@ -2308,7 +2324,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9089679403127632740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.171, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9089679403127729864}
@@ -2322,7 +2338,7 @@ Transform:
   - {fileID: 9089679403127729842}
   - {fileID: 9089679403127729986}
   - {fileID: 6299230668674717226}
-  - {fileID: 5403440052474396707}
+  - {fileID: 7708147492535474253}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2410,8 +2426,10 @@ MonoBehaviour:
   ground:
     serializedVersion: 2
     m_Bits: 1
+  groundNormal: {x: 0, y: 0, z: 0}
   groundCheck:
-  - {fileID: 5403440052474396707}
+  - {fileID: 9015949630585041097}
+  maxMoveAngle: 55
   maxSpeed: 3
   acceleration: 10
   minAngleForMove: 30
@@ -2430,6 +2448,7 @@ MonoBehaviour:
   - 1
   jumpCooldown: 0.25
   attemptJump: 0
+  idle: 0
   jumpCooldownLeft: 0
   jumpInProg: 0
 --- !u!114 &2511249990406795347
@@ -2542,11 +2561,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  playerOwnerName: 
   type: Spider
   customSavePath: 
   a: {fileID: 2118055796}
   deleteOnDeath: 1
+  toSave: []
 --- !u!114 &-842003936032522875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2757,12 +2776,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7aa23471e641cb4fb854e7012039f58, type: 3}
---- !u!4 &6299230668674717226 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
-    type: 3}
-  m_PrefabInstance: {fileID: 5947060956918450074}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &9089679403205342837 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3219285574800454127, guid: b7aa23471e641cb4fb854e7012039f58,
@@ -2781,3 +2794,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &6299230668674717226 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+    type: 3}
+  m_PrefabInstance: {fileID: 5947060956918450074}
+  m_PrefabAsset: {fileID: 0}

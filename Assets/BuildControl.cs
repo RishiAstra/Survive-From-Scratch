@@ -20,6 +20,8 @@ public class BuildControl : MonoBehaviour
 	public GameObject y;
 	public GameObject z;
 	public Transform ghostFollower;
+	public LayerMask avoidOverlap;//don't put buildings here though
+	public LayerMask blockSight;
 
 
 	// Start is called before the first frame update

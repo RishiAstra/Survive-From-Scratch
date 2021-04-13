@@ -58,6 +58,7 @@ public class GameControl : MonoBehaviour
 	public GameObject camPref;
 	public Transform camPos;//start the camera here
 	public InventoryUI hotBarUI;
+	public InventoryUI mainInventoryUI;
 	public Menu craftInventory;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
@@ -415,6 +416,12 @@ public class GameControl : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.E))
 			{
 				craftInventory.ToggleMenu();
+				if (!craftInventory.gameObject.activeSelf)
+				{
+					//try transfering to the hotbar first, then to the main inventory
+					Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
+					Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
+				}
 				
 				//if (craftInventory.activeSelf)
 				//{
@@ -541,6 +548,10 @@ public class GameControl : MonoBehaviour
 		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
 		hotBarUI.InitializeSlots();
 
+		//bind inventory to character and initialize
+		mainInventoryUI.target = mainInventoryUI.GetComponent<Inventory>();
+		mainInventoryUI.InitializeSlots();
+
 		if (Player.main == null) Debug.LogError("Failed to create main character");
 		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
 		myInv.take = true;
@@ -627,6 +638,7 @@ public class GameControl : MonoBehaviour
 			username = username,
 			myId = GameControl.main.myPlayersId,
 			craftInventoryItems = crafting.craftInventory.items,
+			mainInventoryItems = GameControl.main.mainInventoryUI.target.items,
 		};
 		string path1 = Authenticator.GetAccountPath(username);
 		if (!Directory.Exists(path1)) Directory.CreateDirectory(path1);//TODO: warning this is bad, allows making account folders without registering
@@ -644,6 +656,7 @@ public class GameControl : MonoBehaviour
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
 			GameControl.main.myPlayersId = s.myId;
+			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
 			print("Loaded player: " + username);
 		}
 
@@ -717,4 +730,5 @@ public class PlayerSaveData
 	public string username;
 	public long myId;//the id of the player owned, use this to load it
 	public List<Item> craftInventoryItems;
+	public List<Item> mainInventoryItems;
 }

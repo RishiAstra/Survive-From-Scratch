@@ -39,6 +39,7 @@ public class Cam : MonoBehaviour
 	public void AddDist(float d)
 	{
 		dist += d;
+		dist = Mathf.Clamp(dist, minDist, maxDist);
 	}
 
 	// Update is called once per frame

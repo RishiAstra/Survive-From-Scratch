@@ -81,7 +81,7 @@ public class Buildable : MonoBehaviour
 
 				if (mybl != null && bl != null)
 				{
-					pos = mybl.GetBestLinkedPosition(bl, pos);
+					pos = mybl.GetBestLinkedPosition(bl, pos, rh.normal);
 				}
 
 

@@ -75,8 +75,13 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		//}
 	}
 
-    // Update is called once per frame
-    void Update()
+	private void OnDisable()
+	{
+        mouseOver = false;
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         UpdateIcon();//TODO: only use this when needed
         if(mouseOver && Input.GetMouseButtonDown(0))

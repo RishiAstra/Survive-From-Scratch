@@ -94,6 +94,11 @@ namespace bobStuff
 		{
 			return "Item Id: " + id + ", amount: " + amount;
 		}
+
+		public bool IsEmpty()
+		{
+			return id == 0 || amount == 0;
+		}
 	}
 
 	[Serializable]

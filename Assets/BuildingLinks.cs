@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BuildingLinks : MonoBehaviour
 {
+    private const float MaxDirectionFactor = 2f;
+	private const float minDot = -0.2f;
+
     public Transform[] linkPoints;
     public Vector3 b;
 
@@ -23,9 +26,9 @@ public class BuildingLinks : MonoBehaviour
     /// use the right vectors of link points to match up the best location for this BuildingLinks
     /// </summary>
     /// <param name="other"></param>
-    /// <param name="myPosition>the predicted position of this building</param>
+    /// <param name="myPosition">the predicted position of this building</param>
     /// <returns></returns>
-    public Vector3 GetBestLinkedPosition(BuildingLinks other, Vector3 myPosition)
+    public Vector3 GetBestLinkedPosition(BuildingLinks other, Vector3 myPosition, Vector3 normal)
     {
         if (linkPoints.Length < 1 || other.linkPoints.Length < 1)
         {
@@ -44,9 +47,28 @@ public class BuildingLinks : MonoBehaviour
                 Vector3 p1 = other.linkPoints[j].position - linkPoints[i].position + transform.position;
                 Vector3 p2 = other.transform.position;
                 if (AABB_Check(p1, p2, s1, s2)) continue;//don't allow things that would result in overlap
+														 //Vector3 directionFromPointHitToPotentialBuild = p1 - Player.main.cam.position;// p1 - myPosition;
+														 //if (Vector3.Dot(directionFromPointHitToPotentialBuild.normalized, Player.main.cam.forward) < minDot)
+														 //{
+														 //	print("bad dot");
+														 //	continue;
+														 //}
 
+				if (Physics.CheckBox(p1, s1, Quaternion.identity, BuildControl.main.avoidOverlap)) continue;
 
-                float dot = Vector3.Dot(linkPoints[i].right, other.linkPoints[j].right);
+				//bool ok = false;
+				//foreach (Transform t in linkPoints)
+				//{
+				//	if (!Physics.Linecast(Player.main.cam.position, other.linkPoints[j].position - t.position + transform.position, BuildControl.main.blockSight))
+				//	{
+				//		ok = true;
+				//		break;
+				//	}
+				//}
+
+				//if (!ok) continue;
+
+				float dot = Vector3.Dot(linkPoints[i].right, other.linkPoints[j].right);
                 dot = Mathf.Abs(dot);//if it's opposite, they still lie on the same line
 
                 //if both vectors almost lie on the same line
@@ -93,7 +115,7 @@ public class BuildingLinks : MonoBehaviour
             LinkPointMatch other = obj as LinkPointMatch;
             if (other != null)
             {
-                float diff = this.GetDistance() - other.GetDistance();
+                float diff = this.GetDistanceScore() - other.GetDistanceScore();
                 if (diff > 0.01f)
                 {
                     return 1;
@@ -106,13 +128,20 @@ public class BuildingLinks : MonoBehaviour
             }
             else
             {
-                throw new System.ArgumentException("Object is not a Temperature");
+                throw new System.ArgumentException("Object is not a LinkPointMatch");
             }
 		}
 
-        public float GetDistance()
+        public float GetDistanceScore()
 		{
-            return Vector3.Distance(myLinkPoint, theirLinkPoint);
+            //TODO: don't depend on the camera pivot being the parent of the camera
+            //get the dot between camera's forward and direction to where this option will place
+            //float dot = Vector3.Dot(Player.main.cam.forward, ((theirLinkPoint - relativePos) - Player.main.cam.parent.position).normalized);
+            //Vector3 diff = 
+            ////1 if parallel, more if perpendicular (capped at perpendicular, further than 90 deg apart doesn't do more)
+            //float mult = 1 + Mathf.Clamp01(1-dot) * MaxDirectionFactor;
+
+            return Vector3.Distance(myLinkPoint, theirLinkPoint);// * mult;
 		}
 	}
 
@@ -128,6 +157,6 @@ public class BuildingLinks : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, Vector3.Scale(b, transform.lossyScale));
+        Gizmos.DrawWireCube(transform.position, Vector3.Scale(GetSize(), transform.lossyScale));
     }
 }
