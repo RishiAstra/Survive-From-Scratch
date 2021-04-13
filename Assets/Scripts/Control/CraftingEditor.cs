@@ -33,7 +33,7 @@ public class CraftingEditor : Editor
 		{
 			for (int i = 0; i < t.recipies.Count; i++)
 			{
-				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + GameControl.itemTypes[t.recipies[i].result.id].name);
+				show[i] = EditorGUILayout.Foldout(show[i], i + " : " + GameControl.itemTypes[t.recipies[i].result.id].name + " -------------------------------------------------------------");
 				if (show[i])
 				{
 					EditorGUI.indentLevel += 2;
