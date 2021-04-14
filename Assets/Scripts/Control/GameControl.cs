@@ -16,7 +16,9 @@ using UnityEngine.EventSystems;
 public class GameControl : MonoBehaviour
 {
 
-	public static string saveDirectory = Application.persistentDataPath + "/" + Application.version + "/";
+	public static string saveDirectory { 
+		get { return Application.persistentDataPath + "/" + Application.version + "/"; }
+	}
 	//public static string playerSavePath = Application.persistentDataPath + "/Players/";
 	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
 	public const string itemPath = @"Assets/Items/";
@@ -63,6 +65,7 @@ public class GameControl : MonoBehaviour
 	public InventoryUI hotBarUI;
 	public InventoryUI mainInventoryUI;
 	public Menu craftInventory;
+	public Menu helpMenu;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
@@ -91,6 +94,8 @@ public class GameControl : MonoBehaviour
 		itemHoverInfo.SetActive(false);
 		HideMenus();
 		mapScreen.TryActivateMenu();
+		helpMenu.TryActivateMenu();
+		
 		//mapScreen.SetActive(true);
 
 		//TODO: consider setting mapScreen to active
