@@ -122,7 +122,7 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	public void Damage(float dmg, Collider cols, AttackType type)//accouns for weakpoints in different armor pieces
 	{
-		Armor a = new Armor();
+		Armor a = armors.Count > 0 ? armors[0] : new Armor();//default to first
 		foreach(Armor t in armors)
 		{
 			if (t.HasCollider(cols))

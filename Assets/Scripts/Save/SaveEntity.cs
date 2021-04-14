@@ -558,7 +558,7 @@ public class SaveEntity : Save, ISaveable
 
 	public static void SaveAll()
 	{
-		print(toSaveMapData.ToString());
+		//print(toSaveMapData.ToString());
 		List<EntityMapData> mapData = new List<EntityMapData>();
 		mapData.AddRange(toSaveMapData);
 

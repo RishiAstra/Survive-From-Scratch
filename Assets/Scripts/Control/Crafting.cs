@@ -35,6 +35,7 @@ public class Crafting : MonoBehaviour
 
     public Inventory craftInventory;
     public Inventory craftResult;
+    public List<int> recipieIndexes;
 	public InventoryUI craftInventoryUI;
 	public InventoryUI craftResultUI;
 
@@ -66,14 +67,15 @@ public class Crafting : MonoBehaviour
 
     public void OnItemCraft(int itemIndex)
 	{
-        Item item = craftResult.items[itemIndex];//TODO: unused
+        //Item item = craftResult.items[itemIndex];//TODO: unused
         //TODO: remove the crafting ingredients
-        RemoveCraftingIngredients(itemIndex);
+        RemoveCraftingIngredients(recipieIndexes[itemIndex]);
 	}
 
     public void RefreshCraftableRecipies()
 	{
         craftResult.items = new List<Item>();
+        recipieIndexes = new List<int>();
         //go through all recipies
         for (int i = 0; i < recipies.Count; i++)
         {
@@ -100,8 +102,12 @@ public class Crafting : MonoBehaviour
 				}
             }
 
-            if (canMakeThis) craftResult.items.Add(recipies[i].result);
-        }
+            if (canMakeThis)
+			{
+				craftResult.items.Add(recipies[i].result);
+                recipieIndexes.Add(i);
+			}
+		}
     }
 
     public void RemoveCraftingIngredients(int index)

@@ -17,6 +17,11 @@ public class Movement : MonoBehaviour
 	[Range(0f, 90f)]
 	public float maxMoveAngle;
 
+	public Collider[] mainColliders;
+	public PhysicMaterial movingMaterial;
+	public PhysicMaterial stopMaterial;
+	public bool tryingToMove;
+
 	public float maxSpeed;
 	public float acceleration;
 	//affects the maxSpeed and acceleration for moving in a direction that you are not facing (e.g. walking backwards)
@@ -113,7 +118,8 @@ public class Movement : MonoBehaviour
 	bool transitionCaptured;//
 	private void FixedUpdate()
 	{
-		if (abilities.dead){
+		if (abilities.dead)
+		{
 			if (!died)
 			{
 				anim.SetTrigger("Dead");
@@ -121,6 +127,9 @@ public class Movement : MonoBehaviour
 			}
 			return;
 		}
+
+		SwapPhysicsMaterialsIfNecessary();
+
 		angleOff = Quaternion.Angle(transform.rotation, angle);
 		idle = (direction.magnitude < 0.01f) && (angleOff < ANGLE_THRESHOLD) && (rig.IsSleeping());//not moving and on target required to be idle
 
@@ -170,24 +179,69 @@ public class Movement : MonoBehaviour
 
 	}
 
+	private void SwapPhysicsMaterialsIfNecessary()
+	{
+		bool pTryingToMove = tryingToMove;
+		tryingToMove = (direction.magnitude > SMALL_INPUT);
+		if (!tryingToMove && pTryingToMove)//(direction.magnitude < SMALL_INPUT))
+		{
+			foreach (Collider c in mainColliders)
+			{
+				c.sharedMaterial = stopMaterial;
+			}
+			//tryingToMove = false;
+		}
+		else
+		{
+			if (tryingToMove && !pTryingToMove)//(direction.magnitude >= SMALL_INPUT))
+			{
+				foreach (Collider c in mainColliders)
+				{
+					c.sharedMaterial = movingMaterial;
+				}
+			}
+			//tryingToMove = true;
+		}
+		//tryingToMove = (direction.magnitude > SMALL_INPUT);
+	}
+
 	void CheckGround()
 	{
 		grounded = false;
+		float bestDirDot = -2f;
+
+
+		//find all ground that character is on, then find the ground contact most aligned (dot) with character's direction.
 		foreach(GroundCheck t in groundCheck)
 		{
-			RaycastHit hit;
-			bool hitSomething = Physics.SphereCast(t.transform.position, t.radius, t.transform.up, out hit, t.distance);
-			if (hitSomething)
+			RaycastHit[] hit = Physics.SphereCastAll(t.transform.position, t.radius, t.transform.up, t.distance, ground);
+			//print(hit.Length);
+			foreach (RaycastHit h in hit)
 			{
 				//-hit.normal should be the normal of the point on this "collider"/spherecast that hit (that's why negative)
-				float angle = Vector3.Angle(-hit.normal, Vector3.down);
+				float angle = Vector3.Angle(-h.normal, Vector3.down);
+				Vector3 deltaPositionHit = h.point - transform.position;
+				if (deltaPositionHit.magnitude > 0.01f)
+				{
+					deltaPositionHit.Normalize();
+				} else deltaPositionHit = Vector3.zero;
+				float dirDot = Vector3.Dot(deltaPositionHit, direction.normalized);
 				//print(angle);
 				if (angle < maxMoveAngle)
 				{
 					//print("Grounded");
 					grounded = true;
-					groundNormal = -hit.normal;
-					return;
+
+					if (!tryingToMove)
+					{
+						groundNormal = -h.normal;
+						return;
+					} else if (dirDot > bestDirDot)
+					{
+						groundNormal = -h.normal;
+						bestDirDot = dirDot;
+
+					}
 				}
 			}
 			
@@ -389,7 +443,7 @@ public class Movement : MonoBehaviour
 
 				//v = transform.TransformVector(v);
 				rig.velocity = v;
-				if (v == Vector3.zero) rig.Sleep();
+				//if (v == Vector3.zero) rig.Sleep();
 				
 
 				//Vector3 velOff = direction.normalized - rig.velocity.normalized;
