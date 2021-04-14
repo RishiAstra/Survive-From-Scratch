@@ -22,7 +22,7 @@ public class SaveItem : Save
 	{
 		get
 		{
-			return Application.persistentDataPath + "/Scenes/" + SceneManager.GetActiveScene().name + "/Items/";
+			return GameControl.saveDirectory + "/Scenes/" + SceneManager.GetActiveScene().name + "/Items/";
 		}
 	}
 

@@ -15,9 +15,12 @@ using UnityEngine.EventSystems;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
+
+	public static string saveDirectory = Application.persistentDataPath + "/" + Application.version + "/";
 	//public static string playerSavePath = Application.persistentDataPath + "/Players/";
 	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
 	public const string itemPath = @"Assets/Items/";
+	//public static string versionFilePath = Application.streamingAssetsPath + @"version.txt";
 
 
 	public static byte[] sessionId;
@@ -694,6 +697,14 @@ public class GameControl : MonoBehaviour
 
 	public IEnumerator LoadSavedStuffHelper()
 	{
+		//string savedVersion = File.ReadAllText(versionFilePath);
+		//string currentVersion = Application.version;
+
+		//if (savedVersion != currentVersion)
+		//{
+		//	Directory.CreateDirectory(Application.persistentDataPath + );
+		//}
+
 		LoadPlayer(this);
 		yield return Save.LoadAllData();
 

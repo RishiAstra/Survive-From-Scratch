@@ -23,7 +23,7 @@ public class SaveEntity : Save, ISaveable
 	const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
-			return Application.persistentDataPath + "/Save/Entities/";
+			return GameControl.saveDirectory + "/Save/Entities/";
 		}
 	}
 
@@ -31,7 +31,7 @@ public class SaveEntity : Save, ISaveable
 	{
 		get
 		{
-			return Application.persistentDataPath + "/Save/Map/";
+			return GameControl.saveDirectory + "/Save/Map/";
 		}
 	}
 

@@ -50,7 +50,7 @@ public class spawner : MonoBehaviour {
 
 	private string savePath
 	{
-		get { return Application.persistentDataPath + "/PersistantId Saves/"; }
+		get { return GameControl.saveDirectory + "/PersistantId Saves/"; }
 
 	}
 	private string saveFile

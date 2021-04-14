@@ -28,7 +28,7 @@ public abstract class Save : MonoBehaviour
 		//don't read the next id if already has
 		if (readNextId) return;
 
-		string path = Application.persistentDataPath + "/nextid.txt";
+		string path = GameControl.saveDirectory + "/nextid.txt";
 		//byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 		if (File.Exists(path)) nextId = int.Parse(File.ReadAllText(path));
 		readNextId = true;
@@ -37,7 +37,7 @@ public abstract class Save : MonoBehaviour
 	public static void SaveNextID()
 	{
 		//save next id
-		string nextIdPath = Application.persistentDataPath + "/nextid.txt";
+		string nextIdPath = GameControl.saveDirectory + "/nextid.txt";
 		File.WriteAllText(nextIdPath, nextId.ToString());
 	}
 
