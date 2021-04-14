@@ -1,3 +1,5 @@
+-changed "Spider Plains" map location to "Novasilva" with trees
+-added trees
 -added physics to some bones
 -fixed movement drifting issue
 -changed the way that characters are saved
@@ -7,5 +9,11 @@
 -added snapping buildings to existing buildings
 -added log platform
 -added log ramp
+-added health to buildings so they can be destroyed
 -fixed building snapping
 -fixed log platform colliders so that they don't create bumps in a ramp when placed under a ramp
+-added main inventory
+-fixed issue where inventory would be lost
+-fixed issue moving up steep slopes
+-split saving entities into many separate parts to avoid saving unnecessary data
+
