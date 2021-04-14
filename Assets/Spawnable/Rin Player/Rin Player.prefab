@@ -4415,7 +4415,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 164153826729504249}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 224cf6e7d202cac4a85cdb460889bdab, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.25
@@ -4442,6 +4442,11 @@ MonoBehaviour:
   groundCheck:
   - {fileID: 8230301946160674864}
   maxMoveAngle: 55
+  mainColliders:
+  - {fileID: -5423701773087162793}
+  movingMaterial: {fileID: 13400000, guid: c917a1b6fd25623469be112ab157453e, type: 2}
+  stopMaterial: {fileID: 13400000, guid: f6b5fb0fbd86a5f4ca2e7f27e6409849, type: 2}
+  tryingToMove: 0
   maxSpeed: 5
   acceleration: 20
   minAngleForMove: 45
@@ -4540,6 +4545,7 @@ MonoBehaviour:
   - {fileID: 7247242195844081610}
   enemyString:
   - monster
+  - breakable
 --- !u!114 &3350575346883344253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4560,6 +4566,8 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 591001014041977264}
+  autoHide: 0
+  hideTime: 0
 --- !u!114 &-6139849719966194815
 MonoBehaviour:
   m_ObjectHideFlags: 0

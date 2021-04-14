@@ -75,6 +75,6 @@ public class Menu : MonoBehaviour
 			TimeControl.main.RemoveTimeScale("menu");
 		}
 		GameControl.main.TryLockCursor();
-		print("deactivated menu: " + gameObject.name + ", " + openMenuCount);
+		//print("deactivated menu: " + gameObject.name + ", " + openMenuCount);
 	}
 }

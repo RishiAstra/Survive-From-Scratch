@@ -541,7 +541,7 @@ public class GameControl : MonoBehaviour
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
 		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
-		print("set up player camera");
+		//print("set up player camera");
 		myAbilities = newPlayerObject.GetComponent<Abilities>();
 
 		//bind hotbar to character and initialize

@@ -330,6 +330,10 @@ MonoBehaviour:
   groundCheck:
   - {fileID: 3563714782778563414}
   maxMoveAngle: 55
+  mainColliders: []
+  movingMaterial: {fileID: 0}
+  stopMaterial: {fileID: 0}
+  tryingToMove: 0
   maxSpeed: 5
   acceleration: 20
   minAngleForMove: 45
@@ -429,6 +433,7 @@ MonoBehaviour:
   - {fileID: 4245163473704240}
   enemyString:
   - monster
+  - breakable
 --- !u!114 &7022186050305224707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,6 +486,8 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 1559415070924045712}
+  autoHide: 0
+  hideTime: 0
 --- !u!114 &-453695833806950689
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -27,6 +27,15 @@ public class Loot : MonoBehaviour
 		}
     }
 
+	private void OnDestroy()
+	{
+        if (!looted && a.dead)
+        {
+            GenerateLoot();
+            looted = true;
+        }
+    }
+
 	private void GenerateLoot()
 	{
         Rigidbody myRig = GetComponent<Rigidbody>();
