@@ -159,4 +159,9 @@ public class spawner : MonoBehaviour {
 		yield return SaveEntity.GetEntityPrefab(type);
 
 	}
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.cyan;
+		Gizmos.DrawWireSphere(transform.position, radius);
+	}
 }

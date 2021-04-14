@@ -177,7 +177,7 @@ public class SaveEntity : Save, ISaveable
 			Debug.LogWarning("No entity scene map folder");
 			return null;
 		}
-		print(entitySceneMapPath);
+		//print(entitySceneMapPath);
 		//find type of this by searching scene entity map, then calculate and return path
 		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
 		{
