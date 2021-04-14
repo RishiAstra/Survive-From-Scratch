@@ -9,7 +9,9 @@ public class PlacementWindow : EditorWindow
     string myString = "Hello World";
     bool groupEnabled;
     bool placingEnabled = false;
-    float myFloat = 1.23f;
+    float radius = 1.23f;
+    int maxAmount = 1;
+    //float max
 
     GameObject toPlace;
 
@@ -35,7 +37,8 @@ public class PlacementWindow : EditorWindow
         placingEnabled = EditorGUILayout.Toggle("Enable Placing", placingEnabled);
 
         groupEnabled = EditorGUILayout.BeginToggleGroup("Optional Settings", groupEnabled);
-        myFloat = EditorGUILayout.Slider("Slider", myFloat, -3, 3);
+        radius = EditorGUILayout.Slider("Radius", radius, 0.01f, 20);
+        maxAmount = EditorGUILayout.IntSlider("Amount", maxAmount, 1, 50);
         EditorGUILayout.EndToggleGroup();
 
 
@@ -51,71 +54,6 @@ public class PlacementWindow : EditorWindow
             lastTime = nowTime;
             //UnityEngine.Debug.Log("d");
         }
-        //Event e = Event.current;
-        //int controlID = GUIUtility.GetControlID(FocusType.Passive);
-        //switch (e.GetTypeForControl(controlID))
-        //{
-        //    case EventType.MouseDown:
-        //        GUIUtility.hotControl = controlID;
-        //        if (placingEnabled)
-        //        {
-        //            if (toPlace != null)
-        //            {
-        //                Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-        //                RaycastHit hit;
-        //                if (Physics.Raycast(ray, out hit))
-        //                {
-        //                    Vector3 forward = Random.insideUnitSphere;
-        //                    forward -= hit.normal * Vector3.Dot(forward, hit.normal);//make it perpendicular
-        //                    Instantiate(toPlace, hit.point, Quaternion.LookRotation(forward.normalized, hit.normal));
-        //                    //print();
-        //                }
-        //            }
-        //        }
-        //        e.Use();
-        //        break;
-        //    case EventType.MouseUp:
-        //        GUIUtility.hotControl = 0;
-
-        //        e.Use();
-        //        break;
-        //    case EventType.MouseDrag:
-        //        GUIUtility.hotControl = controlID;
-
-        //        e.Use();
-        //        break;
-        //    case EventType.KeyDown:
-        //        if (e.keyCode == KeyCode.Escape)
-        //        {
-        //            // Do something on pressing Escape
-        //        }
-        //        if (e.keyCode == KeyCode.Space)
-        //        {
-        //            // Do something on pressing Spcae
-        //        }
-        //        if (e.keyCode == KeyCode.S)
-        //        {
-        //            // Do something on pressing S
-        //        }
-        //        break;
-        //}
-
-        //if (Input.GetMouseButtonDown(0) && placingEnabled)
-        //{
-        //    if (toPlace != null)
-        //    {
-        //        Ray ray = Camera.current.ScreenPointToRay(Input.mousePosition);//HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
-        //        RaycastHit hit;
-        //        if (Physics.Raycast(ray, out hit))
-        //        {
-        //            Vector3 forward = Random.insideUnitSphere;
-        //            forward -= hit.normal * Vector3.Dot(forward, hit.normal);//make it perpendicular
-        //            Instantiate(toPlace, hit.point, Quaternion.LookRotation(forward.normalized, hit.normal));
-        //            //print();
-        //        }
-        //    }
-        //}
-
     }
 
     //void AllDrawingStuff()
@@ -173,9 +111,23 @@ public class PlacementWindow : EditorWindow
 						//RaycastHit hit;
 						if (hitSomething)//Physics.Raycast(ray, out hit))
 						{
-							Vector3 forward = Random.insideUnitSphere;
-							forward -= hit.normal * Vector3.Dot(forward, hit.normal);//make it perpendicular
-							Instantiate(toPlace, hit.point, Quaternion.LookRotation(forward.normalized, hit.normal));
+                            for(int i = 0; i < maxAmount; i++)
+							{
+                                Vector3 forward = Random.insideUnitSphere;
+                                Vector3 offset = Random.insideUnitCircle * radius;
+                                offset.z = offset.y;
+                                offset.y = 0;
+                                Vector3 location = hit.point + offset + hit.normal * 1;
+                                RaycastHit h;
+								if (Physics.Raycast(location, -hit.normal, out h, 10f))
+								{
+                                    forward -= h.normal * Vector3.Dot(forward, hit.normal);//make it perpendicular
+                                    Instantiate(toPlace, h.point, Quaternion.LookRotation(forward.normalized, h.normal));    
+								}
+                                                        
+                            }
+
+							
 							//print();
 						}
 					}
@@ -213,8 +165,12 @@ public class PlacementWindow : EditorWindow
 		//Handles.BeginGUI();
         Handles.color = Color.cyan;
 		//UnityEngine.Debug.Log(pos);
-        Handles.DrawWireCube(pos, Vector3.one);
+		if (hitSomething)
+		{
+            Handles.DrawWireCube(pos, Vector3.one);
+            Handles.DrawWireDisc(pos, hit.normal, radius);
+        }
         // Do your drawing here using GUI.
         //Handles.EndGUI();
-	}
+    }
 }

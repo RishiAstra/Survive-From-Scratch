@@ -20,14 +20,24 @@ public class SpawnerSave
 
 [RequireComponent(typeof(PersistantSaveID))]
 public class spawner : MonoBehaviour {
+
+	public enum SpawnShape
+	{
+		circle,
+		rectangle,
+	}
+
 	public static List<spawner> spawners;
 
 	//public GameObject spawnThis;
 	public ThingType thingType;
 	public string toSpawnType;
+	public SpawnShape spawnShape;
 	public float delay;
 	public float radius;
+	public float xs, zs;
 	public int maxAmount;
+	public int initialAmount;
 	public int removeNullObjectsSpeed;
 	public List<long> IDsOfSpawned;
 	public float heightOffset;
@@ -49,7 +59,8 @@ public class spawner : MonoBehaviour {
 
 	}
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+	{
 		if (spawners == null) spawners = new List<spawner>();
 		spawners.Add(this);
 		Save.OnLoadedType += Save_OnLoadedType;
@@ -59,6 +70,19 @@ public class spawner : MonoBehaviour {
 		{
 			LoadData(JsonConvert.DeserializeObject<SpawnerSave>(File.ReadAllText(saveFile)));
 		}
+
+		StartCoroutine(InitialSpawning());
+	}
+
+	private IEnumerator InitialSpawning()
+	{
+		while (spawnThis == null) yield return null;
+		//spawn initial amount, considering the amount that already exists
+		for (int i = spawnedThese.Count; i < initialAmount; i++)
+		{
+			SpawnThing();
+		}
+		yield return null;
 	}
 
 	void LoadData(SpawnerSave s)
@@ -131,18 +155,9 @@ public class spawner : MonoBehaviour {
 		if(Save.readEverything && spawnThis != null)
 		{
 			int maxPerFrame = 10;
-			while (reload < 0 && spawnedThese.Count < maxAmount && maxPerFrame >= 0) {
-				float a = Random.Range (0, 360);
-				float dist = Random.Range (radius, 0);
-				Vector3 target = new Vector3(Mathf.Cos(a) * dist, transform.position.y + 10, Mathf.Sin(a) * dist) + transform.position;
-				RaycastHit hit;
-				if (Physics.Raycast (target, -Vector3.up, out hit)) {
-					target = hit.point;		
-				}
-				target += Vector3.up * heightOffset;
-				GameObject g = (GameObject)Instantiate(spawnThis, target, Quaternion.Euler(0, Random.Range(0, 360), 0));
-				spawnedThese.Add(g);
-				IDsOfSpawned.Add(g.GetComponent<Save>().id);
+			while (reload < 0 && spawnedThese.Count < maxAmount && maxPerFrame >= 0)
+			{
+				SpawnThing();
 				reload += delay;
 				maxPerFrame--;
 			}
@@ -154,6 +169,34 @@ public class spawner : MonoBehaviour {
 		else reload = 0;
 	}
 
+	private void SpawnThing()
+	{
+		Vector3 target = Vector3.zero;
+		switch (spawnShape)
+		{
+			case SpawnShape.circle:
+				target = Random.insideUnitCircle * radius;
+				break;
+			case SpawnShape.rectangle:
+				target = new Vector3(Random.Range(-0.5f, 0.5f) * xs, 0, Random.Range(-0.5f, 0.5f) * zs);
+				break;
+		}
+		target += transform.position + Vector3.up * 10;
+
+		//float a = Random.Range(0, 360);
+		//float dist = Random.Range(radius, 0);
+		//Vector3 target = new Vector3(Mathf.Cos(a) * dist, transform.position.y + 10, Mathf.Sin(a) * dist) + transform.position;
+		RaycastHit hit;
+		if (Physics.Raycast(target, -Vector3.up, out hit))
+		{
+			target = hit.point;
+		}
+		target += Vector3.up * heightOffset;
+		GameObject g = (GameObject)Instantiate(spawnThis, target, Quaternion.Euler(0, Random.Range(0, 360), 0));
+		spawnedThese.Add(g);
+		IDsOfSpawned.Add(g.GetComponent<Save>().id);
+	}
+
 	IEnumerator Spawn(string type, Vector3 position, Quaternion rotation)
 	{
 		yield return SaveEntity.GetEntityPrefab(type);
@@ -162,6 +205,15 @@ public class spawner : MonoBehaviour {
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawWireSphere(transform.position, radius);
+		switch (spawnShape)
+		{
+			case SpawnShape.circle:
+				Gizmos.DrawWireSphere(transform.position, radius);
+				break;
+			case SpawnShape.rectangle:
+				Gizmos.DrawWireCube(transform.position, new Vector3(xs, 2, zs));
+				break;
+		}
+		
 	}
 }
