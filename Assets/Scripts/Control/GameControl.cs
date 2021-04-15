@@ -73,6 +73,7 @@ public class GameControl : MonoBehaviour
 	public Image mainHpBar;
 	public TMPro.TextMeshProUGUI mainHpText;
 	public Canvas mainCanvas;
+	public Vector2 mouseSensitivity;
 
 	public GameObject camGameObject;
 	

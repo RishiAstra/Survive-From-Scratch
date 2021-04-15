@@ -77,13 +77,22 @@ public class SaveEntity : Save, ISaveable
 
 
 		//if (saveAbilities) a = GetComponent<Abilities>();
+		//if (id == 0)
+		//{
+		//	id = nextId;
+		//	nextId++;
+		//}
+
+		if(a!=null) pStat = a.stat;
+	}
+
+	void Start()
+	{
 		if (id == 0)
 		{
 			id = nextId;
 			nextId++;
 		}
-
-		if(a!=null) pStat = a.stat;
 	}
 
 	private void InitializeToSave()
@@ -562,7 +571,7 @@ public class SaveEntity : Save, ISaveable
 		//print(toSaveMapData.ToString());
 		List<EntityMapData> mapData = new List<EntityMapData>();
 		mapData.AddRange(toSaveMapData);
-
+		//print("dead save count: " + toSaveMapData.Count);
 		//these will now be saved, so delete them to prevent double saving later on when this function is called again
 		toSaveMapData = new List<EntityMapData>();
 

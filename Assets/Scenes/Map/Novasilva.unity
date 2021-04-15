@@ -328,7 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 14
+  id: 16
 --- !u!114 &267547054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,8 +348,8 @@ MonoBehaviour:
   radius: 100
   xs: 250
   zs: 250
-  maxAmount: 500
-  initialAmount: 500
+  maxAmount: 1
+  initialAmount: 1
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   heightOffset: 0

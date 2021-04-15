@@ -44,6 +44,7 @@ public class spawner : MonoBehaviour {
 
 	private float reload;
 	public List<GameObject> spawnedThese = new List<GameObject>();
+	public List<Save> mySpawnedSaves = new List<Save>();
 	private float removeNullTimeLeft;
 	private GameObject spawnThis;
 	private PersistantSaveID myId;
@@ -76,7 +77,7 @@ public class spawner : MonoBehaviour {
 
 	private IEnumerator InitialSpawning()
 	{
-		while (spawnThis == null) yield return null;
+		while (GameControl.loading || spawnThis == null) yield return null;
 		//spawn initial amount, considering the amount that already exists
 		for (int i = spawnedThese.Count; i < initialAmount; i++)
 		{
@@ -92,6 +93,10 @@ public class spawner : MonoBehaviour {
 
 	SpawnerSave SaveData()
 	{
+		foreach(Save s in mySpawnedSaves)
+		{
+			IDsOfSpawned.Add(s.id);
+		}
 		return new SpawnerSave
 		{
 			ids = IDsOfSpawned,
@@ -133,6 +138,7 @@ public class spawner : MonoBehaviour {
 			if (IDsOfSpawned.Contains(s.id))
 			{
 				spawnedThese.Add(s.gameObject);
+				mySpawnedSaves.Add(s);
 				amountRemembered++;
 			}
 		}
@@ -141,11 +147,13 @@ public class spawner : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (GameControl.loading) return;
 		removeNullTimeLeft -= Time.deltaTime;
 		if (removeNullTimeLeft < 0) {
 			for (int i = 0; i < spawnedThese.Count; i++) {
 				if (spawnedThese [i] == null) {
 					spawnedThese.RemoveAt (i);
+					mySpawnedSaves.RemoveAt(i);
 					i--;
 				}
 			}
@@ -194,7 +202,8 @@ public class spawner : MonoBehaviour {
 		target += Vector3.up * heightOffset;
 		GameObject g = (GameObject)Instantiate(spawnThis, target, Quaternion.Euler(0, Random.Range(0, 360), 0));
 		spawnedThese.Add(g);
-		IDsOfSpawned.Add(g.GetComponent<Save>().id);
+		mySpawnedSaves.Add(g.GetComponent<Save>());
+		//IDsOfSpawned.Add(g.GetComponent<Save>().id);
 	}
 
 	IEnumerator Spawn(string type, Vector3 position, Quaternion rotation)
