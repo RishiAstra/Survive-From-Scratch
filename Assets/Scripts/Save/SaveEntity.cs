@@ -58,6 +58,7 @@ public class SaveEntity : Save, ISaveable
 	// Start is called before the first frame update
 	void Awake()
 	{
+		a = GetComponent<Abilities>();
 		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);

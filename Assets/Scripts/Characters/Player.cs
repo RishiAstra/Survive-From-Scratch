@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		invSel = -1;
 		//ArmatureStartRot = Armature.localEulerAngles;
 		//lastArmatureRot = Armature.localEulerAngles.y;
 		//yRot = transform.eulerAngles.y;
@@ -95,6 +96,11 @@ public class Player : MonoBehaviour
 		//			Destroy (transform.GetChild (0).gameObject);
 		////			GetComponent<Renderer> ().material = notMe;
 		//		}
+		Invoke("SelectInvInitial", 0.01f);
+	}
+
+	void SelectInvInitial()
+	{
 		SelectInv(0);//TODO: this will cause eating a consumable
 	}
 
@@ -209,7 +215,11 @@ public class Player : MonoBehaviour
 	/// </summary>
 	/// <param name="index">The index in inventory of the item to select</param>
 	void SelectInv(int index) {
-		if (index >= inv.items.Count) return;// || invSel < 0
+		if (index >= inv.items.Count)
+		{
+			Debug.LogWarning("tried to select inventory slot out of range. slot count: " + inv.items.Count + ", index: " + index);
+			return;// || invSel < 0
+		}
 		//destroy thing if previously placing thing, see todos below
 		//Destroy(placeing);
 
@@ -226,6 +236,7 @@ public class Player : MonoBehaviour
 			if (invSel != index) {
 				if(GameControl.itemTypes[inv.items[index].id].equipPrefab != null)
 				{
+					print("equipped something");
 					GameObject g = (GameObject)Instantiate(GameControl.itemTypes[inv.items[index].id].equipPrefab);
 					g.transform.SetParent(rightHand, false);
 					g.GetComponent<Equip>().bob = this;

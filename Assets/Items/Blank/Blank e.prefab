@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7918911946274850388}
   - component: {fileID: 2860947915630435444}
   - component: {fileID: -9173570091439170127}
+  - component: {fileID: 382831442250648233}
+  - component: {fileID: 2169791598071454856}
   m_Layer: 0
   m_Name: Blank e
   m_TagString: Untagged
@@ -60,3 +62,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idString: Blank
   id: -1
+--- !u!114 &382831442250648233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7136021433292319647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b9c9e1c3613b243b78df9447b3712b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackType: 2
+  parent: {fileID: 0}
+  dmg: 0.75
+  canDmg: 0
+  multipleHits: 0
+  attackDuriation: 2
+--- !u!135 &2169791598071454856
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7136021433292319647}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0, z: 0}
