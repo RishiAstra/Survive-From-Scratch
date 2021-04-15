@@ -270,6 +270,7 @@ MonoBehaviour:
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
+  mySpawnedSaves: []
 --- !u!4 &233569250
 Transform:
   m_ObjectHideFlags: 0
@@ -348,12 +349,13 @@ MonoBehaviour:
   radius: 100
   xs: 250
   zs: 250
-  maxAmount: 1
-  initialAmount: 1
+  maxAmount: 1000
+  initialAmount: 1000
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
+  mySpawnedSaves: []
 --- !u!1001 &616456902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -653,6 +655,7 @@ MonoBehaviour:
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
+  mySpawnedSaves: []
 --- !u!1 &1767101026
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,6 +712,7 @@ MonoBehaviour:
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
+  mySpawnedSaves: []
 --- !u!4 &1767101029
 Transform:
   m_ObjectHideFlags: 0
@@ -766,6 +770,7 @@ MonoBehaviour:
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
+  mySpawnedSaves: []
 --- !u!4 &1803451688
 Transform:
   m_ObjectHideFlags: 0
@@ -849,6 +854,7 @@ MonoBehaviour:
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
+  mySpawnedSaves: []
 --- !u!4 &2106121465
 Transform:
   m_ObjectHideFlags: 0
