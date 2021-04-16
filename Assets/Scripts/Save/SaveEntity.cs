@@ -83,16 +83,18 @@ public class SaveEntity : Save, ISaveable
 		//	nextId++;
 		//}
 
-		if(a!=null) pStat = a.stat;
-	}
-
-	void Start()
-	{
 		if (id == 0)
 		{
 			id = nextId;
 			nextId++;
 		}
+
+		if (a!=null) pStat = a.stat;
+	}
+
+	void Start()
+	{
+		
 	}
 
 	private void InitializeToSave()

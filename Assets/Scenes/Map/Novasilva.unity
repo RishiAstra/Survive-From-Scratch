@@ -38,13 +38,13 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028355, g: 0.22571374, b: 0.30692255, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028377, g: 0.22571409, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -347,9 +347,9 @@ MonoBehaviour:
   spawnShape: 1
   delay: 0.01
   radius: 100
-  xs: 250
-  zs: 250
-  maxAmount: 1000
+  xs: 200
+  zs: 200
+  maxAmount: 500
   initialAmount: 1000
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
@@ -515,8 +515,8 @@ Terrain:
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 81
+  m_TreeMaximumFullLODCount: 610
+  m_DetailObjectDistance: 250
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 48
   m_SplatMapDistance: 1000
@@ -543,7 +543,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908313429}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -500, y: 0, z: -500}
+  m_LocalPosition: {x: -250, y: 0, z: -250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -647,8 +647,8 @@ MonoBehaviour:
   spawnShape: 1
   delay: 0.01
   radius: 100
-  xs: 250
-  zs: 250
+  xs: 200
+  zs: 200
   maxAmount: 500
   initialAmount: 500
   removeNullObjectsSpeed: 1

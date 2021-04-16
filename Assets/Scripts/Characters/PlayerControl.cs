@@ -13,7 +13,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 	public Movement movement;
 	public Abilities abilities;
 	public Cam cam;
-	public Vector2 sensitivity;
+	//public Vector2 sensitivity;
 	public float scrollSencitivity;
 	public string playerOwnerName;
 
@@ -35,7 +35,8 @@ public class PlayerControl : MonoBehaviour, ISaveable
 		{
 			//set y rotation (horizontal)
 			Vector3 temp = cam.pivot.eulerAngles;
-			temp.y += Input.GetAxis("Mouse X") * GameControl.main.mouseSensitivity.x * Time.deltaTime;
+			temp.y += Input.GetAxis("Mouse X") * GameControl.main.mouseSensitivity.x;
+			//print(Input.GetAxis("Mouse X") * GameControl.main.mouseSensitivity.x + "|" + Input.GetAxis("Mouse X"));
 			cam.pivot.eulerAngles = temp;
 
 			//use the attack
@@ -53,7 +54,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 
 			//change distance and pitch
 			cam.AddDist(Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity);
-			cam.AddPitch(Input.GetAxis("Mouse Y") * GameControl.main.mouseSensitivity.y * Time.deltaTime);
+			cam.AddPitch(Input.GetAxis("Mouse Y") * GameControl.main.mouseSensitivity.y);
 		}
 	}
 
