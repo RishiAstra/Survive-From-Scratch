@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b088290d676ff49a449ef059e7a7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabDist: 20
+  grabDist: 3
   rightHand: {fileID: 4245163473704240}
   invStuff:
     invButtonSize: 50
@@ -372,7 +372,6 @@ MonoBehaviour:
   movement: {fileID: 8774132261617693794}
   abilities: {fileID: 924814010}
   cam: {fileID: 0}
-  sensitivity: {x: 100, y: -60}
   scrollSencitivity: 1
   playerOwnerName: 
 --- !u!114 &924814010
