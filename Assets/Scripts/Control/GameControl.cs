@@ -79,6 +79,7 @@ public class GameControl : MonoBehaviour
 	
 //	public RPGCamera Camera;
 	private Player me;
+	private PlayerControl playerControl;
 	private long myPlayersId = -1;
 	[HideInInspector] public Abilities myAbilities;
 
@@ -484,7 +485,8 @@ public class GameControl : MonoBehaviour
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
 			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask, QueryTriggerInteraction.Collide);
+			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist + playerControl.cam.dist, collectibleLayerMask, QueryTriggerInteraction.Collide);
+			if (hit.distance < playerControl.cam.dist) foundSomething = false;//this means that the item was found by placing it between the player and the camera. This is abusing camera distance to grab stuff from futher distances
 			bool foundCollectible = false;
 			Collectible c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
 
@@ -542,6 +544,7 @@ public class GameControl : MonoBehaviour
 		myPlayersId = save.id;
 
 		me = newPlayerObject.GetComponent<Player>();
+		playerControl = newPlayerObject.GetComponent<PlayerControl>();
 		HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
 		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
 		hPBar.hpTextUI = mainHpText;
