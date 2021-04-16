@@ -94,7 +94,7 @@ public class SaveEntity : Save, ISaveable
 
 	void Start()
 	{
-		
+		pStat = a.stat;
 	}
 
 	private void InitializeToSave()

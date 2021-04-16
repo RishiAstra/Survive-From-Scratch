@@ -28,11 +28,15 @@ public class HPBar : MonoBehaviour
 	private Abilities a;
 	private float hideTimeLeft;
 	private float previousHp;
+	private bool isHiding;
+	private bool isDead;
     // Start is called before the first frame update
     void Start()
     {
 		a = GetComponent<Abilities>();
 		previousHp = a.stat.hp;
+		UpdateDisplayLive(false);
+		if(autoHide)SetHpBarsActive(false);
     }
 
 	public void SetWorldHpBarVisible(bool visible)
@@ -43,24 +47,73 @@ public class HPBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		bool sprite = hpBarSprite != null;
-		bool image = hpBarImage != null;
-		bool text = hpText != null;
-		bool textUI = hpTextUI != null;
-		if (hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
+		bool shouldHide = !a.dead && autoHide && hideTimeLeft <= 0f;
 
+		if(shouldHide != isHiding)
+		{
+			SetHpBarsActive(!shouldHide);
+			isHiding = shouldHide;
+		}
+
+		//bool sprite = hpBarSprite != null;
+		//bool image = hpBarImage != null;
+		//bool text = hpText != null;
+		//bool textUI = hpTextUI != null;
+		//if (hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
+
+		if(!isHiding && hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);
+
+		//update if alive and hp changed
+		//also keep track of countdown to hide hp bars and update previousHp
 		if (a.stat.hp != previousHp)
 		{
 			previousHp = a.stat.hp;
 			hideTimeLeft = hideTime;
+			if(!a.dead)	UpdateDisplayLive(false);
 		}
 
-		if (a.dead)
+		if(a.dead != isDead)
 		{
-			if (autoHide)
-			{
-				SetHpBarsActive(true);
-			}
+			UpdateDisplayLive(a.dead);
+			isDead = a.dead;
+		}
+
+		if (!a.dead &&autoHide)
+		{
+			hideTimeLeft -= Time.deltaTime;
+		}
+
+		//if (a.dead)
+		//{
+		//	//if (autoHide)
+		//	//{
+		//	//	SetHpBarsActive(true);
+		//	//}
+		//	UpdateDisplayLive(true);
+
+		//	return;
+		//}
+		//else
+		//{
+		//	if (!autoHide || hideTimeLeft >= 0f)
+		//	{
+		//		//if(autoHide) SetHpBarsActive(true);
+		//		UpdateDisplayLive(false);
+		//	}
+		//	//if (autoHide && hideTimeLeft < 0f) SetHpBarsActive(false);
+		//	if (autoHide) hideTimeLeft -= Time.deltaTime;
+		//}
+	}
+
+	private void UpdateDisplayLive(bool dead)
+	{
+		bool sprite = hpBarSprite != null;
+		bool image = hpBarImage != null;
+		bool text = hpText != null;
+		bool textUI = hpTextUI != null;
+
+		if (dead)
+		{
 			if (sprite)
 			{
 				hpBarSprite.transform.localScale = new Vector3(0, 1, 1);
@@ -81,49 +134,41 @@ public class HPBar : MonoBehaviour
 				hpTextUI.text = "Dead";
 				hpTextUI.color = new Color(0, 0, 0);
 			}
-
-			return;
 		}
 		else
 		{
-			if (!autoHide || hideTimeLeft >= 0f)
+			Color color = Color.magenta;//error color
+			if (a.stat.hp > (a.maxStat.hp / 2))
 			{
-				if(autoHide) SetHpBarsActive(true);
-				Color color = Color.magenta;//error color
-				if (a.stat.hp > (a.maxStat.hp / 2))
-				{
-					if (sprite) hpBarSprite.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-					if (image) hpBarImage.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-					if(changeHpTextColor) color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-					else color = new Color(0, 0, 0);
-				}
-				else
-				{
-					if (sprite) hpBarSprite.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-					if (image) hpBarImage.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-					if(changeHpTextColor) color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-					else color = new Color(0, 0, 0);
-				}
-
-				string tempText = Mathf.RoundToInt(a.stat.hp) + "/" + Mathf.RoundToInt(a.maxStat.hp);//TODO: use Math.Round(hp, 2) to make it 2 decimal places
-
-				if (text)
-				{
-					hpText.text = tempText;
-					hpText.color = color;
-				}
-				if (textUI)
-				{
-					hpTextUI.text = tempText;
-					hpTextUI.color = color;
-				}
-
-				if (sprite) hpBarSprite.transform.localScale = new Vector3(a.stat.hp / a.maxStat.hp, 1, 1);
-				if (image) hpBarImage.transform.localScale = new Vector3(a.stat.hp / a.maxStat.hp, 1, 1);
+				if (sprite) hpBarSprite.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
+				if (image) hpBarImage.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
+				if (changeHpTextColor) color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
+				else color = new Color(0, 0, 0);
 			}
-			if (autoHide && hideTimeLeft < 0f) SetHpBarsActive(false);
-			if (autoHide) hideTimeLeft -= Time.deltaTime;
-		}
+			else
+			{
+				if (sprite) hpBarSprite.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
+				if (image) hpBarImage.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
+				if (changeHpTextColor) color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
+				else color = new Color(0, 0, 0);
+			}
+
+			string tempText = Mathf.RoundToInt(a.stat.hp) + "/" + Mathf.RoundToInt(a.maxStat.hp);//TODO: use Math.Round(hp, 2) to make it 2 decimal places
+
+			if (text)
+			{
+				hpText.text = tempText;
+				hpText.color = color;
+			}
+			if (textUI)
+			{
+				hpTextUI.text = tempText;
+				hpTextUI.color = color;
+			}
+
+			if (sprite) hpBarSprite.transform.localScale = new Vector3(a.stat.hp / a.maxStat.hp, 1, 1);
+			if (image) hpBarImage.transform.localScale = new Vector3(a.stat.hp / a.maxStat.hp, 1, 1);
+		}		
 	}
 
 	private void SetHpBarsActive(bool active)
