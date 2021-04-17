@@ -1,2 +1,8 @@
-The only fundemental difference between your character and NPCs (AI characters) is that you control your character.
-NPCs have traits that they are aggressive towards, such as "monster" or "humanoid". They will attack any other characters with these traits.
+NPCs have enemy traits that they are aggressive towards, such as "monster" or "humanoid". They will attack any other characters with these traits.
+
+All characters (including your player) cannot harm anything that does not have one of these traits.
+
+Examples:
+The player cannot damage Rin (the girl) because the player is not unfriendly to any of Rin's traits.
+Rin's AOE attack won't damage the player
+Spiders won't attack slimes

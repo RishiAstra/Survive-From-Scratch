@@ -184,6 +184,8 @@ public class spawner : MonoBehaviour {
 		{
 			case SpawnShape.circle:
 				target = Random.insideUnitCircle * radius;
+				target.z = target.y;
+				target.y = 0;//swap y and z because unit circle is in the xy plane instead of xz plane
 				break;
 			case SpawnShape.rectangle:
 				target = new Vector3(Random.Range(-0.5f, 0.5f) * xs, 0, Random.Range(-0.5f, 0.5f) * zs);
