@@ -10,9 +10,16 @@ public class spawnPoint : MonoBehaviour {
 		Physics.Raycast (transform.position + Vector3.up * 100, -Vector3.up, out hit, 200, putOnTopOfThese);
 		transform.position = hit.point + Vector3.up;
 	}
-	
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireSphere(transform.position, 1f);
+		Gizmos.DrawLine(transform.position, transform.position - Vector3.up * 10);
+	}
+
 	// Update is called once per frame
-//	void Update () {
-//	
-//	}
+	//	void Update () {
+	//	
+	//	}
 }

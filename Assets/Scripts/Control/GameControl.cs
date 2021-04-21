@@ -48,6 +48,7 @@ public class GameControl : MonoBehaviour
 	public string mapScenePath;
 	public string controlSceneName;
 
+	public int money;
 	public TextMeshProUGUI mapLoadText;
 	public RectTransform mapLoadBar;
 	public Menu mapLoadScreen;
@@ -66,6 +67,7 @@ public class GameControl : MonoBehaviour
 	public InventoryUI mainInventoryUI;
 	public Menu craftInventory;
 	public Menu helpMenu;
+	public Menu shopMenu;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
@@ -649,6 +651,7 @@ public class GameControl : MonoBehaviour
 		{
 			username = username,
 			myId = GameControl.main.myPlayersId,
+			money = GameControl.main.money,
 			craftInventoryItems = crafting.craftInventory.items,
 			mainInventoryItems = GameControl.main.mainInventoryUI.target.items,
 		};
@@ -668,6 +671,7 @@ public class GameControl : MonoBehaviour
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
 			GameControl.main.myPlayersId = s.myId;
+			GameControl.main.money = s.money;
 			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
 			print("Loaded player: " + username);
 		}
@@ -749,6 +753,7 @@ public class PlayerSaveData
 {
 	public string username;
 	public long myId;//the id of the player owned, use this to load it
+	public int money;
 	public List<Item> craftInventoryItems;
 	public List<Item> mainInventoryItems;
 }

@@ -86,6 +86,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         UpdateIcon();//TODO: only use this when needed
         if(mouseOver && Input.GetMouseButtonDown(0))
 		{
+            parent.invClicked.Invoke(index);
             if(held.id == 0)
 			{
 				if (parent.take)
