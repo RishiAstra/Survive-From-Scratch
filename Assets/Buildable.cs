@@ -39,6 +39,7 @@ public class Buildable : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
+		if (!RegionSettings.main.allowBuilding) return;
 		BuildControl.main.building = true;
 		if (BuildControl.main.ghostFollower != null) BuildControl.main.ghostFollower.gameObject.SetActive(true);
 		if (Cursor.lockState == CursorLockMode.Locked)

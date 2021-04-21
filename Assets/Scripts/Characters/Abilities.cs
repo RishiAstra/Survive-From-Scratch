@@ -127,6 +127,8 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	public void Damage(float dmg, Collider cols, AttackType type, Vector3 damagePosition)//accouns for weakpoints in different armor pieces
 	{
+		if (!RegionSettings.main.allowCombat) return;
+
 		Armor a = armors.Count > 0 ? armors[0] : new Armor();//default to first
 		foreach(Armor t in armors)
 		{
@@ -156,7 +158,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	/// <param name="i"></param>
 	public void UseSkill(int i)
 	{
-		if (dead) return;
+		if (dead || !RegionSettings.main.allowCombat) return;
 		if (!busy)
 		{
 			busy = true;
