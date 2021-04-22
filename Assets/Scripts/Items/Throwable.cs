@@ -16,7 +16,7 @@ public class Throwable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (Input.GetMouseButtonDown(1))
+		if (RegionSettings.main.allowCombat && Input.GetMouseButtonDown(1))
 		{
 			//print(me.bob.inventory[me.bob.invSel].amount >= 1);
 			if (me.bob.inv.items[me.bob.invSel].amount >= 1)

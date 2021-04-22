@@ -107,8 +107,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pivot: {fileID: 6974772456654814007}
+  blockCamera:
+    serializedVersion: 2
+    m_Bits: 1
   offset: {x: 0, y: 0, z: 0}
   dist: 0
+  actualDist: 0
   minDist: 0
   maxDist: 10
   minX: -90
@@ -141,6 +145,7 @@ MonoBehaviour:
   m_StopNaN: 0
   m_Dithering: 0
   m_ClearDepth: 1
+  m_AllowXRRendering: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2

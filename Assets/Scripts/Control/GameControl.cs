@@ -57,8 +57,8 @@ public class GameControl : MonoBehaviour
 	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
 
-	public LayerMask collectibleLayerMask;
-	public LayerMask interactMask;
+	//public LayerMask collectibleLayerMask;
+	public LayerMask interactLayerMask;
 	public GameObject playerPrefab;
 	public GameObject playerPrefab2;
 	public bool usePlayerPrefab2;
@@ -488,33 +488,34 @@ public class GameControl : MonoBehaviour
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
 			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist + playerControl.cam.dist, collectibleLayerMask, QueryTriggerInteraction.Collide);
+			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist + playerControl.cam.dist, interactLayerMask, QueryTriggerInteraction.Collide);
 			if (hit.distance < playerControl.cam.dist) foundSomething = false;//this means that the item was found by placing it between the player and the camera. This is abusing camera distance to grab stuff from futher distances
-			bool foundCollectible = false;
-			Collectible c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
+			//bool foundIMouseHoverable = false;
+			IMouseHoverable c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
 
 			if (foundSomething)
 			{
 				GameObject g = hit.collider.gameObject;
-				c = g.GetComponentInParent<Collectible>();
+				c = g.GetComponentInParent<IMouseHoverable>();
 				if (c != null)
 				{
-					foundCollectible = true;
+					//foundIMouseHoverable = true;
+					c.OnMouseHoverFromRaycast();
 					//print("click me");
 					//c.MouseClickMe();
 				}
 			}
 
-			itemHoverInfo.SetActive(foundCollectible);
+			//itemHoverInfo.SetActive(foundIMouseHoverable);
 
-			if (foundCollectible)
-			{
-				if(itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
-				if (Input.GetKey(KeyCode.F))
-				{
-					c.MouseClickMe();
-				}
-			}
+			//if (foundIMouseHoverable)
+			//{
+			//	if(itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
+			//	if (Input.GetKey(KeyCode.F))
+			//	{
+			//		c.MouseClickMe();
+			//	}
+			//}
 
 			
 		}
@@ -757,4 +758,9 @@ public class PlayerSaveData
 	public int money;
 	public List<Item> craftInventoryItems;
 	public List<Item> mainInventoryItems;
+}
+
+public interface IMouseHoverable
+{
+	void OnMouseHoverFromRaycast();
 }

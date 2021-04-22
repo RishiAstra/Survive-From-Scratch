@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ShopKeeper : MonoBehaviour
+public class ShopKeeper : MonoBehaviour, IMouseHoverable
 {
-
-	private void OnMouseDown()
+	public void OnMouseHoverFromRaycast()
 	{
-		GameControl.main.shopMenu.ToggleMenu();
+		if (Input.GetMouseButtonDown(0))
+		{
+			GameControl.main.shopMenu.ToggleMenu();
+		}
 	}
+
+	//private void OnMouseDown()
+	//{
+	//	GameControl.main.shopMenu.ToggleMenu();
+	//}
 }

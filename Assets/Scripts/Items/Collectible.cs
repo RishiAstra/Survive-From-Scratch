@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ID))]
-public class Collectible : MonoBehaviour
+public class Collectible : MonoBehaviour, IMouseHoverable
 {
 	//public static Transform cam;
 	//public string idString;
@@ -65,6 +65,17 @@ public class Collectible : MonoBehaviour
 		}
 	}
 
+	public void OnMouseHoverFromRaycast()
+	{
+
+		GameControl.main.itemHoverInfo.SetActive(true);
+		//if (itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
+		if (Input.GetKey(KeyCode.F))
+		{
+			MouseClickMe();
+		}
+	}
+
 	//public void OnCollisionEnter(Collision collision)
 	//{
 	//	if (layerMask == (layerMask | (1 << collision.gameObject.layer)))//))(layerMask.value & collision.gameObject.layer) != int.MinValue)
@@ -90,9 +101,9 @@ public class Collectible : MonoBehaviour
 	//	if (layerMask == (layerMask | (1 << collision.gameObject.layer)))//))(layerMask.value & collision.gameObject.layer) != int.MinValue)
 	//	{
 	//		contacts--;
-			
+
 	//	}
-		
+
 	//	ac--;
 	//	if (collision.rigidbody!=null&&ac<=3)
 	//	{
