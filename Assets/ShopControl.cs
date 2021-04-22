@@ -60,6 +60,7 @@ public class ShopControl : MonoBehaviour
             if (ItemIcon.held.id == buy.item.id)
             {
                 ItemIcon.held.amount += buy.item.amount;
+                GameControl.main.money -= buy.price;
             }
         }
         

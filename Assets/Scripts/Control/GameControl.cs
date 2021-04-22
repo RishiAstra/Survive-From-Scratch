@@ -58,6 +58,7 @@ public class GameControl : MonoBehaviour
 	private float mapSceneLoadProgress;
 
 	public LayerMask collectibleLayerMask;
+	public LayerMask interactMask;
 	public GameObject playerPrefab;
 	public GameObject playerPrefab2;
 	public bool usePlayerPrefab2;
@@ -517,26 +518,26 @@ public class GameControl : MonoBehaviour
 
 			
 		}
-		if (Input.GetKey(KeyCode.F))
-		{
-			RaycastHit hit;
-			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+		//if (Input.GetKey(KeyCode.F))
+		//{
+		//	RaycastHit hit;
+		//	Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-			if (Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask))
-			{
-				GameObject g = hit.collider.gameObject;
-				Collectible c = g.GetComponent<Collectible>();
-				if (c != null)
-				{
-					//print("click me");
-					c.MouseClickMe();
-				}
-			}
-			else
-			{
-				//print("no hit");
-			}
-		}
+		//	if (Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask))
+		//	{
+		//		GameObject g = hit.collider.gameObject;
+		//		Collectible c = g.GetComponent<Collectible>();
+		//		if (c != null)
+		//		{
+		//			//print("click me");
+		//			c.MouseClickMe();
+		//		}
+		//	}
+		//	else
+		//	{
+		//		//print("no hit");
+		//	}
+		//}
 	}
 
 	public void SetUpPlayer(GameObject newPlayerObject)

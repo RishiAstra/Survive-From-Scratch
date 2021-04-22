@@ -6,12 +6,14 @@ using TMPro;
 
 public class MouseHeldItem : MonoBehaviour
 {
+    public static MouseHeldItem main;
+
     public Image img;
     public TextMeshProUGUI amountText;
     // Start is called before the first frame update
     void Start()
     {
-        
+        main = this;
     }
 
     // Update is called once per frame
