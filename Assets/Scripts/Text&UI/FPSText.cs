@@ -15,7 +15,7 @@ public class FPSText : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		sampleTimeLeft -= Time.deltaTime;
+		sampleTimeLeft -= Time.unscaledDeltaTime;
 		frames++;
 		if (sampleTimeLeft <= 0)
 		{

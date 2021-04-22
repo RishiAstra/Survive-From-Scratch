@@ -151,6 +151,20 @@ public class InventoryUI : MonoBehaviour
 		}
     }
 
+    public void DeselectAllSlots()
+	{
+        for(int i = 0; i < slotI.Count; i++)
+		{
+            slotI[i].selected = false;
+		}
+	}
+
+    public void SelectSlot(int index)
+	{
+        DeselectAllSlots();
+        slotI[index].selected = true;
+	}
+
     public void Refresh()
 	{
         throw new System.NotImplementedException();

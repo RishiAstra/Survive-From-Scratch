@@ -49,6 +49,7 @@ public class GameControl : MonoBehaviour
 	public string controlSceneName;
 
 	public int money;
+	public TextMeshProUGUI moneyText;
 	public TextMeshProUGUI mapLoadText;
 	public RectTransform mapLoadBar;
 	public Menu mapLoadScreen;
@@ -84,6 +85,7 @@ public class GameControl : MonoBehaviour
 	private Player me;
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
+	private IMouseHoverable previouslyMouseHovered;
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
@@ -422,6 +424,7 @@ public class GameControl : MonoBehaviour
 
 	private void Update()
     {
+		moneyText.text = "Money: " + money;
 		if (playerExists)
 		{
 			CursorLockUpdate();
@@ -504,6 +507,16 @@ public class GameControl : MonoBehaviour
 					//print("click me");
 					//c.MouseClickMe();
 				}
+
+				if(c != previouslyMouseHovered)
+				{
+					if(previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
+					previouslyMouseHovered = c;
+				}
+			}
+			else
+			{
+				if (previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
 			}
 
 			//itemHoverInfo.SetActive(foundIMouseHoverable);
@@ -744,6 +757,70 @@ public class GameControl : MonoBehaviour
 
 	#endregion
 
+	#region inventory
+	public bool GetItem(int id) { return GetItem(id, 1); }
+	public bool GetItem(int id, int amount)
+	{
+		//check if it can be put in hotbar
+		Inventory inv = hotBarUI.target;
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)
+			{
+				Item temp = inv.items[i];
+				temp.amount += amount;
+				inv.items[i] = temp;
+				//inv.items [i].amount += amount;
+
+				//TODO: this might require inventory to be refreshed
+				//if (invSel == i) {
+				//	RefreshSelected();
+				//	//SelectInv (invSel);
+				//}
+				return true;
+			}
+		}
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == 0)
+			{
+				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+				if (Player.main.invSel == i)
+				{
+
+					Player.main.RefreshSelected();
+					//SelectInv (invSel);
+				}
+				return true;
+			}
+		}
+
+		//check if it can be put in main inventory
+		inv = mainInventoryUI.target;
+
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)
+			{
+				Item temp = inv.items[i];
+				temp.amount += amount;
+				inv.items[i] = temp;
+				return true;
+			}
+		}
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == 0)
+			{
+				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+				return true;
+			}
+		}
+
+		return false;//failed to find space for the item
+	}
+	#endregion
+
 	private void OnApplicationQuit()
 	{
 		SaveStuff();
@@ -763,4 +840,5 @@ public class PlayerSaveData
 public interface IMouseHoverable
 {
 	void OnMouseHoverFromRaycast();
+	void OnMouseStopHoverFromRaycast();
 }

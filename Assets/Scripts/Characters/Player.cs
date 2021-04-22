@@ -543,35 +543,37 @@ public class Player : MonoBehaviour
 
 	//TODO: check if there is no place to put the item
 	//TODO: move these functions to Inventory.cs
-	public void GetItem(int id) { GetItem(id, 1); }
-	public void GetItem(int id, int amount){
-		for (int i = 0; i < inv.items.Count; i++) {
-			if(inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength-inv.items[i].strength)<0.01f){
-				Item temp = inv.items[i];
-				temp.amount += amount;
-				inv.items[i] = temp;
-				//inv.items [i].amount += amount;
+	//public bool GetItem(int id) { return GetItem(id, 1); }
+	//public bool GetItem(int id, int amount){
+	//	for (int i = 0; i < inv.items.Count; i++) {
+	//		if(inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength-inv.items[i].strength)<0.01f){
+	//			Item temp = inv.items[i];
+	//			temp.amount += amount;
+	//			inv.items[i] = temp;
+	//			//inv.items [i].amount += amount;
 
-				//TODO: this might require inventory to be refreshed
-				//if (invSel == i) {
-				//	RefreshSelected();
-				//	//SelectInv (invSel);
-				//}
-				return;
-			}
-		}
-		for (int i = 0; i < inv.items.Count; i++) {
-			if(inv.items[i].id == 0){
-				inv.items [i] = new Item (id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
-				if (invSel == i) {
+	//			//TODO: this might require inventory to be refreshed
+	//			//if (invSel == i) {
+	//			//	RefreshSelected();
+	//			//	//SelectInv (invSel);
+	//			//}
+	//			return true;
+	//		}
+	//	}
+	//	for (int i = 0; i < inv.items.Count; i++) {
+	//		if(inv.items[i].id == 0){
+	//			inv.items [i] = new Item (id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+	//			if (invSel == i) {
 					
-					RefreshSelected();
-					//SelectInv (invSel);
-				}
-				return;
-			}
-		}
-	}
+	//				RefreshSelected();
+	//				//SelectInv (invSel);
+	//			}
+	//			return true;
+	//		}
+	//	}
+
+	//	return false;//failed to find space for the item
+	//}
 	/// <summary>
 	/// Removes 1 item from stack at given index
 	/// </summary>

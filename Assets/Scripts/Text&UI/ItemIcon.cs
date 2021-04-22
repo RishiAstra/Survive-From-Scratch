@@ -87,6 +87,8 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if(mouseOver && Input.GetMouseButtonDown(0))
 		{
             parent.invClicked.Invoke(index);
+
+            //you have nothing, want to grab
             if(held.id == 0)
 			{
 				if (parent.take)
@@ -101,6 +103,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 			}
 			else
 			{
+                //you have something, want to take or add
                 //add the stacks of items (add the 2 items' amounts to make 1 item)
                 //TODO: WARNING integer overflow (unlikely) or undesirably large "stacks" possible
                 //TODO: WARNING any swap with same id is allowed
@@ -131,7 +134,9 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 }
 				else//this also handles putting items in an empty inventory slot
 				{
-					if (parent.put && parent.take)
+                    //you have something different, want to swap
+                    //you can swap if both put and take, or if put and you're swapping with empty slot
+					if (parent.put && (parent.take || parent.items[index].id == 0))
 					{
                         //swap
                         Item temp = held;

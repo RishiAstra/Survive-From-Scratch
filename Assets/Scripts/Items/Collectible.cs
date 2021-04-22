@@ -55,8 +55,14 @@ public class Collectible : MonoBehaviour, IMouseHoverable
 	{
 		if (Player.main != null)
 		{
-			Player.main.GetItem(myID.id, amount);
-			Destroy(gameObject);
+			if(GameControl.main.GetItem(myID.id, amount))//Player
+			{
+				Destroy(gameObject);
+			}
+			else
+			{
+				Debug.LogWarning("Inventory full");
+			}
 			return;
 		}
 		else
@@ -74,6 +80,11 @@ public class Collectible : MonoBehaviour, IMouseHoverable
 		{
 			MouseClickMe();
 		}
+	}
+
+	public void OnMouseStopHoverFromRaycast()
+	{
+		//don't care if mouse isn't over this, but need function for interface
 	}
 
 	//public void OnCollisionEnter(Collision collision)
