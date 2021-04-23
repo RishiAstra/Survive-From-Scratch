@@ -23,9 +23,11 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private bool mouseOver;
     public bool selected;
+    private RectTransform rt;
     // Start is called before the first frame update
     void Start()
     {
+        rt = GetComponent<RectTransform>();
         UpdateIcon();
     }
 
@@ -252,10 +254,16 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         mouseOver = true;
+
+        if(parent.items[index].id != 0 && parent.items[index].amount > 0)
+		{
+            GameControl.main.ShowInfo(parent.items[index], rt);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         mouseOver = false;
+        GameControl.main.HideInfo(rt);
     }
 }

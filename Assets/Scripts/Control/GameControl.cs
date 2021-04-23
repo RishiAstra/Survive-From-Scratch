@@ -87,7 +87,7 @@ public class GameControl : MonoBehaviour
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
 	private IMouseHoverable previouslyMouseHovered;
-	private RectTransform itemInfoTarget;
+	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
@@ -104,9 +104,9 @@ public class GameControl : MonoBehaviour
 		HideMenus();
 		mapScreen.TryActivateMenu();
 		helpMenu.TryActivateMenu();
-		
-		//mapScreen.SetActive(true);
 
+		//mapScreen.SetActive(true);
+		HideInfo();
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
 		InitializeItemTypes();
@@ -121,10 +121,12 @@ public class GameControl : MonoBehaviour
 		itemInfoTarget = target;//this must have a iteminfoUI on it!
 		ItemInfoUI.main.SetInfo(i);
 
-		Vector2 position = itemInfoTarget.rect.center;
-		Vector2 screensize = new Vector2(Screen.width, Screen.height) * mainCanvas.scaleFactor;
-		Vector2 infosize = itemInfoTransform.sizeDelta;
-		Vector2 targetsize = target.sizeDelta;
+		float scale = mainCanvas.scaleFactor;//.GetComponent<CanvasScaler>().scaleFactor;
+
+		Vector2 position = target.position;
+		Vector2 screensize = new Vector2(Screen.width, Screen.height);// * scale;// / scale;// * mainCanvas.scaleFactor;mainCanvas.GetComponent<CanvasScaler>().referenceResolution;// 
+		Vector2 infosize = itemInfoTransform.sizeDelta * itemInfoTransform.lossyScale;
+		Vector2 targetsize = target.sizeDelta * target.lossyScale;
 		Vector2 size = infosize + targetsize;
 
 
@@ -134,10 +136,13 @@ public class GameControl : MonoBehaviour
 		float left = position.x - size.x / 2f;
 		float bottom = position.y - size.y / 2f;
 
-		bool rightoverlap = right > screensize.x;
-		bool topoverlap = top > screensize.y;
-		bool leftoverlap = left < 0f;
-		bool bottomoverlap = bottom < 0f;
+		bool rightoverlap = right + infosize.x / 2f> screensize.x;
+		bool topoverlap = top + infosize.y / 2f > screensize.y;
+		bool leftoverlap = left - infosize.x / 2f < 0f;
+		bool bottomoverlap = bottom - infosize.y / 2f < 0f;
+
+		print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
+
 
 		//if the text should be placed to the bottom right of the target
 		bool chooseRight = true;
@@ -172,9 +177,14 @@ public class GameControl : MonoBehaviour
 	{
 		if(itemInfoTarget == target)
 		{
-			itemInfoTarget = null;
-			itemInfoTransform.gameObject.SetActive(false);
+			HideInfo();
 		}
+	}
+
+	private void HideInfo()
+	{
+		itemInfoTarget = null;
+		itemInfoTransform.gameObject.SetActive(false);
 	}
 
 	IEnumerator LoadPlayerInitial()
@@ -188,7 +198,7 @@ public class GameControl : MonoBehaviour
 		mapLoadScreen.TryDeactivateMenu();
 		mapScreen.TryDeactivateMenu();
 		craftInventory.TryDeactivateMenu();
-
+		HideInfo();
 		//mapLoadScreen.SetActive(false);
 		//mapScreen.SetActive(false);
 		//craftInventory.SetActive(false);
