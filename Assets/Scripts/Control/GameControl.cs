@@ -147,7 +147,7 @@ public class GameControl : MonoBehaviour
 		bool leftoverlap = lo > 0f;// left - infosize.x / 2f < 0f;
 		bool bottomoverlap = bo > 0f;// bottom - infosize.y / 2f < 0f;
 
-		print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
+		//print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
 
 
 		//if the text should be placed to the bottom right of the target
@@ -233,6 +233,7 @@ public class GameControl : MonoBehaviour
 		mapLoadScreen.TryDeactivateMenu();
 		mapScreen.TryDeactivateMenu();
 		craftInventory.TryDeactivateMenu();
+		shopMenu.TryDeactivateMenu();
 		HideInfo();
 		//mapLoadScreen.SetActive(false);
 		//mapScreen.SetActive(false);
@@ -538,15 +539,24 @@ public class GameControl : MonoBehaviour
 		{
 			CursorLockUpdate();
 
+			//E is also button to close menus
 			if (Input.GetKeyDown(KeyCode.E))
 			{
-				craftInventory.ToggleMenu();
-				if (!craftInventory.gameObject.activeSelf)
+				if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
 				{
-					//try transfering to the hotbar first, then to the main inventory
-					Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
-					Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
+					HideMenus();
 				}
+				else
+				{
+					craftInventory.ToggleMenu();
+					if (!craftInventory.gameObject.activeSelf)
+					{
+						//try transfering to the hotbar first, then to the main inventory
+						Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
+						Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
+					}
+				}				
+				
 				
 				//if (craftInventory.activeSelf)
 				//{
@@ -562,6 +572,7 @@ public class GameControl : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.M))
 			{
+				if (!mapScreen.gameObject.activeSelf) HideMenus();
 				mapScreen.ToggleMenu();
 
 				//if (mapScreen.activeSelf)
