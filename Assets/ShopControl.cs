@@ -70,6 +70,7 @@ public class ShopControl : MonoBehaviour
             {
                 GameControl.main.money += GetSellPrice(i);// sellDeals[i].price;
                 sellInventory.items[0] = new Item();
+                sellPriceText.text = "Sell for: --";
                 return;
             }
         }
