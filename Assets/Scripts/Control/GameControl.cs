@@ -136,10 +136,16 @@ public class GameControl : MonoBehaviour
 		float left = position.x - size.x / 2f;
 		float bottom = position.y - size.y / 2f;
 
-		bool rightoverlap = right + infosize.x / 2f> screensize.x;
-		bool topoverlap = top + infosize.y / 2f > screensize.y;
-		bool leftoverlap = left - infosize.x / 2f < 0f;
-		bool bottomoverlap = bottom - infosize.y / 2f < 0f;
+		//the amount that it would overlap
+		float ro = (right + infosize.x / 2f) - screensize.x;
+		float to = (top + infosize.y / 2f) - screensize.y;
+		float lo = -(left - infosize.x / 2f);
+		float bo = -(bottom - infosize.y / 2f);
+
+		bool rightoverlap = ro > 0f;// right + infosize.x / 2f> screensize.x;
+		bool topoverlap = to > 0f;// top + infosize.y / 2f > screensize.y;
+		bool leftoverlap = lo > 0f;// left - infosize.x / 2f < 0f;
+		bool bottomoverlap = bo > 0f;// bottom - infosize.y / 2f < 0f;
 
 		print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
 
@@ -150,6 +156,8 @@ public class GameControl : MonoBehaviour
 
 		if (rightoverlap && !leftoverlap) chooseRight = false;
 		if (bottomoverlap && !topoverlap) chooseBottom = false;
+
+		
 
 		//make the final position based on the previous calculations
 		Vector2 pos = new Vector2();
@@ -169,6 +177,33 @@ public class GameControl : MonoBehaviour
 		{
 			pos.y = top;
 		}
+
+
+		if (rightoverlap && leftoverlap)
+		{
+			if(ro > lo)
+			{
+				pos.x = infosize.x / 2f;
+			}
+			else
+			{
+				pos.x = screensize.x - infosize.x / 2f;
+			}
+			
+		}
+
+		if (topoverlap && bottomoverlap)
+		{
+			if (to > bo)
+			{
+				pos.y = infosize.y / 2f;
+			}
+			else
+			{
+				pos.y = screensize.y - infosize.y / 2f;
+			}
+		}
+
 		//assign this position
 		itemInfoTransform.position = pos;
 	}

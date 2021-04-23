@@ -16,6 +16,7 @@ public class ItemInfoUI : MonoBehaviour
     void Awake()
     {
         main = this;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 
     public void SetInfo(Item i)
