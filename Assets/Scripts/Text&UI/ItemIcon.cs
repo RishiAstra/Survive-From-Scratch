@@ -40,7 +40,8 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 		else
 		{
             img.color = Color.white;
-            img.sprite = GameControl.itemTypes[parent.items[index].id].icon;
+            int id = parent.items[index].id;
+            img.sprite = (id >= 0 && id < GameControl.itemTypes.Count) ? GameControl.itemTypes[id].icon : GameControl.itemTypes[0].icon;
             amountText.text = parent.items[index].amount.ToString();
 			selectedGameObject.SetActive(selected);
         }        
@@ -149,6 +150,104 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
                 }
 			}
 		}
+
+
+        //right click in inventory
+
+        if (mouseOver && Input.GetMouseButtonDown(1))
+        {
+            parent.invClicked.Invoke(index);
+
+            //you have nothing, want to grab half
+            //TODO: checking id might not be enough, held.amount might become 0
+            if (held.id == 0)
+            {
+                if (parent.take)
+                {
+                    int toTake = Mathf.CeilToInt(parent.items[index].amount / 2.0f);
+                    Item parentItem = parent.items[index];
+                    parentItem.amount -= toTake;
+
+                    held = parent.items[index];
+                    held.amount = toTake;
+
+                    //held = parent.items[index];
+                    parent.items[index] = parentItem;// new Item();
+					heldFrom = this;
+					parent.invChange.Invoke(index);
+                    UpdateIcon();
+                }
+            }
+            else
+            {
+                //you have something, want to take or add
+                //add the stacks of items (add the 2 items' amounts to make 1 item)
+                //TODO: WARNING integer overflow (unlikely) or undesirably large "stacks" possible
+                //TODO: WARNING any swap with same id is allowed
+                //TODO: consider not allowing crafting item to be taken unless enough resources, if not, return resources
+                if (held.id == parent.items[index].id)
+                {
+                    //if same id, try to place that item
+                    if (parent.put)
+                    {
+                        Item tempItem = parent.items[index];
+                        tempItem.amount += 1;// held.amount;
+                        held.amount -= 1;
+                        if (held.amount <= 0)
+						{
+							held = new Item();
+                            heldFrom = null;
+                        }
+
+                        parent.items[index] = tempItem;
+                        //held = new Item();
+                        parent.invChange.Invoke(index);
+                        UpdateIcon();
+                    }
+                    //else if (parent.take)//otherwise, try to take that item and add it to held
+                    //{
+                    //    Item tempItem = held;// parent.items[index];
+                    //    tempItem.amount += parent.items[index].amount;// held.amount;
+                    //    held = tempItem;
+                    //    //parent.items[index] = tempItem;
+                    //    parent.items[index] = new Item();
+                    //    //heldFrom = null;
+                    //    parent.invChange.Invoke(index);
+                    //    UpdateIcon();
+                    //}
+                }
+                else//this also handles putting items in an empty inventory slot
+                {
+                    //you have something different, want to swap
+                    //you can swap if both put and take, or if put and you're swapping with empty slot
+                    if (parent.put && parent.items[index].id == 0)
+                    {
+
+                        //Item tempItem = new Item(held.id, 1, 0, 0);
+                        //tempItem.amount += 1;// held.amount;
+                        held.amount -= 1;
+                        if (held.amount <= 0)
+                        {
+                            held = new Item();
+                            heldFrom = null;
+                        }
+                        parent.items[index] = new Item(held.id, 1, 0, 0);
+                        //held = new Item();
+                        parent.invChange.Invoke(index);
+                        UpdateIcon();
+                        
+
+                        //swap
+                        //Item temp = held;
+                        //held = parent.items[index];
+                        //parent.items[index] = temp;
+                        //parent.invChange.Invoke(index);
+                        //UpdateIcon();
+                    }
+
+                }
+            }
+        }
     }
     public void OnPointerEnter(PointerEventData eventData)
     {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a2a391b1540771b428036fb8926778e8
+guid: 85a0dafd4e9c6a140b82b451a74ce522
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -7,7 +7,7 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
-    sRGBTexture: 0
+    sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
-  streamingMipmaps: 1
+  streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
   grayScaleToAlpha: 0
@@ -32,12 +32,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
-    aniso: 3
-    mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    filterMode: -1
+    aniso: 2
+    mipBias: -100
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
@@ -52,7 +52,7 @@ TextureImporter:
   alphaUsage: 1
   alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 12
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -65,7 +65,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1

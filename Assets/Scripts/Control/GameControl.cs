@@ -78,6 +78,7 @@ public class GameControl : MonoBehaviour
 	public TMPro.TextMeshProUGUI mainHpText;
 	public Canvas mainCanvas;
 	public Vector2 mouseSensitivity;
+	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
 
 	public GameObject camGameObject;
 	
@@ -86,6 +87,7 @@ public class GameControl : MonoBehaviour
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
 	private IMouseHoverable previouslyMouseHovered;
+	private RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
@@ -111,6 +113,68 @@ public class GameControl : MonoBehaviour
 		Save.Initialize();
 
 		StartCoroutine(LoadPlayerInitial());
+	}
+
+	public void ShowInfo(Item i, RectTransform target)
+	{
+		itemInfoTransform.gameObject.SetActive(true);
+		itemInfoTarget = target;//this must have a iteminfoUI on it!
+		ItemInfoUI.main.SetInfo(i);
+
+		Vector2 position = itemInfoTarget.rect.center;
+		Vector2 screensize = new Vector2(Screen.width, Screen.height) * mainCanvas.scaleFactor;
+		Vector2 infosize = itemInfoTransform.sizeDelta;
+		Vector2 targetsize = target.sizeDelta;
+		Vector2 size = infosize + targetsize;
+
+
+		//these bools represent if the info text would fit there
+		float right = position.x + size.x / 2f;
+		float top = position.y + size.y / 2f;
+		float left = position.x - size.x / 2f;
+		float bottom = position.y - size.y / 2f;
+
+		bool rightoverlap = right > screensize.x;
+		bool topoverlap = top > screensize.y;
+		bool leftoverlap = left < 0f;
+		bool bottomoverlap = bottom < 0f;
+
+		//if the text should be placed to the bottom right of the target
+		bool chooseRight = true;
+		bool chooseBottom = true;
+
+		if (rightoverlap && !leftoverlap) chooseRight = false;
+		if (bottomoverlap && !topoverlap) chooseBottom = false;
+
+		//make the final position based on the previous calculations
+		Vector2 pos = new Vector2();
+		if (chooseRight)
+		{
+			pos.x = right;
+		}
+		else
+		{
+			pos.x = left;
+		}
+		if (chooseBottom)
+		{
+			pos.y = bottom;
+		}
+		else
+		{
+			pos.y = top;
+		}
+		//assign this position
+		itemInfoTransform.position = pos;
+	}
+
+	public void HideInfo(RectTransform target)
+	{
+		if(itemInfoTarget == target)
+		{
+			itemInfoTarget = null;
+			itemInfoTransform.gameObject.SetActive(false);
+		}
 	}
 
 	IEnumerator LoadPlayerInitial()
