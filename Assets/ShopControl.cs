@@ -33,6 +33,11 @@ public class ShopControl : MonoBehaviour
 
         shopInventoryUI.InitializeSlots();
         sellInventoryUI.InitializeSlots();
+
+        for (int i = 0; i < buyDeals.Count; i++)
+        {
+            shopInventoryUI.slotT[i].GetComponent<ShopItemUI>().Setup(buyDeals[i]);
+        }
     }
 
 	void TrySetSell(int index)

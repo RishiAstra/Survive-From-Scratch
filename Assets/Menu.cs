@@ -54,7 +54,7 @@ public class Menu : MonoBehaviour
 		{
 			TimeControl.main.SetTimeScale(0, "menu");
 		}
-		GameControl.main.TryUnlockCursor();
+		if(GameControl.main != null) GameControl.main.TryUnlockCursor();
 		//print("activated menu: " + gameObject.name + ", " + openMenuCount);
 	}
 

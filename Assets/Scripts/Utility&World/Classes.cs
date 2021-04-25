@@ -105,6 +105,8 @@ namespace bobStuff
 	public struct ItemType
 	{
 		public string name;
+		[TextArea(5, 5)]
+		public string description;
 		[NonSerialized]
 		public Sprite icon;//icon to display in inventory
 						   //public ItemTag Cat;
@@ -115,16 +117,16 @@ namespace bobStuff
 		public GameObject equipPrefab;
 		public float strength;
 
-		public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
-		{
-			this.name = name;
-			this.icon = icon;
-			this.prefab = prefab;
-			this.equipPrefab = equipPrefab;
-			//this.type = type;
-			this.strength = strength;
-			this.tags = tags;
-		}
+		//public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
+		//{
+		//	this.name = name;
+		//	this.icon = icon;
+		//	this.prefab = prefab;
+		//	this.equipPrefab = equipPrefab;
+		//	//this.type = type;
+		//	this.strength = strength;
+		//	this.tags = tags;
+		//}
 
 		public static bool Same(ItemType a, ItemType b)
 		{

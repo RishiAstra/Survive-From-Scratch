@@ -117,9 +117,16 @@ public class GameControl : MonoBehaviour
 
 	public void ShowInfo(Item i, RectTransform target)
 	{
-		itemInfoTransform.gameObject.SetActive(true);
+		StartCoroutine(ShowItemIEnumerator(i, target));
+	}
+
+	private IEnumerator ShowItemIEnumerator(Item i, RectTransform target)
+	{
+		itemInfoTransform.gameObject.SetActive(false);
 		itemInfoTarget = target;//this must have a iteminfoUI on it!
 		ItemInfoUI.main.SetInfo(i);
+		yield return null;//wait 1 frame
+		itemInfoTransform.gameObject.SetActive(true);
 
 		float scale = mainCanvas.scaleFactor;//.GetComponent<CanvasScaler>().scaleFactor;
 
@@ -157,7 +164,7 @@ public class GameControl : MonoBehaviour
 		if (rightoverlap && !leftoverlap) chooseRight = false;
 		if (bottomoverlap && !topoverlap) chooseBottom = false;
 
-		
+
 
 		//make the final position based on the previous calculations
 		Vector2 pos = new Vector2();
@@ -181,7 +188,7 @@ public class GameControl : MonoBehaviour
 
 		if (rightoverlap && leftoverlap)
 		{
-			if(ro > lo)
+			if (ro > lo)
 			{
 				pos.x = infosize.x / 2f;
 			}
@@ -189,7 +196,7 @@ public class GameControl : MonoBehaviour
 			{
 				pos.x = screensize.x - infosize.x / 2f;
 			}
-			
+
 		}
 
 		if (topoverlap && bottomoverlap)

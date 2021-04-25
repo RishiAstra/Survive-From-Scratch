@@ -23,11 +23,12 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private bool mouseOver;
     public bool selected;
-    private RectTransform rt;
+    [Tooltip("The recttransform of this ItemIcon, defaults to attached")]
+    public RectTransform rt;
     // Start is called before the first frame update
     void Start()
     {
-        rt = GetComponent<RectTransform>();
+        if(rt == null) rt = GetComponent<RectTransform>();
         UpdateIcon();
     }
 

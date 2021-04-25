@@ -12,25 +12,33 @@ public class ItemInfoUI : MonoBehaviour
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
     public Image itemIcon;
+    public RectTransform rt;
     // Start is called before the first frame update
     void Awake()
     {
         main = this;
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        //rt = GetComponent<RectTransform>();
+        //if (gameObject.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }
 
     public void SetInfo(Item i)
 	{
         ItemType t = GameControl.itemTypes[i.id];
         itemNameText.text = t.name;
+        itemDescriptionText.text = t.description;
         itemIcon.sprite = t.icon;
 
         //immediately update the size etc of this
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        if(gameObject.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }
 
-    // Update is called once per frame
-    void Update()
+	private void OnEnable()
+	{
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+    }
+
+	// Update is called once per frame
+	void Update()
     {
         
     }

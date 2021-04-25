@@ -13,9 +13,18 @@ public class gameControllEditor : Editor
 	public static bool showTypes = false;
 
 	public static List<bool> show = new List<bool>();
+	GUIStyle tempStyle;
 	GameControl t;
 	public override void OnInspectorGUI()
 	{
+		if(tempStyle == null)
+		{
+			tempStyle = new GUIStyle(EditorStyles.textArea)
+			{
+				wordWrap = true,
+			};
+		}
+
 		t = (GameControl)target;
 		GameControl.CheckItemTypes();
 		bool refreshItemTypeMap = false;
@@ -35,6 +44,8 @@ public class gameControllEditor : Editor
 					EditorGUI.indentLevel += 2;
 					ItemType item = GameControl.itemTypes[i];
 					item.name = EditorGUILayout.TextField("name", item.name);
+					EditorGUILayout.LabelField("description");
+					item.description = EditorGUILayout.TextArea(item.description == null? "" : item.description, tempStyle);
 					//public Texture2D Icon;//icon to display in inventory
 					//public ItemCatagory Cat;
 					item.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", item.prefab, typeof(GameObject), false);

@@ -8,8 +8,8 @@ public class InventoryUI : MonoBehaviour
 {
     public Inventory target;
     public GameObject slotPrefab;
-    public float preferedSize;
-    public float defaultSize;//used to scale
+    public Vector2 preferedSize;
+    public Vector2 defaultSize;//used to scale
     public RectTransform slotBounds;
     //public Transform slotParent;
     public int w, h;
@@ -18,15 +18,15 @@ public class InventoryUI : MonoBehaviour
     public List<RectTransform> slotT;
     public List<ItemIcon> slotI;
 
-    private float slotSize;
     private int pSize = -1;
-    private float size;
+    private Vector2 size;
     private float initialHeight;
     private float maxSlotSizeX;
     private float maxSlotSizeY;
     private float initialYPadding;//space around the top and bottom initially, used for overflowDown auto readjusting height of scrollable
     private Vector2 initialSizeDeta;
     private bool initialized;
+	public bool allowYPadding = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -61,8 +61,8 @@ public class InventoryUI : MonoBehaviour
 		//print(slotBounds.rect.ToString());
         maxSlotSizeX = slotBounds.rect.width / w;
         maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
-        size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
-        initialYPadding = slotBounds.rect.height - h * size;
+		SetSize();// size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
+        initialYPadding = allowYPadding ? slotBounds.rect.height - h * size.y : 0;
         initialSizeDeta = slotBounds.sizeDelta;
         //print(slotBounds.sizeDelta);
         initialHeight = slotBounds.rect.height;
@@ -88,14 +88,14 @@ public class InventoryUI : MonoBehaviour
 	{
 		maxSlotSizeX = slotBounds.rect.width / w;
 		maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
-		size = Mathf.Min(maxSlotSizeX, maxSlotSizeY, preferedSize);
-  //      if(overflowDown && size * h > slotBounds.rect.height)
+		SetSize();
+		//      if(overflowDown && size * h > slotBounds.rect.height)
 		//{
-  //          slotBounds.sizeDelta += new Vector2(0, size * h - slotBounds.rect.height);
+		//          slotBounds.sizeDelta += new Vector2(0, size * h - slotBounds.rect.height);
 		//}
 		//adjust the height if needed
 		int yRequired = Mathf.CeilToInt(((float)target.items.Count) / (float)w);
-        float heightRequired = yRequired * size + initialYPadding;
+		float heightRequired = yRequired * size.y + initialYPadding;
 		//if(overflowDown)print(heightRequired);
 		//if (heightRequired > slotBounds.rect.height)
 		//{
@@ -111,38 +111,53 @@ public class InventoryUI : MonoBehaviour
 
 		if (slotT.Count > target.items.Count)
 		{
-            //delete excess slots
-            for(int i = slotT.Count - 1; i > target.items.Count - 1; i--)
+			//delete excess slots
+			for (int i = slotT.Count - 1; i > target.items.Count - 1; i--)
 			{
-                Destroy(slotT[i].gameObject);
-                slotT.RemoveAt(i);
-                slotI.RemoveAt(i);
+				Destroy(slotT[i].gameObject);
+				slotT.RemoveAt(i);
+				slotI.RemoveAt(i);
 			}
 		}
-        else if (slotT.Count < target.items.Count)
+		else if (slotT.Count < target.items.Count)
 		{
-            for (int i = slotT.Count; i < target.items.Count; i++)
-            {
-                GameObject g = Instantiate(slotPrefab, slotBounds);
-                //g.transform.SetParent(slotBounds);
-                //g.GetComponent<Transform>().SetParent(slotBounds);
-                slotT.Add(g.GetComponent<RectTransform>());
-                slotI.Add(g.GetComponent<ItemIcon>());
-                int x = i % w;
-                int y = Mathf.FloorToInt(i / w);
+			for (int i = slotT.Count; i < target.items.Count; i++)
+			{
+				GameObject g = Instantiate(slotPrefab, slotBounds);
+				//g.transform.SetParent(slotBounds);
+				//g.GetComponent<Transform>().SetParent(slotBounds);
+				slotT.Add(g.GetComponent<RectTransform>());
+				slotI.Add(g.GetComponentInChildren<ItemIcon>());
+				int x = i % w;
+				int y = Mathf.FloorToInt(i / w);
 
-                slotT[i].anchorMin = new Vector2(0.5f, 1f);
-                slotT[i].anchorMax = slotT[i].anchorMin;
-                slotT[i].anchoredPosition = new Vector2(size * (x - (w - 1) / 2f), -size * y - initialYPadding / 2f - size / 2f);// new Vector2(size * (x - (w - 1) / 2f), -size * (y - (h - 1) / 2f));
-                slotT[i].localScale = new Vector3(size, size, size) / defaultSize;
-                slotI[i].parent = target;
-                slotI[i].index = i;
-            }
-        }
+				slotT[i].anchorMin = new Vector2(0.5f, 1f);
+				slotT[i].anchorMax = slotT[i].anchorMin;
+				slotT[i].anchoredPosition = new Vector2(size.x * (x - (w - 1) / 2f), -size.y * y - initialYPadding / 2f - size.y / 2f);// new Vector2(size * (x - (w - 1) / 2f), -size * (y - (h - 1) / 2f));
+				slotT[i].localScale = (Vector3)(size / defaultSize) + new Vector3(0, 0, 1);//make scale in z 1
+				if(slotT[i].localScale.x == 0) print(slotT[i].localScale + "|" + size);
+				slotI[i].parent = target;
+				slotI[i].index = i;
+			}
+		}
 	}
 
-    // Update is called once per frame
-    void Update()
+	private void SetSize()
+	{
+		//max sizes separately for x and y
+		float sizex = Mathf.Min(maxSlotSizeX, preferedSize.x);
+		float sizey = Mathf.Min(maxSlotSizeY, preferedSize.y);
+		//calculate ratio y/x
+		float yx = defaultSize.y / defaultSize.x;
+		//find the max width from the minimum sizes for x and y and the ratio
+		float maxXsize = Mathf.Min(sizex, sizey/yx);
+
+		//make size
+		size = new Vector2(maxXsize, maxXsize * yx);
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         if(initialized && target != null && target.items.Count != pSize)
 		{
