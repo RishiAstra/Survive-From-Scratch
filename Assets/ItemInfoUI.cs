@@ -16,7 +16,7 @@ public class ItemInfoUI : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        main = this;
+        main = this;//TODO:warning: race condition vs gamecontrol
         //rt = GetComponent<RectTransform>();
         //if (gameObject.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }
@@ -28,13 +28,13 @@ public class ItemInfoUI : MonoBehaviour
         itemDescriptionText.text = t.description;
         itemIcon.sprite = t.icon;
 
-        //immediately update the size etc of this
-        if(gameObject.activeInHierarchy) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
-    }
+		//immediately update the size etc of this
+		LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+	}
 
 	private void OnEnable()
 	{
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+        //LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
     }
 
 	// Update is called once per frame

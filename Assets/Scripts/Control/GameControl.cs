@@ -48,6 +48,7 @@ public class GameControl : MonoBehaviour
 	public string mapScenePath;
 	public string controlSceneName;
 
+	public ItemInfoUI mainItemInfoUI;
 	public int money;
 	public TextMeshProUGUI moneyText;
 	public TextMeshProUGUI mapLoadText;
@@ -91,6 +92,7 @@ public class GameControl : MonoBehaviour
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
+		ItemInfoUI.main = mainItemInfoUI;
 		if (usePlayerPrefab2) playerPrefab = playerPrefab2;
 		if (main != null) Debug.LogError("two gameControls");
 		main = this;
@@ -117,7 +119,99 @@ public class GameControl : MonoBehaviour
 
 	public void ShowInfo(Item i, RectTransform target)
 	{
-		StartCoroutine(ShowItemIEnumerator(i, target));
+		//StartCoroutine(ShowItemIEnumerator(i, target));
+
+		itemInfoTransform.gameObject.SetActive(true);
+		itemInfoTarget = target;//this must have a iteminfoUI on it!
+		ItemInfoUI.main.SetInfo(i);
+		itemInfoTransform.ForceUpdateRectTransforms();
+		//itemInfoTransform.gameObject.SetActive(true);
+
+		float scale = mainCanvas.scaleFactor;//.GetComponent<CanvasScaler>().scaleFactor;
+
+		Vector2 position = target.position;
+		Vector2 screensize = new Vector2(Screen.width, Screen.height);// * scale;// / scale;// * mainCanvas.scaleFactor;mainCanvas.GetComponent<CanvasScaler>().referenceResolution;// 
+		Vector2 infosize = itemInfoTransform.sizeDelta * itemInfoTransform.lossyScale;
+		Vector2 targetsize = target.sizeDelta * target.lossyScale;
+		Vector2 size = infosize + targetsize;
+
+
+		//these bools represent if the info text would fit there
+		float right = position.x + size.x / 2f;
+		float top = position.y + size.y / 2f;
+		float left = position.x - size.x / 2f;
+		float bottom = position.y - size.y / 2f;
+
+		//the amount that it would overlap
+		float ro = (right + infosize.x / 2f) - screensize.x;
+		float to = (top + infosize.y / 2f) - screensize.y;
+		float lo = -(left - infosize.x / 2f);
+		float bo = -(bottom - infosize.y / 2f);
+
+		bool rightoverlap = ro > 0f;// right + infosize.x / 2f> screensize.x;
+		bool topoverlap = to > 0f;// top + infosize.y / 2f > screensize.y;
+		bool leftoverlap = lo > 0f;// left - infosize.x / 2f < 0f;
+		bool bottomoverlap = bo > 0f;// bottom - infosize.y / 2f < 0f;
+
+		//print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
+
+
+		//if the text should be placed to the bottom right of the target
+		bool chooseRight = true;
+		bool chooseBottom = true;
+
+		if (rightoverlap && !leftoverlap) chooseRight = false;
+		if (bottomoverlap && !topoverlap) chooseBottom = false;
+
+
+
+		//make the final position based on the previous calculations
+		Vector2 pos = new Vector2();
+		if (chooseRight)
+		{
+			pos.x = right;
+		}
+		else
+		{
+			pos.x = left;
+		}
+		if (chooseBottom)
+		{
+			pos.y = bottom;
+		}
+		else
+		{
+			pos.y = top;
+		}
+
+
+		if (rightoverlap && leftoverlap)
+		{
+			if (ro > lo)
+			{
+				pos.x = infosize.x / 2f;
+			}
+			else
+			{
+				pos.x = screensize.x - infosize.x / 2f;
+			}
+
+		}
+
+		if (topoverlap && bottomoverlap)
+		{
+			if (to > bo)
+			{
+				pos.y = infosize.y / 2f;
+			}
+			else
+			{
+				pos.y = screensize.y - infosize.y / 2f;
+			}
+		}
+
+		//assign this position
+		itemInfoTransform.position = pos;
 	}
 
 	private IEnumerator ShowItemIEnumerator(Item i, RectTransform target)
