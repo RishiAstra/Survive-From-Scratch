@@ -18,27 +18,44 @@ public class ShopControl : MonoBehaviour
     public List<ShopItem> buyDeals;
     public List<ShopItem> sellDeals;//NOTE: don't put 2 of the same item in here
 
+	public int mult = 1;
     // Start is called before the first frame update
     void Start()
-    {
-        shopInventory.invClicked.AddListener(TrySetBuy);
-        shopInventory.items = new List<Item>();
-        for(int i = 0; i < buyDeals.Count; i++)
+	{
+		shopInventory.invClicked.AddListener(TrySetBuy);
+		shopInventory.items = new List<Item>();
+		for (int i = 0; i < buyDeals.Count; i++)
 		{
-            shopInventory.items.Add(buyDeals[i].item);
+			shopInventory.items.Add(buyDeals[i].item);
 		}
 		sellInventory.invChange.AddListener(TrySetSell);
 		sellInventory.items = new List<Item>();
-        sellInventory.items.Add(new Item());
+		sellInventory.items.Add(new Item());
 
-        shopInventoryUI.InitializeSlots();
-        sellInventoryUI.InitializeSlots();
+		shopInventoryUI.InitializeSlots();
+		sellInventoryUI.InitializeSlots();
 
-        for (int i = 0; i < buyDeals.Count; i++)
-        {
-            shopInventoryUI.slotT[i].GetComponent<ShopItemUI>().Setup(buyDeals[i]);
-        }
-    }
+		//UpdateShopInventoryUI();
+		SetBuyMult(1);
+	}
+
+	public void SetBuyMult(int newMult)
+	{
+		mult = newMult;
+		TrySetBuy(buyDealSelected);//update the buy text
+		UpdateShopInventoryUI();
+	}
+
+	private void UpdateShopInventoryUI()
+	{
+		for (int i = 0; i < buyDeals.Count; i++)
+		{
+			ShopItem s = buyDeals[i];
+			s.item.amount *= mult;
+			s.price *= mult;
+			shopInventoryUI.slotT[i].GetComponent<ShopItemUI>().Setup(s);
+		}
+	}
 
 	void TrySetSell(int index)
 	{
@@ -87,7 +104,11 @@ public class ShopControl : MonoBehaviour
         shopInventoryUI.SelectSlot(index);
         if (buyDealSelected >= 0 && buyDealSelected < buyDeals.Count)
 		{
-			buyPriceText.text = "Buy for: " + buyDeals[index].price;
+			buyPriceText.text = "Buy x" + mult + " for: " + buyDeals[index].price * mult;
+		}
+		else
+		{
+			buyPriceText.text = "Buy x" + mult + " for: --";
 		}
 		//      ShopItem buy = buyDeals[index];
 		//      int cost = buy.price;
@@ -113,6 +134,8 @@ public class ShopControl : MonoBehaviour
         if (buyDealSelected < 0 || buyDealSelected >= buyDeals.Count) return;
 
         ShopItem buy = buyDeals[buyDealSelected];
+		buy.price *= mult;
+		buy.item.amount *= mult;
         if (GameControl.main.money >= buy.price)
         {
             //get it if u can, then if u succeeded, take the money

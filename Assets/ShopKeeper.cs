@@ -6,6 +6,11 @@ using UnityEngine.Events;
 public class ShopKeeper : MonoBehaviour, IMouseHoverable
 {
 	public GameObject onHover;
+
+	private void Start()
+	{
+		onHover.SetActive(false);
+	}
 	public void OnMouseHoverFromRaycast()
 	{
 		if (onHover != null) onHover.SetActive(true);

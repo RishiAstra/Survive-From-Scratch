@@ -177,7 +177,7 @@ public class InventoryUI : MonoBehaviour
     public void SelectSlot(int index)
 	{
         DeselectAllSlots();
-        slotI[index].selected = true;
+        if(index >= 0 && index < slotI.Count) slotI[index].selected = true;
 	}
 
     public void Refresh()
