@@ -212,7 +212,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	public string GetData()
 	{
 		SaveDataAbilities s = new SaveDataAbilities(stat, maxStat);
-		return JsonConvert.SerializeObject(s, Formatting.Indented);
+		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(string data)

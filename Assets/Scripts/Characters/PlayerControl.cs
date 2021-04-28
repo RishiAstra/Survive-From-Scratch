@@ -97,7 +97,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 	public string GetData()
 	{
 		SaveDataPlayerControl s = new SaveDataPlayerControl(playerOwnerName);
-		return JsonConvert.SerializeObject(s, Formatting.Indented);
+		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(string data)

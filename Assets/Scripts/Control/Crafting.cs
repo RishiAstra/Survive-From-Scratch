@@ -267,7 +267,7 @@ public class Crafting : MonoBehaviour
 
 	public void SaveRecipies()
     {
-        File.WriteAllText(recipiesPath, JsonConvert.SerializeObject(recipies.ToArray(), Formatting.Indented));
+        File.WriteAllText(recipiesPath, JsonConvert.SerializeObject(recipies.ToArray(), Formatting.Indented, Save.jsonSerializerSettings));
         Debug.Log("Saved Recipies");
     }
 

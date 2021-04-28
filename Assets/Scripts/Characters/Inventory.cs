@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour, ISaveable
 	public string GetData()
 	{
 		SaveDataInventory s = new SaveDataInventory(items);
-		return JsonConvert.SerializeObject(s, Formatting.Indented);
+		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(string data)

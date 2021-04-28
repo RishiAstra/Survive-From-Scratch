@@ -893,7 +893,7 @@ public class GameControl : MonoBehaviour
 		};
 		string path1 = Authenticator.GetAccountPath(username);
 		if (!Directory.Exists(path1)) Directory.CreateDirectory(path1);//TODO: warning this is bad, allows making account folders without registering
-		File.WriteAllText(path1 + "data.json", JsonConvert.SerializeObject(s, Formatting.Indented));
+		File.WriteAllText(path1 + "data.json", JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings));
 		Debug.Log("Saved player data for username: " + username);
 	}
 
@@ -935,7 +935,7 @@ public class GameControl : MonoBehaviour
 
 	public static void SaveItemTypes()
 	{
-		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented));
+		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented, Save.jsonSerializerSettings));
 		Debug.Log("Saved ItemTypes");
 	}
 

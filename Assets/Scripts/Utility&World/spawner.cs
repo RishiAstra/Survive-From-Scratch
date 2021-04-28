@@ -75,6 +75,11 @@ public class spawner : MonoBehaviour {
 		StartCoroutine(InitialSpawning());
 	}
 
+	private void OnDestroy()
+	{
+		Save.OnLoadedType -= Save_OnLoadedType;
+	}
+
 	private IEnumerator InitialSpawning()
 	{
 		while (GameControl.loading || spawnThis == null) yield return null;
@@ -110,7 +115,7 @@ public class spawner : MonoBehaviour {
 			Directory.CreateDirectory(savePath);
 		}
 
-		File.WriteAllText(saveFile, JsonConvert.SerializeObject(SaveData(), Formatting.Indented));
+		File.WriteAllText(saveFile, JsonConvert.SerializeObject(SaveData(), Formatting.Indented, Save.jsonSerializerSettings));
 	}
 
 	public static void SaveAllSpawners()
