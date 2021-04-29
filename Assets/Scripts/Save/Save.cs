@@ -6,9 +6,15 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Newtonsoft.Json;
 
 public abstract class Save : MonoBehaviour
 {
+	public static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()
+	{
+		ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+	};
+
 	public static bool readEverything;
 	public static long nextId = 1;
 	public static bool readNextId;

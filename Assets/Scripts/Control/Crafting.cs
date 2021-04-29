@@ -54,13 +54,63 @@ public class Crafting : MonoBehaviour
         craftInventory.take = true;
         craftInventory.put = true;
 
-        craftResult.invChange.AddListener(OnItemCraft);
-        craftResult.take = true;
+        //craftResult.invChange.AddListener(OnItemCraft);
+        craftResult.invClicked.AddListener(TryCraftItem);
+        craftResult.take = false;// true;
         craftResult.put = false;
         OnCraftInventoryChanged(0);
     }
 
-    public void OnCraftInventoryChanged(int itemIndex)
+	private void TryCraftItem(int itemIndex)
+	{
+        Recipie r = recipies[recipieIndexes[itemIndex]];
+
+        bool heldItemIsEmpty = ItemIcon.held.id == 0 || ItemIcon.held.amount == 0;
+        bool heldItemSameType = ItemIcon.held.id == r.result.id;
+
+        if (!heldItemIsEmpty && !heldItemSameType) return;//can't craft if holding something different from result
+
+        if(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+		{
+            while (CanCraftRecipie(recipieIndexes[itemIndex]))
+            {
+                heldItemIsEmpty = ItemIcon.held.id == 0 || ItemIcon.held.amount == 0;
+                heldItemSameType = ItemIcon.held.id == r.result.id;
+                if (heldItemIsEmpty)
+				{
+                    ItemIcon.held = r.result;
+				}else if (heldItemSameType)
+				{
+                    ItemIcon.held.amount += r.result.amount;
+				}
+				else
+				{
+                    Debug.LogError("Couldn't craft for some reason");
+                    return;
+				}
+                RemoveCraftingIngredients(recipieIndexes[itemIndex]);
+            }
+		}
+		else
+		{
+            if (heldItemIsEmpty)
+            {
+                ItemIcon.held = r.result;
+            }
+            else if (heldItemSameType)
+            {
+                ItemIcon.held.amount += r.result.amount;
+            }
+            else
+            {
+                Debug.LogError("Couldn't craft for some reason");
+                return;
+            }
+            RemoveCraftingIngredients(recipieIndexes[itemIndex]);
+        }
+	}
+
+	public void OnCraftInventoryChanged(int itemIndex)
 	{
         RefreshCraftableRecipies();
 	}
@@ -79,28 +129,28 @@ public class Crafting : MonoBehaviour
         //go through all recipies
         for (int i = 0; i < recipies.Count; i++)
         {
-            bool canMakeThis = true;
+            bool canMakeThis = CanCraftRecipie(i);// true;
             //go through the required ingredients
-            for (int j = 0; j < recipies[i].ingredients.Count; j++)
-            {
-                int count = 0;
-                //go through the craft inventory to find the ingredients
-                for (int k = 0; k < craftInventory.items.Count; k++)
-                {
-                    if(craftInventory.items[k].id == recipies[i].ingredients[j].id)
-					{
-                        count += craftInventory.items[k].amount;
+    //        for (int j = 0; j < recipies[i].ingredients.Count; j++)
+    //        {
+    //            int count = 0;
+    //            //go through the craft inventory to find the ingredients
+    //            for (int k = 0; k < craftInventory.items.Count; k++)
+    //            {
+    //                if(craftInventory.items[k].id == recipies[i].ingredients[j].id)
+				//	{
+    //                    count += craftInventory.items[k].amount;
 
-                    }
-                }
+    //                }
+    //            }
 
-                //if too little of this ingredient, cannot craft this, break (move on to the next recipie in the i recipies.Count forloop)
-                if(count < recipies[i].ingredients[j].amount)
-				{
-                    canMakeThis = false;
-                    break;
-				}
-            }
+    //            //if too little of this ingredient, cannot craft this, break (move on to the next recipie in the i recipies.Count forloop)
+    //            if(count < recipies[i].ingredients[j].amount)
+				//{
+    //                canMakeThis = false;
+    //                break;
+				//}
+    //        }
 
             if (canMakeThis)
 			{
@@ -108,6 +158,31 @@ public class Crafting : MonoBehaviour
                 recipieIndexes.Add(i);
 			}
 		}
+    }
+
+    public bool CanCraftRecipie(int indexInRecepies)
+	{
+        for (int j = 0; j < recipies[indexInRecepies].ingredients.Count; j++)
+        {
+            int count = 0;
+            //go through the craft inventory to find the ingredients
+            for (int k = 0; k < craftInventory.items.Count; k++)
+            {
+                if (craftInventory.items[k].id == recipies[indexInRecepies].ingredients[j].id)
+                {
+                    count += craftInventory.items[k].amount;
+
+                }
+            }
+
+            //if too little of this ingredient, cannot craft this, break (move on to the next recipie in the i recipies.Count forloop)
+            if (count < recipies[indexInRecepies].ingredients[j].amount)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void RemoveCraftingIngredients(int index)
@@ -192,7 +267,7 @@ public class Crafting : MonoBehaviour
 
 	public void SaveRecipies()
     {
-        File.WriteAllText(recipiesPath, JsonConvert.SerializeObject(recipies.ToArray(), Formatting.Indented));
+        File.WriteAllText(recipiesPath, JsonConvert.SerializeObject(recipies.ToArray(), Formatting.Indented, Save.jsonSerializerSettings));
         Debug.Log("Saved Recipies");
     }
 

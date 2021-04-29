@@ -8,11 +8,13 @@ public class Cam : MonoBehaviour
 
 	//public Player myPlayer;
 	public Transform pivot;
+	public LayerMask blockCamera;
 	//public float wait;
 	//public Vector2 mouseSensitivity;
 	//public bool invertMouseY;
 	public Vector3 offset;
 	public float dist;
+	public float actualDist;
 	public float minDist;
 	public float maxDist;
 	//public float scrollSencitivity;
@@ -45,6 +47,20 @@ public class Cam : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		transform.localPosition = offset * Mathf.Lerp(transform.localPosition.magnitude, dist, ZOOM_LERP_SPEED);
+		
+
+		RaycastHit hit;
+
+		if(Physics.Raycast(pivot.position, transform.TransformVector(offset), out hit, dist, blockCamera))
+		{
+			//hit.distance;
+			actualDist = Mathf.Clamp(dist, minDist, hit.distance);
+		}
+		else
+		{
+			actualDist = dist;
+		}
+
+		transform.localPosition = offset * Mathf.Lerp(transform.localPosition.magnitude, actualDist, ZOOM_LERP_SPEED);
 	}
 }

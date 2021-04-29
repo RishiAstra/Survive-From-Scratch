@@ -181,7 +181,7 @@ public class SaveItem : Save
 		{
 			string path = savePath + i.Key + "/";
 			Directory.CreateDirectory(path);
-			File.WriteAllText(path + i.Key + ".json", JsonConvert.SerializeObject(toSave[i.Value], Formatting.Indented));
+			File.WriteAllText(path + i.Key + ".json", JsonConvert.SerializeObject(toSave[i.Value], Formatting.Indented, Save.jsonSerializerSettings));
 		}
 
 		////save next id

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ID))]
-public class Collectible : MonoBehaviour
+public class Collectible : MonoBehaviour, IMouseHoverable
 {
 	//public static Transform cam;
 	//public string idString;
@@ -55,14 +55,36 @@ public class Collectible : MonoBehaviour
 	{
 		if (Player.main != null)
 		{
-			Player.main.GetItem(myID.id, amount);
-			Destroy(gameObject);
+			if(GameControl.main.GetItem(myID.id, amount))//Player
+			{
+				Destroy(gameObject);
+			}
+			else
+			{
+				Debug.LogWarning("Inventory full");
+			}
 			return;
 		}
 		else
 		{
 			Debug.LogError("Can't find player owned by this device");
 		}
+	}
+
+	public void OnMouseHoverFromRaycast()
+	{
+
+		GameControl.main.itemHoverInfo.SetActive(true);
+		//if (itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
+		if (Input.GetKey(KeyCode.F))
+		{
+			MouseClickMe();
+		}
+	}
+
+	public void OnMouseStopHoverFromRaycast()
+	{
+		//don't care if mouse isn't over this, but need function for interface
 	}
 
 	//public void OnCollisionEnter(Collision collision)
@@ -90,9 +112,9 @@ public class Collectible : MonoBehaviour
 	//	if (layerMask == (layerMask | (1 << collision.gameObject.layer)))//))(layerMask.value & collision.gameObject.layer) != int.MinValue)
 	//	{
 	//		contacts--;
-			
+
 	//	}
-		
+
 	//	ac--;
 	//	if (collision.rigidbody!=null&&ac<=3)
 	//	{

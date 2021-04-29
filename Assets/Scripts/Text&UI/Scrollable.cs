@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Scrollable : MonoBehaviour
 {
-    private RectTransform rt;
-    private RectTransform prt;
+    private RectTransform rt;//my recttransform
+    private RectTransform prt;//parent's
     private Vector2 initialAnchorPos;
     // Start is called before the first frame update
     void Start()

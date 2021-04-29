@@ -21,6 +21,7 @@ public class Inventory : MonoBehaviour, ISaveable
 	public IntUnityEvent invChange;//called when the inventory is changed (trigger this by script, manual inspector change won't trigger this)
 								   //public InventoryUI ui;
 								   // Start is called before the first frame update
+	public IntUnityEvent invClicked;
 	void Awake()
 	{
 		if (items.Count == 0)
@@ -58,7 +59,7 @@ public class Inventory : MonoBehaviour, ISaveable
 	public string GetData()
 	{
 		SaveDataInventory s = new SaveDataInventory(items);
-		return JsonConvert.SerializeObject(s, Formatting.Indented);
+		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(string data)

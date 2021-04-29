@@ -34,7 +34,8 @@ public class ItemEditorUI : PropertyDrawer
 
         //var nameRect = new Rect(position.x + 90, position.y, position.width - 90, position.height);
 
-        string currentName = GameControl.itemTypes[property.FindPropertyRelative("id").intValue].name;
+        int id = property.FindPropertyRelative("id").intValue;
+        string currentName = (id >= 0 && id < GameControl.itemTypes.Count) ? GameControl.itemTypes[id].name : "Error";
 
         string newName = EditorGUI.TextArea(nameRect, currentName);
         //EditorGUI.

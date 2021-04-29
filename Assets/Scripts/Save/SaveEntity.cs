@@ -589,7 +589,7 @@ public class SaveEntity : Save, ISaveable
 		}
 
 		Directory.CreateDirectory(entitySceneMapPath);
-		File.WriteAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json", JsonConvert.SerializeObject(mapData, Formatting.Indented));
+		File.WriteAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json", JsonConvert.SerializeObject(mapData, Formatting.Indented, Save.jsonSerializerSettings));
 
 		//string path = Application.persistentDataPath + "/nextid.txt";
 		////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
@@ -618,7 +618,7 @@ public class SaveEntity : Save, ISaveable
 			position = transform.position,
 			rotation = transform.eulerAngles,
 		};
-		return JsonConvert.SerializeObject(s, Formatting.Indented);
+		return JsonConvert.SerializeObject(s, Formatting.Indented, jsonSerializerSettings);
 	}
 
 	public void SetData(string data)

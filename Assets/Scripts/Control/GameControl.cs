@@ -48,6 +48,9 @@ public class GameControl : MonoBehaviour
 	public string mapScenePath;
 	public string controlSceneName;
 
+	public ItemInfoUI mainItemInfoUI;
+	public int money;
+	public TextMeshProUGUI moneyText;
 	public TextMeshProUGUI mapLoadText;
 	public RectTransform mapLoadBar;
 	public Menu mapLoadScreen;
@@ -56,7 +59,8 @@ public class GameControl : MonoBehaviour
 	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
 
-	public LayerMask collectibleLayerMask;
+	//public LayerMask collectibleLayerMask;
+	public LayerMask interactLayerMask;
 	public GameObject playerPrefab;
 	public GameObject playerPrefab2;
 	public bool usePlayerPrefab2;
@@ -66,6 +70,7 @@ public class GameControl : MonoBehaviour
 	public InventoryUI mainInventoryUI;
 	public Menu craftInventory;
 	public Menu helpMenu;
+	public Menu shopMenu;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
@@ -74,6 +79,7 @@ public class GameControl : MonoBehaviour
 	public TMPro.TextMeshProUGUI mainHpText;
 	public Canvas mainCanvas;
 	public Vector2 mouseSensitivity;
+	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
 
 	public GameObject camGameObject;
 	
@@ -81,9 +87,12 @@ public class GameControl : MonoBehaviour
 	private Player me;
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
+	private IMouseHoverable previouslyMouseHovered;
+	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
 	void Awake(){
+		ItemInfoUI.main = mainItemInfoUI;
 		if (usePlayerPrefab2) playerPrefab = playerPrefab2;
 		if (main != null) Debug.LogError("two gameControls");
 		main = this;
@@ -97,15 +106,221 @@ public class GameControl : MonoBehaviour
 		HideMenus();
 		mapScreen.TryActivateMenu();
 		helpMenu.TryActivateMenu();
-		
-		//mapScreen.SetActive(true);
 
+		//mapScreen.SetActive(true);
+		HideInfo();
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
 		InitializeItemTypes();
 		Save.Initialize();
 
 		StartCoroutine(LoadPlayerInitial());
+	}
+
+	public void ShowInfo(Item i, RectTransform target)
+	{
+		//StartCoroutine(ShowItemIEnumerator(i, target));
+
+		itemInfoTransform.gameObject.SetActive(true);
+		itemInfoTarget = target;//this must have a iteminfoUI on it!
+		ItemInfoUI.main.SetInfo(i);
+		itemInfoTransform.ForceUpdateRectTransforms();
+		//itemInfoTransform.gameObject.SetActive(true);
+
+		float scale = mainCanvas.scaleFactor;//.GetComponent<CanvasScaler>().scaleFactor;
+
+		Vector2 position = target.position;
+		Vector2 screensize = new Vector2(Screen.width, Screen.height);// * scale;// / scale;// * mainCanvas.scaleFactor;mainCanvas.GetComponent<CanvasScaler>().referenceResolution;// 
+		Vector2 infosize = itemInfoTransform.sizeDelta * itemInfoTransform.lossyScale;
+		Vector2 targetsize = target.sizeDelta * target.lossyScale;
+		Vector2 size = infosize + targetsize;
+
+
+		//these bools represent if the info text would fit there
+		float right = position.x + size.x / 2f;
+		float top = position.y + size.y / 2f;
+		float left = position.x - size.x / 2f;
+		float bottom = position.y - size.y / 2f;
+
+		//the amount that it would overlap
+		float ro = (right + infosize.x / 2f) - screensize.x;
+		float to = (top + infosize.y / 2f) - screensize.y;
+		float lo = -(left - infosize.x / 2f);
+		float bo = -(bottom - infosize.y / 2f);
+
+		bool rightoverlap = ro > 0f;// right + infosize.x / 2f> screensize.x;
+		bool topoverlap = to > 0f;// top + infosize.y / 2f > screensize.y;
+		bool leftoverlap = lo > 0f;// left - infosize.x / 2f < 0f;
+		bool bottomoverlap = bo > 0f;// bottom - infosize.y / 2f < 0f;
+
+		//print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
+
+
+		//if the text should be placed to the bottom right of the target
+		bool chooseRight = true;
+		bool chooseBottom = true;
+
+		if (rightoverlap && !leftoverlap) chooseRight = false;
+		if (bottomoverlap && !topoverlap) chooseBottom = false;
+
+
+
+		//make the final position based on the previous calculations
+		Vector2 pos = new Vector2();
+		if (chooseRight)
+		{
+			pos.x = right;
+		}
+		else
+		{
+			pos.x = left;
+		}
+		if (chooseBottom)
+		{
+			pos.y = bottom;
+		}
+		else
+		{
+			pos.y = top;
+		}
+
+
+		if (rightoverlap && leftoverlap)
+		{
+			if (ro > lo)
+			{
+				pos.x = infosize.x / 2f;
+			}
+			else
+			{
+				pos.x = screensize.x - infosize.x / 2f;
+			}
+
+		}
+
+		if (topoverlap && bottomoverlap)
+		{
+			if (to > bo)
+			{
+				pos.y = infosize.y / 2f;
+			}
+			else
+			{
+				pos.y = screensize.y - infosize.y / 2f;
+			}
+		}
+
+		//assign this position
+		itemInfoTransform.position = pos;
+	}
+
+	private IEnumerator ShowItemIEnumerator(Item i, RectTransform target)
+	{
+		itemInfoTransform.gameObject.SetActive(false);
+		itemInfoTarget = target;//this must have a iteminfoUI on it!
+		ItemInfoUI.main.SetInfo(i);
+		yield return null;//wait 1 frame
+		itemInfoTransform.gameObject.SetActive(true);
+
+		float scale = mainCanvas.scaleFactor;//.GetComponent<CanvasScaler>().scaleFactor;
+
+		Vector2 position = target.position;
+		Vector2 screensize = new Vector2(Screen.width, Screen.height);// * scale;// / scale;// * mainCanvas.scaleFactor;mainCanvas.GetComponent<CanvasScaler>().referenceResolution;// 
+		Vector2 infosize = itemInfoTransform.sizeDelta * itemInfoTransform.lossyScale;
+		Vector2 targetsize = target.sizeDelta * target.lossyScale;
+		Vector2 size = infosize + targetsize;
+
+
+		//these bools represent if the info text would fit there
+		float right = position.x + size.x / 2f;
+		float top = position.y + size.y / 2f;
+		float left = position.x - size.x / 2f;
+		float bottom = position.y - size.y / 2f;
+
+		//the amount that it would overlap
+		float ro = (right + infosize.x / 2f) - screensize.x;
+		float to = (top + infosize.y / 2f) - screensize.y;
+		float lo = -(left - infosize.x / 2f);
+		float bo = -(bottom - infosize.y / 2f);
+
+		bool rightoverlap = ro > 0f;// right + infosize.x / 2f> screensize.x;
+		bool topoverlap = to > 0f;// top + infosize.y / 2f > screensize.y;
+		bool leftoverlap = lo > 0f;// left - infosize.x / 2f < 0f;
+		bool bottomoverlap = bo > 0f;// bottom - infosize.y / 2f < 0f;
+
+		//print(position + "|" + targetsize + "|" + scale + "|" + rightoverlap + "|" + topoverlap + "|" + leftoverlap + "|" + bottomoverlap);
+
+
+		//if the text should be placed to the bottom right of the target
+		bool chooseRight = true;
+		bool chooseBottom = true;
+
+		if (rightoverlap && !leftoverlap) chooseRight = false;
+		if (bottomoverlap && !topoverlap) chooseBottom = false;
+
+
+
+		//make the final position based on the previous calculations
+		Vector2 pos = new Vector2();
+		if (chooseRight)
+		{
+			pos.x = right;
+		}
+		else
+		{
+			pos.x = left;
+		}
+		if (chooseBottom)
+		{
+			pos.y = bottom;
+		}
+		else
+		{
+			pos.y = top;
+		}
+
+
+		if (rightoverlap && leftoverlap)
+		{
+			if (ro > lo)
+			{
+				pos.x = infosize.x / 2f;
+			}
+			else
+			{
+				pos.x = screensize.x - infosize.x / 2f;
+			}
+
+		}
+
+		if (topoverlap && bottomoverlap)
+		{
+			if (to > bo)
+			{
+				pos.y = infosize.y / 2f;
+			}
+			else
+			{
+				pos.y = screensize.y - infosize.y / 2f;
+			}
+		}
+
+		//assign this position
+		itemInfoTransform.position = pos;
+	}
+
+	public void HideInfo(RectTransform target)
+	{
+		if(itemInfoTarget == target)
+		{
+			HideInfo();
+		}
+	}
+
+	private void HideInfo()
+	{
+		itemInfoTarget = null;
+		itemInfoTransform.gameObject.SetActive(false);
 	}
 
 	IEnumerator LoadPlayerInitial()
@@ -119,7 +334,8 @@ public class GameControl : MonoBehaviour
 		mapLoadScreen.TryDeactivateMenu();
 		mapScreen.TryDeactivateMenu();
 		craftInventory.TryDeactivateMenu();
-
+		shopMenu.TryDeactivateMenu();
+		HideInfo();
 		//mapLoadScreen.SetActive(false);
 		//mapScreen.SetActive(false);
 		//craftInventory.SetActive(false);
@@ -419,19 +635,29 @@ public class GameControl : MonoBehaviour
 
 	private void Update()
     {
+		moneyText.text = "Money: " + money;
 		if (playerExists)
 		{
 			CursorLockUpdate();
 
+			//E is also button to close menus
 			if (Input.GetKeyDown(KeyCode.E))
 			{
-				craftInventory.ToggleMenu();
-				if (!craftInventory.gameObject.activeSelf)
+				if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
 				{
-					//try transfering to the hotbar first, then to the main inventory
-					Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
-					Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
+					HideMenus();
 				}
+				else
+				{
+					craftInventory.ToggleMenu();
+					if (!craftInventory.gameObject.activeSelf)
+					{
+						//try transfering to the hotbar first, then to the main inventory
+						Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
+						Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
+					}
+				}				
+				
 				
 				//if (craftInventory.activeSelf)
 				//{
@@ -447,6 +673,7 @@ public class GameControl : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.M))
 			{
+				if (!mapScreen.gameObject.activeSelf) HideMenus();
 				mapScreen.ToggleMenu();
 
 				//if (mapScreen.activeSelf)
@@ -485,56 +712,67 @@ public class GameControl : MonoBehaviour
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
 			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist + playerControl.cam.dist, collectibleLayerMask, QueryTriggerInteraction.Collide);
+			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist + playerControl.cam.dist, interactLayerMask, QueryTriggerInteraction.Collide);
 			if (hit.distance < playerControl.cam.dist) foundSomething = false;//this means that the item was found by placing it between the player and the camera. This is abusing camera distance to grab stuff from futher distances
-			bool foundCollectible = false;
-			Collectible c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
+			//bool foundIMouseHoverable = false;
+			IMouseHoverable c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
 
 			if (foundSomething)
 			{
 				GameObject g = hit.collider.gameObject;
-				c = g.GetComponentInParent<Collectible>();
+				c = g.GetComponentInParent<IMouseHoverable>();
 				if (c != null)
 				{
-					foundCollectible = true;
+					//foundIMouseHoverable = true;
+					c.OnMouseHoverFromRaycast();
 					//print("click me");
 					//c.MouseClickMe();
 				}
-			}
 
-			itemHoverInfo.SetActive(foundCollectible);
-
-			if (foundCollectible)
-			{
-				if(itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
-				if (Input.GetKey(KeyCode.F))
+				if(c != previouslyMouseHovered)
 				{
-					c.MouseClickMe();
-				}
-			}
-
-			
-		}
-		if (Input.GetKey(KeyCode.F))
-		{
-			RaycastHit hit;
-			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-			if (Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask))
-			{
-				GameObject g = hit.collider.gameObject;
-				Collectible c = g.GetComponent<Collectible>();
-				if (c != null)
-				{
-					//print("click me");
-					c.MouseClickMe();
+					if(previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
+					previouslyMouseHovered = c;
 				}
 			}
 			else
 			{
-				//print("no hit");
+				if (previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
 			}
+
+			//itemHoverInfo.SetActive(foundIMouseHoverable);
+
+			//if (foundIMouseHoverable)
+			//{
+			//	if(itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
+			//	if (Input.GetKey(KeyCode.F))
+			//	{
+			//		c.MouseClickMe();
+			//	}
+			//}
+
+			
 		}
+		//if (Input.GetKey(KeyCode.F))
+		//{
+		//	RaycastHit hit;
+		//	Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+		//	if (Physics.Raycast(ray, out hit, Player.main.grabDist, collectibleLayerMask))
+		//	{
+		//		GameObject g = hit.collider.gameObject;
+		//		Collectible c = g.GetComponent<Collectible>();
+		//		if (c != null)
+		//		{
+		//			//print("click me");
+		//			c.MouseClickMe();
+		//		}
+		//	}
+		//	else
+		//	{
+		//		//print("no hit");
+		//	}
+		//}
 	}
 
 	public void SetUpPlayer(GameObject newPlayerObject)
@@ -649,12 +887,13 @@ public class GameControl : MonoBehaviour
 		{
 			username = username,
 			myId = GameControl.main.myPlayersId,
+			money = GameControl.main.money,
 			craftInventoryItems = crafting.craftInventory.items,
 			mainInventoryItems = GameControl.main.mainInventoryUI.target.items,
 		};
 		string path1 = Authenticator.GetAccountPath(username);
 		if (!Directory.Exists(path1)) Directory.CreateDirectory(path1);//TODO: warning this is bad, allows making account folders without registering
-		File.WriteAllText(path1 + "data.json", JsonConvert.SerializeObject(s, Formatting.Indented));
+		File.WriteAllText(path1 + "data.json", JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings));
 		Debug.Log("Saved player data for username: " + username);
 	}
 
@@ -668,6 +907,7 @@ public class GameControl : MonoBehaviour
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
 			GameControl.main.myPlayersId = s.myId;
+			GameControl.main.money = s.money;
 			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
 			print("Loaded player: " + username);
 		}
@@ -695,7 +935,7 @@ public class GameControl : MonoBehaviour
 
 	public static void SaveItemTypes()
 	{
-		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented));
+		File.WriteAllText(itemTypePath, JsonConvert.SerializeObject(itemTypes.ToArray(), Formatting.Indented, Save.jsonSerializerSettings));
 		Debug.Log("Saved ItemTypes");
 	}
 
@@ -738,6 +978,70 @@ public class GameControl : MonoBehaviour
 
 	#endregion
 
+	#region inventory
+	public bool GetItem(int id) { return GetItem(id, 1); }
+	public bool GetItem(int id, int amount)
+	{
+		//check if it can be put in hotbar
+		Inventory inv = hotBarUI.target;
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)
+			{
+				Item temp = inv.items[i];
+				temp.amount += amount;
+				inv.items[i] = temp;
+				//inv.items [i].amount += amount;
+
+				//TODO: this might require inventory to be refreshed
+				//if (invSel == i) {
+				//	RefreshSelected();
+				//	//SelectInv (invSel);
+				//}
+				return true;
+			}
+		}
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == 0)
+			{
+				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+				if (Player.main.invSel == i)
+				{
+
+					Player.main.RefreshSelected();
+					//SelectInv (invSel);
+				}
+				return true;
+			}
+		}
+
+		//check if it can be put in main inventory
+		inv = mainInventoryUI.target;
+
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)
+			{
+				Item temp = inv.items[i];
+				temp.amount += amount;
+				inv.items[i] = temp;
+				return true;
+			}
+		}
+		for (int i = 0; i < inv.items.Count; i++)
+		{
+			if (inv.items[i].id == 0)
+			{
+				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+				return true;
+			}
+		}
+
+		return false;//failed to find space for the item
+	}
+	#endregion
+
 	private void OnApplicationQuit()
 	{
 		SaveStuff();
@@ -749,6 +1053,13 @@ public class PlayerSaveData
 {
 	public string username;
 	public long myId;//the id of the player owned, use this to load it
+	public int money;
 	public List<Item> craftInventoryItems;
 	public List<Item> mainInventoryItems;
+}
+
+public interface IMouseHoverable
+{
+	void OnMouseHoverFromRaycast();
+	void OnMouseStopHoverFromRaycast();
 }
