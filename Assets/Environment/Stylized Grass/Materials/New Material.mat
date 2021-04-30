@@ -21,14 +21,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: New Material
-  m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
+  m_Shader: {fileID: 4800000, guid: 4176fcdd70c37824e88b6a4a1632a654, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -114,7 +113,7 @@ Material:
     - GPU_FRUSTUM: 1
     - TOUCH_BEND: 1
     - _AlphaClip: 1
-    - _AlphaCutoff: 0.144
+    - _AlphaCutoff: 0.333
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0

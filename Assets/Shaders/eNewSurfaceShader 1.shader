@@ -9,7 +9,7 @@ Shader "Custom/eNewSurfaceShader 1"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque"}
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalRenderPipeline" }
         LOD 200
 
         CGPROGRAM
