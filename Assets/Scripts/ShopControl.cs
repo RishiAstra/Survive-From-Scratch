@@ -17,6 +17,7 @@ public class ShopControl : MonoBehaviour
     public int buyDealSelected = -1;
     public TextMeshProUGUI sellPriceText;
     public TextMeshProUGUI buyPriceText;
+	public GameObject doesNotBuyWarning;
     public List<ShopItem> buyDeals;
     public List<ShopItem> sellDeals;//NOTE: don't put 2 of the same item in here
 
@@ -63,9 +64,11 @@ public class ShopControl : MonoBehaviour
 
 	void TrySetSell(int index)
 	{
+		
 		if (sellInventory.items[0].id == 0)
 		{
-            sellPriceText.text = "Sell for: --";
+			doesNotBuyWarning.SetActive(false);
+			sellPriceText.text = "Sell for: --";
             return;
 		}
 
@@ -73,13 +76,15 @@ public class ShopControl : MonoBehaviour
 		{
 			if (sellDeals[i].item.id == sellInventory.items[0].id && sellInventory.items[0].amount > 0)
 			{
+				doesNotBuyWarning.SetActive(false);
 				sellPriceText.text = "Sell for: " + GetSellPrice(i);
 				//GameControl.main.money += sellDeals[i].price;
 				//ItemIcon.held.amount -= 1;
 				return;
 			}
 		}
-        sellPriceText.text = "Sell for: --";//no sell deal, so can't sell
+		doesNotBuyWarning.SetActive(true);
+		sellPriceText.text = "Sell for: --";//no sell deal, so can't sell
     }
 
 	private int GetSellPrice(int i)
