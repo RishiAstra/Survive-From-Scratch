@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class ShopControl : MonoBehaviour
 {
+	public static ShopControl main;
+
     public Inventory shopInventory;
     public Inventory sellInventory;
 
@@ -22,6 +24,8 @@ public class ShopControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
 	{
+		if (main != null) Debug.LogError("two ShopControls");
+		main = this;
 		shopInventory.invClicked.AddListener(TrySetBuy);
 		shopInventory.items = new List<Item>();
 		for (int i = 0; i < buyDeals.Count; i++)
