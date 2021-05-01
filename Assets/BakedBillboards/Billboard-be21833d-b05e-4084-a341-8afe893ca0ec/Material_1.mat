@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Material_1
+  m_Shader: {fileID: 4800000, guid: 9192bd5d453586c4799aa640069c0b28, type: 3}
+  m_ShaderKeywords: AT_CAMERA_MATERIAL AT_HUE_VARIATION_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Bump:
+        m_Texture: {fileID: 2800000, guid: 413decbdb4703724b8268bfeef4bbbd2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c9d15fcd20273854087d0a115e865ad0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - AT_HUE_VARIATION: 0
+    - _Brightness: 1
+    - _CullDistance: 37
+    - _Cutoff: 0.2
+    - _FarCullDistance: 20058
+    - _InCol: 8
+    - _InRow: 8
+    - _MipmapBias: -2
+    m_Colors:
+    - _CameraPosition: {r: 37.324287, g: 16.929737, b: -95.851776, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _HueVariation: {r: 1, g: 0.5, b: 0, a: 0.09765625}
+  m_BuildTextureStacks: []
