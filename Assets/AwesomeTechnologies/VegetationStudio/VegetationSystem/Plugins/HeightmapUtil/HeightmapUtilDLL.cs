@@ -35,8 +35,8 @@ public class HeightMapUtilDLL
 
     public HeightMapUtilDLL(TerrainData terrainData)
 	{
-		int w = terrainData.heightmapWidth;
-		int h = terrainData.heightmapHeight;
+		int w = terrainData.heightmapResolution;
+		int h = terrainData.heightmapResolution;
 
 		_heights = new float[w * h];
 

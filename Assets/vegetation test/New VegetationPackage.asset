@@ -29,12 +29,12 @@ MonoBehaviour:
     VegetationScaleType: 1
     MinScale: 3
     MaxScale: 4
-    MinVectorScale: {x: 1, y: 1, z: 1}
-    MaxVectorScale: {x: 1.5, y: 1.5, z: 1.5}
+    MinVectorScale: {x: 0.5, y: 0.5, z: 0.5}
+    MaxVectorScale: {x: 1, y: 1, z: 1}
     UseAutomaticDensityScale: 0
-    LodIndex: 2
+    LodIndex: 0
     Seed: 48
-    LODFactor: 1.8
+    LODFactor: 2.8
     DisableLOD: 0
     DisableShadows: 0
     VegetationTumbnail: {fileID: 0}
@@ -77,7 +77,7 @@ MonoBehaviour:
     Hue: {r: 1, g: 0.5, b: 0, a: 0.09765625}
     TextureCutoff: 0.2
     YScale: 1
-    SampleDistance: 0.7
+    SampleDistance: 0.5
     Density: 1
     UseCollisionDetection: 0
     VegetationSteepnessType: 0
@@ -659,14 +659,17 @@ MonoBehaviour:
     RotationOffset: {x: 270, y: 0, z: 0}
     Rotation: 3
     UsePerlinMask: 1
-    PerlinCutoff: 0.32
-    PerlinScale: 1
+    PerlinCutoff: 0.26
+    PerlinScale: 3
     InversePerlinMask: 0
     PerlinOffset: {x: 0, y: 0}
     UseExcludeTextueMask: 0
     ExcludeTextureMaskList: []
-    UseIncludeTextueMask: 0
-    IncludeTextureMaskList: []
+    UseIncludeTextueMask: 1
+    IncludeTextureMaskList:
+    - TextureLayer: 2
+      MinimumValue: 0.5428947
+      MaximumValue: 1
     UseVegetationMask: 0
     VegetationTypeIndex: 1
     UseExcludeTextueMaskRules: 0
