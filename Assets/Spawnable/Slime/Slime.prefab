@@ -212,6 +212,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -659,6 +660,10 @@ MonoBehaviour:
   groundCheck:
   - {fileID: 2616084709336305905}
   maxMoveAngle: 55
+  mainColliders: []
+  movingMaterial: {fileID: 0}
+  stopMaterial: {fileID: 0}
+  tryingToMove: 0
   maxSpeed: 3
   acceleration: 10
   minAngleForMove: 30
@@ -777,6 +782,8 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 8898681422997232973}
+  autoHide: 1
+  hideTime: 3
 --- !u!114 &9123941630015135667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,6 +817,7 @@ MonoBehaviour:
   loots:
   - minAmount: 1
     maxAmount: 2
+    spawnLocationParent: {fileID: 0}
     chance: 1
     item:
       id: 4

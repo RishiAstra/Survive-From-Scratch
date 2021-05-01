@@ -164,6 +164,10 @@ MonoBehaviour:
   groundCheck:
   - {fileID: 4185438985978181194}
   maxMoveAngle: 55
+  mainColliders: []
+  movingMaterial: {fileID: 0}
+  stopMaterial: {fileID: 0}
+  tryingToMove: 0
   maxSpeed: 3
   acceleration: 10
   minAngleForMove: 30
@@ -282,6 +286,8 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 7187773162484326494}
+  autoHide: 1
+  hideTime: 3
 --- !u!114 &766235108808700668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -315,6 +321,7 @@ MonoBehaviour:
   loots:
   - minAmount: 2
     maxAmount: 5
+    spawnLocationParent: {fileID: 0}
     chance: 1
     item:
       id: 1
@@ -367,6 +374,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

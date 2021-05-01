@@ -356,6 +356,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4151,8 +4152,8 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 591001014041977264}
-  autoHide: 0
-  hideTime: 0
+  autoHide: 1
+  hideTime: 3
 --- !u!114 &5288638758117385579
 MonoBehaviour:
   m_ObjectHideFlags: 0
