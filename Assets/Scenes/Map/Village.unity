@@ -848,7 +848,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126154506}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -10.15625, y: 0, z: 32.714844}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1517619068}
@@ -10015,7 +10015,7 @@ MonoBehaviour:
   LoadUnityTerrainDetails: 0
   SunDirectionalLight: {fileID: 33555933}
   DirectFromCell: 1
-  UseIndirectLoDs: 0
+  UseIndirectLoDs: 1
   DisableWhenSaving: 0
   VegetationPackageIndex: 0
   VegetationPackageList:
@@ -10025,7 +10025,7 @@ MonoBehaviour:
   WindSampler: {fileID: 1045108854}
   CurrentVegetationPackage: {fileID: 11400000, guid: dff14f870934ab347b3c467a59572bd6,
     type: 2}
-  IsDirty: 1
+  IsDirty: 0
   InitDone: 1
   TextureGrassPrefab: {fileID: 0}
   TexturePatchGrassPrefab: {fileID: 0}
@@ -10104,7 +10104,7 @@ MonoBehaviour:
   MergeBufferKernelHandle: 0
   MergeBufferShader: {fileID: 7200000, guid: 51a742f1facfd234085f43a4404c9333, type: 3}
   RealTimeMaskTexture: {fileID: 0}
-  DummyMaskTexture: {fileID: 2042312956}
+  DummyMaskTexture: {fileID: 1559776161}
   RealTimeMaskBand: 1
   RealTimeMaskEnabled: 0
   RealTimeMaskInvert: 0
@@ -10113,7 +10113,7 @@ MonoBehaviour:
   ShowColliderMenu: 0
   ShowNavMeshObstacleMenu: 0
   ShowShadowsMenu: 0
-  ShowLODMenu: 0
+  ShowLODMenu: 1
   ShowSpeedtreeMenu: 0
   ShowTextureMaskRulesMenu: 0
   ShowVegetationMaskMenu: 0
@@ -10162,8 +10162,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045108854}
-  m_LocalRotation: {x: -0.15999368, y: 0.5462172, z: -0.10721752, w: -0.81520134}
-  m_LocalPosition: {x: 17.674095, y: 9.46955, z: 0.1531825}
+  m_LocalRotation: {x: -0.2649575, y: 0.26548636, z: -0.076177076, w: -0.9238569}
+  m_LocalPosition: {x: -10.226319, y: 9.398801, z: 32.797962}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1036586211}
@@ -12154,6 +12154,51 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1529751198}
   m_PrefabAsset: {fileID: 0}
+--- !u!28 &1559776161
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 2
+  m_Width: 2
+  m_Height: 2
+  m_CompleteImageSize: 20
+  m_MipsStripped: 0
+  m_TextureFormat: 4
+  m_MipCount: 2
+  m_IsReadable: 1
+  m_IsPreProcessed: 0
+  m_IgnoreMasterTextureLimit: 0
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_VTOnly: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_LightmapFormat: 0
+  m_ColorSpace: 1
+  image data: 20
+  _typelessdata: cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
 --- !u!1 &1566164076
 GameObject:
   m_ObjectHideFlags: 0
@@ -14850,51 +14895,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2026460876}
   m_PrefabAsset: {fileID: 0}
---- !u!28 &2042312956
-Texture2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 2
-  m_Width: 2
-  m_Height: 2
-  m_CompleteImageSize: 20
-  m_MipsStripped: 0
-  m_TextureFormat: 4
-  m_MipCount: 2
-  m_IsReadable: 1
-  m_IsPreProcessed: 0
-  m_IgnoreMasterTextureLimit: 0
-  m_StreamingMipmaps: 0
-  m_StreamingMipmapsPriority: 0
-  m_VTOnly: 0
-  m_AlphaIsTransparency: 0
-  m_ImageCount: 1
-  m_TextureDimension: 2
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_LightmapFormat: 0
-  m_ColorSpace: 1
-  image data: 20
-  _typelessdata: cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
-  m_StreamData:
-    serializedVersion: 2
-    offset: 0
-    size: 0
-    path: 
 --- !u!1001 &2083990736
 PrefabInstance:
   m_ObjectHideFlags: 0
