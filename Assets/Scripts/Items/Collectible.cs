@@ -84,6 +84,7 @@ public class Collectible : MonoBehaviour, IMouseHoverable
 
 	public void OnMouseStopHoverFromRaycast()
 	{
+		GameControl.main.itemHoverInfo.SetActive(false);
 		//don't care if mouse isn't over this, but need function for interface
 	}
 
