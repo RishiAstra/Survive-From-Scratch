@@ -6,10 +6,13 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 {
 	public GameObject onHover;
 	public DialoguePart dialogue;
+	[Tooltip("path relative to Streaming Assets/Dialogue/ or as set in DialogueControl.cs")]
+	public string DialoguePath;
 
 	private void Start()
 	{
 		if(onHover != null) onHover.SetActive(false);
+		dialogue = DialogueControl.GetPartFromFile(DialoguePath);
 	}
 
 	public void OnMouseHoverFromRaycast()

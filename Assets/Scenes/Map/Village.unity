@@ -16426,7 +16426,7 @@ PrefabInstance:
     - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
         type: 3}
       propertyPath: dialogue.texts.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
         type: 3}
@@ -16447,6 +16447,16 @@ PrefabInstance:
         type: 3}
       propertyPath: dialogue.texts.Array.data[1]
       value: Why do I hate the sun? Because it gets in my eyes of course!
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
+        type: 3}
+      propertyPath: DialoguePath
+      value: Village/Dwarf1/d.json
+      objectReference: {fileID: 0}
+    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
+        type: 3}
+      propertyPath: dialogue.title
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1841424595292614894, guid: 64edc6e36af65614c890f437a911b5a4,
         type: 3}

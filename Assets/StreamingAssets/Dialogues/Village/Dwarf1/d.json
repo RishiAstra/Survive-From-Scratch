@@ -1,0 +1,58 @@
+{
+    "title" : "Dwarf",
+    "texts" : [
+        "Ahh.. this is the good life",
+        "Nothing beats a drink in the shade!"
+    ],
+    "choices" : [
+        {
+            "icon" : null,
+            "text" : "In the shade? Isn't it cold?",
+            "result" : {
+                "title" : null,
+                "texts" : [
+                    "Better cold than in the sun!"
+                ],
+                "choices" : [
+                    {
+                        "icon" : null,
+                        "text" : "Why do you hate the sun?",
+                        "result" : {
+                            "title" : null,
+                            "texts" : [
+                                "It gets in my eyes. That cursed yellow rock is a demon. I'm telling you, some day it'll be the death of us all."
+                            ],
+                            "choices" : null
+                        
+                        }
+                    },
+                    {
+                        "icon" : null,
+                        "text" : "Ah..alright",
+                        "result" : null
+                    }
+                ]
+            
+            }
+        },
+        {
+            "icon" : null,
+            "text" : "Alcohol is unhealthy",
+            "result" : {
+                "title" : null,
+                "texts" : [
+                    "What did you say!?! I may be short, but I'm a grown man. I'll decide for myself!",
+                    "Only children like you gotta watch your drinking",
+                    "Go on your way, stop disturbing me"
+                ],
+                "choices" : null            
+            }
+        },
+        {
+            "icon" : null,
+            "text" : "I'll leave you to enjoy yourself",
+            "result" : null
+        }
+    ]
+
+}

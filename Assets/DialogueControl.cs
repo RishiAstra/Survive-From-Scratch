@@ -4,9 +4,18 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using System.IO;
+using Newtonsoft.Json;
 
 public class DialogueControl : MonoBehaviour
 {
+    public static string dialogueDataPath
+    {
+        get
+        {
+            return Application.streamingAssetsPath + "/Dialogues/";
+        }
+    }
     public static DialogueControl main;
 
     public TextMeshProUGUI dialogueBodyText;
@@ -36,7 +45,7 @@ public class DialogueControl : MonoBehaviour
         //if finished going through all the current part's texts
         if (currentLineProgress >= currentPart.texts.Count)
 		{
-            if(currentPart.choices.Count > 0)
+            if(currentPart.choices != null && currentPart.choices.Count > 0)
 			{
                 //present the user with a choice, so do nothing while waiting for them to choose. This cannot automatically advance.
                 currentLineProgress = currentPart.texts.Count - 1;
@@ -134,7 +143,7 @@ public class DialogueControl : MonoBehaviour
 		}
         
         //if this is the last text, show the options
-        if(currentLineProgress == currentPart.texts.Count - 1)
+        if(currentLineProgress == currentPart.texts.Count - 1 && currentPart.choices != null)
 		{
             for (int i = 0; i < currentPart.choices.Count; i++)
             {
@@ -181,13 +190,19 @@ public class DialogueControl : MonoBehaviour
         }
         fadeDurationLeft -= Time.unscaledDeltaTime;
     }
+
+    public static DialoguePart GetPartFromFile(string path)
+	{
+        return JsonConvert.DeserializeObject<DialoguePart>(File.ReadAllText(dialogueDataPath + path));
+	}
 }
 
 [System.Serializable]
 public class DialoguePart
 {
-    [TextArea(1, 5)]
+    
     public string title;
+    [TextArea(1, 5)]
     public List<string> texts;
     public List<DialogueChoise> choices;
     //public DialoguePart defaultNextPart;
