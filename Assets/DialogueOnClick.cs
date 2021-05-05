@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 {
 	public GameObject onHover;
-	public DialogueLine dialogue;
+	public DialoguePart dialogue;
 
 	private void Start()
 	{
@@ -17,7 +17,7 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 		if (onHover != null) onHover.SetActive(true);
 		if (Input.GetMouseButtonDown(0))
 		{
-			DialogueControl.main.StartDialogueLine(dialogue);
+			DialogueControl.main.StartDialoguePart(dialogue);
 		}
 	}
 
