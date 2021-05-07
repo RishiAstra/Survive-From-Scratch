@@ -57,6 +57,7 @@ public class DialogueControl : MonoBehaviour
 			//}
 			else
 			{
+                ProgressTracker.main.TryAddQuest(currentPart.questResult);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
                 //nothing to move on to, dialogue is finished
                 currentPart = null;
                 RestartFade();
@@ -152,11 +153,12 @@ public class DialogueControl : MonoBehaviour
                 Button choiceButton = g.GetComponent<Button>();
 
                 //set icon
-                if (currentPart.choices[i].icon != null)
-                {
-                    Image img = g.GetComponentInChildren<Image>();
-                    img.sprite = currentPart.choices[i].icon;
-                }
+                //TODO: use a string to search for an icon
+                //if (currentPart.choices[i].icon != null)
+                //{
+                //    Image img = g.GetComponentInChildren<Image>();
+                //    img.sprite = currentPart.choices[i].icon;
+                //}
 
                 //set the text to describe this choise
                 choiceTitle.text = currentPart.choices[i].text;
@@ -205,6 +207,7 @@ public class DialoguePart
     [TextArea(1, 5)]
     public List<string> texts;
     public List<DialogueChoise> choices;
+    public QuestSave questResult;
     //public DialoguePart defaultNextPart;
 }
 
@@ -221,7 +224,7 @@ public class DialoguePart
 [System.Serializable]
 public class DialogueChoise
 {
-    public Sprite icon;
+    //public Sprite icon;
     public string text;
     public DialoguePart result;
 }

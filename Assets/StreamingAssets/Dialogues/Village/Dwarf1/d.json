@@ -22,7 +22,52 @@
                             "texts" : [
                                 "It gets in my eyes. That cursed yellow rock is a demon. I'm telling you, some day it'll be the death of us all."
                             ],
-                            "choices" : null
+                            "choices" : [
+                                {
+                                    "icon" : null,
+                                    "text" : "Is there anything we can do about it?",
+                                    "result" : {
+                                        "title" : null,
+                                        "texts" : [
+                                            "Now that I think about it, slimes reflect the sun a bit too much",
+                                            "Maybe if you kill some slimes it'll show that sun whose boss",
+                                            "Could you kill 5 slimes?"
+                                        ],
+                                        "choices" : [
+                                            {
+                                                "icon" : null,
+                                                "text" : "Alright...",
+                                                "result" : {
+                                                    "title" : null,
+                                                    "texts" : [
+                                                        "Great! I wish you luck."
+                                                    ],
+                                                    "choices" : null,
+                                                    "questResult" : {
+                                                        "type" : "KillQuest",
+                                                        "data" : {
+                                                            "typeToKill" : "Slime",
+                                                            "amountToKill" : 5,
+                                                            "amountKilled" : 0
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "icon" : null,
+                                                "text" : "I have other things to do...",
+                                                "result" : null
+                                            }
+                                        ]
+                                    
+                                    }
+                                },
+                                {
+                                    "icon" : null,
+                                    "text" : "okay..",
+                                    "result" : null
+                                }
+                            ]
                         
                         }
                     },

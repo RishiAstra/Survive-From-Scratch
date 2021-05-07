@@ -93,9 +93,14 @@ public class Abilities : MonoBehaviour, ISaveable
 	{
 		if(stat.hp <= 0 && !dead)
 		{
-			dead = true;
-			Destroy(gameObject, dieTime);
+			Die();
 		}
+	}
+
+	private void Die()
+	{
+		dead = true;
+		Destroy(gameObject, dieTime);
 	}
 
 	#region Attack and Defense
@@ -120,12 +125,12 @@ public class Abilities : MonoBehaviour, ISaveable
 		}
 	}
 
-	public void Damage(float dmg, Collider cols, AttackType type)//accouns for weakpoints in different armor pieces
+	public void Damage(float dmg, Abilities from, Collider cols, AttackType type)//accouns for weakpoints in different armor pieces
 	{
-		Damage(dmg, cols, type, cols.bounds.center);
+		Damage(dmg, from, cols, type, cols.bounds.center);
 	}
 
-	public void Damage(float dmg, Collider cols, AttackType type, Vector3 damagePosition)//accouns for weakpoints in different armor pieces
+	public void Damage(float dmg, Abilities from, Collider cols, AttackType type, Vector3 damagePosition)//accouns for weakpoints in different armor pieces
 	{
 		if (!RegionSettings.main.allowCombat) return;
 
@@ -139,6 +144,22 @@ public class Abilities : MonoBehaviour, ISaveable
 		}
 		float damageTaken = GetDamageAmount(dmg, type, a);
 		stat.hp -= damageTaken;
+		
+
+		//update the progress tracker
+		SaveEntity save = GetComponent<SaveEntity>();
+		if(save != null)
+		{
+			ProgressTracker.main.RegisterDamage(damageTaken, from, save.type);
+
+			//if not already dead, die and register the kill
+			if (stat.hp <= 0 && !dead)
+			{
+				ProgressTracker.main.RegisterKill(save.type, this, from);
+				Die();
+			}
+		}
+
 		DamageTextControl.PutDamageText(cols.bounds.center, damageTaken);
 	}
 	public float GetDamageAmount(float damage, AttackType type, Armor armor)

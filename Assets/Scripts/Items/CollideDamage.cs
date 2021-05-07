@@ -70,7 +70,7 @@ public class CollideDamage : MonoBehaviour
 						if (d > 1) d = 1;//cap damage at maxDamage
 						float damage = minDamage + (maxDamage - minDamage) * d;//min damage plus the extra from higher velocity
 						//print("Collide damage: " + damage);
-						b.Damage(damage, collision.collider, attackType, collision.contacts[0].point);
+						b.Damage(damage, so.parent, collision.collider, attackType, collision.contacts[0].point);
 						timeActive = 0;//make it active again so it can bounce and hit more enemies
 					}
 				}

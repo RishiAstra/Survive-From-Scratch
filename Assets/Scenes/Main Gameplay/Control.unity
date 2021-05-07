@@ -1825,6 +1825,7 @@ Transform:
   - {fileID: 1458913890}
   - {fileID: 1220464121}
   - {fileID: 1027052874}
+  - {fileID: 1667653199}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7089,20 +7090,24 @@ MonoBehaviour:
     - Hello, here is an error :(
     - You shouldn't be seeing this
     choices:
-    - icon: {fileID: 0}
-      text: leave this dialogue
+    - text: leave this dialogue
       result:
         title: 
         texts: []
         choices: []
-    - icon: {fileID: 0}
-      text: continue talking
+        questResult:
+          type: 
+    - text: continue talking
       result:
         title: CONTINUED_ERROR
         texts:
         - you decided to continue :/
         - <#FF0000>THIS IS THE END</color>
         choices: []
+        questResult:
+          type: 
+    questResult:
+      type: 
 --- !u!1 &1031211328
 GameObject:
   m_ObjectHideFlags: 0
@@ -12784,6 +12789,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662195136}
   m_CullTransparentMesh: 0
+--- !u!1 &1667653198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1667653199}
+  - component: {fileID: 1667653200}
+  - component: {fileID: 1667653201}
+  m_Layer: 0
+  m_Name: Progress Tracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1667653199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667653198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 164377916}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1667653200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667653198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd59784bd1002f4c9d2422b4aa4de92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prog:
+    TotalDamageDealt: 0
+    TotalDamageTaken: 0
+--- !u!114 &1667653201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667653198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e2d5875c690d874aae9a5664db2978d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1685708977
 GameObject:
   m_ObjectHideFlags: 0
