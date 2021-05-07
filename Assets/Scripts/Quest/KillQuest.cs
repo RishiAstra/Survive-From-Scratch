@@ -11,6 +11,11 @@ public class KillQuest : IQuest
 	public int amountKilled;
 	public string questName;
 
+	public KillQuest() 
+	{
+
+	}
+
 	public KillQuest(string typeToKill, int amountToKill) : this(typeToKill, amountToKill, 0)
 	{
 		

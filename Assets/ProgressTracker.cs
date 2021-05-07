@@ -9,8 +9,10 @@ public class ProgressTracker : MonoBehaviour
     public static ProgressTracker main;
 
     public List<IQuest> quests;
-
+    public GameObject QuestUIPrefab;
+    public Transform QuestUIParent;
     public Progress prog;
+    public Menu questMenu;
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,7 +23,33 @@ public class ProgressTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+		if (Input.GetKeyUp(KeyCode.F1))
+		{
+            questMenu.ToggleMenu();
+            UpdateQuestUI();
+        }		
+    }
+
+    public void UpdateQuestUI()
+	{
+        if (!questMenu.gameObject.activeSelf) return;//don't update if can't see it
+        for (int i = QuestUIParent.childCount - 1; i >= 0; i--)
+		{
+            Destroy(QuestUIParent.GetChild(i).gameObject);
+		}
+
+		for (int i = 0; i < quests.Count; i++)
+		{
+
+            GameObject g = Instantiate(QuestUIPrefab, QuestUIParent);
+
+            QuestUI q = g.GetComponent<QuestUI>();
+            if(q != null)
+			{
+                q.title.text = quests[i].GetQuestName();
+                q.description.text = quests[i].GetDescription();
+			}
+		}
     }
 
     public void RegisterKill(string type, Abilities killed, Abilities killer)
@@ -30,6 +58,8 @@ public class ProgressTracker : MonoBehaviour
 		{
 			q.OnEntityKilled(type, killer);
 		}
+
+        UpdateQuestUI();
 
         if(killer == GameControl.main.myAbilities)
 		{
@@ -98,6 +128,7 @@ public class ProgressTracker : MonoBehaviour
         quests.Add(temp);
 
         print(ConvertQuestToString(temp));
+        UpdateQuestUI();
 
     }
 
@@ -120,10 +151,11 @@ public class ProgressTracker : MonoBehaviour
         //return (IQuest)(q.data as Type.GetType(q.type));//  Convert.ChangeType(q.data, Type.GetType(q.type));
         IQuest result = null;
 
+        //use this stupid workaround to cast the object to KillQuest
 		switch (q.type)
 		{
 			case "KillQuest":
-				result = (KillQuest)q.data;// CastObject<Type.GetType(q.type)>(q.data);// (Type.GetType(q.type))q.data;
+				result = JsonConvert.DeserializeObject<KillQuest>(JsonConvert.SerializeObject(q.data));// CastObject<Type.GetType(q.type)>(q.data);// (Type.GetType(q.type))q.data;
 			break;
 		}
 
