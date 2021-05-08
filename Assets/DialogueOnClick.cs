@@ -33,9 +33,10 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 		if (onHover != null) onHover.SetActive(true);
 		if (Input.GetMouseButtonDown(0))
 		{
-			UpdateDialogue();
+			
 			//dialogue = DialogueControl.GetPartFromFile(DialoguePath);
 			ProgressTracker.main.RegisterTalk(myName);
+			UpdateDialogue();
 			DialogueControl.main.StartDialoguePart(dialogue, this);
 		}
 	}

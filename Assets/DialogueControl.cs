@@ -65,8 +65,17 @@ public class DialogueControl : MonoBehaviour
                     
 					if (currentPart.makeNextJsonDefault && dialogueSource != null)
 					{
-                        dialogueSource.DialoguePath = currentPart.nextJson;
-					}
+						if (DialogueOnClick.newDialoguePaths.ContainsKey(dialogueSource.myName))
+						{
+                            DialogueOnClick.newDialoguePaths[dialogueSource.myName] = currentPart.nextJson;
+
+                        }
+                        else
+						{
+                            DialogueOnClick.newDialoguePaths.Add(dialogueSource.myName, currentPart.nextJson);
+                        }
+                        //dialogueSource.DialoguePath = currentPart.nextJson;
+                    }
 
                     currentPart = null;
                 }
@@ -95,12 +104,12 @@ public class DialogueControl : MonoBehaviour
 
     public void ChooseDialogueOption(int index)
     {
-        print("chose dialogue option: " + index);
+        //print("chose dialogue option: " + index);
         currentLineProgress = 0;
         DialoguePart dp = currentPart.choices[index].result;
 
         //move on if there's something to move on to with this dialogue option, otherwise be done
-        if (dp == null || dp.texts.Count == 0)
+        if (dp == null || dp.texts == null || dp.texts.Count == 0)
         {
             currentPart = null;
         }
