@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class ProgressTracker : MonoBehaviour
@@ -9,6 +10,7 @@ public class ProgressTracker : MonoBehaviour
     public static ProgressTracker main;
 
     public List<IQuest> quests;
+    public List<QuestSave> questSaves;
     public GameObject QuestUIPrefab;
     public Transform QuestUIParent;
     public Progress prog;
@@ -18,6 +20,12 @@ public class ProgressTracker : MonoBehaviour
     {
         if (main != null) Debug.LogError("Two progress trackers");
         main = this;
+
+        if (quests == null)
+        {
+            quests = new List<IQuest>();
+            questSaves = new List<QuestSave>();
+        }
     }
 
     // Update is called once per frame
@@ -28,6 +36,33 @@ public class ProgressTracker : MonoBehaviour
             questMenu.ToggleMenu();
             UpdateQuestUI();
         }		
+    }
+
+    public void UpdateQuestData()
+	{
+        for (int i = 0; i < quests.Count; i++)
+        {
+            //check if finished, if it is, try to complete mission (including collecting any rewards)
+			if (quests[i].IsFinished() && quests[i].TryCompleteMission())
+			{
+                //if there's a next quest, activate it
+				if (!string.IsNullOrEmpty(questSaves[i].nextQuestJson))
+                {
+                    //load the next quest
+                    questSaves[i] = GetQuestSaveFromPath(questSaves[i].nextQuestJson);
+                    quests[i] = ConvertQuestSaveToQuest(questSaves[i]);
+                }
+
+                //if there's a next dialogue, update it
+                if (!string.IsNullOrEmpty(questSaves[i].nextDialogueJson) && !string.IsNullOrEmpty(questSaves[i].nextDialogueTargetName))
+                {
+                    //update the dialogue
+                    DialogueOnClick.newDialoguePaths.Add(questSaves[i].nextDialogueTargetName, questSaves[i].nextDialogueJson);
+                }
+			}
+        }
+
+        UpdateQuestUI();
     }
 
     public void UpdateQuestUI()
@@ -59,7 +94,8 @@ public class ProgressTracker : MonoBehaviour
 			q.OnEntityKilled(type, killer);
 		}
 
-        UpdateQuestUI();
+        UpdateQuestData();
+        
 
         if(killer == GameControl.main.myAbilities)
 		{
@@ -95,6 +131,18 @@ public class ProgressTracker : MonoBehaviour
 		}
 	}
 
+    public void RegisterTalk(string talkedTo)
+    {
+        foreach (IQuest q in quests)
+        {
+            q.OnTalked(talkedTo);
+        }
+
+        UpdateQuestData();
+
+        prog.talkedTimes++;
+    }
+
     public void RegisterDamage(float amount, Abilities from, string type)
 	{
 		//foreach (IQuest q in quests)
@@ -108,14 +156,14 @@ public class ProgressTracker : MonoBehaviour
 		//}
 	}
 
-	public void TryAddQuest(QuestSave questResult)
+	public void TryAddQuest(QuestSave questResult, string fromDialogueName)
 	{
         //quest cannot be null, return if it is
         if (questResult == null) return;
 
-        if (quests == null) quests = new List<IQuest>();
+        
 
-        IQuest temp = ProgressTracker.ConvertQuestSaveToQuest(questResult);
+		IQuest temp = ProgressTracker.ConvertQuestSaveToQuest(questResult);
 
         //check that this quest is not already being done, if it is, return
         string tempQuestName = temp.GetQuestName();
@@ -126,6 +174,8 @@ public class ProgressTracker : MonoBehaviour
 
         //add the new quest
         quests.Add(temp);
+        questResult.nextDialogueTargetName = fromDialogueName;
+        questSaves.Add(questResult);
 
         print(ConvertQuestToString(temp));
         UpdateQuestUI();
@@ -172,12 +222,30 @@ public class ProgressTracker : MonoBehaviour
 
         return JsonConvert.SerializeObject(result, Formatting.Indented); //result;
     }
+
+
+    public static QuestSave GetQuestSaveFromPath(string path)
+    {
+		try
+		{
+            return JsonConvert.DeserializeObject<QuestSave>(File.ReadAllText(DialogueControl.dialogueDataPath + path));
+
+		}
+		catch
+		{
+            Debug.LogError("failed to get quest: " + DialogueControl.dialogueDataPath + path);
+            return null;
+		}
+    }
 }
 
 [System.Serializable]
 public class QuestSave
 {
     public string type;
+    public string nextQuestJson;
+    public string nextDialogueJson;
+    public string nextDialogueTargetName;
     public object data;
 }
 
@@ -188,6 +256,7 @@ public class Progress
     public double TotalDamageTaken;
     public Dictionary<string, int> TotalKillsByType;
     public Dictionary<int, int> TotalKillsByTag;
+    public int talkedTimes;
 
  //   public Progress()
 	//{

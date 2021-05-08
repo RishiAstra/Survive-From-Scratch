@@ -1,0 +1,16 @@
+{
+    "type" : "TalkQuest",
+    "nextQuestJson" : "",
+    "nextDialogueJson" : "AfterSlimeQuest.json",
+    "data" : {
+        "toTalkTo" : "Dwarf1",
+        "questName" : "Dwarf hates the sunny slimes",
+        "reward" : {
+            "type" : "item",
+            "item" : {
+                "id" : 6,
+                "amount" : 50
+            }
+        }
+    }
+}

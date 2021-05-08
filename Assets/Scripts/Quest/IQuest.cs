@@ -23,6 +23,8 @@ public interface IQuest
 	/// <param name="dmgAmount">the amount of damage dealt</param>
     void OnEntityDamaged(string type, Abilities dmgBy, float dmgAmount);
 
+	void OnTalked(string talkedTo);
+
 	/// <summary>
 	/// Get the progress of this mission. Useful for showing quest progress bars.
 	/// </summary>
@@ -40,4 +42,7 @@ public interface IQuest
 	bool IsFinished();
 
 	string GetQuestName();
+	string GetNextDialoguePath();
+	void SetNextDialoguePath(string s);
+	bool TryCompleteMission();
 }

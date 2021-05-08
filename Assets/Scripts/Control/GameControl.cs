@@ -985,6 +985,7 @@ public class GameControl : MonoBehaviour
 
 	#region inventory
 	public bool GetItem(int id) { return GetItem(id, 1); }
+	public bool GetItem(Item i) { return GetItem(i.id, i.amount); }
 	public bool GetItem(int id, int amount)
 	{
 		//check if it can be put in hotbar

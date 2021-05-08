@@ -2462,12 +2462,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e19f024126fe0a48869a5e317e532e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onHover: {fileID: 0}
+  onHover: {fileID: 8621882435883240943}
   dialogue:
-    title: Dwarf
-    parts:
-    - text: Ahh, nothing can match a nice drink in the shade
-    - text: Why don't I like the sun? Because it gets in my eyes, of course!
+    title: 
+    texts: []
+    choices: []
+    questResult: 
+    nextJson: 
+    makeNextJsonDefault: 0
+  DialoguePath: Village/Dwarf1/initial.json
+  myName: Dwarf1
 --- !u!136 &1839009981610438962
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4958,6 +4962,12 @@ PrefabInstance:
 --- !u!4 &6404646652276263828 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1189064079017440179}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8621882435883240943 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7433036290519662172, guid: f7383237707c5a647a7d7734b8d4025d,
     type: 3}
   m_PrefabInstance: {fileID: 1189064079017440179}
   m_PrefabAsset: {fileID: 0}

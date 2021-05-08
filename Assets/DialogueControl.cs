@@ -26,7 +26,8 @@ public class DialogueControl : MonoBehaviour
 
     //public DialogueLine currentLine;
     private int currentLineProgress;//used to separate sections of text
-    public DialoguePart currentPart;
+    private DialoguePart currentPart;
+    public DialogueOnClick dialogueSource;
 
     private float fadeDurationLeft;
     private float fadeDuriation = 2f;
@@ -57,9 +58,24 @@ public class DialogueControl : MonoBehaviour
 			//}
 			else
 			{
-                ProgressTracker.main.TryAddQuest(currentPart.questResult);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
-                //nothing to move on to, dialogue is finished
-                currentPart = null;
+                ProgressTracker.main.TryAddQuest(ProgressTracker.GetQuestSaveFromPath(currentPart.questResult), dialogueSource.myName);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
+                
+                if (string.IsNullOrEmpty(currentPart.nextJson) || currentPart.makeNextJsonDefault){
+                    //nothing to move on to, dialogue is finished
+                    
+					if (currentPart.makeNextJsonDefault && dialogueSource != null)
+					{
+                        dialogueSource.DialoguePath = currentPart.nextJson;
+					}
+
+                    currentPart = null;
+                }
+				else
+				{
+                    //there is a next json to move on to
+                    StartDialoguePart(GetPartFromFile(currentPart.nextJson), dialogueSource);
+				}                
+                
                 RestartFade();
             }
 		}
@@ -171,18 +187,20 @@ public class DialogueControl : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(choiceHolder);
     }
 
-	public void StartDialoguePart(DialoguePart line)
+	public void StartDialoguePart(DialoguePart line, DialogueOnClick source)
 	{
+        dialogueSource = source;
         currentLineProgress = 0;
         currentPart = line;
         dialogueTitleText.text = "";//default to no title
         UpdateDialogue();
 	}
 
+
     // Update is called once per frame
     void Update()
     {
-        if (dialogueMenuParent.gameObject.activeSelf) { 
+        if (dialogueMenuParent.gameObject.activeSelf) {
             if(Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
 		    {
                 TryAdvanceDialogue();
@@ -207,7 +225,9 @@ public class DialoguePart
     [TextArea(1, 5)]
     public List<string> texts;
     public List<DialogueChoise> choices;
-    public QuestSave questResult;
+    public string questResult;
+    public string nextJson;
+    public bool makeNextJsonDefault;
     //public DialoguePart defaultNextPart;
 }
 

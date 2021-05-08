@@ -43,21 +43,21 @@
                                                         "Great! I wish you luck."
                                                     ],
                                                     "choices" : null,
-                                                    "questResult" : {
-                                                        "type" : "KillQuest",
-                                                        "data" : {
-                                                            "typeToKill" : "Slime",
-                                                            "amountToKill" : 5,
-                                                            "amountKilled" : 0,
-                                                            "questName" : "Dwarf hates the sunny slimes"
-                                                        }
-                                                    }
+                                                    "nextJson" : "Village/Dwarf1/awaiting slime.json",
+                                                    "makeNextJsonDefault" : true,
+                                                    "questResult" : "Village/Dwarf1/SlimeQuest.json"
                                                 }
                                             },
                                             {
                                                 "icon" : null,
                                                 "text" : "I have other things to do...",
-                                                "result" : null
+                                                "result" : {
+                                                    "title" : null,
+                                                    "texts" : [
+                                                        "Ah well. Contact me again if you get time"
+                                                    ],
+                                                    "choices" : null
+                                                }
                                             }
                                         ]
                                     

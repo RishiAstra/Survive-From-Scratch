@@ -7577,30 +7577,7 @@ MonoBehaviour:
   choiceButtomPrefab: {fileID: 4423008384463473177, guid: 6f4c4d98424c5c0449b1c789282c8227,
     type: 3}
   choiceHolder: {fileID: 2105772285177096614}
-  currentPart:
-    title: ERROR_TITLE
-    texts:
-    - Hello, here is an error :(
-    - You shouldn't be seeing this
-    choices:
-    - text: leave this dialogue
-      result:
-        title: 
-        texts: []
-        choices: []
-        questResult:
-          type: 
-    - text: continue talking
-      result:
-        title: CONTINUED_ERROR
-        texts:
-        - you decided to continue :/
-        - <#FF0000>THIS IS THE END</color>
-        choices: []
-        questResult:
-          type: 
-    questResult:
-      type: 
+  dialogueSource: {fileID: 0}
 --- !u!1 &1031211328
 GameObject:
   m_ObjectHideFlags: 0
@@ -13802,12 +13779,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd59784bd1002f4c9d2422b4aa4de92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  questSaves: []
   QuestUIPrefab: {fileID: 7373112832051054380, guid: 1ad543928d4f36042b75fa52409ed53e,
     type: 3}
   QuestUIParent: {fileID: 2116201944}
   prog:
     TotalDamageDealt: 0
     TotalDamageTaken: 0
+    talkedTimes: 0
   questMenu: {fileID: 1797320666}
 --- !u!114 &1667653201
 MonoBehaviour:

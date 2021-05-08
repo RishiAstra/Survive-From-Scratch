@@ -16606,41 +16606,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dwarf BerserkerM
       objectReference: {fileID: 0}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: dialogue.texts.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: onHover
-      value: 
-      objectReference: {fileID: 1837685210549617547}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: dialogue.parts.Array.data[0].text
-      value: Ahh, nothing can beat a nice drink in the shade
-      objectReference: {fileID: 0}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: dialogue.texts.Array.data[0]
-      value: Nothing beats having a drink in the shade
-      objectReference: {fileID: 0}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: dialogue.texts.Array.data[1]
-      value: Why do I hate the sun? Because it gets in my eyes of course!
-      objectReference: {fileID: 0}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: DialoguePath
-      value: Village/Dwarf1/d.json
-      objectReference: {fileID: 0}
-    - target: {fileID: 1839009981610438973, guid: 64edc6e36af65614c890f437a911b5a4,
-        type: 3}
-      propertyPath: dialogue.title
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1841424595292614894, guid: 64edc6e36af65614c890f437a911b5a4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16698,12 +16663,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64edc6e36af65614c890f437a911b5a4, type: 3}
---- !u!1 &1837685210549617547 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8621882435883240943, guid: 64edc6e36af65614c890f437a911b5a4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1837685210549617546}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4092901226021086023
 PrefabInstance:
   m_ObjectHideFlags: 0
