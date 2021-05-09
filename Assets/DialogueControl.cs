@@ -58,9 +58,12 @@ public class DialogueControl : MonoBehaviour
 			//}
 			else
 			{
-                ProgressTracker.main.TryAddQuest(ProgressTracker.GetQuestSaveFromPath(currentPart.questResult), dialogueSource.myName);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
-                
-                if (string.IsNullOrEmpty(currentPart.nextJson) || currentPart.makeNextJsonDefault){
+				if (!string.IsNullOrEmpty(currentPart.questResult))
+				{
+					ProgressTracker.main.TryAddQuest(ProgressTracker.GetQuestSaveFromPath(currentPart.questResult), dialogueSource.myName);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
+				}
+
+				if (string.IsNullOrEmpty(currentPart.nextJson) || currentPart.makeNextJsonDefault){
                     //nothing to move on to, dialogue is finished
                     
 					if (currentPart.makeNextJsonDefault && dialogueSource != null)
