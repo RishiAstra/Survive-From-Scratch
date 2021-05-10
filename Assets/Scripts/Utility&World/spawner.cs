@@ -49,7 +49,7 @@ public class spawner : MonoBehaviour {
 	private GameObject spawnThis;
 	private PersistantSaveID myId;
 
-	private string savePath
+	public static string savePath
 	{
 		get { return GameControl.saveDirectory + "/PersistantId Saves/"; }
 
