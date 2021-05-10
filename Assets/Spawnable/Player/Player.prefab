@@ -463,6 +463,9 @@ MonoBehaviour:
   invChange:
     m_PersistentCalls:
       m_Calls: []
+  invClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8140287808217058764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -793,6 +796,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -1452,6 +1456,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -2418,6 +2423,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -3000,7 +3006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d78dd35b04d464b839fdd6f2febe73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.28
+  radius: 0.29
   distance: 0.1
 --- !u!1001 &1172993346028907552
 PrefabInstance:
