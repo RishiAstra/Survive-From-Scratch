@@ -64,7 +64,8 @@ public class ShopControl : MonoBehaviour
 		{
 			shopInventory.items.Add(current.buyDeals[i].item);
 		}
-
+		shopInventoryUI.CorrectSlotCount();
+		//shopInventoryUI.Refresh();
 		//shopInventoryUI.Correct();
 		//sellInventoryUI.InitializeSlots();
 
@@ -74,6 +75,7 @@ public class ShopControl : MonoBehaviour
 			s.item.amount *= mult;
 			s.price *= mult;
 			shopInventoryUI.slotT[i].GetComponent<ShopItemUI>().Setup(s);
+			shopInventoryUI.slotI[i].UpdateIcon();
 		}
 	}
 
