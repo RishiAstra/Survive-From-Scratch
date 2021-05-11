@@ -35,6 +35,10 @@ public class ShopControl : MonoBehaviour
 		//	shopInventory.items.Add(current.buyDeals[i].item);
 		//}
 		sellInventory.invChange.AddListener(TrySetSell);
+		sellInventory.items = new List<Item>();
+		sellInventory.items.Add(new Item());
+
+		//sellInventory.invChange.AddListener(TrySetSell);
 		//sellInventory.items = new List<Item>();
 		//sellInventory.items.Add(new Item());
 
@@ -60,9 +64,9 @@ public class ShopControl : MonoBehaviour
 		{
 			shopInventory.items.Add(current.buyDeals[i].item);
 		}
-		sellInventory.invChange.AddListener(TrySetSell);
-		sellInventory.items = new List<Item>();
-		sellInventory.items.Add(new Item());
+
+		//shopInventoryUI.Correct();
+		//sellInventoryUI.InitializeSlots();
 
 		for (int i = 0; i < current.buyDeals.Count; i++)
 		{
