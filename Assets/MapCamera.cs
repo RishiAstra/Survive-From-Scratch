@@ -7,7 +7,7 @@ public class MapCamera : MonoBehaviour
 {
     [Range(1, 25)] public float fps;
     public Camera cam;
-    public Shader unlit;
+    //public Shader unlit;
 
     private double ps;
     private Stopwatch sw;
@@ -17,7 +17,7 @@ public class MapCamera : MonoBehaviour
     {
         sw = new Stopwatch();
         sw.Start();
-        mainCameraTransform = Camera.main.transform;
+        mainCameraTransform = Camera.main.transform.root;
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public class MapCamera : MonoBehaviour
 		if (seconds - ps > timePerFrame)
 		{
 			ps += timePerFrame;
-            cam.RenderWithShader(unlit, "");
+            cam.Render();// WithShader(unlit, null);
 		}
     }
 }

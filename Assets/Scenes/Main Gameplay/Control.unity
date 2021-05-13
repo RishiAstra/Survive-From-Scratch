@@ -16350,7 +16350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fps: 20
   cam: {fileID: 1686927298}
-  unlit: {fileID: 4800000, guid: 650dd9526735d5b46b79224bc6e94025, type: 3}
+  unlit: {fileID: 4800000, guid: e91ebd1e70ee5aa4e828c9882062e3a3, type: 3}
 --- !u!114 &1686927296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16368,7 +16368,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -16413,7 +16413,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 65335
+    m_Bits: 327479
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: e91d5117fd6a625419a0d2fca6b959f3, type: 2}
   m_TargetDisplay: 0
