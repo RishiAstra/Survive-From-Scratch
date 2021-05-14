@@ -11,7 +11,7 @@ public class NPCControl : MonoBehaviour
 	public Transform checkAttack;
 	public float checkAttackRadius;
 
-	public List<Abilities> targets;
+	public List<StatScript> targets;
 
 	private Abilities abilities;
 
@@ -20,7 +20,7 @@ public class NPCControl : MonoBehaviour
     {
 		abilities = GetComponent<Abilities>();
 		movement = GetComponent<Movement>();
-		targets = new List<Abilities>();
+		targets = new List<StatScript>();
     }
 
     // Update is called once per frame
@@ -48,7 +48,7 @@ public class NPCControl : MonoBehaviour
 			}
 			if(index != -1)
 			{
-				Abilities t = targets[index];//TODO: find optimal target, depending on intelligence
+				StatScript t = targets[index];//TODO: find optimal target, depending on intelligence
 				Transform attackPlace = checkAttack;// abilities.attackTranforms[0];
 				Vector3 off = t.transform.position - attackPlace.position;
 				Quaternion targetAngle = Quaternion.LookRotation(off, transform.up);
@@ -63,7 +63,7 @@ public class NPCControl : MonoBehaviour
 					if (tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 					{
 
-						Abilities temp = col.GetComponent<Abilities>();
+						StatScript temp = col.GetComponent<StatScript>();
 						if (temp != null)
 						{
 							
@@ -100,14 +100,14 @@ public class NPCControl : MonoBehaviour
 	
 	void Spot()
 	{
-		targets = new List<Abilities>();
+		targets = new List<StatScript>();
 		foreach(Collider col in Physics.OverlapSphere(transform.position, spotRange, targetMask))
 		{
 			TagScript tagScript = col.GetComponent<TagScript>();
 			if(tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 			{
 
-				Abilities temp = col.GetComponent<Abilities>();
+				StatScript temp = col.GetComponent<StatScript>();
 				if (temp != null)
 				{
 					targets.Add(temp);

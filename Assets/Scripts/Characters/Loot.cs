@@ -4,23 +4,23 @@ using UnityEngine;
 using bobStuff;
 
 //TODO: save stuff in saveentity.cs
-[RequireComponent(typeof(Abilities))]
+[RequireComponent(typeof(StatScript))]
 public class Loot : MonoBehaviour
 {
     public List<LootItem> loots;
 
     private bool looted;
-    private Abilities a;
+    private StatScript a;
     // Start is called before the first frame update
     void Start()
     {
-        a = GetComponent<Abilities>();
+        a = GetComponent<StatScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!looted && a.dead)
+        if(!looted && a.stat.hp <= 0)
 		{
             GenerateLoot();
             looted = true;
@@ -29,7 +29,7 @@ public class Loot : MonoBehaviour
 
 	private void OnDestroy()
 	{
-        if (!looted && a.dead)
+        if (!looted && a.stat.hp <= 0)
         {
             GenerateLoot();
             looted = true;

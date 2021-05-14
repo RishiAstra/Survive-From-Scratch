@@ -6,4 +6,9 @@ public class SkillObject : MonoBehaviour
 {
     public Abilities parent;//used to calculate damage etc.
     // Start is called before the first frame update
+
+    public float GetDamageAmount(AttackType type, float dmgMult = 1)
+	{
+        return parent.myStat.GetOutputDamageAmount(type, dmgMult);
+	}
 }

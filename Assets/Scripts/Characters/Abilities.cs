@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json;
 
+[RequireComponent(typeof(StatScript))]
 public class Abilities : MonoBehaviour, ISaveable
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
@@ -11,7 +12,7 @@ public class Abilities : MonoBehaviour, ISaveable
 
 
 	public bool dead;//TODO: consider stopping all attacks already happening when it dies
-	public bool resetOnStart = true;
+
 	public StatScript myStat;
 	public List<Skill> skills;
 	public bool busy;
@@ -26,7 +27,7 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	private void Awake()
 	{
-		
+		myStat = GetComponent<StatScript>();
 	}
 
 
@@ -152,8 +153,8 @@ public class Abilities : MonoBehaviour, ISaveable
 public class Skill
 {
 	public Stat cost;
-	public float useDist;//use this for AI to determine what skill to use or if it needs to approach
-	public float useAngle;
+	//public float useDist;//use this for AI to determine what skill to use or if it needs to approach
+	//public float useAngle;
 	public Action[] actions;
 }
 

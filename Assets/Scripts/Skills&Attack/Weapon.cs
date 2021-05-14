@@ -76,7 +76,7 @@ public class Weapon : MonoBehaviour
 				if (bg != null && bg != parent && !hit.Contains(bg))
 				{
 					hit.Add(bg);
-					bg.Damage(dmg * parent.myStat.stat.atk, parent, other, attackType, other.ClosestPoint(transform.position));
+					bg.Damage(parent.myStat.GetOutputDamageAmount(attackType), parent, other, attackType, other.ClosestPoint(transform.position));
 					if(!multipleHits) canDmg = false;
 				}
 			}

@@ -40,7 +40,7 @@ public class SaveEntity : Save, ISaveable
 	public string type;
 	public string customSavePath;
 
-	public Abilities a;
+	public StatScript a;
 	public bool deleteOnDeath;
 
 	public Component[] toSave;
@@ -58,7 +58,7 @@ public class SaveEntity : Save, ISaveable
 	// Start is called before the first frame update
 	void Awake()
 	{
-		a = GetComponent<Abilities>();
+		a = GetComponent<StatScript>();
 		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);
@@ -89,12 +89,12 @@ public class SaveEntity : Save, ISaveable
 			nextId++;
 		}
 
-		if (a!=null) pStat = a.myStat.stat;
+		if (a!=null) pStat = a.stat;
 	}
 
 	void Start()
 	{
-		pStat = a.myStat.stat;
+		pStat = a.stat;
 	}
 
 	private void InitializeToSave()
@@ -103,7 +103,9 @@ public class SaveEntity : Save, ISaveable
 		List<Component> toSaveTemp = toSave.ToList();
 
 		toSaveTemp.Add(this);
-		Abilities a = GetComponent<Abilities>();//might be null if none are attached, but null checks are used for "a"
+		StatScript s = GetComponent<StatScript>();//might be null if none are attached, but null checks are used for "a"
+		if (s != null) toSaveTemp.Add(s);
+		Abilities a = GetComponent<Abilities>();
 		if (a != null) toSaveTemp.Add(a);
 		Inventory i = GetComponent<Inventory>();
 		if (i != null) toSaveTemp.Add(i);
@@ -136,10 +138,10 @@ public class SaveEntity : Save, ISaveable
     {
 		//TODO: find a better way to detect changes
 		//Autosave the entity if stat was changed
-		if (a != null &&!Stat.StatEquals(pStat, a.myStat.stat))
+		if (a != null &&!Stat.StatEquals(pStat, a.stat))
 		{
 			//print("autosaved data for entity id: " + id);
-			pStat = a.myStat.stat;
+			pStat = a.stat;
 			SaveDataToFile();
 		}
 	}
@@ -150,7 +152,7 @@ public class SaveEntity : Save, ISaveable
 		//TODO:GetPath broken
 		//TODO: this will break with new saving
 		string filePath = GetPath();// + id + ".json";
-		if (a == null || a.dead){
+		if (a == null || a.stat.hp <= 0){
 			if (deleteOnDeath){
 				if (type == "Player") Debug.LogError("no");
 				//if (File.Exists(filePath))
@@ -398,7 +400,7 @@ public class SaveEntity : Save, ISaveable
 	{
 		GameObject g = Instantiate(typePrefab);
 
-		Abilities a = g.GetComponent<Abilities>();
+		StatScript a = g.GetComponent<StatScript>();
 		if(a != null) a.resetOnStart = false;//prevent resetting of hp etc
 
 		//TODO:see below

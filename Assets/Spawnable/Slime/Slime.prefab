@@ -546,6 +546,7 @@ GameObject:
   - component: {fileID: 9123941630015135666}
   - component: {fileID: 9123941630015135667}
   - component: {fileID: 9123941630015135668}
+  - component: {fileID: 3164819327478351264}
   m_Layer: 12
   m_Name: Slime
   m_TagString: Untagged
@@ -727,12 +728,15 @@ MonoBehaviour:
   armors:
   - col:
     - {fileID: 9123941630015135658}
-    modifiers:
-    - preadd: 0
-      premult: 0
-      postadd: 0
-      postmult: 0
-      type: 0
+    mods:
+      globalArmorModifiers: []
+      hpMods: []
+      mpMods: []
+      engMods: []
+      morMods: []
+      atkMods: []
+    localArmorModifiers: []
+  itemsEqipped: []
 --- !u!114 &9123941630015135666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -795,6 +799,43 @@ MonoBehaviour:
       amount: 1
       strength: 0
       currentStrength: 0
+--- !u!114 &3164819327478351264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123941630015135659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3207a571871174f9a870eb275c4ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dead: 0
+  myStat: {fileID: 0}
+  skills:
+  - cost:
+      hp: 0
+      mp: 0
+      eng: 0
+      mor: 0
+      atk: 0
+    actions:
+    - animationIndex: 0
+      time: 1
+      spawn: {fileID: 0}
+      spawnTransform: 0
+      spawnAsChild: 0
+      useWeapons: 1
+  busy: 0
+  attackAllowed: 0
+  anim: {fileID: 9209353146950880325}
+  dieTime: 2.5
+  currentAttackTransform: 0
+  attackTranforms:
+  - {fileID: 9123482635650044458}
+  enemyString:
+  - humanoid
 --- !u!1001 &8140467597535700410
 PrefabInstance:
   m_ObjectHideFlags: 0

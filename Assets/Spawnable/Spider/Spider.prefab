@@ -2310,6 +2310,7 @@ GameObject:
   - component: {fileID: 447233516}
   - component: {fileID: 2246126291130573370}
   - component: {fileID: -842003936032522875}
+  - component: {fileID: 2570872564870858153}
   m_Layer: 12
   m_Name: Spider
   m_TagString: Untagged
@@ -2482,7 +2483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566d6838528735047847b71a31f08853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dead: 0
   resetOnStart: 1
   maxStat:
     hp: 10
@@ -2490,50 +2490,24 @@ MonoBehaviour:
     eng: 0
     mor: 0
     atk: 5
-    def: 0
-    mag: 0
   stat:
     hp: 0
     mp: 0
     eng: 0
     mor: 0
     atk: 0
-    def: 0
-    mag: 0
-  skills:
-  - cost:
-      hp: 0
-      mp: 0
-      eng: 0
-      mor: 0
-      atk: 0
-      def: 0
-      mag: 0
-    useDist: 0.25
-    useAngle: 8
-    actions:
-    - animationIndex: 0
-      time: 1
-      spawn: {fileID: 0}
-      spawnTransform: 0
-      spawnAsChild: 0
-      useWeapons: 1
   armors:
   - col:
     - {fileID: 9089679403127600196}
-    pierceResist: 0
-    bluntResist: 0
-    slashResist: 0
-    magicResist: 0
-  busy: 0
-  attackAllowed: 0
-  anim: {fileID: 5323454491581019214}
-  dieTime: 2.5
-  currentAttackTransform: 0
-  attackTranforms:
-  - {fileID: 1453039034}
-  enemyString:
-  - humanoid
+    mods:
+      globalArmorModifiers: []
+      hpMods: []
+      mpMods: []
+      engMods: []
+      morMods: []
+      atkMods: []
+    localArmorModifiers: []
+  itemsEqipped: []
 --- !u!114 &447233516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2596,6 +2570,43 @@ MonoBehaviour:
       amount: 1
       strength: 0
       currentStrength: 0
+--- !u!114 &2570872564870858153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9089679403127632740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3207a571871174f9a870eb275c4ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dead: 0
+  myStat: {fileID: 0}
+  skills:
+  - cost:
+      hp: 0
+      mp: 0
+      eng: 0
+      mor: 0
+      atk: 0
+    actions:
+    - animationIndex: 0
+      time: 1
+      spawn: {fileID: 0}
+      spawnTransform: 0
+      spawnAsChild: 0
+      useWeapons: 1
+  busy: 0
+  attackAllowed: 0
+  anim: {fileID: 5323454491581019214}
+  dieTime: 2.5
+  currentAttackTransform: 0
+  attackTranforms:
+  - {fileID: 905467515}
+  enemyString:
+  - humanoid
 --- !u!1 &9089679403127632744
 GameObject:
   m_ObjectHideFlags: 0
