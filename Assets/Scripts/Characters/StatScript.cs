@@ -65,6 +65,21 @@ public class ModifierGroup
 	public List<TypedModifier> engMods;
 	public List<TypedModifier> morMods;
 	public List<TypedModifier> atkMods;
+
+	public ModifierGroup()
+	{
+		globalArmorModifiers = new List<TypedModifier>();
+		hpMods = new List<TypedModifier>();
+		mpMods = new List<TypedModifier>();
+		engMods = new List<TypedModifier>();
+		morMods = new List<TypedModifier>();
+		atkMods = new List<TypedModifier>();
+	}
+
+	public override string ToString()
+	{
+		return "ModifierGroup: " + globalArmorModifiers.Count;
+	}
 }
 
 /// <summary>
