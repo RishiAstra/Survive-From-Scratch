@@ -1,0 +1,66 @@
+{
+    "title" : "Dwarf",
+    "texts" : [
+        "placeholder"
+    ],
+    "choices" : [
+        {
+            "icon" : null,
+            "text" : "choice 1",
+            "result" : null
+        }
+    ]
+
+}
+
+{
+    "title" : null,
+    "texts" : [
+        "placeholder"
+    ],
+    "choices" : null
+}
+
+"result" : {
+    "title" : null,
+    "texts" : [
+        "Great! I wish you luck."
+    ],
+    "choices" : null,
+    "questResult" : {
+        "type" : "KillQuest",
+        "data" : {
+            "typeToKill" : "Slime",
+            "amountToKill" : 5,
+            "amountKilled" : 0,
+            "questName" : "Dwarf hates the sunny slimes",
+            "nextJson" : "awaiting slime.json",
+            "makeNextJsonDefault" : true
+        }
+    }
+}
+
+"choices" : [
+    {
+        "icon" : null,
+        "text" : "1",
+        "result" : {
+            "title" : null,
+            "texts" : [
+                "fdsa"
+            ],
+            "choices" : null            
+        }
+    },
+    {
+        "icon" : null,
+        "text" : "Not very good",
+        "result" : {
+            "title" : null,
+            "texts" : [
+                "Eh? What's the problem?"
+            ],
+            "choices" : null            
+        }
+    }
+]

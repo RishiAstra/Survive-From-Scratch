@@ -84,7 +84,7 @@ public class InventoryUI : MonoBehaviour
         CorrectSlotCount();
     }
 
-    void CorrectSlotCount()
+    public void CorrectSlotCount()
 	{
 		maxSlotSizeX = slotBounds.rect.width / w;
 		maxSlotSizeY = overflowDown ? float.MaxValue : slotBounds.rect.height / h;//if can overflow down, height won't limit it
@@ -182,6 +182,9 @@ public class InventoryUI : MonoBehaviour
 
     public void Refresh()
 	{
-        throw new System.NotImplementedException();
+        foreach ( ItemIcon i in slotI)
+		{
+			i.UpdateIcon();
+		}
 	}	
 }

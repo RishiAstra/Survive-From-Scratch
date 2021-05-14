@@ -11,7 +11,8 @@ public class LookAtCamera : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void OnWillRenderObject () {
+	void Update ()
+	{//OnWillRenderObject
 		transform.forward = cam.forward;//.LookAt (Camera.main.transform.position);
 	}
 }

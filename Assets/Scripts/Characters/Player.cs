@@ -233,19 +233,15 @@ public class Player : MonoBehaviour
 		//Right Hand Equippable item
 		if (GameControl.itemTypes[inv.items[index].id].tags.Contains(TagScript.rhEquip))
 		{
-			if (invSel != index) {
-				if(GameControl.itemTypes[inv.items[index].id].equipPrefab != null)
-				{
-					print("equipped something");
-					GameObject g = (GameObject)Instantiate(GameControl.itemTypes[inv.items[index].id].equipPrefab);
-					g.transform.SetParent(rightHand, false);
-					g.GetComponent<Equip>().bob = this;
-					//print("Selected equipable object");
-				}
+			if (invSel != index)
+			{
+				MakeEquipGameObject(inv.items[index].id);
 				SetSelected(index);
 				//invSel = index;
-			}else
+			}
+			else
 			{
+				MakeEquipGameObject(0);//equip fists
 				SetSelected(-1);
 				//invSel = -1;
 			}
@@ -270,6 +266,18 @@ public class Player : MonoBehaviour
 		//	}
 		//}
 		//print(invSel);
+	}
+
+	private void MakeEquipGameObject(int id)
+	{
+		if (GameControl.itemTypes[id].equipPrefab != null)
+		{
+			print("equipped something");
+			GameObject g = (GameObject)Instantiate(GameControl.itemTypes[id].equipPrefab);
+			g.transform.SetParent(rightHand, false);
+			g.GetComponent<Equip>().bob = this;
+			//print("Selected equipable object");
+		}
 	}
 
 	/*

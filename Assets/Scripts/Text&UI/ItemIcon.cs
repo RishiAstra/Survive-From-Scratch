@@ -32,7 +32,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         UpdateIcon();
     }
 
-    void UpdateIcon()
+    public void UpdateIcon()
     {
         if (index >= parent.items.Count || parent.items[index].id == 0 || parent.items[index].amount == 0)
 		{

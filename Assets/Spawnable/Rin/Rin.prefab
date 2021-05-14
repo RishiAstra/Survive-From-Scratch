@@ -356,6 +356,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3937,6 +3938,7 @@ Transform:
   - {fileID: 7247242195844081610}
   - {fileID: 4479349184334772536}
   - {fileID: 187701977947979861}
+  - {fileID: 133880070470282070}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4151,8 +4153,8 @@ MonoBehaviour:
   prefix: 
   dead: Dead
   hpHolder: {fileID: 591001014041977264}
-  autoHide: 0
-  hideTime: 0
+  autoHide: 1
+  hideTime: 3
 --- !u!114 &5288638758117385579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4512,3 +4514,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &2366826810627543050
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 164153826729538009}
+    m_Modifications:
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645209268441059458, guid: b186d36185232b54886c2c31a688168d,
+        type: 3}
+      propertyPath: m_Name
+      value: Ally Map Icon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b186d36185232b54886c2c31a688168d, type: 3}
+--- !u!4 &133880070470282070 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2378757428938406748, guid: b186d36185232b54886c2c31a688168d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2366826810627543050}
+  m_PrefabAsset: {fileID: 0}

@@ -41,7 +41,7 @@ public class AOEDamage : MonoBehaviour
             {
                 if (hitSameEnemyMultipleTimes || !hit.Contains(a)){
                     hit.Add(a);
-                    a.Damage(so.parent.stat.atk, other, type);
+                    a.Damage(so.parent.stat.atk, so.parent, other, type);
                 }
             }
 			else

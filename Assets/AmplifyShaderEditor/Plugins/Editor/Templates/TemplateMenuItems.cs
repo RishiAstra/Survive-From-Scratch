@@ -71,5 +71,10 @@ namespace AmplifyShaderEditor
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "cf964e524c8e69742b1d21fbe2ebcc4a" );
 		}
+		[MenuItem( "Assets/Create/Amplify Shader/Universal/Unlit1", false, 85 )]
+		public static void ApplyTemplateUniversalUnlit1()
+		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "2bf586f0d7426314c903557e7db39067" );
+		}
 	}
 }

@@ -721,6 +721,15 @@ public class GameControl : MonoBehaviour
 			{
 				GameObject g = hit.collider.gameObject;
 				c = g.GetComponentInParent<IMouseHoverable>();
+
+				//tell the previous one that it's not hovered over anymore
+				if (c != previouslyMouseHovered)
+				{
+					if (previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
+					previouslyMouseHovered = c;
+				}
+
+				//tell the current one that it's hovered over
 				if (c != null)
 				{
 					//foundIMouseHoverable = true;
@@ -729,11 +738,7 @@ public class GameControl : MonoBehaviour
 					//c.MouseClickMe();
 				}
 
-				if(c != previouslyMouseHovered)
-				{
-					if(previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
-					previouslyMouseHovered = c;
-				}
+				
 			}
 			else
 			{
@@ -980,6 +985,7 @@ public class GameControl : MonoBehaviour
 
 	#region inventory
 	public bool GetItem(int id) { return GetItem(id, 1); }
+	public bool GetItem(Item i) { return GetItem(i.id, i.amount); }
 	public bool GetItem(int id, int amount)
 	{
 		//check if it can be put in hotbar

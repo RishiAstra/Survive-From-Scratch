@@ -50,8 +50,8 @@ public class Cam : MonoBehaviour
 		
 
 		RaycastHit hit;
-
-		if(Physics.Raycast(pivot.position, transform.TransformVector(offset), out hit, dist, blockCamera))
+		//ignore trigers because they generally represent things that don't collide and shouldn't force the camera to zoom in
+		if(Physics.Raycast(pivot.position, transform.TransformVector(offset), out hit, dist, blockCamera, QueryTriggerInteraction.Ignore))
 		{
 			//hit.distance;
 			actualDist = Mathf.Clamp(dist, minDist, hit.distance);

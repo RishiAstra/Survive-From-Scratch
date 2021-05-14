@@ -317,7 +317,7 @@ public class Movement : MonoBehaviour
 		//prevJump = grounded;
 	}
 	public bool idle;
-	bool previouslyIdle;
+	bool previouslyIdle = true;
 	public float jumpCooldownLeft;
 	public bool jumpInProg;
 
