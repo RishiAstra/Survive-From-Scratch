@@ -89,12 +89,12 @@ public class SaveEntity : Save, ISaveable
 			nextId++;
 		}
 
-		if (a!=null) pStat = a.stat;
+		if (a!=null) pStat = a.myStat.stat;
 	}
 
 	void Start()
 	{
-		pStat = a.stat;
+		pStat = a.myStat.stat;
 	}
 
 	private void InitializeToSave()
@@ -136,10 +136,10 @@ public class SaveEntity : Save, ISaveable
     {
 		//TODO: find a better way to detect changes
 		//Autosave the entity if stat was changed
-		if (a != null &&!Stat.StatEquals(pStat, a.stat))
+		if (a != null &&!Stat.StatEquals(pStat, a.myStat.stat))
 		{
 			//print("autosaved data for entity id: " + id);
-			pStat = a.stat;
+			pStat = a.myStat.stat;
 			SaveDataToFile();
 		}
 	}
@@ -711,12 +711,12 @@ public class SaveDataBasic
 }
 
 [System.Serializable]
-public class SaveDataAbilities
+public class SaveDataStat
 {
 	public Stat maxStat;
 	public Stat stat;
 
-	public SaveDataAbilities(Stat stat, Stat maxStat)
+	public SaveDataStat(Stat stat, Stat maxStat)
 	{
 		this.stat = stat;
 		this.maxStat = maxStat;

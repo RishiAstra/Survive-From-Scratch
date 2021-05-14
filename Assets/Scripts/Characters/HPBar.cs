@@ -25,7 +25,7 @@ public class HPBar : MonoBehaviour
 	public bool autoHide;
 	public float hideTime;
 
-	private Abilities a;
+	private StatScript a;
 	private float hideTimeLeft;
 	private float previousHp;
 	private bool isHiding;
@@ -33,7 +33,7 @@ public class HPBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		a = GetComponent<Abilities>();
+		a = GetComponent<StatScript>();
 		previousHp = a.stat.hp;
 		UpdateDisplayLive(false);
 		if(autoHide)SetHpBarsActive(false);
@@ -47,7 +47,9 @@ public class HPBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		bool shouldHide = !a.dead && autoHide && hideTimeLeft <= 0f;
+		bool statIsDead = a.stat.hp <= 0;
+
+		bool shouldHide = !statIsDead && autoHide && hideTimeLeft <= 0f;
 
 		if(shouldHide != isHiding)
 		{
@@ -69,16 +71,16 @@ public class HPBar : MonoBehaviour
 		{
 			previousHp = a.stat.hp;
 			hideTimeLeft = hideTime;
-			if(!a.dead)	UpdateDisplayLive(false);
+			if(a.stat.hp > 0)	UpdateDisplayLive(false);
 		}
 
-		if(a.dead != isDead)
+		if (statIsDead != isDead)
 		{
-			UpdateDisplayLive(a.dead);
-			isDead = a.dead;
+			UpdateDisplayLive(statIsDead);
+			isDead = a.stat.hp <= 0;
 		}
 
-		if (!a.dead &&autoHide)
+		if (!statIsDead && autoHide)
 		{
 			hideTimeLeft -= Time.deltaTime;
 		}

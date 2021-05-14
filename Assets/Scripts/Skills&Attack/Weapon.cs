@@ -13,7 +13,7 @@ public class Weapon : MonoBehaviour
 	//public Equip eq;
 
 	private float timeSinceAttack;
-	private List<Abilities> hit;
+	private List<StatScript> hit;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
 	public void Attack1()
 	{
 		canDmg = true;
-		hit = new List<Abilities>();
+		hit = new List<StatScript>();
 		timeSinceAttack = 0;
 	}
 
@@ -72,11 +72,11 @@ public class Weapon : MonoBehaviour
 			TagScript ts = other.GetComponentInParent<TagScript>();
 			if (ts != null && ts.ContainsTag(parent.enemyString))
 			{
-				Abilities bg = ts.GetComponent<Abilities>();
+				StatScript bg = ts.GetComponent<StatScript>();
 				if (bg != null && bg != parent && !hit.Contains(bg))
 				{
 					hit.Add(bg);
-					bg.Damage(dmg * parent.stat.atk, parent, other, attackType, other.ClosestPoint(transform.position));
+					bg.Damage(dmg * parent.myStat.stat.atk, parent, other, attackType, other.ClosestPoint(transform.position));
 					if(!multipleHits) canDmg = false;
 				}
 			}

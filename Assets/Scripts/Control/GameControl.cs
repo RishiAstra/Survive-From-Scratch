@@ -839,7 +839,7 @@ public class GameControl : MonoBehaviour
 				//TODO: consider below and if it should be also for loading player
 				g.transform.position = position;
 				g.transform.rotation = Quaternion.identity;
-				g.GetComponent<Abilities>().ResetStats();
+				g.GetComponent<StatScript>().ResetStats();
 				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);

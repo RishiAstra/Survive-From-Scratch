@@ -54,7 +54,7 @@ public class CollideDamage : MonoBehaviour
 		{
 
 			float v = collision.relativeVelocity.magnitude;
-			Abilities b = ts.GetComponent<Abilities>();
+			StatScript b = ts.GetComponent<StatScript>();
 			if(b != null)
 			{
 				if (hit.Contains(collision.gameObject))

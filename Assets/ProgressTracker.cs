@@ -111,7 +111,7 @@ public class ProgressTracker : MonoBehaviour
 		}
 	}
 
-	public void RegisterKill(string type, Abilities killed, Abilities killer)
+	public void RegisterKill(string type, StatScript killed, Abilities killer)
 	{
 		foreach (IQuest q in quests)
 		{

@@ -4,53 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json;
 
-[System.Serializable]
-public struct Stat
-{
-	public float hp;//health points, if reaches 0 die
-	public float mp;//mana points, can be used to cast spells or skills
-	public float eng;//energy, used for pretty much everything especially big attacks or running
-	public float mor;//morale, effects stats
-	public float atk;//attack power
-	//TODO: defence should be implemented in colliders that can have different defence values and resistances
-	public float def;//defence
-	public float mag;//
-
-	public static bool StatEquals(Stat c1, Stat c2)
-	{
-		return
-			c1.hp == c2.hp &&
-			c1.mp == c2.mp &&
-			c1.eng == c2.eng &&
-			c1.mor == c2.mor &&
-			c1.atk == c2.atk &&
-			c1.def == c2.def &&
-			c1.mag == c2.mag;
-	}
-}
-[System.Serializable]
-public struct Armor
-{
-	public Collider[] col;
-	public float pierceResist;
-	public float bluntResist;
-	public float slashResist;
-	public float magicResist;
-
-	public bool HasCollider(Collider c)
-	{
-		return col.Contains(c);
-	}
-}
-
-public enum AttackType
-{
-	Pierce = 1,
-	Blunt = 2,
-	Slash = 4,
-	Magic = 8
-};
-
 public class Abilities : MonoBehaviour, ISaveable
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
@@ -59,10 +12,8 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	public bool dead;//TODO: consider stopping all attacks already happening when it dies
 	public bool resetOnStart = true;
-	public Stat maxStat;
-	public Stat stat;
+	public StatScript myStat;
 	public List<Skill> skills;
-	public List<Armor> armors;
 	public bool busy;
 	public bool attackAllowed;
 	public Animator anim;
@@ -75,23 +26,14 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	private void Awake()
 	{
-		if (resetOnStart) ResetStats();//reset before anythign else can happen
-
-	}
-	// Start is called before the first frame update
-	void Start()
-	{
+		
 	}
 
-	public void ResetStats()
-	{
-		stat = maxStat;
-	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if(stat.hp <= 0 && !dead)
+		if(myStat.stat.hp <= 0 && !dead)
 		{
 			Die();
 		}
@@ -125,53 +67,6 @@ public class Abilities : MonoBehaviour, ISaveable
 		}
 	}
 
-	public void Damage(float dmg, Abilities from, Collider cols, AttackType type)//accouns for weakpoints in different armor pieces
-	{
-		Damage(dmg, from, cols, type, cols.bounds.center);
-	}
-
-	public void Damage(float dmg, Abilities from, Collider cols, AttackType type, Vector3 damagePosition)//accouns for weakpoints in different armor pieces
-	{
-		if (!RegionSettings.main.allowCombat) return;
-
-		Armor a = armors.Count > 0 ? armors[0] : new Armor();//default to first
-		foreach(Armor t in armors)
-		{
-			if (t.HasCollider(cols))
-			{
-				a = t;
-			}
-		}
-		float damageTaken = GetDamageAmount(dmg, type, a);
-		stat.hp -= damageTaken;
-		
-
-		//update the progress tracker
-		SaveEntity save = GetComponent<SaveEntity>();
-		if(save != null)
-		{
-			ProgressTracker.main.RegisterDamage(damageTaken, from, save.type);
-
-			//if not already dead, die and register the kill
-			if (stat.hp <= 0 && !dead)
-			{
-				ProgressTracker.main.RegisterKill(save.type, this, from);
-				Die();
-			}
-		}
-
-		DamageTextControl.PutDamageText(cols.bounds.center, damageTaken);
-	}
-	public float GetDamageAmount(float damage, AttackType type, Armor armor)
-	{
-		float armorValue = 0;
-		if (type == AttackType.Pierce)	armorValue = armor.pierceResist;
-		if (type == AttackType.Blunt)	armorValue = armor.bluntResist;
-		if (type == AttackType.Slash)	armorValue = armor.slashResist;
-		if (type == AttackType.Magic)	armorValue = armor.magicResist;
-		float mult = 1 - Mathf.Pow(RESIST_EXPONENT_BASE, -damage / armorValue);
-		return damage * mult;
-	}
 
 	/// <summary>
 	/// Uses a skill. It's ok to call this every frame since it won't execute the skill if busy.
@@ -230,23 +125,26 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	#endregion
 
+	/*************save skills and stuff below*************/
+
 	public string GetData()
 	{
-		SaveDataAbilities s = new SaveDataAbilities(stat, maxStat);
-		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		//SaveDataAbilities s = new SaveDataAbilities(stat, maxStat);
+		//return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return null;
 	}
 
 	public void SetData(string data)
 	{
-		SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
-		//TODO: warning, sceneindex not considered here
-		this.stat = s.stat;
-		this.maxStat = s.maxStat;
+		//SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
+		////TODO: warning, sceneindex not considered here
+		//this.stat = s.stat;
+		//this.maxStat = s.maxStat;
 	}
 
 	public string GetFileNameBaseForSavingThisComponent()
 	{
-		return "Stats";
+		return null;// "Stats";
 	}
 }
 
