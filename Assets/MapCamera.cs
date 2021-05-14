@@ -33,7 +33,19 @@ public class MapCamera : MonoBehaviour
 		double timePerFrame = 1.0 / fps;
 		if (seconds - ps > timePerFrame)
 		{
-			ps += timePerFrame;
+			
+
+            if(seconds - ps > timePerFrame * 3)
+			{
+                //there was lag of more than 3x a frame or something, so just reset the time difference to prevent it from trying to catch up
+                ps = seconds;
+			}
+			else
+			{
+                //one frame was completed, so remove 1 frame worth of time from the timer
+                ps += timePerFrame;
+            }
+
             cam.Render();// WithShader(unlit, null);
 		}
     }
