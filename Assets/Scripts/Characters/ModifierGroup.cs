@@ -30,58 +30,44 @@ public class ModifierGroup
 	public override string ToString()
 	{
 		StringBuilder sb = new StringBuilder();
-		GetTypedModifierInfoText(sb, "DEF", globalArmorModifiers);
-		GetTypedModifierInfoText(sb, "ATK", atkMods);
-		GetModifierInfoText(sb, "HP", hpMods);
-		GetModifierInfoText(sb, "MP", mpMods);
-		GetModifierInfoText(sb, "ENG", engMods);
-		GetModifierInfoText(sb, "MOR", morMods);
+		GetTypedModifierInfoText(sb, "DEF", globalArmorModifiers, GameControl.main.armorColor);
+		GetTypedModifierInfoText(sb, "ATK", atkMods, GameControl.main.atkColor);
+		GetModifierInfoText(sb, "HP", hpMods, GameControl.main.hpColor);
+		GetModifierInfoText(sb, "MP", mpMods, GameControl.main.mpColor);
+		GetModifierInfoText(sb, "ENG", engMods, GameControl.main.engColor);
+		GetModifierInfoText(sb, "MOR", morMods, GameControl.main.morColor);
 		return sb.ToString();
 	}
 
-	private void GetModifierInfoText(StringBuilder sb, string modName, List<Modifier> mods)
+	private void GetModifierInfoText(StringBuilder sb, string modName, List<Modifier> mods, Color col)
 	{
 		float preadd = GetPreAddFromTypedModifiers(mods);
 		float premult = GetPreMultFromTypedModifiers(mods);
 		float postadd = GetPostAddFromTypedModifiers(mods);
 		float postmult = GetPostMultFromTypedModifiers(mods);
-		if (preadd > 0) sb.Append(GetAddString(preadd, modName, false) + "\n");
-		if (premult > 0) sb.Append(GetMultString(premult, modName, false) + "\n");
-		if (postadd > 0) sb.Append(GetAddString(postadd, modName, true) + "\n");
-		if (postmult > 0) sb.Append(GetMultString(postmult, modName, true) + "\n");
+		if (preadd > 0) sb.Append(GetAddString(preadd, modName, false, col) + "\n");
+		if (premult > 0) sb.Append(GetMultString(premult, modName, false, col) + "\n");
+		if (postadd > 0) sb.Append(GetAddString(postadd, modName, true, col) + "\n");
+		if (postmult > 0) sb.Append(GetMultString(postmult, modName, true, col) + "\n");
 	}
 
-	private void GetTypedModifierInfoText(StringBuilder sb, string modName, List<TypedModifier> mods)
+	private void GetTypedModifierInfoText(StringBuilder sb, string modName, List<TypedModifier> mods, Color col)
 	{
 		foreach(TypedModifier m in mods)
 		{
-			string temp = m.ToString(modName);
+			string temp = m.ToString(modName, col);
 			sb.Append(temp);
 		}
 	}
 
-	private string GetAddString(float v, string n, bool post)
+	private string GetAddString(float v, string n, bool post, Color col)
 	{
-		if (post)
-		{
-			return "+" + v.ToString("F1") + " " + n + " post";
-		}
-		else
-		{
-			return "+" + v.ToString("F1") + " " + n + " pre";
-		}
+		return "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+" + v.ToString("F1") + " " + n + "</color> " + (post ? " post" : " pre");
 	}
 
-	private string GetMultString(float v, string n, bool post)
+	private string GetMultString(float v, string n, bool post, Color col)
 	{
-		if (post)
-		{
-			return "+" + (v * 100f).ToString("F1") + "% " + n + " post";
-		}
-		else
-		{
-			return "+" + (v * 100f).ToString("F1") + "% " + n + " pre";
-		}
+		return "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+" + (v * 100f).ToString("F1") + "% " + n + "</color> " + (post ? " post" : " pre");
 	}
 
 	public static bool AttackTypeOverlap(AttackType a, AttackType b)

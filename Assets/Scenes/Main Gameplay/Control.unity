@@ -2294,6 +2294,12 @@ MonoBehaviour:
   camGameObject: {fileID: 0}
   itemInfoTarget: {fileID: 0}
   myAbilities: {fileID: 0}
+  armorColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
+  atkColor: {r: 0.6698113, g: 0, b: 0, a: 1}
+  hpColor: {r: 0, g: 0.7264151, b: 0, a: 1}
+  mpColor: {r: 0, g: 0, b: 1, a: 1}
+  engColor: {r: 0.7169812, g: 0.5543163, b: 0, a: 1}
+  morColor: {r: 0, g: 0.4772476, b: 0.8113208, a: 1}
 --- !u!114 &164377914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6885,7 +6891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IgnoreLayout: 0
   m_MinWidth: -1
-  m_MinHeight: 25
+  m_MinHeight: -1
   m_PreferredWidth: -1
   m_PreferredHeight: -1
   m_FlexibleWidth: -1

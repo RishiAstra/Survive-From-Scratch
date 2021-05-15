@@ -91,6 +91,9 @@ public class GameControl : MonoBehaviour
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
+
+	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor;
+
 	void Awake(){
 		ItemInfoUI.main = mainItemInfoUI;
 		if (usePlayerPrefab2) playerPrefab = playerPrefab2;

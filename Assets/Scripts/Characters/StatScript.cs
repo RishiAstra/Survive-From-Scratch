@@ -62,13 +62,15 @@ public class TypedModifier: Modifier
 {
 	public AttackType type;
 
-	public string ToString(string modifyName)
+	public string ToString(string modifyName, Color col)
 	{
 		StringBuilder sb = new StringBuilder();
-		if (preadd > 0) sb.Append("+" + preadd.ToString("F1") + " " + modifyName + " pre\n");
-		if (premult > 0) sb.Append("+" + (premult * 100f).ToString("F1") + "% " + modifyName + " pre\n");
-		if (postadd > 0) sb.Append("+" + postadd.ToString("F1") + " " + modifyName + " post\n");
-		if (postmult > 0) sb.Append("+" + (postmult * 100f).ToString("F1") + "% " + modifyName + " post\n");
+		string p = "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+";
+		string m = modifyName + "</color> ";
+		if (preadd > 0) sb.Append(p + preadd.ToString("F1") + " " + m + " pre\n");
+		if (premult > 0) sb.Append(p + (premult * 100f).ToString("F1") + "% " + m + " pre\n");
+		if (postadd > 0) sb.Append(p + postadd.ToString("F1") + " " + m + " post\n");
+		if (postmult > 0) sb.Append(p + (postmult * 100f).ToString("F1") + "% " + m + " post\n");
 
 		return sb.ToString(); 
 	}
