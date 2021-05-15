@@ -18,7 +18,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	public bool busy;
 	public bool attackAllowed;
 	public Animator anim;
-	public float dieTime = 2.5f;
+	
 
 	public int currentAttackTransform;
 	public Transform[] attackTranforms;
@@ -34,23 +34,16 @@ public class Abilities : MonoBehaviour, ISaveable
 	// Update is called once per frame
 	void Update()
 	{
-		if(myStat.stat.hp <= 0 && !dead)
-		{
-			Die();
-		}
+		
 	}
 
-	private void Die()
-	{
-		dead = true;
-		Destroy(gameObject, dieTime);
-	}
+	
 
 	#region Attack and Defense
 
 	public void Attack()
 	{
-		if (dead) return;
+		if (myStat.dead) return;
 		if (attackAllowed)
 		{
 			foreach (Weapon w in attackTranforms[currentAttackTransform].GetComponentsInChildren<Weapon>())
@@ -75,7 +68,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	/// <param name="i"></param>
 	public void UseSkill(int i)
 	{
-		if (dead || !RegionSettings.main.allowCombat) return;
+		if (myStat.dead || !RegionSettings.main.allowCombat) return;
 		if (!busy)
 		{
 			busy = true;

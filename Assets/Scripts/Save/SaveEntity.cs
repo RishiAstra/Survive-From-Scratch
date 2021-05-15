@@ -152,7 +152,8 @@ public class SaveEntity : Save, ISaveable
 		//TODO:GetPath broken
 		//TODO: this will break with new saving
 		string filePath = GetPath();// + id + ".json";
-		if (a == null || a.stat.hp <= 0){
+		if (a == null || a.dead)
+		{
 			if (deleteOnDeath){
 				if (type == "Player") Debug.LogError("no");
 				//if (File.Exists(filePath))

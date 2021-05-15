@@ -20,7 +20,7 @@ public class Loot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!looted && a.stat.hp <= 0)
+        if(!looted && a.dead)
 		{
             GenerateLoot();
             looted = true;
@@ -29,7 +29,7 @@ public class Loot : MonoBehaviour
 
 	private void OnDestroy()
 	{
-        if (!looted && a.stat.hp <= 0)
+        if (!looted && a.dead)
         {
             GenerateLoot();
             looted = true;

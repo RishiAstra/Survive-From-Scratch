@@ -688,7 +688,7 @@ public class GameControl : MonoBehaviour
 				//}
 			}
 
-			if (myAbilities.dead)
+			if (myAbilities.myStat.dead)
 			{
 				craftInventory.TryDeactivateMenu();
 				//deactivate crafting if dead

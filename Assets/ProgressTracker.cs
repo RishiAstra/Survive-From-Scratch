@@ -329,7 +329,7 @@ public class ProgressTracker : MonoBehaviour
 	private void OnDestroy()
 	{
 		//delete old quest save
-		if(Directory.Exists(questSavePath)) Directory.Delete(questSavePath);
+		if(Directory.Exists(questSavePath)) Directory.Delete(questSavePath, true);
 		//re-make the directory
 		Directory.CreateDirectory(questSavePath);
 		for(int i = 0; i < quests.Count; i++)

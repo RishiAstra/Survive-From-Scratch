@@ -11,6 +11,7 @@ public class ItemInfoUI : MonoBehaviour
 
     public TextMeshProUGUI itemNameText;
     public TextMeshProUGUI itemDescriptionText;
+    public TextMeshProUGUI itemModifiersText;
     public Image itemIcon;
     public RectTransform rt;
     // Start is called before the first frame update
@@ -27,6 +28,7 @@ public class ItemInfoUI : MonoBehaviour
         itemNameText.text = t.name;
         itemDescriptionText.text = t.description;
         itemIcon.sprite = t.icon;
+        itemModifiersText.text = t.mods.ToString();
 
 		//immediately update the size etc of this
 		LayoutRebuilder.ForceRebuildLayoutImmediate(rt);

@@ -192,6 +192,58 @@ public class gameControllEditor : Editor
 		}
 		return ss;
 	}
+
+	private bool ShowMods(List<Modifier> m, List<bool> s, bool ss, string title)
+	{
+		ss = EditorGUILayout.Foldout(ss, title);
+		if (ss)
+		{
+			EditorGUI.indentLevel += 1;
+			int l = EditorGUILayout.IntField("Size", m.Count);
+			while (l > m.Count)
+			{
+				m.Add(new TypedModifier());
+				s.Add(false);
+			}
+			while (l < m.Count)
+			{
+				m.RemoveAt(m.Count - 1);
+				s.RemoveAt(s.Count - 1);
+			}
+
+			for (int i = 0; i < s.Count; i++)
+			{
+				s[i] = EditorGUILayout.Foldout(s[i], "Element " + i);
+				if (s[i])
+				{
+					EditorGUI.indentLevel += 1;
+					//m[i].type = (AttackType)EditorGUILayout.EnumFlagsField("type", m[i].type);
+					m[i].preadd = EditorGUILayout.FloatField("preadd", m[i].preadd);
+					m[i].premult = EditorGUILayout.FloatField("premult", m[i].premult);
+					m[i].postadd = EditorGUILayout.FloatField("postadd", m[i].postadd);
+					m[i].postmult = EditorGUILayout.FloatField("postmult", m[i].postmult);
+
+					EditorGUI.indentLevel -= 1;
+				}
+			}
+
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("+"))
+			{
+				m.Add(new TypedModifier());
+				s.Add(false);
+			}
+			if (m.Count > 0 && GUILayout.Button("-"))
+			{
+				m.RemoveAt(m.Count - 1);
+				s.RemoveAt(s.Count - 1);
+			}
+			GUILayout.EndHorizontal();
+			EditorGUI.indentLevel -= 1;
+		}
+		return ss;
+	}
+
 	void UpdateShowList()
 	{
 		while (show.Count < GameControl.itemTypes.Count)
@@ -240,10 +292,10 @@ public class gameControllEditor : Editor
 			this.mainFoldout = mainFoldout;
 
 			if (mg.globalArmorModifiers == null) mg.globalArmorModifiers = new List<TypedModifier>();
-			if (mg.hpMods == null) mg.hpMods = new List<TypedModifier>();
-			if (mg.mpMods == null) mg.mpMods = new List<TypedModifier>();
-			if (mg.engMods == null) mg.engMods = new List<TypedModifier>();
-			if (mg.morMods == null) mg.morMods = new List<TypedModifier>();
+			if (mg.hpMods == null) mg.hpMods = new List<Modifier>();
+			if (mg.mpMods == null) mg.mpMods = new List<Modifier>();
+			if (mg.engMods == null) mg.engMods = new List<Modifier>();
+			if (mg.morMods == null) mg.morMods = new List<Modifier>();
 			if (mg.atkMods == null) mg.atkMods = new List<TypedModifier>();
 
 

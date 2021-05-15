@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json;
 using bobStuff;
+using System.Text;
 
 [System.Serializable]
 public struct Stat
@@ -53,35 +54,6 @@ public class Modifier
 	public float postmult;
 }
 
-//all modifiers that an equipment will give
-[System.Serializable]
-public class ModifierGroup
-{
-	//used when dmg is taken
-	public List<TypedModifier> globalArmorModifiers;
-	//used to increase stats
-	public List<TypedModifier> hpMods;
-	public List<TypedModifier> mpMods;
-	public List<TypedModifier> engMods;
-	public List<TypedModifier> morMods;
-	public List<TypedModifier> atkMods;
-
-	public ModifierGroup()
-	{
-		globalArmorModifiers = new List<TypedModifier>();
-		hpMods = new List<TypedModifier>();
-		mpMods = new List<TypedModifier>();
-		engMods = new List<TypedModifier>();
-		morMods = new List<TypedModifier>();
-		atkMods = new List<TypedModifier>();
-	}
-
-	public override string ToString()
-	{
-		return "ModifierGroup: " + globalArmorModifiers.Count;
-	}
-}
-
 /// <summary>
 /// a modifier for hp, dmg, armor, etc. that only effects for a type
 /// </summary>
@@ -89,6 +61,17 @@ public class ModifierGroup
 public class TypedModifier: Modifier
 {
 	public AttackType type;
+
+	public string ToString(string modifyName)
+	{
+		StringBuilder sb = new StringBuilder();
+		if (preadd > 0) sb.Append("+" + preadd.ToString("F1") + " " + modifyName + " pre\n");
+		if (premult > 0) sb.Append("+" + (premult * 100f).ToString("F1") + "% " + modifyName + " pre\n");
+		if (postadd > 0) sb.Append("+" + postadd.ToString("F1") + " " + modifyName + " post\n");
+		if (postmult > 0) sb.Append("+" + (postmult * 100f).ToString("F1") + "% " + modifyName + " post\n");
+
+		return sb.ToString(); 
+	}
 }
 
 [System.Flags]
@@ -120,9 +103,12 @@ public class StatScript : MonoBehaviour, ISaveable
 	public bool resetOnStart = true;
 	public Stat maxStat;
 	public Stat stat;
+	public float dieTime = 2.5f;
 
 	public List<Armor> armors;
 	public List<Item> itemsEqipped;
+
+	public bool dead;
 
 	private void Awake()
 	{
@@ -130,8 +116,18 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	}
 	// Start is called before the first frame update
-	void Start()
+	void Update()
 	{
+		if (stat.hp <= 0 && !dead)
+		{
+			Die();
+		}
+	}
+
+	private void Die()
+	{
+		dead = true;
+		Destroy(gameObject, dieTime);
 	}
 
 	public void ResetStats()
@@ -171,9 +167,10 @@ public class StatScript : MonoBehaviour, ISaveable
 			ProgressTracker.main.RegisterDamage(damageTaken, from, save.type);
 
 			//if not already dead, register the kill
-			if (stat.hp <= 0 && previousHp > 0)
+			if (stat.hp <= 0 && !dead)
 			{
 				ProgressTracker.main.RegisterKill(save.type, this, from);
+				Die();
 			}
 		}
 
@@ -192,7 +189,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		}
 
 		//get effective armor value
-		float effectiveArmorValue = GetComputedValueFromTypedModifiers(modifiers, type);
+		float effectiveArmorValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, type);
 
 		float mult = 1 - Mathf.Pow(RESIST_EXPONENT_BASE, -damage / effectiveArmorValue);
 		return damage * mult;
@@ -209,90 +206,90 @@ public class StatScript : MonoBehaviour, ISaveable
 		}
 
 		//get effective dmg value
-		float effectiveDmgValue = GetComputedValueFromTypedModifiers(modifiers, type, stat.atk);
+		float effectiveDmgValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, type, stat.atk);
 		print(effectiveDmgValue + "|" + modifiers.Count + "|" + stat.atk);
 		return effectiveDmgValue * dmgMult;
 	}
 
-	#region compute modifiers
+	//#region compute modifiers
 
-	public float GetComputedValueFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial = 0)
-	{
-		//base amount
-		float x = GetPreAddFromTypedModifiers(modifiers, type, initial);
-		//print("1:" + x);
-		//premultiply
-		x *= (1 + GetPreMultFromTypedModifiers(modifiers, type, initial));
-		//print("2:" + x);
-		//postadd
-		x += GetPostAddFromTypedModifiers(modifiers, type, initial);
-		//print("3:" + x);
-		//postmultiply
-		x *= (1 + GetPostMultFromTypedModifiers(modifiers, type, initial));
+	//public float GetComputedValueFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial = 0)
+	//{
+	//	//base amount
+	//	float x = GetPreAddFromTypedModifiers(modifiers, type, initial);
+	//	//print("1:" + x);
+	//	//premultiply
+	//	x *= (1 + GetPreMultFromTypedModifiers(modifiers, type, initial));
+	//	//print("2:" + x);
+	//	//postadd
+	//	x += GetPostAddFromTypedModifiers(modifiers, type, initial);
+	//	//print("3:" + x);
+	//	//postmultiply
+	//	x *= (1 + GetPostMultFromTypedModifiers(modifiers, type, initial));
 		
-		return x;
-	}
+	//	return x;
+	//}
 
 
-	public float GetPreAddFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
-	{
-		float x = initial;
-		for(int i = 0; i < modifiers.Count; i++)
-		{
-			if (AttackTypeOverlap(modifiers[i].type, type))
-			{
-				x += modifiers[i].preadd;
-			}
-		}
-		return x;
-	}
+	//public float GetPreAddFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	//{
+	//	float x = initial;
+	//	for(int i = 0; i < modifiers.Count; i++)
+	//	{
+	//		if (AttackTypeOverlap(modifiers[i].type, type))
+	//		{
+	//			x += modifiers[i].preadd;
+	//		}
+	//	}
+	//	return x;
+	//}
 
-	public float GetPreMultFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
-	{
-		float x = 0;
-		for (int i = 0; i < modifiers.Count; i++)
-		{
-			if (AttackTypeOverlap(modifiers[i].type, type))
-			{
-				x += modifiers[i].premult;
-			}
-		}
-		return x;
-	}
+	//public float GetPreMultFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	//{
+	//	float x = 0;
+	//	for (int i = 0; i < modifiers.Count; i++)
+	//	{
+	//		if (AttackTypeOverlap(modifiers[i].type, type))
+	//		{
+	//			x += modifiers[i].premult;
+	//		}
+	//	}
+	//	return x;
+	//}
 
-	public float GetPostAddFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
-	{
-		float x = 0;
-		for (int i = 0; i < modifiers.Count; i++)
-		{
-			if (AttackTypeOverlap(modifiers[i].type, type))
-			{
-				x += modifiers[i].postadd;
-			}
-		}
-		return x;
-	}
+	//public float GetPostAddFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	//{
+	//	float x = 0;
+	//	for (int i = 0; i < modifiers.Count; i++)
+	//	{
+	//		if (AttackTypeOverlap(modifiers[i].type, type))
+	//		{
+	//			x += modifiers[i].postadd;
+	//		}
+	//	}
+	//	return x;
+	//}
 
-	public float GetPostMultFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
-	{
-		float x = 0;
-		for (int i = 0; i < modifiers.Count; i++)
-		{
-			if (AttackTypeOverlap(modifiers[i].type, type))
-			{
-				x += modifiers[i].postmult;
-			}
-		}
-		return x;
-	}
+	//public float GetPostMultFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	//{
+	//	float x = 0;
+	//	for (int i = 0; i < modifiers.Count; i++)
+	//	{
+	//		if (AttackTypeOverlap(modifiers[i].type, type))
+	//		{
+	//			x += modifiers[i].postmult;
+	//		}
+	//	}
+	//	return x;
+	//}
 
-	#endregion
+	//#endregion
 
-	public bool AttackTypeOverlap(AttackType a, AttackType b)
-	{
-		//if bitwise and is not zero, some bits (enum flags) must be shared
-		return (a & b) != 0;
-	}
+	//public bool AttackTypeOverlap(AttackType a, AttackType b)
+	//{
+	//	//if bitwise and is not zero, some bits (enum flags) must be shared
+	//	return (a & b) != 0;
+	//}
 
 	#region save
 

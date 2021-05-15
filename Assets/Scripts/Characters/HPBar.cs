@@ -47,7 +47,7 @@ public class HPBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		bool statIsDead = a.stat.hp <= 0;
+		bool statIsDead = a.dead;
 
 		bool shouldHide = !statIsDead && autoHide && hideTimeLeft <= 0f;
 
@@ -71,13 +71,13 @@ public class HPBar : MonoBehaviour
 		{
 			previousHp = a.stat.hp;
 			hideTimeLeft = hideTime;
-			if(a.stat.hp > 0)	UpdateDisplayLive(false);
+			if(!a.dead)	UpdateDisplayLive(false);
 		}
 
 		if (statIsDead != isDead)
 		{
 			UpdateDisplayLive(statIsDead);
-			isDead = a.stat.hp <= 0;
+			isDead = a.dead;
 		}
 
 		if (!statIsDead && autoHide)
@@ -142,16 +142,18 @@ public class HPBar : MonoBehaviour
 			Color color = Color.magenta;//error color
 			if (a.stat.hp > (a.maxStat.hp / 2))
 			{
-				if (sprite) hpBarSprite.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-				if (image) hpBarImage.color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
-				if (changeHpTextColor) color = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
+				Color greenHalf = new Color(1 - (a.stat.hp - 0.5f * a.maxStat.hp) / (a.maxStat.hp / 2), 1, 0);
+				if (sprite) hpBarSprite.color = greenHalf;
+				if (image) hpBarImage.color = greenHalf;
+				if (changeHpTextColor) color = greenHalf;
 				else color = new Color(0, 0, 0);
 			}
 			else
 			{
-				if (sprite) hpBarSprite.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-				if (image) hpBarImage.color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
-				if (changeHpTextColor) color = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
+				Color redHalf = new Color(1, a.stat.hp / (a.maxStat.hp / 2), 0);
+				if (sprite) hpBarSprite.color = redHalf;
+				if (image) hpBarImage.color = redHalf;
+				if (changeHpTextColor) color = redHalf;
 				else color = new Color(0, 0, 0);
 			}
 
