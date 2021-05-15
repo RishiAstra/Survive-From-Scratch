@@ -73,6 +73,7 @@ public class GameControl : MonoBehaviour
 	public Menu shopMenu;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
+	public TextMeshProUGUI itemHoverNameText;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
 	public bool itemHoverPositionMatch;
 	public Image mainHpBar;
