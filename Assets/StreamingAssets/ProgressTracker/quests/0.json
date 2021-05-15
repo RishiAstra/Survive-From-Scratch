@@ -1,0 +1,33 @@
+{
+  "type": "ComplexQuest",
+  "nextQuestJson": null,
+  "nextDialogueJson": null,
+  "nextDialogueTargetName": null,
+  "data": {
+    "quests": [
+      {
+        "typeToKill": "Slime",
+        "amountToKill": 3,
+        "amountKilled": 0,
+        "questName": "Dwarf hates the sunny slimes1",
+        "reward": null
+      },
+      {
+        "toTalkTo": "Dwarf1",
+        "questName": "Dwarf hates the sunny slimes2",
+        "reward": null
+      }
+    ],
+    "current": 0,
+    "reward": {
+      "type": 0,
+      "item": {
+        "id": 5,
+        "amount": 50,
+        "strength": 0.0,
+        "currentStrength": 0.0
+      },
+      "money": 0
+    }
+  }
+}

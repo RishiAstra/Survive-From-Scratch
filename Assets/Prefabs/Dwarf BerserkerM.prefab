@@ -2471,8 +2471,9 @@ MonoBehaviour:
     questResult: 
     nextJson: 
     makeNextJsonDefault: 0
-  DialoguePath: Village/Dwarf1/initial.json
-  myName: Dwarf1
+  dialoguePath: /Village/Robert/initial.json
+  storagePath: /Village/Robert/save.txt
+  myName: Robert
 --- !u!136 &1839009981610438962
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4898,6 +4899,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1841424595292614894}
     m_Modifications:
+    - target: {fileID: 648698171139804567, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_text
+      value: Robert
+      objectReference: {fileID: 0}
     - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
         type: 3}
       propertyPath: m_RootOrder

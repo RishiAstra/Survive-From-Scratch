@@ -27,7 +27,7 @@ public class DialogueControl : MonoBehaviour
     //public DialogueLine currentLine;
     private int currentLineProgress;//used to separate sections of text
     private DialoguePart currentPart;
-    public DialogueOnClick dialogueSource;
+    public string dialogueSource;
 
     private float fadeDurationLeft;
     private float fadeDuriation = 2f;
@@ -60,22 +60,22 @@ public class DialogueControl : MonoBehaviour
 			{
 				if (!string.IsNullOrEmpty(currentPart.questResult))
 				{
-					ProgressTracker.main.TryAddQuest(ProgressTracker.GetQuestSaveFromPath(currentPart.questResult), dialogueSource.myName);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
+					ProgressTracker.main.TryAddQuest(ProgressTracker.GetQuestSaveFromPath(currentPart.questResult), dialogueSource);//.quests.Add(ProgressTracker.ConvertQuestSaveToQuest(currentPart.QuestResult));
 				}
 
 				if (string.IsNullOrEmpty(currentPart.nextJson) || currentPart.makeNextJsonDefault){
                     //nothing to move on to, dialogue is finished
                     
-					if (currentPart.makeNextJsonDefault && dialogueSource != null)
+					if (currentPart.makeNextJsonDefault && ! string.IsNullOrEmpty(dialogueSource))
 					{
-						if (DialogueOnClick.newDialoguePaths.ContainsKey(dialogueSource.myName))
+						if (DialogueOnClick.newDialoguePaths.ContainsKey(dialogueSource))
 						{
-                            DialogueOnClick.newDialoguePaths[dialogueSource.myName] = currentPart.nextJson;
+                            DialogueOnClick.newDialoguePaths[dialogueSource] = currentPart.nextJson;
 
                         }
                         else
 						{
-                            DialogueOnClick.newDialoguePaths.Add(dialogueSource.myName, currentPart.nextJson);
+                            DialogueOnClick.newDialoguePaths.Add(dialogueSource, currentPart.nextJson);
                         }
                         //dialogueSource.DialoguePath = currentPart.nextJson;
                     }
@@ -85,6 +85,7 @@ public class DialogueControl : MonoBehaviour
 				else
 				{
                     //there is a next json to move on to
+                    //dialogueSource.dialoguePath = currentPart.nextJson;
                     StartDialoguePart(GetPartFromFile(currentPart.nextJson), dialogueSource);
 				}                
                 
@@ -199,7 +200,7 @@ public class DialogueControl : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(choiceHolder);
     }
 
-	public void StartDialoguePart(DialoguePart line, DialogueOnClick source)
+	public void StartDialoguePart(DialoguePart line, string source)
 	{
         dialogueSource = source;
         currentLineProgress = 0;

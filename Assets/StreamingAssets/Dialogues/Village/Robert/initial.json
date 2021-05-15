@@ -1,5 +1,5 @@
 {
-    "title" : "Dwarf",
+    "title" : "Robert",
     "texts" : [
         "Ahh.. this is the good life",
         "Nothing beats a drink in the shade!"
@@ -31,7 +31,7 @@
                                         "texts" : [
                                             "Now that I think about it, slimes reflect the sun a bit too much",
                                             "Maybe if you kill some slimes it'll show that sun whose boss",
-                                            "Could you kill 5 slimes?"
+                                            "Could you kill 3 slimes?"
                                         ],
                                         "choices" : [
                                             {
@@ -43,9 +43,9 @@
                                                         "Great! I wish you luck."
                                                     ],
                                                     "choices" : null,
-                                                    "nextJson" : "Village/Dwarf1/awaiting slime.json",
+                                                    "nextJson" : "Village/Robert/awaiting slime.json",
                                                     "makeNextJsonDefault" : true,
-                                                    "questResult" : "Village/Dwarf1/SlimeQuest.json"
+                                                    "questResult" : "Village/Robert/SlimeQuest.json"
                                                 }
                                             },
                                             {

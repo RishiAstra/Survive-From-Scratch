@@ -1,17 +1,15 @@
 {
     "type" : "ComplexQuest",    
     "nextQuestJson" : "",
-    "nextDialogueJson" : "Village/Dwarf1/AfterSlimeQuest.json",
-    "nextDialogueTargetName" : "Dwarf1",
+    "nextDialogueJson" : "Village/Robert/AfterSlimeQuest.json",
+    "nextDialogueTargetName" : "Robert",
     "data" : {
-        
-        "questName" : "Dwarf hates the sunny slimes",
         "quests" : [
             {
                 "type" : "KillQuest",
                 "data" : {
                     "typeToKill" : "Slime",
-                    "amountToKill" : 1,
+                    "amountToKill" : 3,
                     "amountKilled" : 0,
                     "questName" : "Dwarf hates the sunny slimes1"
                 }
@@ -19,8 +17,8 @@
             {
                 "type" : "TalkQuest",
                 "data" : {
-                    "toTalkTo" : "Dwarf1",
-                    "questName" : "Dwarf hates the sunny slimes2",
+                    "toTalkTo" : "Robert",
+                    "questName" : "Dwarf hates the sunny slimes2"
                 }
             }
         ],
