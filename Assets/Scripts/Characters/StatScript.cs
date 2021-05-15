@@ -67,10 +67,12 @@ public class TypedModifier: Modifier
 		StringBuilder sb = new StringBuilder();
 		string p = "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+";
 		string m = modifyName + "</color> ";
-		if (preadd > 0) sb.Append(p + preadd.ToString("F1") + " " + m + " pre\n");
-		if (premult > 0) sb.Append(p + (premult * 100f).ToString("F1") + "% " + m + " pre\n");
-		if (postadd > 0) sb.Append(p + postadd.ToString("F1") + " " + m + " post\n");
-		if (postmult > 0) sb.Append(p + (postmult * 100f).ToString("F1") + "% " + m + " post\n");
+		string t = type.ToString();
+
+		if (preadd > 0) sb.Append(p + preadd.ToString("F1") + " " + m + " pre " + t + "\n");
+		if (premult > 0) sb.Append(p + (premult * 100f).ToString("F1") + "% " + m + " pre " + t + "\n");
+		if (postadd > 0) sb.Append(p + postadd.ToString("F1") + " " + m + " post " + t + "\n");
+		if (postmult > 0) sb.Append(p + (postmult * 100f).ToString("F1") + "% " + m + " post " + t + "\n");
 
 		return sb.ToString(); 
 	}
