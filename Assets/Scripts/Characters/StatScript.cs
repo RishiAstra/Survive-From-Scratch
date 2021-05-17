@@ -203,6 +203,20 @@ public class StatScript : MonoBehaviour, ISaveable
 	{
 		int l = lvl;
 		bool changed = false;
+
+		//perform a binary search-like thing to make sure l isn't waaaay off
+		while (GetRequiredXPForLvl(l + 1) <= xp / 10f || GetRequiredXPForLvl(l) > xp * 10f)
+		{
+			if (GetRequiredXPForLvl(l + 1) <= xp / 5f)
+			{
+				l *= 2;
+			}
+			else
+			{
+				l /= 2;
+			}
+		}
+
 		//while you have more xp than required for next lvl, increase lvl
 		while (GetRequiredXPForLvl(l + 1) <= xp)
 		{
@@ -211,7 +225,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		}
 
 		//while you have less xp than required for current lvl, reduce lvl
-		while(GetRequiredXPForLvl(l) > xp)
+		while(l > 1 && GetRequiredXPForLvl(l) > xp)
 		{
 			Debug.LogError("Too high lvl for xp, reducing xp");
 			l--;
@@ -227,7 +241,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public static float GetRequiredXPForLvl(int level)
 	{
-		return 100f * ((Mathf.Pow(level + 15, 1.5f) - 64) / 4 + 1);
+		return 100f * ((Mathf.Pow(level + 14, 1.5f) - 64) / 4 + 1);
 	}
 
 	void CheckStats()
