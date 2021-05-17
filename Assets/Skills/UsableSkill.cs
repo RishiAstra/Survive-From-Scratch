@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Skill", menuName = "ScriptableObjects/SkillScriptableObject", order = 1)]
+[CreateAssetMenu(fileName = "New Skill", menuName = "ScriptableObjects/UsableSkill", order = 1)]
 [System.Serializable]
 public class UsableSkill : Skill
 {

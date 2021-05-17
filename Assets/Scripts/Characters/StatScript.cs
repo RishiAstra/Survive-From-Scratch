@@ -242,7 +242,9 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public static float GetRequiredXPForLvl(int level)
 	{
-		return 100f * ((Mathf.Pow(level + 14, 1.5f) - 64) / 4 + 1);
+		float v = 100f * ((Mathf.Pow(level + 14, 1.5f) - 64) / 4 + 1);
+		if (v < 0) v = 0;//don't let it be below 0
+		return v;
 	}
 
 	void CheckStats()
@@ -572,7 +574,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public string GetData()
 	{
-		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, lvl, damageRecords);
+		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords);
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
@@ -581,7 +583,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		SaveDataStat s = JsonConvert.DeserializeObject<SaveDataStat>(data);
 		//TODO: warning, sceneindex not considered here
 		this.initialMaxStat = s.initialMaxStat;
-		this.lvl = s.lvl;
+		this.xp = s.xp;
 		UpdateStats();//this will change stat, so do if before the right value of stat is asigned
 		this.stat = s.stat;
 		this.damageRecords = s.dmgs;

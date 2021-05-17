@@ -718,14 +718,14 @@ public class SaveDataStat
 {
 	public Stat initialMaxStat;
 	public Stat stat;
-	public int lvl;
+	public float xp;
 	public List<DamageRecord> dmgs;
 
-	public SaveDataStat(Stat stat, Stat initialMaxStat, int lvl, List<DamageRecord> dmgs)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs)
 	{
 		this.stat = stat;
 		this.initialMaxStat = initialMaxStat;
-		this.lvl = lvl;
+		this.xp = xp;
 		this.dmgs = dmgs;
 	}
 }

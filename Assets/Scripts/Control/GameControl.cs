@@ -78,6 +78,8 @@ public class GameControl : MonoBehaviour
 	public bool itemHoverPositionMatch;
 	public Image mainHpBar;
 	public TMPro.TextMeshProUGUI mainHpText;
+	public Image mainXpBar;
+	public TMPro.TextMeshProUGUI mainXpText;
 	public Canvas mainCanvas;
 	public Vector2 mouseSensitivity;
 	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
@@ -796,6 +798,13 @@ public class GameControl : MonoBehaviour
 		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
 		hPBar.hpTextUI = mainHpText;
 		hPBar.SetWorldHpBarVisible(false);
+
+		HPBar xPBar = newPlayerObject.AddComponent<HPBar>();
+		xPBar.type = HPBar.StatType.xp;
+		xPBar.hpBarImage = mainXpBar;
+		xPBar.hpTextUI = mainXpText;
+		xPBar.autoHide = false;
+		xPBar.changeHpBarColor = false;
 
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
