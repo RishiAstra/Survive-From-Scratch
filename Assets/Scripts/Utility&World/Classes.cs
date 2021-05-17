@@ -99,6 +99,15 @@ namespace bobStuff
 		{
 			return id == 0 || amount == 0;
 		}
+
+		public static bool ItemEquals(Item a, Item b)
+		{
+			return
+				a.id == b.id &&
+				a.amount == b.amount &&
+				a.strength == b.strength &&
+				a.currentStrength == b.currentStrength;
+		}
 	}
 
 	[Serializable]

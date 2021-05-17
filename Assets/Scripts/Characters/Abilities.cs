@@ -14,7 +14,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	public bool dead;//TODO: consider stopping all attacks already happening when it dies
 
 	public StatScript myStat;
-	public List<Skill> skills;
+	public List<UsableSkill> skills;
 	public bool busy;
 	public bool attackAllowed;
 	public Animator anim;
@@ -80,7 +80,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	public IEnumerator ExecuteSkill(int i)
 	{
 		//print("using skill " + i);
-		Skill s = skills[i];
+		UsableSkill s = skills[i];
 		foreach(Action a in s.actions)
 		{
 			yield return ExecuteAction(a);
@@ -142,22 +142,12 @@ public class Abilities : MonoBehaviour, ISaveable
 	}
 }
 
-[System.Serializable]
-public class Skill
-{
-	public Stat cost;
-	//public float useDist;//use this for AI to determine what skill to use or if it needs to approach
-	//public float useAngle;
-	public Action[] actions;
-}
+//[System.Serializable]
+//public class Skill
+//{
+//	public Stat cost;
+//	//public float useDist;//use this for AI to determine what skill to use or if it needs to approach
+//	//public float useAngle;
+//	public Action[] actions;
+//}
 
-[System.Serializable]
-public class Action
-{
-	public int animationIndex;
-	public float time;
-	public GameObject spawn;//what to spawn
-	public int spawnTransform;//attackTransforms[spawnTranfrorm]
-	public bool spawnAsChild;//should it be child of attackTransforms[spawnTranfrorm]?
-	public bool useWeapons;//should the weapons cause damage during this action?
-}

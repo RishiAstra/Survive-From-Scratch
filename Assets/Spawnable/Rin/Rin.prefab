@@ -4082,6 +4082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resetOnStart: 1
+  lvl: 1
   maxStat:
     hp: 10
     mp: 0
@@ -4094,6 +4095,7 @@ MonoBehaviour:
     eng: 0
     mor: 0
     atk: 0
+  dieTime: 2.5
   armors:
   - col:
     - {fileID: 0}
@@ -4105,7 +4107,8 @@ MonoBehaviour:
       morMods: []
       atkMods: []
     localArmorModifiers: []
-  itemsEqipped: []
+  itemsEquipped: []
+  dead: 0
 --- !u!114 &3350575346883344253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4161,24 +4164,10 @@ MonoBehaviour:
   dead: 0
   myStat: {fileID: 0}
   skills:
-  - cost:
-      hp: 0
-      mp: 0
-      eng: 0
-      mor: 0
-      atk: 0
-    actions:
-    - animationIndex: 0
-      time: 2.5
-      spawn: {fileID: 6326687052998980342, guid: 6b04d83c9c5fd43409870dbd3555f085,
-        type: 3}
-      spawnTransform: 0
-      spawnAsChild: 0
-      useWeapons: 0
+  - {fileID: 11400000, guid: c532d26b33cdc1748b1b8139e5e35dff, type: 2}
   busy: 0
   attackAllowed: 0
   anim: {fileID: 164153826720014327}
-  dieTime: 2.5
   currentAttackTransform: 0
   attackTranforms:
   - {fileID: 7247242195844081610}

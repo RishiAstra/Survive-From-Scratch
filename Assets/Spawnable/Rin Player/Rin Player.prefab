@@ -356,6 +356,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4061,60 +4062,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566d6838528735047847b71a31f08853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dead: 0
   resetOnStart: 1
+  lvl: 1
   maxStat:
     hp: 10
     mp: 0
     eng: 0
     mor: 0
     atk: 5
-    def: 0
-    mag: 0
   stat:
     hp: 0
     mp: 0
     eng: 0
     mor: 0
     atk: 0
-    def: 0
-    mag: 0
-  skills:
-  - cost:
-      hp: 0
-      mp: 0
-      eng: 0
-      mor: 0
-      atk: 0
-      def: 0
-      mag: 0
-    useDist: 0.25
-    useAngle: 8
-    actions:
-    - animationIndex: 0
-      time: 3
-      spawn: {fileID: 6326687052998980342, guid: 6b04d83c9c5fd43409870dbd3555f085,
-        type: 3}
-      spawnTransform: 0
-      spawnAsChild: 0
-      useWeapons: 1
+  dieTime: 2.5
   armors:
   - col:
     - {fileID: 0}
-    pierceResist: 0
-    bluntResist: 0
-    slashResist: 0
-    magicResist: 0
-  busy: 0
-  attackAllowed: 0
-  anim: {fileID: 164153826720014327}
-  dieTime: 2.5
-  currentAttackTransform: 0
-  attackTranforms:
-  - {fileID: 7247242195844081610}
-  enemyString:
-  - monster
-  - breakable
+    mods:
+      globalArmorModifiers: []
+      hpMods: []
+      mpMods: []
+      engMods: []
+      morMods: []
+      atkMods: []
+    localArmorModifiers: []
+  itemsEquipped: []
+  dead: 0
 --- !u!114 &3350575346883344253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4152,7 +4127,7 @@ MonoBehaviour:
   camPos: {fileID: 1811728009373823188}
   camPref: {fileID: 6979773146364979283, guid: 492fc9c19fa33a54fb9da100a1af7667, type: 3}
   movement: {fileID: 9135875081212814505}
-  abilities: {fileID: 8437588072177896211}
+  abilities: {fileID: 0}
   cam: {fileID: 0}
   scrollSencitivity: 1
   playerOwnerName: 
@@ -4216,6 +4191,9 @@ MonoBehaviour:
   size: 9
   items: []
   invChange:
+    m_PersistentCalls:
+      m_Calls: []
+  invClicked:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &164153826729504251

@@ -27,6 +27,8 @@ public class ModifierGroup
 		atkMods = new List<TypedModifier>();
 	}
 
+	#region text
+
 	public override string ToString()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -69,6 +71,8 @@ public class ModifierGroup
 	{
 		return "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+" + (v * 100f).ToString("F1") + "% " + n + "</color> " + (post ? " post" : " pre");
 	}
+
+	#endregion
 
 	public static bool AttackTypeOverlap(AttackType a, AttackType b)
 	{

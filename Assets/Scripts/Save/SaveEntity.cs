@@ -716,13 +716,15 @@ public class SaveDataBasic
 [System.Serializable]
 public class SaveDataStat
 {
-	public Stat maxStat;
+	public Stat initialMaxStat;
 	public Stat stat;
+	public int lvl;
 
-	public SaveDataStat(Stat stat, Stat maxStat)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, int lvl)
 	{
 		this.stat = stat;
-		this.maxStat = maxStat;
+		this.initialMaxStat = initialMaxStat;
+		this.lvl = lvl;
 	}
 }
 

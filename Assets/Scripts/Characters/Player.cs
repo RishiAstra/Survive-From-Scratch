@@ -272,14 +272,14 @@ public class Player : MonoBehaviour
 	private void MakeEquipGameObject(Item i)
 	{
 		int id = i.id;
-		GameControl.main.myAbilities.myStat.itemsEqipped = new List<Item>();
+		GameControl.main.myAbilities.myStat.itemsEquipped = new List<Item>();
 		if (GameControl.itemTypes[id].equipPrefab != null)
 		{
 			print("equipped something");
 			GameObject g = (GameObject)Instantiate(GameControl.itemTypes[id].equipPrefab);
 			g.transform.SetParent(rightHand, false);
 			g.GetComponent<Equip>().bob = this;
-			GameControl.main.myAbilities.myStat.itemsEqipped.Add(i);
+			GameControl.main.myAbilities.myStat.itemsEquipped.Add(i);
 			//print("Selected equipable object");
 		}
 	}
