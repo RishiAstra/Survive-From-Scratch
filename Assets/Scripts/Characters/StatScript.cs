@@ -214,6 +214,7 @@ public class StatScript : MonoBehaviour, ISaveable
 			else
 			{
 				l /= 2;
+				Debug.LogError("Too high lvl for xp, reducing xp");
 			}
 		}
 
@@ -311,6 +312,14 @@ public class StatScript : MonoBehaviour, ISaveable
 		//now that the new max stat has been calculated, scale the current stat so that if you had 80% hp before the max stat chance, you will have 80% afterward
 		Stat temp = newMaxStat;
 		temp.Divide(maxStat);//get the proportions/percent changes (0-1) of max stat
+
+		//avoid NaN
+		if (float.IsNaN(temp.hp)) temp.hp = 1;
+		if (float.IsNaN(temp.mp)) temp.mp = 1;
+		if (float.IsNaN(temp.eng)) temp.eng = 1;
+		if (float.IsNaN(temp.mor)) temp.mor = 1;
+		if (float.IsNaN(temp.atk)) temp.atk = 1;
+
 		stat.Multiply(temp);
 
 		//now that all that is done, assign the new max stat
