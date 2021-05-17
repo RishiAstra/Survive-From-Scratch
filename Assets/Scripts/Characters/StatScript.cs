@@ -5,6 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using bobStuff;
 using System.Text;
+using System;
 
 [System.Serializable]
 public struct Stat
@@ -145,15 +146,28 @@ public enum AttackType
 	elemental = fire | water | air | earth,
 };
 
+[System.Serializable]
+public struct DamageRecord
+{
+	public float amount;
+	public float timeLeft;
+	public long damagedBy;
+}
+
 public class StatScript : MonoBehaviour, ISaveable
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
+	public const float DAMAGERECORD_TIME = 60f;//remember damages received for 60s
+
+	public static Dictionary<long, float> unclaimedXPBounties = new Dictionary<long, float>();//xp from kills that wasn't claimed yet <id, amount of unclaimed xp>
 
 	public bool resetOnStart = true;
 	public int lvl;
 	public Stat maxStat;
 	public Stat stat;
 	public float dieTime = 2.5f;
+	public float xp;
+	public float xpBounty;
 
 	public List<Armor> armors;
 	public List<Item> itemsEquipped;
@@ -163,14 +177,57 @@ public class StatScript : MonoBehaviour, ISaveable
 	private Stat initialMaxStat;
 	private int plvl;
 	private List<Item> pItemsEquipped;
+	public List<DamageRecord> damageRecords;
+	public SaveEntity mySave;
 
 	private void Awake()
 	{
+		mySave = GetComponent<SaveEntity>();
 		initialMaxStat = maxStat;
 		pItemsEquipped = new List<Item>();
+		UpdateXP();
 		CheckStats();
 		if (resetOnStart) ResetStats();//reset before anythign else can happen
 
+	}
+
+	#region stats and xp updates
+
+	public void GiveXp(float amount)
+	{
+		xp += amount;
+		UpdateXP();
+	}
+
+	private void UpdateXP()
+	{
+		int l = lvl;
+		bool changed = false;
+		//while you have more xp than required for next lvl, increase lvl
+		while (GetRequiredXPForLvl(l + 1) <= xp)
+		{
+			l++;
+			changed = true;
+		}
+
+		//while you have less xp than required for current lvl, reduce lvl
+		while(GetRequiredXPForLvl(l) > xp)
+		{
+			Debug.LogError("Too high lvl for xp, reducing xp");
+			l--;
+			changed = true;
+		}
+
+		if (changed)
+		{
+			lvl = l;
+			CheckStats();
+		}
+	}
+
+	public static float GetRequiredXPForLvl(int level)
+	{
+		return 100f * ((Mathf.Pow(level + 15, 1.5f) - 64) / 4 + 1);
 	}
 
 	void CheckStats()
@@ -259,6 +316,8 @@ public class StatScript : MonoBehaviour, ISaveable
 		stat.atk = Mathf.Clamp(stat.atk, 0, maxStat.atk);
 	}
 
+	#endregion
+
 	// Start is called before the first frame update
 	void Update()
 	{
@@ -267,11 +326,56 @@ public class StatScript : MonoBehaviour, ISaveable
 		{
 			Die();
 		}
+
+		for(int i = 0; i < damageRecords.Count; i++)
+		{
+			DamageRecord temp = damageRecords[i];
+			temp.timeLeft -= Time.deltaTime;
+			damageRecords[i] = temp;
+			if (damageRecords[i].timeLeft <= 0)
+			{
+				damageRecords.RemoveAt(i);
+				i--;
+			}
+		}
+
+		//claim any unclaimed xp for this
+		if (unclaimedXPBounties.ContainsKey(mySave.id))
+		{
+			GiveXp(unclaimedXPBounties[mySave.id]);
+			unclaimedXPBounties.Remove(mySave.id);
+		}
 	}
 
 	private void Die()
 	{
 		dead = true;
+
+
+		//give xp to everyone who helped kill
+		float t = 0;
+		
+		foreach(DamageRecord d in damageRecords)
+		{
+			t += d.amount;
+		}
+
+		foreach(DamageRecord d in damageRecords)
+		{
+			long id = d.damagedBy;
+			float amount = d.amount / t * xpBounty;//proportional to dmg dealt by this damage record
+			if (unclaimedXPBounties.ContainsKey(id))
+			{
+				unclaimedXPBounties[id] += amount;
+			}
+			else
+			{
+				unclaimedXPBounties.Add(id, amount);
+
+			}
+		}
+
+		//now die
 		Destroy(gameObject, dieTime);
 	}
 
@@ -305,6 +409,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		float damageTaken = GetReceiveDamageAmount(dmg, type, a);
 		float previousHp = stat.hp;
 		stat.hp -= damageTaken;
+		damageRecords.Add(new DamageRecord { amount = damageTaken, damagedBy = from.myStat.mySave.id});
 
 
 		//update the progress tracker
@@ -444,7 +549,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public string GetData()
 	{
-		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, lvl);
+		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, lvl, damageRecords);
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
@@ -456,6 +561,8 @@ public class StatScript : MonoBehaviour, ISaveable
 		this.lvl = s.lvl;
 		UpdateStats();//this will change stat, so do if before the right value of stat is asigned
 		this.stat = s.stat;
+		this.damageRecords = s.dmgs;
+		if (damageRecords == null) damageRecords = new List<DamageRecord>();
 
 	}
 

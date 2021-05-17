@@ -2498,6 +2498,8 @@ MonoBehaviour:
     mor: 0
     atk: 0
   dieTime: 2.5
+  xp: 0
+  xpBounty: 10
   armors:
   - col:
     - {fileID: 9089679403127600196}
@@ -2511,6 +2513,8 @@ MonoBehaviour:
     localArmorModifiers: []
   itemsEquipped: []
   dead: 0
+  damageRecords: []
+  mySave: {fileID: 0}
 --- !u!114 &447233516
 MonoBehaviour:
   m_ObjectHideFlags: 0

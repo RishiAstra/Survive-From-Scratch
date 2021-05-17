@@ -401,9 +401,13 @@ MonoBehaviour:
     mor: 0
     atk: 0
   dieTime: 2.5
+  xp: 0
+  xpBounty: 10
   armors: []
   itemsEquipped: []
   dead: 0
+  damageRecords: []
+  mySave: {fileID: 0}
 --- !u!114 &7022186050305224707
 MonoBehaviour:
   m_ObjectHideFlags: 0
