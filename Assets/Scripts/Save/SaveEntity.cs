@@ -720,13 +720,15 @@ public class SaveDataStat
 	public Stat stat;
 	public float xp;
 	public List<DamageRecord> dmgs;
+	public List<string> statSkills;
 
-	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills)
 	{
 		this.stat = stat;
 		this.initialMaxStat = initialMaxStat;
 		this.xp = xp;
 		this.dmgs = dmgs;
+		this.statSkills = statSkills;
 	}
 }
 

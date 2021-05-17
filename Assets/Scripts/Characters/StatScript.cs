@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 using bobStuff;
 using System.Text;
 using System;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Threading.Tasks;
 
 [System.Serializable]
 public struct Stat
@@ -179,6 +182,7 @@ public class StatScript : MonoBehaviour, ISaveable
 	private List<Item> pItemsEquipped;
 	public List<DamageRecord> damageRecords;
 	public SaveEntity mySave;
+	public List<StatSkill> statSkills;
 
 	private void Awake()
 	{
@@ -189,6 +193,11 @@ public class StatScript : MonoBehaviour, ISaveable
 		CheckStats();
 		if (resetOnStart) ResetStats();//reset before anythign else can happen
 
+	}
+
+	public int GetSkillPointTotal()
+	{
+		return lvl * 2;
 	}
 
 	#region stats and xp updates
@@ -273,42 +282,72 @@ public class StatScript : MonoBehaviour, ISaveable
 		}
 	}
 
+	//stats that don't depend on type are calculated here; if they depend on type, they are in the damage function
 	void UpdateStats()
 	{
 		//armor and atk depend on type, all others should have modifiers applier below
 		if (lvl <= 0) lvl = 1;
 		//calculate the new max stat
 		Stat newMaxStat = initialMaxStat.GetLeveled(lvl);//get base max stat from lvl
-														 //apply modifiers
+														 //apply modifiers from items equipped and skills
 		List<Modifier> modifiers;
 
+		/*************hp**********/
 		modifiers = new List<Modifier>();
 		foreach (Item i in itemsEquipped)
 		{
 			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.hpMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.hpMods);
 		}
+
+		foreach (StatSkill s in statSkills)
+		{
+			if (s.mods != null && s.mods.hpMods != null) modifiers.AddRange(s.mods.hpMods);
+		}
+
 		newMaxStat.hp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.hp);
+		/***********mp************/
 
 		modifiers = new List<Modifier>();
 		foreach (Item i in itemsEquipped)
 		{
 			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.mpMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.mpMods);
 		}
+
+		foreach (StatSkill s in statSkills)
+		{
+			if (s.mods != null && s.mods.mpMods != null) modifiers.AddRange(s.mods.mpMods);
+		}
+
 		newMaxStat.mp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.mp);
+		/************eng***********/
 
 		modifiers = new List<Modifier>();
 		foreach (Item i in itemsEquipped)
 		{
 			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.engMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.engMods);
 		}
+
+		foreach (StatSkill s in statSkills)
+		{
+			if (s.mods != null && s.mods.engMods != null) modifiers.AddRange(s.mods.engMods);
+		}
+
 		newMaxStat.eng = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.eng);
+		/***********mor************/
 
 		modifiers = new List<Modifier>();
 		foreach (Item i in itemsEquipped)
 		{
 			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.morMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.morMods);
 		}
+
+		foreach (StatSkill s in statSkills)
+		{
+			if (s.mods != null && s.mods.morMods != null) modifiers.AddRange(s.mods.morMods);
+		}
+
 		newMaxStat.mor = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.mor);
+		/***********END************/
 
 		//print(maxStat + "|" + newMaxStat);
 		//now that the new max stat has been calculated, scale the current stat so that if you had 80% hp before the max stat chance, you will have 80% afterward
@@ -462,7 +501,12 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		foreach (Armor a in armors)
 		{
-			if(a.mods.globalArmorModifiers != null) modifiers.AddRange(a.mods.globalArmorModifiers);
+			if(a.mods != null && a.mods.globalArmorModifiers != null) modifiers.AddRange(a.mods.globalArmorModifiers);
+		}
+
+		foreach (StatSkill s in statSkills)
+		{
+			if (s.mods != null && s.mods.globalArmorModifiers != null) modifiers.AddRange(s.mods.globalArmorModifiers);
 		}
 
 		//get effective armor value
@@ -480,6 +524,11 @@ public class StatScript : MonoBehaviour, ISaveable
 		foreach (Item i in itemsEquipped)
 		{
 			if(GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.atkMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.atkMods);
+		}
+
+		foreach (StatSkill s in statSkills)
+		{
+			if (s.mods != null && s.mods.atkMods != null) modifiers.AddRange(s.mods.atkMods);
 		}
 
 		//get effective dmg value
@@ -574,11 +623,16 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public string GetData()
 	{
-		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords);
+		List<string> temp = new List<string>();
+		foreach (StatSkill st in statSkills)
+		{
+			temp.Add(st.name);
+		}
+		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp);
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public async void SetData(string data)
 	{
 		SaveDataStat s = JsonConvert.DeserializeObject<SaveDataStat>(data);
 		//TODO: warning, sceneindex not considered here
@@ -587,7 +641,19 @@ public class StatScript : MonoBehaviour, ISaveable
 		UpdateStats();//this will change stat, so do if before the right value of stat is asigned
 		this.stat = s.stat;
 		this.damageRecords = s.dmgs;
+		this.statSkills = new List<StatSkill>();
+		foreach (string st in s.statSkills)
+		{
+			AsyncOperationHandle<StatSkill> a = Addressables.LoadAssetAsync<StatSkill>("Assets/Skills/" + st + ".asset");
+			await Task.WhenAll(a.Task);
+			statSkills.Add(a.Result);
+		}
+		//null checks
 		if (damageRecords == null) damageRecords = new List<DamageRecord>();
+		if (statSkills == null) statSkills = new List<StatSkill>();
+
+		UpdateXP();
+		CheckStats();
 
 	}
 
