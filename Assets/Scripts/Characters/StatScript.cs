@@ -391,7 +391,13 @@ public class StatScript : MonoBehaviour, ISaveable
 			Die();
 		}
 
-		for(int i = 0; i < damageRecords.Count; i++)
+		//TODO:REMOVE THIS
+		if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.P)) xp += 10;
+		if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.O)) GameControl.main.money += 50;
+
+		//TODO:REMOVE ABOVE
+
+		for (int i = 0; i < damageRecords.Count; i++)
 		{
 			DamageRecord temp = damageRecords[i];
 			temp.timeLeft -= Time.deltaTime;

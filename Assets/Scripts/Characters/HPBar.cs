@@ -187,12 +187,12 @@ public class HPBar : MonoBehaviour
 			if (sprite)
 			{
 				hpBarSprite.transform.localScale = new Vector3(0, 1, 1);
-				hpBarSprite.color = new Color(0, 0, 0);
+				if(changeHpBarColor) hpBarSprite.color = new Color(0, 0, 0);
 			}
 			if (image)
 			{
 				hpBarImage.transform.localScale = new Vector3(0, 1, 1);
-				hpBarImage.color = new Color(0, 0, 0);
+				if (changeHpBarColor) hpBarImage.color = new Color(0, 0, 0);
 			}
 			if (text)
 			{

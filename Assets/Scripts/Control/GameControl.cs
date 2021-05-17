@@ -543,7 +543,8 @@ public class GameControl : MonoBehaviour
 	//}
 	void MakeAndSetUpPlayer()
 	{
-		SetUpPlayer(CreatePlayerObject());
+		CreatePlayerObject();
+		//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
 
 	}
 
