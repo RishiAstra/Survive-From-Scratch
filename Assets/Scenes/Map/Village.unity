@@ -17029,7 +17029,7 @@ PrefabInstance:
     - target: {fileID: 5440919333753083216, guid: f7383237707c5a647a7d7734b8d4025d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7383237707c5a647a7d7734b8d4025d, type: 3}
@@ -18269,6 +18269,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Title and Dialogue icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5440919333753083216, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7383237707c5a647a7d7734b8d4025d, type: 3}

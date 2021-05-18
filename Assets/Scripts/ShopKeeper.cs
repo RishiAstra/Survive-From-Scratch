@@ -51,7 +51,7 @@ public class ShopKeeper : MonoBehaviour, IMouseHoverable
 	public void OnMouseHoverFromRaycast()
 	{
 		if (onHover != null) onHover.SetActive(true);
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetKeyDown(GameControl.interactKeyCode))
 		{
 			ShopControl.main.current = this;
 			ShopControl.main.UpdateShopInventoryUI();

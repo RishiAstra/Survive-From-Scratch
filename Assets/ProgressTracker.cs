@@ -36,9 +36,10 @@ public class ProgressTracker : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyUp(KeyCode.F1))
+		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			questMenu.ToggleMenu();
+			print("toggled");
 			UpdateQuestUI();
 		}		
 	}

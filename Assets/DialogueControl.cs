@@ -141,6 +141,8 @@ public class DialogueControl : MonoBehaviour
         else
 		{
             dialogueMenuParent.TryDeactivateMenu();
+            Movement m = GameControl.main.myAbilities.GetComponent<Movement>();
+            if (m != null) m.DontAttemptJump();
         }
   //      if(currentLine != null && currentLineProgress < currentLine.parts.Count)
 		//{
@@ -214,7 +216,7 @@ public class DialogueControl : MonoBehaviour
     void Update()
     {
         if (dialogueMenuParent.gameObject.activeSelf) {
-            if(Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            if(Input.GetKeyDown(GameControl.interactKeyCode) || Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
 		    {
                 TryAdvanceDialogue();
             }

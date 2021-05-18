@@ -15,6 +15,7 @@ using UnityEngine.EventSystems;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
+	public static KeyCode interactKeyCode = KeyCode.F;
 
 	public static string saveDirectory { 
 		get { return Application.persistentDataPath + "/" + Application.version + "/"; }
@@ -625,7 +626,7 @@ public class GameControl : MonoBehaviour
 		if (Cursor.lockState == CursorLockMode.Locked)
 		{
 
-			if (Input.GetKey(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				TryUnlockCursor();
 			}
@@ -644,19 +645,19 @@ public class GameControl : MonoBehaviour
 	private void Update()
     {
 		moneyText.text = "Money: " + money;
+		if((itemInfoTarget == null || itemInfoTarget.gameObject.activeInHierarchy == false) && itemInfoTransform.gameObject.activeSelf == true) HideInfo();
 		if (playerExists)
 		{
 			CursorLockUpdate();
 
-			//E is also button to close menus
 			if (Input.GetKeyDown(KeyCode.E))
 			{
-				if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
-				{
-					HideMenus();
-				}
-				else
-				{
+				//if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
+				//{
+				//	HideMenus();
+				//}
+				//else
+				//{
 					craftInventory.ToggleMenu();
 					if (!craftInventory.gameObject.activeSelf)
 					{
@@ -664,7 +665,7 @@ public class GameControl : MonoBehaviour
 						Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
 						Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
 					}
-				}				
+				//}				
 				
 				
 				//if (craftInventory.activeSelf)
@@ -681,7 +682,7 @@ public class GameControl : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.M))
 			{
-				if (!mapScreen.gameObject.activeSelf) HideMenus();
+				//if (!mapScreen.gameObject.activeSelf) HideMenus();
 				mapScreen.ToggleMenu();
 
 				//if (mapScreen.activeSelf)
@@ -728,7 +729,7 @@ public class GameControl : MonoBehaviour
 
     private void LiveFunctions()
 	{
-		if (!MenuActive())
+		if (!MenuActive() && Cursor.lockState == CursorLockMode.Locked)
 		{
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;

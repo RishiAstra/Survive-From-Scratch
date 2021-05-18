@@ -562,6 +562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!1 &26136043
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +590,7 @@ RectTransform:
   m_GameObject: {fileID: 26136043}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 731293178}
   - {fileID: 837322550}
@@ -2714,6 +2715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!222 &184800913
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7065,6 +7067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!114 &622846707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10136,6 +10139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!114 &1035005899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10585,6 +10589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!1 &1099108452
 GameObject:
   m_ObjectHideFlags: 0
@@ -15985,6 +15990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!114 &1562285527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19053,6 +19059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!114 &1797320667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20861,6 +20868,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!114 &1912100682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22450,6 +22458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!1 &2055656997
 GameObject:
   m_ObjectHideFlags: 0
@@ -25093,6 +25102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseOnActive: 1
+  activateOnEsc: 0
 --- !u!222 &2111583128714974564
 CanvasRenderer:
   m_ObjectHideFlags: 0

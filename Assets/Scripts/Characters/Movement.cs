@@ -266,6 +266,11 @@ public class Movement : MonoBehaviour
 		attemptJump = true;
 	}
 
+	public void DontAttemptJump()
+	{
+		attemptJump = false;
+	}
+
 	void HandleJump()
 	{
 		if (attemptJump)
