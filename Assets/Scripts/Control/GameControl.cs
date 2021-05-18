@@ -77,9 +77,10 @@ public class GameControl : MonoBehaviour
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
 	public bool itemHoverPositionMatch;
 	public Image mainHpBar;
-	public TMPro.TextMeshProUGUI mainHpText;
+	public TextMeshProUGUI mainHpText;
 	public Image mainXpBar;
-	public TMPro.TextMeshProUGUI mainXpText;
+	public TextMeshProUGUI mainXpText;
+	public TextMeshProUGUI mainLvlText;
 	public Canvas mainCanvas;
 	public Vector2 mouseSensitivity;
 	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
@@ -709,8 +710,21 @@ public class GameControl : MonoBehaviour
 			{
 				LiveFunctions();
 			}
+
+
+
+			//TODO:REMOVE THIS
+			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				myAbilities.myStat.GiveXp(10);
+			}
+
+			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 50;
+			mainLvlText.text = "Level " + myAbilities.myStat.lvl;
+			//TODO:REMOVE ABOVE
+
 		}
-    }
+	}
 
     private void LiveFunctions()
 	{
@@ -871,7 +885,9 @@ public class GameControl : MonoBehaviour
 		Debug.LogWarning("Failed to find player, making new one");
 
 		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
-		return Instantiate(playerPrefab, position, Quaternion.identity);
+		GameObject temp = Instantiate(playerPrefab, position, Quaternion.identity);
+		SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
+		return temp;
 
 		//Save save = newPlayerObject.GetComponent<Save>();
 		//save.playerOwnerName = username;

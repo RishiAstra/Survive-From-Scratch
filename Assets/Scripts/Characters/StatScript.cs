@@ -391,12 +391,6 @@ public class StatScript : MonoBehaviour, ISaveable
 			Die();
 		}
 
-		//TODO:REMOVE THIS
-		if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.P)) xp += 10;
-		if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.O)) GameControl.main.money += 50;
-
-		//TODO:REMOVE ABOVE
-
 		for (int i = 0; i < damageRecords.Count; i++)
 		{
 			DamageRecord temp = damageRecords[i];
@@ -539,7 +533,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		//get effective dmg value
 		float effectiveDmgValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, type, stat.atk);
-		print(effectiveDmgValue + "|" + modifiers.Count + "|" + stat.atk);
+		//print(effectiveDmgValue + "|" + modifiers.Count + "|" + stat.atk);
 		return effectiveDmgValue * dmgMult;
 	}
 
