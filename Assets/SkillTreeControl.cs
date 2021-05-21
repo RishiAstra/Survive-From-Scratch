@@ -28,7 +28,7 @@ public class SkillTreeControl : MonoBehaviour
 		}
 		int pointsSpent = UpdateSkills();
 		int pointsRemaining = targetS.GetSkillPointTotal() - pointsSpent;
-		if(pointsRemaining > t.cost && (t.s.levelable || !HasSkill(t.s)))
+		if(pointsRemaining >= t.cost && (t.s.levelable || !HasSkill(t.s)))
 		{
 			AddSkill(t.s);
 
@@ -86,10 +86,11 @@ public class SkillTreeControl : MonoBehaviour
 
 		foreach (SkillTreeButton s in skillButtons)
 		{
-			bool has = HasSkill(s.s);
+			int c;
+			bool has = HasSkill(s.s, out c);
 
 			s.hasThisSkill = has;
-			if (has) skillPointsSpent += s.cost;
+			if (has) skillPointsSpent += c;
 
 		}
 		return skillPointsSpent;
@@ -97,16 +98,31 @@ public class SkillTreeControl : MonoBehaviour
 
 	private bool HasSkill(Skill s)
 	{
+		return HasSkill(s, out _);
+	}
+	private bool HasSkill(Skill s, out int skillPoinstSpendOnIt)
+	{
 		bool has = false;
+		skillPoinstSpendOnIt = 0;
 		if (s == null) return true;
 
 		if (s is UsableSkill)
 		{
-			has = targetA.skills.Contains(s as UsableSkill);
+			int index = targetA.skills.IndexOf(s as UsableSkill);
+			if(index >= 0)
+			{
+				skillPoinstSpendOnIt = targetA.skillLvls[index];//this is how many points were spent on it
+				has = true;
+			}
 		}
 		else if (s is StatSkill)
 		{
-			has = targetS.statSkills.Contains(s as StatSkill);
+			int index = targetS.statSkills.IndexOf(s as StatSkill);
+			if (index >= 0)
+			{
+				skillPoinstSpendOnIt = targetS.skillLvls[index];//this is how many points were spent on it
+				has = true;
+			}
 		}
 
 		return has;
