@@ -27,7 +27,7 @@ public class SkillSelector : MonoBehaviour
         //update skill name texts
         for(int i = 0; i < texts.Length; i++)
 		{
-            if(i < GameControl.main.myAbilities.skills.Count)
+            if(GameControl.main.myAbilities != null && i < GameControl.main.myAbilities.skills.Count)
 			{
                 texts[i].text = GameControl.main.myAbilities.skills[i].name;
 			}
