@@ -610,14 +610,14 @@ public class GameControl : MonoBehaviour
 
 	private void CursorLockUpdate()
 	{
-		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
 		{
 			tempUnlockMouse = true;
 			TryUnlockCursor();
 		}
 		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
-		bool ctrlReleased = Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt);
-		bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+		bool ctrlReleased = Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl);
+		bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool releaseBecauseMouseClickAndNotKey = !ctrlHeld && Input.GetMouseButtonDown(0);
 		if (tempUnlockMouse && (ctrlReleased || releaseBecauseMouseClickAndNotKey))
 		{

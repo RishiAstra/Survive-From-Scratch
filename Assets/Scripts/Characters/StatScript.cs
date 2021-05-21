@@ -139,6 +139,29 @@ public class TypedModifier: Modifier
 {
 	public AttackType type;
 
+	public string GetUpgradeString(string modifyName, int lvl, int nextlvl, Color col)
+	{
+		StringBuilder sb = new StringBuilder();
+		string p = "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+";
+		string m = modifyName + "</color> ";
+		string t = type.ToString();
+
+		float pra = preadd(lvl);
+		float pra2 = preadd(nextlvl);
+		if (pra > 0) sb.Append(p + pra.ToString("F1") + "->" + pra2.ToString("F1") + " " + m + " pre " + t + "\n");
+		float prm = premult(lvl);
+		float prm2 = premult(nextlvl);
+		if (prm > 0) sb.Append(p + (prm * 100f).ToString("F1") + "%->" + (prm2 * 100f).ToString("F1") + "% " + m + " pre " + t + "\n");
+		float poa = postadd(lvl);
+		float poa2 = postadd(nextlvl);
+		if (poa > 0) sb.Append(p + poa.ToString("F1") + "->" + poa2.ToString("F1") + " " + m + " post " + t + "\n");
+		float pom = postmult(lvl);
+		float pom2 = postmult(nextlvl);
+		if (pom > 0) sb.Append(p + (pom * 100f).ToString("F1") + "%->" + (pom2 * 100f).ToString("F1") + "% " + m + " post " + t + "\n");
+		//(pom * 100f).ToString("F1")
+
+		return sb.ToString();
+	}
 	public string ToString(string modifyName, int lvl, Color col)
 	{
 		StringBuilder sb = new StringBuilder();

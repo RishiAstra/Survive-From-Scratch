@@ -79,7 +79,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 			//cam.AddDist(Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity);
 			//cam.AddPitch(Input.GetAxis("Mouse Y") * sensitivity.y * Time.deltaTime);
 		}
-		
+
 
 		//jump
 		if (Input.GetKey(KeyCode.Space)) movement.AttemptJump();

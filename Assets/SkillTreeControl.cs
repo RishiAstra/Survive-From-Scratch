@@ -12,6 +12,8 @@ public class SkillTreeControl : MonoBehaviour
 	public Abilities targetA;
 	public StatScript targetS;
 	public TextMeshProUGUI skillPointsLeftText;
+	public TextMeshProUGUI skillDescriptionText;
+	public TextMeshProUGUI skillTitleText;
 	public Menu skillMenu;
 
 	// Start is called before the first frame update

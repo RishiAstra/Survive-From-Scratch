@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44060c498cebfd848bf887ff897ba834, type: 3}
   m_Name: Strength
   m_EditorClassIdentifier: 
+  description: Increases physical damage
   levelable: 1
   mods:
     globalArmorModifiers: []
@@ -20,10 +21,10 @@ MonoBehaviour:
     engMods: []
     morMods: []
     atkMods:
-    - m_preadd: 1
+    - m_preadd: 0
       m_premult: 0
       m_postadd: 0
-      m_postmult: 0
+      m_postmult: 0.02
       growthType: 1
-      a: 1
+      a: 0.02
       type: 7

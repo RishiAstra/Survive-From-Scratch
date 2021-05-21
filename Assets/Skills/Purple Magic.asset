@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3647fc2c37259574f850b394e98080b4, type: 3}
   m_Name: Purple Magic
   m_EditorClassIdentifier: Assembly-CSharp::Skill
+  levelable: 0
+  description: Casts a spell summoning a circle of purple magic to damage enemies
   cost:
     hp: 0
     mp: 0
@@ -20,8 +22,8 @@ MonoBehaviour:
     atk: 0
   actions:
   - animationIndex: 0
-    time: 1
-    spawn: {fileID: 0}
+    time: 2.5
+    spawn: {fileID: 6326687052998980342, guid: 6b04d83c9c5fd43409870dbd3555f085, type: 3}
     spawnTransform: 0
     spawnAsChild: 0
     useWeapons: 1

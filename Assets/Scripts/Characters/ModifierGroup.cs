@@ -63,6 +63,53 @@ public class ModifierGroup
 		return sb.ToString();
 	}
 
+	public string GetUpgradeString(int lvl, int nextlvl)
+	{
+		StringBuilder sb = new StringBuilder();
+		GetTypedModifierUpgradeText(sb, "DEF", globalArmorModifiers, lvl, nextlvl, GameControl.main.armorColor);
+		GetTypedModifierUpgradeText(sb, "ATK", atkMods, lvl, nextlvl, GameControl.main.atkColor);
+		List<int> lvls;
+		List<int> nextlvls;
+
+		lvls = new List<int>();
+		nextlvls = new List<int>();
+		for (int i = 0; i < hpMods.Count; i++)
+		{
+			lvls.Add(lvl);
+			nextlvls.Add(nextlvl);
+		}
+		GetModifierUpgradeText(sb, "HP", hpMods, lvls, nextlvls, GameControl.main.hpColor);
+		////////////////////////////
+		lvls = new List<int>();
+		nextlvls = new List<int>();
+		for (int i = 0; i < mpMods.Count; i++)
+		{
+			lvls.Add(lvl);
+			nextlvls.Add(nextlvl);
+		}
+		GetModifierUpgradeText(sb, "MP", mpMods, lvls, nextlvls, GameControl.main.mpColor);
+		////////////////////////////
+		lvls = new List<int>();
+		nextlvls = new List<int>();
+		for (int i = 0; i < engMods.Count; i++)
+		{
+			lvls.Add(lvl);
+			nextlvls.Add(nextlvl);
+		}
+		GetModifierUpgradeText(sb, "ENG", engMods, lvls, nextlvls, GameControl.main.engColor);
+		////////////////////////////
+		nextlvls = new List<int>();
+		lvls = new List<int>();
+		for (int i = 0; i < morMods.Count; i++)
+		{
+			lvls.Add(lvl);
+			nextlvls.Add(nextlvl);
+		}
+		GetModifierUpgradeText(sb, "MOR", morMods, lvls, nextlvls, GameControl.main.morColor);
+		///////////////////////////
+		return sb.ToString();
+	}
+
 	private void GetModifierInfoText(StringBuilder sb, string modName, List<Modifier> mods, List<int> lvl, Color col)
 	{
 		float preadd = GetPreAddFromTypedModifiers(mods, lvl);
@@ -75,11 +122,38 @@ public class ModifierGroup
 		if (postmult > 0) sb.Append(GetMultString(postmult, modName, true, col) + "\n");
 	}
 
+	private void GetModifierUpgradeText(StringBuilder sb, string modName, List<Modifier> mods, List<int> lvl, List<int> nextlvl, Color col)
+	{
+		float preadd = GetPreAddFromTypedModifiers(mods, lvl);
+		float premult = GetPreMultFromTypedModifiers(mods, lvl);
+		float postadd = GetPostAddFromTypedModifiers(mods, lvl);
+		float postmult = GetPostMultFromTypedModifiers(mods, lvl);
+
+		float preadd2 = GetPreAddFromTypedModifiers(mods, nextlvl);
+		float premult2 = GetPreMultFromTypedModifiers(mods, nextlvl);
+		float postadd2 = GetPostAddFromTypedModifiers(mods, nextlvl);
+		float postmult2 = GetPostMultFromTypedModifiers(mods, nextlvl);
+
+		if (preadd > 0 || preadd2 > 0) sb.Append(GetAddUpgradeString(preadd, preadd2, modName, false, col) + "\n");
+		if (premult > 0 || premult2 > 0) sb.Append(GetMultUpgradeString(premult, premult2, modName, false, col) + "\n");
+		if (postadd > 0 || postadd2 > 0) sb.Append(GetAddUpgradeString(postadd, postadd2, modName, true, col) + "\n");
+		if (postmult > 0 || postmult2 > 0) sb.Append(GetMultUpgradeString(postmult, postmult2, modName, true, col) + "\n");
+	}
+
 	private void GetTypedModifierInfoText(StringBuilder sb, string modName, List<TypedModifier> mods, int lvl, Color col)
 	{
 		foreach(TypedModifier m in mods)
 		{
 			string temp = m.ToString(modName, lvl, col);
+			sb.Append(temp);
+		}
+	}
+
+	private void GetTypedModifierUpgradeText(StringBuilder sb, string modName, List<TypedModifier> mods, int lvl, int nextlvl, Color col)
+	{
+		foreach (TypedModifier m in mods)
+		{
+			string temp = m.GetUpgradeString(modName, lvl, nextlvl, col);
 			sb.Append(temp);
 		}
 	}
@@ -92,6 +166,16 @@ public class ModifierGroup
 	private string GetMultString(float v, string n, bool post, Color col)
 	{
 		return "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+" + (v * 100f).ToString("F1") + "% " + n + "</color> " + (post ? " post" : " pre");
+	}
+
+	private string GetAddUpgradeString(float v, float v2, string n, bool post, Color col)
+	{
+		return "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+" + v.ToString("F1") + "->" + v2.ToString("F1") + " " + n + "</color> " + (post ? " post" : " pre");
+	}
+
+	private string GetMultUpgradeString(float v, float v2, string n, bool post, Color col)
+	{
+		return "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+" + (v * 100f).ToString("F1") + "%->" + (v2 * 100f).ToString("F1") + "% " + n + "</color> " + (post ? " post" : " pre");
 	}
 
 	#endregion

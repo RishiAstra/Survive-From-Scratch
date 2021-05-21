@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3647fc2c37259574f850b394e98080b4, type: 3}
   m_Name: Basic Weapon
   m_EditorClassIdentifier: Assembly-CSharp::Skill
+  levelable: 0
+  description: A basic attack
   cost:
     hp: 0
     mp: 0
