@@ -28,7 +28,7 @@ public class SkillTreeControl : MonoBehaviour
 		}
 		int pointsSpent = UpdateSkills();
 		int pointsRemaining = targetS.GetSkillPointTotal() - pointsSpent;
-		if(pointsRemaining > t.cost)
+		if(pointsRemaining > t.cost && (t.s.levelable || !HasSkill(t.s)))
 		{
 			AddSkill(t.s);
 
@@ -50,11 +50,31 @@ public class SkillTreeControl : MonoBehaviour
 	{
 		if (s is UsableSkill)
 		{
-			targetA.skills.Add(s as UsableSkill);
+			UsableSkill temp = s as UsableSkill;
+			if (!targetA.skills.Contains(temp))
+			{
+				targetA.skills.Add(temp);
+				targetA.skillLvls.Add(1);
+			}
+			else if (s.levelable)
+			{
+				int index = targetA.skills.IndexOf(temp);
+				targetA.skillLvls[index]++;
+			}
 		}
 		else if (s is StatSkill)
 		{
-			targetS.statSkills.Add(s as StatSkill);
+			StatSkill temp = s as StatSkill;
+			if (!targetS.statSkills.Contains(temp))
+			{
+				targetS.statSkills.Add(temp);
+				targetS.skillLvls.Add(1);
+			}
+			else if (s.levelable)
+			{
+				int index = targetS.statSkills.IndexOf(temp);
+				targetS.skillLvls[index]++;
+			}
 		}
 	}
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Newtonsoft.Json;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets;
+using System.Threading.Tasks;
 
 [RequireComponent(typeof(StatScript))]
 public class Abilities : MonoBehaviour, ISaveable
@@ -15,6 +18,7 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	public StatScript myStat;
 	public List<UsableSkill> skills;
+	public List<int> skillLvls;
 	public bool busy;
 	public bool attackAllowed;
 	public Animator anim;
@@ -28,6 +32,21 @@ public class Abilities : MonoBehaviour, ISaveable
 	private void Awake()
 	{
 		myStat = GetComponent<StatScript>();
+
+		//TODO: consider changing this, all usable skills are lvl 1
+		//skillLvls = new List<int>();
+		//for(int i = 0; i < skills.Count; i++)
+		//{
+		//	skillLvls.Add(1);
+		//}
+		//default to lvl 1 for skills u start with
+		for (int i = 0; i < skills.Count; i++)
+		{
+			if (skillLvls.Count <= i)
+			{
+				skillLvls.Add(1);
+			}
+		}
 	}
 
 
@@ -121,33 +140,54 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	/*************save skills and stuff below*************/
 
+	//public string GetData()
+	//{
+	//	//SaveDataAbilities s = new SaveDataAbilities(stat, maxStat);
+	//	//return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+	//	return null;
+	//}
+
+	//public void SetData(string data)
+	//{
+	//	//SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
+	//	////TODO: warning, sceneindex not considered here
+	//	//this.stat = s.stat;
+	//	//this.maxStat = s.maxStat;
+	//}
+
 	public string GetData()
 	{
-		//SaveDataAbilities s = new SaveDataAbilities(stat, maxStat);
-		//return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
-		return null;
+		List<string> temp = new List<string>();
+		foreach (UsableSkill st in skills)
+		{
+			temp.Add(st.name);
+		}
+		SaveDataAbilities s = new SaveDataAbilities(temp, skillLvls);
+		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public async void SetData(string data)
 	{
-		//SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
-		////TODO: warning, sceneindex not considered here
-		//this.stat = s.stat;
-		//this.maxStat = s.maxStat;
+		SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
+
+		this.skills = new List<UsableSkill>();
+		foreach (string st in s.skills)
+		{
+			AsyncOperationHandle<UsableSkill> a = Addressables.LoadAssetAsync<UsableSkill>("Assets/Skills/" + st + ".asset");
+			await Task.WhenAll(a.Task);
+			skills.Add(a.Result);
+		}
+		this.skillLvls = s.skillLvls;
+		//null checks
+		if (skills == null)
+		{
+			skills = new List<UsableSkill>();
+			skillLvls = new List<int>();
+		}
 	}
 
 	public string GetFileNameBaseForSavingThisComponent()
 	{
-		return null;// "Stats";
+		return "Stats";
 	}
 }
-
-//[System.Serializable]
-//public class Skill
-//{
-//	public Stat cost;
-//	//public float useDist;//use this for AI to determine what skill to use or if it needs to approach
-//	//public float useAngle;
-//	public Action[] actions;
-//}
-

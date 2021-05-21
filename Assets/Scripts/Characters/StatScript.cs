@@ -91,16 +91,44 @@ public class Armor
 	}
 }
 
+public enum LvlGrowthType
+{
+	None,
+	Linear,
+}
+
+
 /// <summary>
 /// a modifier for hp, dmg, armor, etc.
 /// </summary>
 [System.Serializable]
 public class Modifier
 {
-	public float preadd;
-	public float premult;//NOTE: mults are relative to 100%, so a mult of 0.1 means 110%, a mult of 0 means 100%
-	public float postadd;
-	public float postmult;
+	public float preadd (int lvl){ return GetLvledValue(m_preadd, lvl); }
+	public float premult (int lvl) { return GetLvledValue(m_premult, lvl); }//NOTE: mults are relative to 100%, so a mult of 0.1 means 110%, a mult of 0 means 100%
+	public float postadd (int lvl) { return GetLvledValue(m_postadd, lvl); }
+	public float postmult (int lvl) { return GetLvledValue(m_postmult, lvl); }
+
+	public float m_preadd;
+	public float m_premult;//NOTE: mults are relative to 100%, so a mult of 0.1 means 110%, a mult of 0 means 100%
+	public float m_postadd;
+	public float m_postmult;
+	public LvlGrowthType growthType;
+	public float a;//for linear, this is the slope
+
+	private float GetLvledValue(float f, int lvl)
+	{
+		if (f < 0.00001f) return f;//don't grow mods that are at 0, they are meant to stay at 0
+		switch (growthType)
+		{
+			case LvlGrowthType.None:
+				return f;
+			case LvlGrowthType.Linear:
+				return f + (lvl - 1) * a;
+			default:
+				return f;
+		}
+	}
 }
 
 /// <summary>
@@ -111,17 +139,21 @@ public class TypedModifier: Modifier
 {
 	public AttackType type;
 
-	public string ToString(string modifyName, Color col)
+	public string ToString(string modifyName, int lvl, Color col)
 	{
 		StringBuilder sb = new StringBuilder();
 		string p = "<#" + ColorUtility.ToHtmlStringRGB(col) + ">+";
 		string m = modifyName + "</color> ";
 		string t = type.ToString();
 
-		if (preadd > 0) sb.Append(p + preadd.ToString("F1") + " " + m + " pre " + t + "\n");
-		if (premult > 0) sb.Append(p + (premult * 100f).ToString("F1") + "% " + m + " pre " + t + "\n");
-		if (postadd > 0) sb.Append(p + postadd.ToString("F1") + " " + m + " post " + t + "\n");
-		if (postmult > 0) sb.Append(p + (postmult * 100f).ToString("F1") + "% " + m + " post " + t + "\n");
+		float pra = preadd(lvl);
+		if (pra > 0) sb.Append(p + pra.ToString("F1") + " " + m + " pre " + t + "\n");
+		float prm = premult(lvl);
+		if (prm > 0) sb.Append(p + (prm * 100f).ToString("F1") + "% " + m + " pre " + t + "\n");
+		float poa = postadd(lvl);
+		if (poa > 0) sb.Append(p + poa.ToString("F1") + " " + m + " post " + t + "\n");
+		float pom = postmult(lvl);
+		if (pom > 0) sb.Append(p + (pom * 100f).ToString("F1") + "% " + m + " post " + t + "\n");
 
 		return sb.ToString(); 
 	}
@@ -183,9 +215,19 @@ public class StatScript : MonoBehaviour, ISaveable
 	public List<DamageRecord> damageRecords;
 	public SaveEntity mySave;
 	public List<StatSkill> statSkills;
+	public List<int> skillLvls;
 
 	private void Awake()
 	{
+		//default to lvl 1 for skills u start with
+		for(int i = 0; i < statSkills.Count; i++)
+		{
+			if(skillLvls.Count <= i)
+			{
+				skillLvls.Add(1);
+			}
+		}
+
 		mySave = GetComponent<SaveEntity>();
 		initialMaxStat = maxStat;
 		pItemsEquipped = new List<Item>();
@@ -308,62 +350,170 @@ public class StatScript : MonoBehaviour, ISaveable
 		Stat newMaxStat = initialMaxStat.GetLeveled(lvl);//get base max stat from lvl
 														 //apply modifiers from items equipped and skills
 		List<Modifier> modifiers;
+		List<int> lvls;
 
-		/*************hp**********/
+		///*************hp**********/
+		//modifiers = new List<Modifier>();
+		//foreach (Item i in itemsEquipped)
+		//{
+		//	if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.hpMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.hpMods);
+		//}
+
+		//foreach (StatSkill s in statSkills)
+		//{
+		//	if (s.mods != null && s.mods.hpMods != null) modifiers.AddRange(s.mods.hpMods);
+		//}
+
+		//newMaxStat.hp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.hp);
+		///***********mp************/
+
+		//modifiers = new List<Modifier>();
+		//foreach (Item i in itemsEquipped)
+		//{
+		//	if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.mpMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.mpMods);
+		//}
+
+		//foreach (StatSkill s in statSkills)
+		//{
+		//	if (s.mods != null && s.mods.mpMods != null) modifiers.AddRange(s.mods.mpMods);
+		//}
+
+		//newMaxStat.mp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.mp);
+		/************hp***********/
+
 		modifiers = new List<Modifier>();
+		lvls = new List<int>();
 		foreach (Item i in itemsEquipped)
 		{
-			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.hpMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.hpMods);
+			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.hpMods != null)
+			{
+				modifiers.AddRange(GameControl.itemTypes[i.id].mods.hpMods);
+				for (int j = 0; j < GameControl.itemTypes[i.id].mods.hpMods.Count; j++)
+				{
+					lvls.Add(1);
+				}
+			}
 		}
 
-		foreach (StatSkill s in statSkills)
+		for (int i = 0; i < statSkills.Count; i++)
 		{
-			if (s.mods != null && s.mods.hpMods != null) modifiers.AddRange(s.mods.hpMods);
+			StatSkill s = statSkills[i];
+			if (s.mods != null && s.mods.hpMods != null)
+			{
+				modifiers.AddRange(s.mods.hpMods);
+				for (int j = 0; j < s.mods.hpMods.Count; j++)
+				{
+					lvls.Add(skillLvls[i]);
+				}
+			}
 		}
 
-		newMaxStat.hp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.hp);
-		/***********mp************/
+		newMaxStat.hp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, lvls, newMaxStat.hp);
+		/************mp***********/
 
 		modifiers = new List<Modifier>();
+		lvls = new List<int>();
 		foreach (Item i in itemsEquipped)
 		{
-			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.mpMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.mpMods);
+			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.mpMods != null)
+			{
+				modifiers.AddRange(GameControl.itemTypes[i.id].mods.mpMods);
+				for (int j = 0; j < GameControl.itemTypes[i.id].mods.mpMods.Count; j++)
+				{
+					lvls.Add(1);
+				}
+			}
 		}
 
-		foreach (StatSkill s in statSkills)
+		for (int i = 0; i < statSkills.Count; i++)
 		{
-			if (s.mods != null && s.mods.mpMods != null) modifiers.AddRange(s.mods.mpMods);
+			StatSkill s = statSkills[i];
+			if (s.mods != null && s.mods.mpMods != null)
+			{
+				modifiers.AddRange(s.mods.mpMods);
+				for (int j = 0; j < s.mods.mpMods.Count; j++)
+				{
+					lvls.Add(skillLvls[i]);
+				}
+			}
 		}
 
-		newMaxStat.mp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.mp);
+		newMaxStat.mp = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, lvls, newMaxStat.mp);
 		/************eng***********/
 
 		modifiers = new List<Modifier>();
+		lvls = new List<int>();
 		foreach (Item i in itemsEquipped)
 		{
-			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.engMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.engMods);
+			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.engMods != null)
+			{
+				modifiers.AddRange(GameControl.itemTypes[i.id].mods.engMods);
+				for (int j = 0; j < GameControl.itemTypes[i.id].mods.engMods.Count; j++)
+				{
+					lvls.Add(1);
+				}
+			}
 		}
 
-		foreach (StatSkill s in statSkills)
+		for (int i = 0; i < statSkills.Count; i++)
 		{
-			if (s.mods != null && s.mods.engMods != null) modifiers.AddRange(s.mods.engMods);
+			StatSkill s = statSkills[i];
+			if (s.mods != null && s.mods.engMods != null)
+			{
+				modifiers.AddRange(s.mods.engMods);
+				for(int j = 0; j < s.mods.engMods.Count; j++)
+				{
+					lvls.Add(skillLvls[i]);
+				}
+			}
 		}
 
-		newMaxStat.eng = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.eng);
-		/***********mor************/
+		newMaxStat.eng = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, lvls, newMaxStat.eng);
+		/************mor***********/
 
 		modifiers = new List<Modifier>();
+		lvls = new List<int>();
 		foreach (Item i in itemsEquipped)
 		{
-			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.morMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.morMods);
+			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.morMods != null)
+			{
+				modifiers.AddRange(GameControl.itemTypes[i.id].mods.morMods);
+				for (int j = 0; j < GameControl.itemTypes[i.id].mods.morMods.Count; j++)
+				{
+					lvls.Add(1);
+				}
+			}
 		}
 
-		foreach (StatSkill s in statSkills)
+		for (int i = 0; i < statSkills.Count; i++)
 		{
-			if (s.mods != null && s.mods.morMods != null) modifiers.AddRange(s.mods.morMods);
+			StatSkill s = statSkills[i];
+			if (s.mods != null && s.mods.morMods != null)
+			{
+				modifiers.AddRange(s.mods.morMods);
+				for (int j = 0; j < s.mods.morMods.Count; j++)
+				{
+					lvls.Add(skillLvls[i]);
+				}
+			}
 		}
 
-		newMaxStat.mor = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.mor);
+		newMaxStat.mor = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, lvls, newMaxStat.mor);
+		///***********mor************/
+
+		//modifiers = new List<Modifier>();
+		//foreach (Item i in itemsEquipped)
+		//{
+		//	if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.morMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.morMods);
+		//}
+
+		//foreach (StatSkill s in statSkills)
+		//{
+		//	if (s.mods != null && s.mods.morMods != null) modifiers.AddRange(s.mods.morMods);
+		//}
+
+		//newMaxStat.mor = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, newMaxStat.mor);
+
 		/***********END************/
 
 		//print(maxStat + "|" + newMaxStat);
@@ -514,20 +664,43 @@ public class StatScript : MonoBehaviour, ISaveable
 	{
 
 		List<TypedModifier> modifiers = new List<TypedModifier>();
-		if(armor.localArmorModifiers != null) modifiers.AddRange(armor.localArmorModifiers);
+		List<int> lvls = new List<int>();
+		if (armor.localArmorModifiers != null)
+		{
+			modifiers.AddRange(armor.localArmorModifiers);
+			for (int j = 0; j < armor.localArmorModifiers.Count; j++)
+			{
+				lvls.Add(1);
+			}
+		}
 
 		foreach (Armor a in armors)
 		{
-			if(a.mods != null && a.mods.globalArmorModifiers != null) modifiers.AddRange(a.mods.globalArmorModifiers);
+			if (a.mods != null && a.mods.globalArmorModifiers != null)
+			{
+				modifiers.AddRange(a.mods.globalArmorModifiers);
+				for (int j = 0; j < a.mods.globalArmorModifiers.Count; j++)
+				{
+					lvls.Add(1);
+				}
+			}
 		}
 
-		foreach (StatSkill s in statSkills)
+		for (int i = 0; i < statSkills.Count; i++)
 		{
-			if (s.mods != null && s.mods.globalArmorModifiers != null) modifiers.AddRange(s.mods.globalArmorModifiers);
+			StatSkill s = statSkills[i];
+			if (s.mods != null && s.mods.globalArmorModifiers != null)
+			{
+				modifiers.AddRange(s.mods.globalArmorModifiers);
+				for (int j = 0; j < s.mods.globalArmorModifiers.Count; j++)
+				{
+					lvls.Add(skillLvls[i]);
+				}
+			}
 		}
 
 		//get effective armor value
-		float effectiveArmorValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, type);
+		float effectiveArmorValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, lvls, type);
 
 		float mult = 1 - Mathf.Pow(RESIST_EXPONENT_BASE, -damage / effectiveArmorValue);
 		return damage * mult;
@@ -537,19 +710,35 @@ public class StatScript : MonoBehaviour, ISaveable
 	{
 
 		List<TypedModifier> modifiers = new List<TypedModifier>();
+		List<int> lvls = new List<int>();
 
 		foreach (Item i in itemsEquipped)
 		{
-			if(GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.atkMods != null) modifiers.AddRange(GameControl.itemTypes[i.id].mods.atkMods);
+			if (GameControl.itemTypes[i.id].mods != null && GameControl.itemTypes[i.id].mods.atkMods != null)
+			{
+				modifiers.AddRange(GameControl.itemTypes[i.id].mods.atkMods);
+				for (int j = 0; j < GameControl.itemTypes[i.id].mods.atkMods.Count; j++)
+				{
+					lvls.Add(1);
+				}
+			}
 		}
 
-		foreach (StatSkill s in statSkills)
+		for (int i = 0; i < statSkills.Count; i++)
 		{
-			if (s.mods != null && s.mods.atkMods != null) modifiers.AddRange(s.mods.atkMods);
+			StatSkill s = statSkills[i];
+			if (s.mods != null && s.mods.atkMods != null)
+			{
+				modifiers.AddRange(s.mods.atkMods);
+				for (int j = 0; j < s.mods.atkMods.Count; j++)
+				{
+					lvls.Add(skillLvls[i]);
+				}
+			}
 		}
 
 		//get effective dmg value
-		float effectiveDmgValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, type, stat.atk);
+		float effectiveDmgValue = ModifierGroup.GetComputedValueFromTypedModifiers(modifiers, lvls, type, stat.atk);
 		//print(effectiveDmgValue + "|" + modifiers.Count + "|" + stat.atk);
 		return effectiveDmgValue * dmgMult;
 	}
@@ -645,7 +834,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		{
 			temp.Add(st.name);
 		}
-		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp);
+		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls);
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
@@ -665,9 +854,14 @@ public class StatScript : MonoBehaviour, ISaveable
 			await Task.WhenAll(a.Task);
 			statSkills.Add(a.Result);
 		}
+		this.skillLvls = s.skillLvls;
 		//null checks
 		if (damageRecords == null) damageRecords = new List<DamageRecord>();
-		if (statSkills == null) statSkills = new List<StatSkill>();
+		if (statSkills == null)
+		{
+			statSkills = new List<StatSkill>();
+			skillLvls = new List<int>();
+		}
 
 		UpdateXP();
 		CheckStats();

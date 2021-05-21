@@ -167,10 +167,10 @@ public class gameControllEditor : Editor
 				{
 					EditorGUI.indentLevel += 1;
 					m[i].type = (AttackType)EditorGUILayout.EnumFlagsField("type", m[i].type);
-					m[i].preadd = EditorGUILayout.FloatField("preadd", m[i].preadd);
-					m[i].premult = EditorGUILayout.FloatField("premult", m[i].premult);
-					m[i].postadd = EditorGUILayout.FloatField("postadd", m[i].postadd);
-					m[i].postmult = EditorGUILayout.FloatField("postmult", m[i].postmult);
+					m[i].m_preadd = EditorGUILayout.FloatField("preadd", m[i].m_preadd);
+					m[i].m_premult = EditorGUILayout.FloatField("premult", m[i].m_premult);
+					m[i].m_postadd = EditorGUILayout.FloatField("postadd", m[i].m_postadd);
+					m[i].m_postmult = EditorGUILayout.FloatField("postmult", m[i].m_postmult);
 
 					EditorGUI.indentLevel -= 1;
 				}
@@ -218,10 +218,10 @@ public class gameControllEditor : Editor
 				{
 					EditorGUI.indentLevel += 1;
 					//m[i].type = (AttackType)EditorGUILayout.EnumFlagsField("type", m[i].type);
-					m[i].preadd = EditorGUILayout.FloatField("preadd", m[i].preadd);
-					m[i].premult = EditorGUILayout.FloatField("premult", m[i].premult);
-					m[i].postadd = EditorGUILayout.FloatField("postadd", m[i].postadd);
-					m[i].postmult = EditorGUILayout.FloatField("postmult", m[i].postmult);
+					m[i].m_preadd = EditorGUILayout.FloatField("preadd", m[i].m_preadd);
+					m[i].m_premult = EditorGUILayout.FloatField("premult", m[i].m_premult);
+					m[i].m_postadd = EditorGUILayout.FloatField("postadd", m[i].m_postadd);
+					m[i].m_postmult = EditorGUILayout.FloatField("postmult", m[i].m_postmult);
 
 					EditorGUI.indentLevel -= 1;
 				}

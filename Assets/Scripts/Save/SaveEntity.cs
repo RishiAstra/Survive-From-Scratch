@@ -721,14 +721,29 @@ public class SaveDataStat
 	public float xp;
 	public List<DamageRecord> dmgs;
 	public List<string> statSkills;
+	public List<int> skillLvls;
 
-	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills, List<int> skillLvls)
 	{
 		this.stat = stat;
 		this.initialMaxStat = initialMaxStat;
 		this.xp = xp;
 		this.dmgs = dmgs;
 		this.statSkills = statSkills;
+		this.skillLvls = skillLvls;
+	}
+}
+
+[System.Serializable]
+public class SaveDataAbilities
+{
+	public List<string> skills;
+	public List<int> skillLvls;
+
+	public SaveDataAbilities(List<string> statSkills, List<int> skillLvls)
+	{
+		this.skills = statSkills;
+		this.skillLvls = skillLvls;
 	}
 }
 

@@ -19,8 +19,11 @@ MonoBehaviour:
     engMods: []
     morMods: []
     atkMods:
-    - preadd: 0
-      premult: 0.1
-      postadd: 0
-      postmult: 0
+    - m_preadd: 0
+      m_premult: 0
+      m_postadd: 0
+      m_postmult: 0
+      lvl: 0
+      growthType: 1
+      a: 0
       type: 7

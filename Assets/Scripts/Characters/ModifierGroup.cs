@@ -29,35 +29,57 @@ public class ModifierGroup
 
 	#region text
 
-	public override string ToString()
+	public string ToString(int lvl)
 	{
 		StringBuilder sb = new StringBuilder();
-		GetTypedModifierInfoText(sb, "DEF", globalArmorModifiers, GameControl.main.armorColor);
-		GetTypedModifierInfoText(sb, "ATK", atkMods, GameControl.main.atkColor);
-		GetModifierInfoText(sb, "HP", hpMods, GameControl.main.hpColor);
-		GetModifierInfoText(sb, "MP", mpMods, GameControl.main.mpColor);
-		GetModifierInfoText(sb, "ENG", engMods, GameControl.main.engColor);
-		GetModifierInfoText(sb, "MOR", morMods, GameControl.main.morColor);
+		GetTypedModifierInfoText(sb, "DEF", globalArmorModifiers, lvl, GameControl.main.armorColor);
+		GetTypedModifierInfoText(sb, "ATK", atkMods, lvl, GameControl.main.atkColor);
+		List<int> lvls;
+
+		lvls = new List<int>();
+		for(int i = 0; i < hpMods.Count; i++)
+		{
+			lvls.Add(lvl);
+		}
+		GetModifierInfoText(sb, "HP", hpMods, lvls, GameControl.main.hpColor);
+		lvls = new List<int>();
+		for (int i = 0; i < mpMods.Count; i++)
+		{
+			lvls.Add(lvl);
+		}
+		GetModifierInfoText(sb, "MP", mpMods, lvls, GameControl.main.mpColor);
+		lvls = new List<int>();
+		for (int i = 0; i < engMods.Count; i++)
+		{
+			lvls.Add(lvl);
+		}
+		GetModifierInfoText(sb, "ENG", engMods, lvls, GameControl.main.engColor);
+		lvls = new List<int>();
+		for (int i = 0; i < morMods.Count; i++)
+		{
+			lvls.Add(lvl);
+		}
+		GetModifierInfoText(sb, "MOR", morMods, lvls, GameControl.main.morColor);
 		return sb.ToString();
 	}
 
-	private void GetModifierInfoText(StringBuilder sb, string modName, List<Modifier> mods, Color col)
+	private void GetModifierInfoText(StringBuilder sb, string modName, List<Modifier> mods, List<int> lvl, Color col)
 	{
-		float preadd = GetPreAddFromTypedModifiers(mods);
-		float premult = GetPreMultFromTypedModifiers(mods);
-		float postadd = GetPostAddFromTypedModifiers(mods);
-		float postmult = GetPostMultFromTypedModifiers(mods);
+		float preadd = GetPreAddFromTypedModifiers(mods, lvl);
+		float premult = GetPreMultFromTypedModifiers(mods, lvl);
+		float postadd = GetPostAddFromTypedModifiers(mods, lvl);
+		float postmult = GetPostMultFromTypedModifiers(mods, lvl);
 		if (preadd > 0) sb.Append(GetAddString(preadd, modName, false, col) + "\n");
 		if (premult > 0) sb.Append(GetMultString(premult, modName, false, col) + "\n");
 		if (postadd > 0) sb.Append(GetAddString(postadd, modName, true, col) + "\n");
 		if (postmult > 0) sb.Append(GetMultString(postmult, modName, true, col) + "\n");
 	}
 
-	private void GetTypedModifierInfoText(StringBuilder sb, string modName, List<TypedModifier> mods, Color col)
+	private void GetTypedModifierInfoText(StringBuilder sb, string modName, List<TypedModifier> mods, int lvl, Color col)
 	{
 		foreach(TypedModifier m in mods)
 		{
-			string temp = m.ToString(modName, col);
+			string temp = m.ToString(modName, lvl, col);
 			sb.Append(temp);
 		}
 	}
@@ -87,71 +109,71 @@ public class ModifierGroup
 	/// <param name="type">the type to calculate the value for</param>
 	/// <param name="initial">the initial amount, e.g. base attack is 5 before all mods</param>
 	/// <returns></returns>
-	public static float GetComputedValueFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial = 0)
+	public static float GetComputedValueFromTypedModifiers(List<TypedModifier> modifiers, List<int> lvl, AttackType type, float initial = 0)
 	{
 		//base amount
-		float x = GetPreAddFromTypedModifiers(modifiers, type, initial);
+		float x = GetPreAddFromTypedModifiers(modifiers, lvl, type, initial);
 		//print("1:" + x);
 		//premultiply
-		x *= (1 + GetPreMultFromTypedModifiers(modifiers, type, initial));
+		x *= (1 + GetPreMultFromTypedModifiers(modifiers, lvl, type));
 		//print("2:" + x);
 		//postadd
-		x += GetPostAddFromTypedModifiers(modifiers, type, initial);
+		x += GetPostAddFromTypedModifiers(modifiers, lvl, type);
 		//print("3:" + x);
 		//postmultiply
-		x *= (1 + GetPostMultFromTypedModifiers(modifiers, type, initial));
+		x *= (1 + GetPostMultFromTypedModifiers(modifiers, lvl, type));
 
 		return x;
 	}
 
 
-	public static float GetPreAddFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	public static float GetPreAddFromTypedModifiers(List<TypedModifier> modifiers, List<int> lvl, AttackType type, float initial)
 	{
 		float x = initial;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
 			if (AttackTypeOverlap(modifiers[i].type, type))
 			{
-				x += modifiers[i].preadd;
+				x += modifiers[i].preadd(lvl[i]);
 			}
 		}
 		return x;
 	}
 
-	public static float GetPreMultFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	public static float GetPreMultFromTypedModifiers(List<TypedModifier> modifiers, List<int> lvl, AttackType type)
 	{
 		float x = 0;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
 			if (AttackTypeOverlap(modifiers[i].type, type))
 			{
-				x += modifiers[i].premult;
+				x += modifiers[i].premult(lvl[i]);
 			}
 		}
 		return x;
 	}
 
-	public static float GetPostAddFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	public static float GetPostAddFromTypedModifiers(List<TypedModifier> modifiers, List<int> lvl, AttackType type)
 	{
 		float x = 0;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
 			if (AttackTypeOverlap(modifiers[i].type, type))
 			{
-				x += modifiers[i].postadd;
+				x += modifiers[i].postadd(lvl[i]);
 			}
 		}
 		return x;
 	}
 
-	public static float GetPostMultFromTypedModifiers(List<TypedModifier> modifiers, AttackType type, float initial)
+	public static float GetPostMultFromTypedModifiers(List<TypedModifier> modifiers, List<int> lvl, AttackType type)
 	{
 		float x = 0;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
 			if (AttackTypeOverlap(modifiers[i].type, type))
 			{
-				x += modifiers[i].postmult;
+				x += modifiers[i].postmult(lvl[i]);
 			}
 		}
 		return x;
@@ -165,60 +187,60 @@ public class ModifierGroup
 	/// <param name="modifiers">the modifiers to applu</param>
 	/// <param name="initial">the initial amount, e.g. base attack is 5 before all mods</param>
 	/// <returns></returns>
-	public static float GetComputedValueFromTypedModifiers(List<Modifier> modifiers, float initial = 0)
+	public static float GetComputedValueFromTypedModifiers(List<Modifier> modifiers, List<int> lvl, float initial = 0)
 	{
 		//base amount
-		float x = GetPreAddFromTypedModifiers(modifiers, initial);
+		float x = GetPreAddFromTypedModifiers(modifiers, lvl, initial);
 		//print("1:" + x);
 		//premultiply
-		x *= (1 + GetPreMultFromTypedModifiers(modifiers));
+		x *= (1 + GetPreMultFromTypedModifiers(modifiers, lvl));
 		//print("2:" + x);
 		//postadd
-		x += GetPostAddFromTypedModifiers(modifiers);
+		x += GetPostAddFromTypedModifiers(modifiers, lvl);
 		//print("3:" + x);
 		//postmultiply
-		x *= (1 + GetPostMultFromTypedModifiers(modifiers));
+		x *= (1 + GetPostMultFromTypedModifiers(modifiers, lvl));
 
 		return x;
 	}
 
 
-	public static float GetPreAddFromTypedModifiers(List<Modifier> modifiers, float initial = 0)
+	public static float GetPreAddFromTypedModifiers(List<Modifier> modifiers, List<int> lvl, float initial = 0)
 	{
 		float x = initial;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
-			x += modifiers[i].preadd;
+			x += modifiers[i].preadd(lvl[i]);
 		}
 		return x;
 	}
 
-	public static float GetPreMultFromTypedModifiers(List<Modifier> modifiers)
+	public static float GetPreMultFromTypedModifiers(List<Modifier> modifiers, List<int> lvl)
 	{
 		float x = 0;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
-			x += modifiers[i].premult;
+			x += modifiers[i].premult(lvl[i]);
 		}
 		return x;
 	}
 
-	public static float GetPostAddFromTypedModifiers(List<Modifier> modifiers)
+	public static float GetPostAddFromTypedModifiers(List<Modifier> modifiers, List<int> lvl)
 	{
 		float x = 0;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
-			x += modifiers[i].postadd;
+			x += modifiers[i].postadd(lvl[i]);
 		}
 		return x;
 	}
 
-	public static float GetPostMultFromTypedModifiers(List<Modifier> modifiers)
+	public static float GetPostMultFromTypedModifiers(List<Modifier> modifiers, List<int> lvl)
 	{
 		float x = 0;
 		for (int i = 0; i < modifiers.Count; i++)
 		{
-			x += modifiers[i].postmult;
+			x += modifiers[i].postmult(lvl[i]);
 		}
 		return x;
 	}
