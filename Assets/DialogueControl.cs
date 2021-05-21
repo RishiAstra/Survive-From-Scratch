@@ -81,6 +81,7 @@ public class DialogueControl : MonoBehaviour
                     }
 
                     currentPart = null;
+                    GameControl.main.Wait1FrameBeforeInteract();
                 }
 				else
 				{

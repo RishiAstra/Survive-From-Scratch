@@ -34,7 +34,7 @@ public struct Stat
 
 	public static float GetLeveledFloat(float toLvl, float level)
 	{
-		return toLvl * ((Mathf.Pow(level + 15, 1.5f) - 64) / 16 + 1);
+		return toLvl * (1 + 0.1f * (level - 1));// ((Mathf.Pow(level + 15, 1.5f) - 64) / 16 + 1);
 	}
 
 	public static bool StatEquals(Stat c1, Stat c2)
@@ -251,9 +251,26 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public static float GetRequiredXPForLvl(int level)
 	{
-		float v = 100f * ((Mathf.Pow(level + 14, 1.5f) - 64) / 4 + 1);
-		if (v < 0) v = 0;//don't let it be below 0
-		return v;
+		float q = 2.8f;
+		float c1 = 1f;
+		float c2 = 0.4f;
+		float multiplier = 100f;
+		float f(float x)
+		{
+			return Mathf.Pow(c2 * (x - c1), q) + x - 1;
+		}
+
+		float f3(float x)
+		{
+			return f(x) - f(2) + 1;
+		}
+
+		float f1(float x)
+		{
+			return Mathf.Max(multiplier * f3(x), 0);
+		}
+
+		return f1(level);
 	}
 
 	void CheckStats()

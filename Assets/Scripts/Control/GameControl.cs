@@ -96,6 +96,8 @@ public class GameControl : MonoBehaviour
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
+	private bool waitBeforeInteractEnabled;
+
 
 	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor;
 
@@ -642,6 +644,16 @@ public class GameControl : MonoBehaviour
 
 	#endregion
 
+	public void Wait1FrameBeforeInteract()
+	{
+		waitBeforeInteractEnabled = true;
+	}
+
+	private void LateUpdate()
+	{
+		waitBeforeInteractEnabled = false;
+	}
+
 	private void Update()
     {
 		moneyText.text = "Money: " + money;
@@ -717,10 +729,10 @@ public class GameControl : MonoBehaviour
 			//TODO:REMOVE THIS
 			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.RightArrow))
 			{
-				myAbilities.myStat.GiveXp(10);
+				myAbilities.myStat.GiveXp(100);
 			}
 
-			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 50;
+			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 500;
 			mainLvlText.text = "Level " + myAbilities.myStat.lvl;
 			//TODO:REMOVE ABOVE
 
@@ -729,7 +741,7 @@ public class GameControl : MonoBehaviour
 
     private void LiveFunctions()
 	{
-		if (!MenuActive() && Cursor.lockState == CursorLockMode.Locked)
+		if (!waitBeforeInteractEnabled && !MenuActive() && Cursor.lockState == CursorLockMode.Locked)
 		{
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
