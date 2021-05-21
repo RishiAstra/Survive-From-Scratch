@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44060c498cebfd848bf887ff897ba834, type: 3}
-  m_Name: Strength 1
+  m_Name: Strength
   m_EditorClassIdentifier: 
+  levelable: 1
   mods:
     globalArmorModifiers: []
     hpMods: []
@@ -19,11 +20,10 @@ MonoBehaviour:
     engMods: []
     morMods: []
     atkMods:
-    - m_preadd: 0
+    - m_preadd: 1
       m_premult: 0
       m_postadd: 0
       m_postmult: 0
-      lvl: 0
       growthType: 1
-      a: 0
+      a: 1
       type: 7

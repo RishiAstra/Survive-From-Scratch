@@ -11,6 +11,8 @@ public class SkillTreeButton : MonoBehaviour
     public int cost = 1;
     public int index;
     public GameObject boughtTint;
+    public GameObject selectedTint;
+    public TextMeshProUGUI levelText;
 
     public Skill prerequisite;
     // Start is called before the first frame update
@@ -31,5 +33,8 @@ public class SkillTreeButton : MonoBehaviour
     void Update()
     {
         boughtTint.SetActive(hasThisSkill);
+        selectedTint.SetActive(SkillTreeControl.skillButtons[SkillTreeControl.selectedSkillButton] == this);
+        SkillTreeControl.main.HasSkill(s, out int lvl);
+        levelText.text = lvl == 0 ? "" : "Level " + lvl;
     }
 }

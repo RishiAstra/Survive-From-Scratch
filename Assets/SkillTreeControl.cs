@@ -7,6 +7,7 @@ public class SkillTreeControl : MonoBehaviour
 {
 	public static List<SkillTreeButton> skillButtons = new List<SkillTreeButton>();
 	public static int selectedSkillButton;
+	public static SkillTreeControl main;
 
 	public Abilities targetA;
 	public StatScript targetS;
@@ -14,8 +15,10 @@ public class SkillTreeControl : MonoBehaviour
 	public Menu skillMenu;
 
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
 	{
+		if (main != null) Debug.LogError("Two SkillTreeControl");
+		main = this;
 		//RefreshUI();
 	}
 
@@ -96,11 +99,11 @@ public class SkillTreeControl : MonoBehaviour
 		return skillPointsSpent;
 	}
 
-	private bool HasSkill(Skill s)
+	public bool HasSkill(Skill s)
 	{
 		return HasSkill(s, out _);
 	}
-	private bool HasSkill(Skill s, out int skillPoinstSpendOnIt)
+	public bool HasSkill(Skill s, out int skillPoinstSpendOnIt)
 	{
 		bool has = false;
 		skillPoinstSpendOnIt = 0;
