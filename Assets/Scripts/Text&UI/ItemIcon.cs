@@ -46,6 +46,7 @@ public class ItemIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             int id = parent.items[index].id;
             img.sprite = (id >= 0 && id < GameControl.itemTypes.Count) ? GameControl.itemTypes[id].icon : GameControl.itemTypes[0].icon;
             amountText.text = parent.items[index].amount.ToString();
+            if (parent.items[index].amount == 1) amountText.text = "";
 			selectedGameObject.SetActive(selected);
         }        
 	}

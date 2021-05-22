@@ -187,9 +187,10 @@ public class Player : MonoBehaviour
 		{
 			if (GameControl.itemTypes[inv.items[invSel].id].equipPrefab != null)
 			{
-				GameObject g = (GameObject)Instantiate(GameControl.itemTypes[inv.items[invSel].id].equipPrefab);
-				g.transform.SetParent(rightHand, false);
-				g.GetComponent<Equip>().bob = this;
+				MakeEquipGameObject(inv.items[invSel]);
+				//GameObject g = (GameObject)Instantiate(GameControl.itemTypes[inv.items[invSel].id].equipPrefab);
+				//g.transform.SetParent(rightHand, false);
+				//g.GetComponent<Equip>().bob = this;
 				//print("Selected equipable object");
 			}
 		}
@@ -235,13 +236,13 @@ public class Player : MonoBehaviour
 		{
 			if (invSel != index)
 			{
-				MakeEquipGameObject(inv.items[index].id);
+				MakeEquipGameObject(inv.items[index]);
 				SetSelected(index);
 				//invSel = index;
 			}
 			else
 			{
-				MakeEquipGameObject(0);//equip fists
+				MakeEquipGameObject(new Item(0, 0, 0, 0));//equip fists
 				SetSelected(-1);
 				//invSel = -1;
 			}
@@ -268,14 +269,17 @@ public class Player : MonoBehaviour
 		//print(invSel);
 	}
 
-	private void MakeEquipGameObject(int id)
+	private void MakeEquipGameObject(Item i)
 	{
+		int id = i.id;
+		GameControl.main.myAbilities.myStat.itemsEquipped = new List<Item>();
 		if (GameControl.itemTypes[id].equipPrefab != null)
 		{
 			print("equipped something");
 			GameObject g = (GameObject)Instantiate(GameControl.itemTypes[id].equipPrefab);
 			g.transform.SetParent(rightHand, false);
 			g.GetComponent<Equip>().bob = this;
+			GameControl.main.myAbilities.myStat.itemsEquipped.Add(i);
 			//print("Selected equipable object");
 		}
 	}

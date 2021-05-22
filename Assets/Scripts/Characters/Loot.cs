@@ -4,17 +4,17 @@ using UnityEngine;
 using bobStuff;
 
 //TODO: save stuff in saveentity.cs
-[RequireComponent(typeof(Abilities))]
+[RequireComponent(typeof(StatScript))]
 public class Loot : MonoBehaviour
 {
     public List<LootItem> loots;
 
     private bool looted;
-    private Abilities a;
+    private StatScript a;
     // Start is called before the first frame update
     void Start()
     {
-        a = GetComponent<Abilities>();
+        a = GetComponent<StatScript>();
     }
 
     // Update is called once per frame

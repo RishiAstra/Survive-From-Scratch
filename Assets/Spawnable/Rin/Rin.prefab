@@ -3914,6 +3914,7 @@ GameObject:
   - component: {fileID: 8437588072177896211}
   - component: {fileID: 3350575346883344253}
   - component: {fileID: 5288638758117385579}
+  - component: {fileID: 5616320263452957825}
   m_Layer: 9
   m_Name: Rin
   m_TagString: Untagged
@@ -4080,59 +4081,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566d6838528735047847b71a31f08853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dead: 0
   resetOnStart: 1
+  lvl: 1
   maxStat:
     hp: 10
     mp: 0
     eng: 0
     mor: 0
     atk: 5
-    def: 0
-    mag: 0
   stat:
     hp: 0
     mp: 0
     eng: 0
     mor: 0
     atk: 0
-    def: 0
-    mag: 0
-  skills:
-  - cost:
-      hp: 0
-      mp: 0
-      eng: 0
-      mor: 0
-      atk: 0
-      def: 0
-      mag: 0
-    useDist: 0.25
-    useAngle: 8
-    actions:
-    - animationIndex: 0
-      time: 3
-      spawn: {fileID: 6326687052998980342, guid: 6b04d83c9c5fd43409870dbd3555f085,
-        type: 3}
-      spawnTransform: 0
-      spawnAsChild: 0
-      useWeapons: 1
+  dieTime: 2.5
+  xp: 0
+  xpBounty: 10
   armors:
   - col:
     - {fileID: 0}
-    pierceResist: 0
-    bluntResist: 0
-    slashResist: 0
-    magicResist: 0
-  busy: 0
-  attackAllowed: 0
-  anim: {fileID: 164153826720014327}
-  dieTime: 2.5
-  currentAttackTransform: 0
-  attackTranforms:
-  - {fileID: 7247242195844081610}
-  enemyString:
-  - monster
+    mods:
+      globalArmorModifiers: []
+      hpMods: []
+      mpMods: []
+      engMods: []
+      morMods: []
+      atkMods: []
+    localArmorModifiers: []
+  itemsEquipped: []
+  dead: 0
+  damageRecords: []
+  mySave: {fileID: 0}
+  statSkills: []
+  skillLvls: 
 --- !u!114 &3350575346883344253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4145,11 +4127,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b5413c83f5963429870592103f0564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   hpBarSprite: {fileID: 2413353133460242927}
   hpBarImage: {fileID: 0}
   hpText: {fileID: 8940957013675060979}
   hpTextUI: {fileID: 0}
   changeHpTextColor: 0
+  changeHpBarColor: 1
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 0, a: 1}
+    key2: {r: 0, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
   prefix: 
   dead: Dead
   hpHolder: {fileID: 591001014041977264}
@@ -4173,6 +4186,32 @@ MonoBehaviour:
   a: {fileID: 8437588072177896211}
   deleteOnDeath: 1
   toSave: []
+--- !u!114 &5616320263452957825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 164153826729504249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3207a571871174f9a870eb275c4ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dead: 0
+  myStat: {fileID: 0}
+  skills:
+  - {fileID: 11400000, guid: c532d26b33cdc1748b1b8139e5e35dff, type: 2}
+  skillLvls: 
+  busy: 0
+  attackAllowed: 0
+  anim: {fileID: 164153826720014327}
+  currentAttackTransform: 0
+  attackTranforms:
+  - {fileID: 7247242195844081610}
+  - {fileID: 7247242195844081610}
+  enemyString:
+  - monster
 --- !u!1 &164153826729504251
 GameObject:
   m_ObjectHideFlags: 0

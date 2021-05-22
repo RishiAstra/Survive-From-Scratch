@@ -9,6 +9,8 @@ using UnityEngine;
 public class ProgressTracker : MonoBehaviour
 {
 	public static ProgressTracker main;
+	public static string savePath { get { return GameControl.saveDirectory + "/ProgressTracker/"; } }
+	public static string questSavePath { get { return savePath + "quests/"; } }
 
 	public List<IQuest> quests;
 	public List<QuestSave> questSaves;
@@ -22,6 +24,8 @@ public class ProgressTracker : MonoBehaviour
 		if (main != null) Debug.LogError("Two progress trackers");
 		main = this;
 
+		LoadAllProgressData();
+
 		if (quests == null)
 		{
 			quests = new List<IQuest>();
@@ -32,9 +36,10 @@ public class ProgressTracker : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyUp(KeyCode.F1))
+		if (Input.GetKeyDown(KeyCode.F1))
 		{
 			questMenu.ToggleMenu();
+			print("toggled");
 			UpdateQuestUI();
 		}		
 	}
@@ -111,7 +116,7 @@ public class ProgressTracker : MonoBehaviour
 		}
 	}
 
-	public void RegisterKill(string type, Abilities killed, Abilities killer)
+	public void RegisterKill(string type, StatScript killed, Abilities killer)
 	{
 		foreach (IQuest q in quests)
 		{
@@ -198,7 +203,7 @@ public class ProgressTracker : MonoBehaviour
 
 		//add the new quest
 		quests.Add(temp);
-		questResult.nextDialogueTargetName = fromDialogueName;
+		if(!string.IsNullOrEmpty(fromDialogueName)) questResult.nextDialogueTargetName = fromDialogueName;
 		questSaves.Add(questResult);
 
 		print(ConvertQuestToString(temp));
@@ -206,19 +211,19 @@ public class ProgressTracker : MonoBehaviour
 
 	}
 
-	public static IQuest ConvertStringToQuest(string s)
-	{
-		QuestSave q = JsonConvert.DeserializeObject<QuestSave>(s);
-		//      IQuest result = null;
-		//switch (q.type)
-		//{
-		//          case "KillQuest":
-		//              result = (IQuest)Convert.ChangeType(q.data, Type.GetType(q.type));// CastObject<Type.GetType(q.type)>(q.data);// (Type.GetType(q.type))q.data;
-		//          break;
-		//}
-		return ConvertQuestSaveToQuest(q);//
-		//return (IQuest)Convert.ChangeType(q.data, Type.GetType(q.type));// result;
-	}
+	//public static IQuest ConvertStringToQuest(string s)
+	//{
+	//	QuestSave q = JsonConvert.DeserializeObject<QuestSave>(s);
+	//	//      IQuest result = null;
+	//	//switch (q.type)
+	//	//{
+	//	//          case "KillQuest":
+	//	//              result = (IQuest)Convert.ChangeType(q.data, Type.GetType(q.type));// CastObject<Type.GetType(q.type)>(q.data);// (Type.GetType(q.type))q.data;
+	//	//          break;
+	//	//}
+	//	return ConvertQuestSaveToQuest(q);//
+	//	//return (IQuest)Convert.ChangeType(q.data, Type.GetType(q.type));// result;
+	//}
 
 	public static IQuest ConvertQuestSaveToQuest(QuestSave q)
 	{
@@ -268,13 +273,43 @@ public class ProgressTracker : MonoBehaviour
 
 	public static string ConvertQuestToString(IQuest q)
 	{
+		string myType = q.GetType().ToString();
 		QuestSave result = new QuestSave()
 		{
-			type = q.GetType().ToString(),
+			type = myType,
 			data = q// JsonConvert.SerializeObject(q, Formatting.Indented)
 		};
 
-		return JsonConvert.SerializeObject(result, Formatting.Indented); //result;
+		if(myType == "ComplexQuest")
+		{
+			ComplexQuest complex = q as ComplexQuest;
+			JObject obj = JObject.FromObject(result);
+
+			JArray a = new JArray();
+
+			List<IQuest> tempQuestList = new List<IQuest>();
+
+			for (int i = 0; i < complex.quests.Count; i++)
+			{
+
+				string t = complex.quests[i].GetType().ToString();
+				QuestSave r = new QuestSave()
+				{
+					type = t,
+					data = complex.quests[i]// JsonConvert.SerializeObject(q, Formatting.Indented)
+				};
+				a.Add(JToken.FromObject(r));
+			}
+
+			obj["data"]["quests"] = a;
+
+			return obj.ToString(Formatting.Indented);
+		}
+		else
+		{
+			return JsonConvert.SerializeObject(result, Formatting.Indented); //result;
+		}
+
 	}
 
 
@@ -290,6 +325,60 @@ public class ProgressTracker : MonoBehaviour
 			Debug.LogError("failed to get quest: " + DialogueControl.dialogueDataPath + path);
 			return null;
 		}
+	}
+
+	private void OnDestroy()
+	{
+		//delete old quest save
+		if(Directory.Exists(questSavePath)) Directory.Delete(questSavePath, true);
+		//re-make the directory
+		Directory.CreateDirectory(questSavePath);
+		for(int i = 0; i < quests.Count; i++)
+		{
+			File.WriteAllText(questSavePath + i + ".json", ConvertQuestToString(quests[i]));
+		}
+		File.WriteAllText(questSavePath + "saves.json", JsonConvert.SerializeObject(questSaves, Formatting.Indented));
+
+		File.WriteAllText(savePath + "progress.json", JsonConvert.SerializeObject(prog, Formatting.Indented));
+
+		File.WriteAllText(savePath + "questDialogueUpdates.json", JsonConvert.SerializeObject(DialogueOnClick.newDialoguePaths));
+	}
+
+	void LoadAllProgressData()
+	{
+		quests = new List<IQuest>();
+		string questsavesSavePath = questSavePath + "saves.json";
+		if (Directory.Exists(questSavePath))
+		{
+
+			for (int i = 0; i < 10000; i++)
+			{
+				string thisQuestPath = questSavePath + i + ".json";
+				if (File.Exists(thisQuestPath))
+				{
+					QuestSave q = JsonConvert.DeserializeObject<QuestSave>(File.ReadAllText(thisQuestPath));
+					TryAddQuest(q, null);
+					//quests.Add(ConvertStringToQuest());
+				}
+				else
+				{
+					break;
+				}
+			}
+			questSaves = JsonConvert.DeserializeObject<List<QuestSave>>(File.ReadAllText(questsavesSavePath));
+		}
+
+		string newDialoguePathsSavePath = savePath + "questDialogueUpdates.json";
+		if(File.Exists(newDialoguePathsSavePath)) DialogueOnClick.newDialoguePaths = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(newDialoguePathsSavePath));
+
+		string progressSavePath = savePath + "progress.json";
+
+		if (File.Exists(progressSavePath))
+		{
+
+			File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
+		}
+
 	}
 }
 

@@ -6,7 +6,15 @@
       1,
       2
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    }
   },
   {
     "name": "Rock",
@@ -14,7 +22,15 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    }
   },
   {
     "name": "Branch",
@@ -22,7 +38,23 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": [
+        {
+          "type": 7,
+          "m_preadd": 2.0,
+          "m_premult": 0.0,
+          "m_postadd": 0.0,
+          "m_postmult": 0.0
+        }
+      ]
+    }
   },
   {
     "name": "Axe",
@@ -30,7 +62,23 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": [
+        {
+          "type": 7,
+          "m_preadd": 10.0,
+          "m_premult": 0.0,
+          "m_postadd": 0.0,
+          "m_postmult": 0.0
+        }
+      ]
+    }
   },
   {
     "name": "Slime goo",
@@ -38,7 +86,15 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    }
   },
   {
     "name": "Log",
@@ -46,7 +102,15 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    }
   },
   {
     "name": "Log Platform",
@@ -54,7 +118,15 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    }
   },
   {
     "name": "Log Ramp",
@@ -62,6 +134,14 @@
     "tags": [
       1
     ],
-    "strength": 0.0
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    }
   }
 ]

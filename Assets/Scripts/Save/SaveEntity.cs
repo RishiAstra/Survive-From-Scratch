@@ -40,7 +40,7 @@ public class SaveEntity : Save, ISaveable
 	public string type;
 	public string customSavePath;
 
-	public Abilities a;
+	public StatScript a;
 	public bool deleteOnDeath;
 
 	public Component[] toSave;
@@ -58,7 +58,7 @@ public class SaveEntity : Save, ISaveable
 	// Start is called before the first frame update
 	void Awake()
 	{
-		a = GetComponent<Abilities>();
+		a = GetComponent<StatScript>();
 		if (saves == null) InitializeStatic();
 		indexInSaves = saves.Count;
 		saves.Add(this);
@@ -103,7 +103,9 @@ public class SaveEntity : Save, ISaveable
 		List<Component> toSaveTemp = toSave.ToList();
 
 		toSaveTemp.Add(this);
-		Abilities a = GetComponent<Abilities>();//might be null if none are attached, but null checks are used for "a"
+		StatScript s = GetComponent<StatScript>();//might be null if none are attached, but null checks are used for "a"
+		if (s != null) toSaveTemp.Add(s);
+		Abilities a = GetComponent<Abilities>();
 		if (a != null) toSaveTemp.Add(a);
 		Inventory i = GetComponent<Inventory>();
 		if (i != null) toSaveTemp.Add(i);
@@ -150,7 +152,8 @@ public class SaveEntity : Save, ISaveable
 		//TODO:GetPath broken
 		//TODO: this will break with new saving
 		string filePath = GetPath();// + id + ".json";
-		if (a == null || a.dead){
+		if (a == null || a.dead)
+		{
 			if (deleteOnDeath){
 				if (type == "Player") Debug.LogError("no");
 				//if (File.Exists(filePath))
@@ -398,7 +401,7 @@ public class SaveEntity : Save, ISaveable
 	{
 		GameObject g = Instantiate(typePrefab);
 
-		Abilities a = g.GetComponent<Abilities>();
+		StatScript a = g.GetComponent<StatScript>();
 		if(a != null) a.resetOnStart = false;//prevent resetting of hp etc
 
 		//TODO:see below
@@ -711,15 +714,36 @@ public class SaveDataBasic
 }
 
 [System.Serializable]
-public class SaveDataAbilities
+public class SaveDataStat
 {
-	public Stat maxStat;
+	public Stat initialMaxStat;
 	public Stat stat;
+	public float xp;
+	public List<DamageRecord> dmgs;
+	public List<string> statSkills;
+	public List<int> skillLvls;
 
-	public SaveDataAbilities(Stat stat, Stat maxStat)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills, List<int> skillLvls)
 	{
 		this.stat = stat;
-		this.maxStat = maxStat;
+		this.initialMaxStat = initialMaxStat;
+		this.xp = xp;
+		this.dmgs = dmgs;
+		this.statSkills = statSkills;
+		this.skillLvls = skillLvls;
+	}
+}
+
+[System.Serializable]
+public class SaveDataAbilities
+{
+	public List<string> skills;
+	public List<int> skillLvls;
+
+	public SaveDataAbilities(List<string> statSkills, List<int> skillLvls)
+	{
+		this.skills = statSkills;
+		this.skillLvls = skillLvls;
 	}
 }
 

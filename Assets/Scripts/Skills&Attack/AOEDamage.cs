@@ -11,7 +11,7 @@ public class AOEDamage : MonoBehaviour
     public bool hitSameEnemyMultipleTimes;
     public AttackType type;
 
-    private List<Abilities> hit;//what enemies this has already hit
+    private List<StatScript> hit;//what enemies this has already hit
     private SkillObject so;//the skillobject of this skill/spell/explosion/thing/etc.
     private Stopwatch sw;
     // Start is called before the first frame update
@@ -20,7 +20,7 @@ public class AOEDamage : MonoBehaviour
         sw = new Stopwatch();
         sw.Start();
         so = GetComponent<SkillObject>();
-        hit = new List<Abilities>();
+        hit = new List<StatScript>();
         Destroy(gameObject, lifeTime);//apply lifetime
     }
 
@@ -35,13 +35,13 @@ public class AOEDamage : MonoBehaviour
 		if (t != null && t.ContainsTag(so.parent.enemyString))
 		{
             //tag script is on the root character gameobject, so no need to search parents
-            Abilities a = t.GetComponent<Abilities>();
+            StatScript a = t.GetComponent<StatScript>();
             //only attack each one once unless hitSameEnemyMultipleTimes
             if (a != null)
             {
                 if (hitSameEnemyMultipleTimes || !hit.Contains(a)){
                     hit.Add(a);
-                    a.Damage(so.parent.stat.atk, so.parent, other, type);
+                    a.Damage(so.GetDamageAmount(type), so.parent, other, type);
                 }
             }
 			else

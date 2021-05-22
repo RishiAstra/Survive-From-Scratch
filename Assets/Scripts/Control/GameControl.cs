@@ -15,6 +15,7 @@ using UnityEngine.EventSystems;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
+	public static KeyCode interactKeyCode = KeyCode.F;
 
 	public static string saveDirectory { 
 		get { return Application.persistentDataPath + "/" + Application.version + "/"; }
@@ -73,10 +74,14 @@ public class GameControl : MonoBehaviour
 	public Menu shopMenu;
 	public GameObject middleCursor;
 	public GameObject itemHoverInfo;
+	public TextMeshProUGUI itemHoverNameText;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
 	public bool itemHoverPositionMatch;
 	public Image mainHpBar;
-	public TMPro.TextMeshProUGUI mainHpText;
+	public TextMeshProUGUI mainHpText;
+	public Image mainXpBar;
+	public TextMeshProUGUI mainXpText;
+	public TextMeshProUGUI mainLvlText;
 	public Canvas mainCanvas;
 	public Vector2 mouseSensitivity;
 	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
@@ -90,6 +95,11 @@ public class GameControl : MonoBehaviour
 	private IMouseHoverable previouslyMouseHovered;
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
+
+	private bool waitBeforeInteractEnabled;
+
+
+	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor;
 
 	void Awake(){
 		ItemInfoUI.main = mainItemInfoUI;
@@ -537,7 +547,8 @@ public class GameControl : MonoBehaviour
 	//}
 	void MakeAndSetUpPlayer()
 	{
-		SetUpPlayer(CreatePlayerObject());
+		CreatePlayerObject();
+		//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
 
 	}
 
@@ -599,14 +610,14 @@ public class GameControl : MonoBehaviour
 
 	private void CursorLockUpdate()
 	{
-		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+		if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetKeyDown(KeyCode.RightControl))
 		{
 			tempUnlockMouse = true;
 			TryUnlockCursor();
 		}
 		//TODO: this glitches when ctrl to mouse exit, then mouse enter it stuck till ctrl again
-		bool ctrlReleased = Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt);
-		bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+		bool ctrlReleased = Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl);
+		bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		bool releaseBecauseMouseClickAndNotKey = !ctrlHeld && Input.GetMouseButtonDown(0);
 		if (tempUnlockMouse && (ctrlReleased || releaseBecauseMouseClickAndNotKey))
 		{
@@ -617,7 +628,7 @@ public class GameControl : MonoBehaviour
 		if (Cursor.lockState == CursorLockMode.Locked)
 		{
 
-			if (Input.GetKey(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				TryUnlockCursor();
 			}
@@ -633,22 +644,32 @@ public class GameControl : MonoBehaviour
 
 	#endregion
 
+	public void Wait1FrameBeforeInteract()
+	{
+		waitBeforeInteractEnabled = true;
+	}
+
+	private void LateUpdate()
+	{
+		waitBeforeInteractEnabled = false;
+	}
+
 	private void Update()
     {
 		moneyText.text = "Money: " + money;
+		if((itemInfoTarget == null || itemInfoTarget.gameObject.activeInHierarchy == false) && itemInfoTransform.gameObject.activeSelf == true) HideInfo();
 		if (playerExists)
 		{
 			CursorLockUpdate();
 
-			//E is also button to close menus
 			if (Input.GetKeyDown(KeyCode.E))
 			{
-				if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
-				{
-					HideMenus();
-				}
-				else
-				{
+				//if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
+				//{
+				//	HideMenus();
+				//}
+				//else
+				//{
 					craftInventory.ToggleMenu();
 					if (!craftInventory.gameObject.activeSelf)
 					{
@@ -656,7 +677,7 @@ public class GameControl : MonoBehaviour
 						Inventory.TransferAllItems(Crafting.main.craftInventory, hotBarUI.target);
 						Inventory.TransferAllItems(Crafting.main.craftInventory, mainInventoryUI.target);
 					}
-				}				
+				//}				
 				
 				
 				//if (craftInventory.activeSelf)
@@ -673,7 +694,7 @@ public class GameControl : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.M))
 			{
-				if (!mapScreen.gameObject.activeSelf) HideMenus();
+				//if (!mapScreen.gameObject.activeSelf) HideMenus();
 				mapScreen.ToggleMenu();
 
 				//if (mapScreen.activeSelf)
@@ -688,7 +709,7 @@ public class GameControl : MonoBehaviour
 				//}
 			}
 
-			if (myAbilities.dead)
+			if (myAbilities.myStat.dead)
 			{
 				craftInventory.TryDeactivateMenu();
 				//deactivate crafting if dead
@@ -702,12 +723,25 @@ public class GameControl : MonoBehaviour
 			{
 				LiveFunctions();
 			}
+
+
+
+			//TODO:REMOVE THIS
+			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				myAbilities.myStat.GiveXp(100);
+			}
+
+			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 500;
+			mainLvlText.text = "Level " + myAbilities.myStat.lvl;
+			//TODO:REMOVE ABOVE
+
 		}
-    }
+	}
 
     private void LiveFunctions()
 	{
-		if (!MenuActive())
+		if (!waitBeforeInteractEnabled && !MenuActive() && Cursor.lockState == CursorLockMode.Locked)
 		{
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
@@ -793,6 +827,13 @@ public class GameControl : MonoBehaviour
 		hPBar.hpTextUI = mainHpText;
 		hPBar.SetWorldHpBarVisible(false);
 
+		HPBar xPBar = newPlayerObject.AddComponent<HPBar>();
+		xPBar.type = HPBar.StatType.xp;
+		xPBar.hpBarImage = mainXpBar;
+		xPBar.hpTextUI = mainXpText;
+		xPBar.autoHide = false;
+		xPBar.changeHpBarColor = false;
+
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
 		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
@@ -839,7 +880,7 @@ public class GameControl : MonoBehaviour
 				//TODO: consider below and if it should be also for loading player
 				g.transform.position = position;
 				g.transform.rotation = Quaternion.identity;
-				g.GetComponent<Abilities>().ResetStats();
+				g.GetComponent<StatScript>().ResetStats();
 				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
@@ -857,7 +898,9 @@ public class GameControl : MonoBehaviour
 		Debug.LogWarning("Failed to find player, making new one");
 
 		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
-		return Instantiate(playerPrefab, position, Quaternion.identity);
+		GameObject temp = Instantiate(playerPrefab, position, Quaternion.identity);
+		SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
+		return temp;
 
 		//Save save = newPlayerObject.GetComponent<Save>();
 		//save.playerOwnerName = username;

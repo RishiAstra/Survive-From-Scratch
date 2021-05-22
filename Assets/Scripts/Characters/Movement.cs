@@ -118,7 +118,7 @@ public class Movement : MonoBehaviour
 	bool transitionCaptured;//
 	private void FixedUpdate()
 	{
-		if (abilities.dead)
+		if (abilities.myStat.dead)
 		{
 			if (!died)
 			{
@@ -264,6 +264,11 @@ public class Movement : MonoBehaviour
 	public void AttemptJump()
 	{
 		attemptJump = true;
+	}
+
+	public void DontAttemptJump()
+	{
+		attemptJump = false;
 	}
 
 	void HandleJump()

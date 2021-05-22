@@ -797,38 +797,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566d6838528735047847b71a31f08853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dead: 0
   resetOnStart: 1
+  lvl: 1
   maxStat:
     hp: 35
     mp: 0
     eng: 0
     mor: 0
     atk: 0
-    def: 0
-    mag: 0
   stat:
     hp: 0
     mp: 0
     eng: 0
     mor: 0
     atk: 0
-    def: 0
-    mag: 0
-  skills: []
+  dieTime: 0
+  xp: 0
+  xpBounty: 5
   armors:
   - col: []
-    pierceResist: 0
-    bluntResist: 5
-    slashResist: 0
-    magicResist: 0
-  busy: 0
-  attackAllowed: 0
-  anim: {fileID: 0}
-  dieTime: 0
-  currentAttackTransform: 0
-  attackTranforms: []
-  enemyString: []
+    mods:
+      globalArmorModifiers: []
+      hpMods: []
+      mpMods: []
+      engMods: []
+      morMods: []
+      atkMods: []
+    localArmorModifiers: []
+  itemsEquipped: []
+  dead: 0
+  damageRecords: []
+  mySave: {fileID: 0}
 --- !u!114 &3097532236151528651
 MonoBehaviour:
   m_ObjectHideFlags: 0

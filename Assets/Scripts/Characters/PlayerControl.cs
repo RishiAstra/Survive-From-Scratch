@@ -39,18 +39,18 @@ public class PlayerControl : MonoBehaviour, ISaveable
 			//print(Input.GetAxis("Mouse X") * GameControl.main.mouseSensitivity.x + "|" + Input.GetAxis("Mouse X"));
 			cam.pivot.eulerAngles = temp;
 
-			//use the attack
-			if (Input.GetMouseButton(0))
-			{
-				if (BuildControl.main.building)
-				{
-					//BuildControl.main.PlaceBuilding();
-				}
-				else
-				{
-					abilities.UseSkill(0);
-				}
-			}
+			////use the attack
+			//if (Input.GetMouseButton(0))
+			//{
+			//	if (BuildControl.main.building)
+			//	{
+			//		//BuildControl.main.PlaceBuilding();
+			//	}
+			//	else
+			//	{
+			//		abilities.UseSkill(0);
+			//	}
+			//}
 
 			//change distance and pitch
 			cam.AddDist(Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity);
@@ -79,7 +79,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 			//cam.AddDist(Input.GetAxis("Mouse ScrollWheel") * scrollSencitivity);
 			//cam.AddPitch(Input.GetAxis("Mouse Y") * sensitivity.y * Time.deltaTime);
 		}
-		
+
 
 		//jump
 		if (Input.GetKey(KeyCode.Space)) movement.AttemptJump();

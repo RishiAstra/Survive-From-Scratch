@@ -99,6 +99,15 @@ namespace bobStuff
 		{
 			return id == 0 || amount == 0;
 		}
+
+		public static bool ItemEquals(Item a, Item b)
+		{
+			return
+				a.id == b.id &&
+				a.amount == b.amount &&
+				a.strength == b.strength &&
+				a.currentStrength == b.currentStrength;
+		}
 	}
 
 	[Serializable]
@@ -116,6 +125,7 @@ namespace bobStuff
 		[NonSerialized]
 		public GameObject equipPrefab;
 		public float strength;
+		public ModifierGroup mods;
 
 		//public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		//{

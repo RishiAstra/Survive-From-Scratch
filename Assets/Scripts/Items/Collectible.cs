@@ -75,7 +75,8 @@ public class Collectible : MonoBehaviour, IMouseHoverable
 	{
 
 		GameControl.main.itemHoverInfo.SetActive(true);
-		//if (itemHoverPositionMatch) itemHoverInfo.transform.position = Input.mousePosition;
+		if (GameControl.main.itemHoverPositionMatch) GameControl.main.itemHoverInfo.transform.position = Camera.main.WorldToScreenPoint(transform.position);//  Input.mousePosition;
+		GameControl.main.itemHoverNameText.text = GameControl.itemTypes[myID.id].name;
 		if (Input.GetKey(KeyCode.F))
 		{
 			MouseClickMe();

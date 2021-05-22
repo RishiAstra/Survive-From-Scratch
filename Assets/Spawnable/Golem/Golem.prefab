@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 3823200481556769190}
   - component: {fileID: 766235108808700668}
   - component: {fileID: 5932179878940791774}
+  - component: {fileID: 6140556019865881489}
   m_Layer: 12
   m_Name: Golem
   m_TagString: Untagged
@@ -215,58 +216,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566d6838528735047847b71a31f08853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dead: 0
   resetOnStart: 1
+  lvl: 1
   maxStat:
     hp: 25
     mp: 0
     eng: 0
     mor: 0
     atk: 5
-    def: 0
-    mag: 0
   stat:
     hp: 0
     mp: 0
     eng: 0
     mor: 0
     atk: 0
-    def: 0
-    mag: 0
-  skills:
-  - cost:
-      hp: 0
-      mp: 0
-      eng: 0
-      mor: 0
-      atk: 0
-      def: 0
-      mag: 0
-    useDist: 0.25
-    useAngle: 8
-    actions:
-    - animationIndex: 0
-      time: 1
-      spawn: {fileID: 0}
-      spawnTransform: 0
-      spawnAsChild: 0
-      useWeapons: 1
+  dieTime: 2.5
+  xp: 0
+  xpBounty: 10
   armors:
   - col:
     - {fileID: 2557439859223446434}
-    pierceResist: 0
-    bluntResist: 0
-    slashResist: 0
-    magicResist: 0
-  busy: 0
-  attackAllowed: 0
-  anim: {fileID: 655701660160705547}
-  dieTime: 2.5
-  currentAttackTransform: 0
-  attackTranforms:
-  - {fileID: 3012764108752766605}
-  enemyString:
-  - humanoid
+    mods:
+      globalArmorModifiers: []
+      hpMods: []
+      mpMods: []
+      engMods: []
+      morMods: []
+      atkMods: []
+    localArmorModifiers: []
+  itemsEquipped: []
+  dead: 0
+  damageRecords: []
+  mySave: {fileID: 0}
 --- !u!114 &3823200481556769190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,7 +285,7 @@ MonoBehaviour:
   id: 0
   type: Golem
   customSavePath: 
-  a: {fileID: 8971401870697438763}
+  a: {fileID: 0}
   deleteOnDeath: 1
   toSave: []
 --- !u!114 &5932179878940791774
@@ -329,6 +310,30 @@ MonoBehaviour:
       amount: 1
       strength: 0
       currentStrength: 0
+--- !u!114 &6140556019865881489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596891623449604899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3207a571871174f9a870eb275c4ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dead: 0
+  myStat: {fileID: 0}
+  skills:
+  - {fileID: 11400000, guid: 519603754a32b4c4694fdb1f1c6347c9, type: 2}
+  busy: 0
+  attackAllowed: 0
+  anim: {fileID: 655701660160705547}
+  currentAttackTransform: 0
+  attackTranforms:
+  - {fileID: 3012764108752766605}
+  enemyString:
+  - humanoid
 --- !u!1 &596903223073468833
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,15 +1222,15 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4430802797688188349, guid: 77aa41d396ce0144ba85423ec21b83c6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 77aa41d396ce0144ba85423ec21b83c6, type: 3}
---- !u!1 &2237197058124389223 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4430802797688188347, guid: 77aa41d396ce0144ba85423ec21b83c6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2481836837405947612}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2237197058124389222 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4430802797688188346, guid: 77aa41d396ce0144ba85423ec21b83c6,
+    type: 3}
+  m_PrefabInstance: {fileID: 2481836837405947612}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2237197058124389223 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4430802797688188347, guid: 77aa41d396ce0144ba85423ec21b83c6,
     type: 3}
   m_PrefabInstance: {fileID: 2481836837405947612}
   m_PrefabAsset: {fileID: 0}
@@ -1313,18 +1318,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7aa23471e641cb4fb854e7012039f58, type: 3}
---- !u!114 &1722372706068557597 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8197793527051050739, guid: b7aa23471e641cb4fb854e7012039f58,
-    type: 3}
-  m_PrefabInstance: {fileID: 7359850592767095278}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &5372304191392940033 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3219285574800454127, guid: b7aa23471e641cb4fb854e7012039f58,
@@ -1337,6 +1330,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7359850592767095278}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1722372706068557597 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8197793527051050739, guid: b7aa23471e641cb4fb854e7012039f58,
+    type: 3}
+  m_PrefabInstance: {fileID: 7359850592767095278}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8366916777145754877
 PrefabInstance:
   m_ObjectHideFlags: 0
