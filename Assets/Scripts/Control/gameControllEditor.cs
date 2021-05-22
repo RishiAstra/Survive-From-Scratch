@@ -48,11 +48,13 @@ public class gameControllEditor : Editor
 			//bool changed = false;
 			for(int i = 0; i < GameControl.itemTypes.Count; i++)
 			{
+
+				ItemType item = GameControl.itemTypes[i];
+				if (string.IsNullOrEmpty(item.name)) item.name = "New ItemType";
 				show[i].mainFoldout = EditorGUILayout.Foldout(show[i].mainFoldout, i + " : " + GameControl.itemTypes[i].name);
 				if (show[i].mainFoldout)
 				{
 					EditorGUI.indentLevel += 2;
-					ItemType item = GameControl.itemTypes[i];
 					item.name = EditorGUILayout.TextField("name", item.name);
 					EditorGUILayout.LabelField("description");
 					item.description = EditorGUILayout.TextArea(item.description == null? "" : item.description, tempStyle);
@@ -65,7 +67,8 @@ public class gameControllEditor : Editor
 
 					//EditorGUI.indentLevel += 2;
 
-
+					if (item.mods == null) item.mods = new ModifierGroup();
+					if (item.tags == null) item.tags = new List<int>();
 
 					show[i].g =		ShowMods(item.mods.globalArmorModifiers	, show[i].gf,	show[i].g, "Global Armor Modifiers"	);
 					show[i].h =		ShowMods(item.mods.hpMods				, show[i].hf,	show[i].h, "HP Modifiers"			);
@@ -100,6 +103,7 @@ public class gameControllEditor : Editor
 						temp.eng = EditorGUILayout.FloatField("ENG", temp.eng);
 						temp.mor = EditorGUILayout.FloatField("MOR", temp.mor);
 						temp.atk = EditorGUILayout.FloatField("ATK", temp.atk);
+						item.consumeRestore = temp;
 					}
 					EditorGUILayout.Space(10);
 					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);

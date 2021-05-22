@@ -53,7 +53,7 @@ public class Consumable : MonoBehaviour
 					if (f.mor > m.mor) f.mor = m.mor;
 					if (f.atk > m.atk) f.atk = m.atk;
 
-					GameControl.main.myAbilities.myStat.stat = s;
+					GameControl.main.myAbilities.myStat.stat = f;
 
 				}
 			}

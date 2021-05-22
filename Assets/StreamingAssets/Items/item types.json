@@ -14,6 +14,13 @@
       "engMods": [],
       "morMods": [],
       "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -30,6 +37,13 @@
       "engMods": [],
       "morMods": [],
       "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -51,9 +65,18 @@
           "m_preadd": 2.0,
           "m_premult": 0.0,
           "m_postadd": 0.0,
-          "m_postmult": 0.0
+          "m_postmult": 0.0,
+          "growthType": 0,
+          "a": 0.0
         }
       ]
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -75,9 +98,18 @@
           "m_preadd": 10.0,
           "m_premult": 0.0,
           "m_postadd": 0.0,
-          "m_postmult": 0.0
+          "m_postmult": 0.0,
+          "growthType": 0,
+          "a": 0.0
         }
       ]
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -94,6 +126,13 @@
       "engMods": [],
       "morMods": [],
       "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -110,6 +149,13 @@
       "engMods": [],
       "morMods": [],
       "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -126,6 +172,13 @@
       "engMods": [],
       "morMods": [],
       "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   },
   {
@@ -142,6 +195,36 @@
       "engMods": [],
       "morMods": [],
       "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
+    }
+  },
+  {
+    "name": "Chicken",
+    "description": "Food",
+    "tags": [
+      1
+    ],
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 10.0,
+      "mp": 0.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
     }
   }
 ]
