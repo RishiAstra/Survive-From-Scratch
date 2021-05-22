@@ -226,5 +226,28 @@
       "mor": 0.0,
       "atk": 0.0
     }
+  },
+  {
+    "name": "Beer",
+    "description": "Local beer, known for its misty foam",
+    "tags": [
+      1
+    ],
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": []
+    },
+    "consumeRestore": {
+      "hp": 0.0,
+      "mp": 10.0,
+      "eng": 0.0,
+      "mor": 0.0,
+      "atk": 0.0
+    }
   }
 ]

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 066cee02318f63d46bb95ea993e0c769
+guid: cb0f94d6e36f5a5459cc8c9364dd27d2
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable: []
@@ -9,11 +9,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_food
     second: {fileID: 2100000, guid: e94d0c8e6ff06e849b22068082db6026, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_wood_03
-    second: {fileID: 2100000, guid: 272ffa660146f714395f8cbaf7c45115, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -43,7 +38,9 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages: []
+    lODScreenPercentages:
+    - 0.25
+    - 0.01
     globalScale: 1
     meshCompression: 0
     addColliders: 0
@@ -53,7 +50,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    fileIdsGeneration: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
@@ -69,14 +66,14 @@ ModelImporter:
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
-    secondaryUVMarginMethod: 0
+    secondaryUVMarginMethod: 1
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 168
-    normalImportMode: 1
+    normalSmoothAngle: 60
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
@@ -102,7 +99,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
   additionalBone: 0
