@@ -12870,63 +12870,63 @@ MonoBehaviour:
 
     -fixed movement drifting issue
 
-    -changed the
-    way that characters are saved
+    -changed the way
+    that characters are saved
 
-    -added log (the tree thingy, not the text
-    thingy)
+    -added log (the tree thingy, not the text thingy)
 
-    -added building
+    -added
+    building
 
     -added snapping buildings to a gloabl grid
 
-    -added
-    snapping buildings to existing buildings
+    -added snapping
+    buildings to existing buildings
 
     -added log platform
 
-    -added
-    log ramp
+    -added log ramp
 
-    -added health to buildings so they can be destroyed
+    -added
+    health to buildings so they can be destroyed
+
+    -fixed building snapping
 
     -fixed
-    building snapping
-
-    -fixed log platform colliders so that they don''t create
-    bumps in a ramp when placed under a ramp
+    log platform colliders so that they don''t create bumps in a ramp when placed
+    under a ramp
 
     -added main inventory
 
-    -fixed
-    issue where inventory would be lost
+    -fixed issue where inventory would
+    be lost
 
     -fixed issue moving up steep slopes
 
-    -split
-    saving entities into many separate parts to avoid saving unnecessary data
+    -split saving entities
+    into many separate parts to avoid saving unnecessary data
 
-    -changed
-    save directory depending on version to allow multiple versions
+    -changed save
+    directory depending on version to allow multiple versions
 
-    -added fist
-    dmg (hitting things with nothing equipped)
+    -added fist dmg
+    (hitting things with nothing equipped)
 
-    
 
-    -known issue: respawning
-    causes the game to freeze for a while
 
-    
+    -known issue: respawning causes
+    the game to freeze for a while
+
+
 
 
     <b>0.2.3</b>
 
-    -changed
-    the way that characters are saved
+    -changed the way that
+    characters are saved
 
-    -made player data saved between game
-    sessions, map locations, and death
+    -made player data saved between game sessions, map
+    locations, and death
 
     -fixed glitch with player data not loading
 
@@ -12972,8 +12972,8 @@ MonoBehaviour:
 
     -added fullscreen button
 
-    -changed the save location for
-    id tracking system for saving ids of spawners
+    -changed the save location for id
+    tracking system for saving ids of spawners
 
 '
   m_isRightToLeft: 0
@@ -25251,7 +25251,7 @@ MonoBehaviour:
     -Gathering
     resources
 
-    
+
 
     Choose a more specific help on the list to the left.'
   m_isRightToLeft: 0
