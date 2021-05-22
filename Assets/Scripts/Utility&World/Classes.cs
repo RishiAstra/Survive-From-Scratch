@@ -126,6 +126,7 @@ namespace bobStuff
 		public GameObject equipPrefab;
 		public float strength;
 		public ModifierGroup mods;
+		public Stat consumeRestore;
 
 		//public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		//{

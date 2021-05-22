@@ -18,7 +18,7 @@ public class gameControllEditor : Editor
 	public static List<FoldoutStuff> show = new List<FoldoutStuff>();
 	GUIStyle tempStyle;
 	GameControl t;
-
+	bool showStat;
 	private void OnEnable()
 	{
 		show = new List<FoldoutStuff>();
@@ -90,6 +90,17 @@ public class gameControllEditor : Editor
 					//EditorGUILayout.PropertyField(mp[i].FindProperty("atkMods"));
 					//mp[i].ApplyModifiedProperties();
 					//EditorGUI.indentLevel += 2;
+					EditorGUILayout.Space(10);
+					showStat = EditorGUILayout.Foldout(showStat, "Consume Restore");
+					if (showStat)
+					{
+						Stat temp = item.consumeRestore;
+						temp.hp = EditorGUILayout.FloatField("HP", temp.hp);
+						temp.mp = EditorGUILayout.FloatField("MP", temp.mp);
+						temp.eng = EditorGUILayout.FloatField("ENG", temp.eng);
+						temp.mor = EditorGUILayout.FloatField("MOR", temp.mor);
+						temp.atk = EditorGUILayout.FloatField("ATK", temp.atk);
+					}
 					EditorGUILayout.Space(10);
 					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
 					if (item.tags == null) item.tags = new List<int>();//TODO: is this good
