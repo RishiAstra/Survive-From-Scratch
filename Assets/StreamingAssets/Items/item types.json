@@ -25,7 +25,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -53,7 +54,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -91,7 +93,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -129,7 +132,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -157,7 +161,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -185,7 +190,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -213,7 +219,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -241,7 +248,8 @@
       },
       "intervalCount": 0,
       "timeInterval": 0.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -261,7 +269,7 @@
     },
     "consumeRestore": {
       "stat": {
-        "hp": 1.0,
+        "hp": 5.0,
         "mp": 0.0,
         "eng": 0.0,
         "mor": 0.0,
@@ -269,7 +277,8 @@
       },
       "intervalCount": 5,
       "timeInterval": 1.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   },
   {
@@ -290,14 +299,15 @@
     "consumeRestore": {
       "stat": {
         "hp": 0.0,
-        "mp": 1.0,
+        "mp": 5.0,
         "eng": 0.0,
         "mor": 0.0,
         "atk": 0.0
       },
       "intervalCount": 5,
       "timeInterval": 1.0,
-      "timeSpent": 0.0
+      "timeSpent": 0.0,
+      "stackable": false
     }
   }
 ]

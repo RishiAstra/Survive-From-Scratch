@@ -129,6 +129,10 @@ namespace bobStuff
 		/// the time that this has been active/restoring
 		/// </summary>
 		public float timeSpent;
+		/// <summary>
+		/// Can this be applies when other restores are active?
+		/// </summary>
+		public bool stackable;
 	}
 
 	[Serializable]

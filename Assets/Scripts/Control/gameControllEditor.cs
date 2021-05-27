@@ -105,6 +105,7 @@ public class gameControllEditor : Editor
 						temp.atk = EditorGUILayout.FloatField("ATK", temp.atk);
 						item.consumeRestore.intervalCount = EditorGUILayout.IntField("Interval Count", item.consumeRestore.intervalCount);
 						item.consumeRestore.timeInterval = EditorGUILayout.FloatField("Interval Time", item.consumeRestore.timeInterval);
+						item.consumeRestore.stackable = EditorGUILayout.Toggle("Stackable", item.consumeRestore.stackable);
 						//don't need to set time spent
 						//item.consumeRestore.timeSpent = EditorGUILayout.FloatField("Time Spent", item.consumeRestore.timeSpent);
 

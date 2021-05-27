@@ -34,6 +34,9 @@ public class Consumable : MonoBehaviour
 				canUse = canUse || (s.mor < m.mor && t.consumeRestore.stat.mor > small);
 				canUse = canUse || (s.atk < m.atk && t.consumeRestore.stat.atk > small);//TODO: probably unused
 
+				//must be stackable or there is no statrestore active
+				canUse = canUse && (t.consumeRestore.stackable || GameControl.main.myAbilities.myStat.statRestores.Count == 0);
+
 				if (canUse)
 				{
 					me.bob.RemoveItem(me.bob.invSel, 1);

@@ -281,7 +281,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public void AddStatRestore(StatRestore s)
 	{
-		s.timeSpent = s.timeInterval;//reset the time left
+		s.timeSpent = 0;//reset the time left
 		statRestores.Add(s);
 	}
 
@@ -626,7 +626,8 @@ public class StatScript : MonoBehaviour, ISaveable
 				StatRestore temp = statRestores[i];
 				//total intervals before adding this frame's time
 				int intervalsBefore = Mathf.FloorToInt(temp.timeSpent / temp.timeInterval);
-				temp.timeSpent += Time.deltaTime;				
+				temp.timeSpent += Time.deltaTime;
+				
 				int intervalsAfter = Mathf.FloorToInt(temp.timeSpent / temp.timeInterval);
 				//don't allow restoring more times than the intervalCount
 				if (intervalsAfter > temp.intervalCount) intervalsAfter = temp.intervalCount;
@@ -635,7 +636,7 @@ public class StatScript : MonoBehaviour, ISaveable
 				{
 					Stat toAdd = temp.stat;
 					//multiply toAdd by the new intervals passed divided by the interval count
-					toAdd.Multiply(1f * (intervalsAfter - intervalsBefore) / temp.intervalCount);
+					toAdd.Multiply((intervalsAfter - intervalsBefore) / (float)temp.intervalCount);
 					stat.Add(toAdd);
 
 					//clamp upper
@@ -647,13 +648,18 @@ public class StatScript : MonoBehaviour, ISaveable
 					//TODO: consider clamping lower
 
 				}
-				
+
+
+				//apply the changes
+				statRestores[i] = temp;
+
 				//if this restore is done, remove it
 				if (intervalsAfter == temp.intervalCount)
 				{
 					statRestores.RemoveAt(i);
 					i--;
 				}
+
 			}
 		}
 		
