@@ -722,8 +722,9 @@ public class SaveDataStat
 	public List<DamageRecord> dmgs;
 	public List<string> statSkills;
 	public List<int> skillLvls;
+	public List<StatRestore> statRestores;
 
-	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills, List<int> skillLvls)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills, List<int> skillLvls, List<StatRestore> statRestores)
 	{
 		this.stat = stat;
 		this.initialMaxStat = initialMaxStat;
@@ -731,6 +732,7 @@ public class SaveDataStat
 		this.dmgs = dmgs;
 		this.statSkills = statSkills;
 		this.skillLvls = skillLvls;
+		this.statRestores = statRestores;
 	}
 }
 

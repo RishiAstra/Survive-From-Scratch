@@ -56,6 +56,15 @@ public struct Stat
 		atk *= other.atk;
 	}
 
+	public void Multiply(float mult)
+	{
+		hp  *= mult;
+		mp  *= mult;
+		eng *= mult;
+		mor *= mult;
+		atk *= mult;
+	}
+
 	public void Divide(Stat other)
 	{
 		hp  /= other.hp;
@@ -63,6 +72,15 @@ public struct Stat
 		eng /= other.eng;
 		mor /= other.mor;
 		atk /= other.atk;
+	}
+
+	public void Add(Stat other)
+	{
+		hp  += other.hp;
+		mp  += other.mp;
+		eng += other.eng;
+		mor += other.mor;
+		atk += other.atk;
 	}
 
 	public override string ToString()
@@ -229,6 +247,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public List<Armor> armors;
 	public List<Item> itemsEquipped;
+	public List<StatRestore> statRestores;
 
 	public bool dead;
 
@@ -258,6 +277,12 @@ public class StatScript : MonoBehaviour, ISaveable
 		CheckStats();
 		if (resetOnStart) ResetStats();//reset before anythign else can happen
 
+	}
+
+	public void AddStatRestore(StatRestore s)
+	{
+		s.timeSpent = s.timeInterval;//reset the time left
+		statRestores.Add(s);
 	}
 
 	public int GetSkillPointTotal()
@@ -593,6 +618,47 @@ public class StatScript : MonoBehaviour, ISaveable
 			}
 		}
 
+
+		if (!dead)
+		{
+			for (int i = 0; i < statRestores.Count; i++)
+			{
+				StatRestore temp = statRestores[i];
+				//total intervals before adding this frame's time
+				int intervalsBefore = Mathf.FloorToInt(temp.timeSpent / temp.timeInterval);
+				temp.timeSpent += Time.deltaTime;				
+				int intervalsAfter = Mathf.FloorToInt(temp.timeSpent / temp.timeInterval);
+				//don't allow restoring more times than the intervalCount
+				if (intervalsAfter > temp.intervalCount) intervalsAfter = temp.intervalCount;
+
+				if(intervalsAfter > intervalsBefore)
+				{
+					Stat toAdd = temp.stat;
+					//multiply toAdd by the new intervals passed divided by the interval count
+					toAdd.Multiply(1f * (intervalsAfter - intervalsBefore) / temp.intervalCount);
+					stat.Add(toAdd);
+
+					//clamp upper
+					if (stat.hp >  maxStat.hp)  stat.hp =  maxStat.hp;
+					if (stat.mp >  maxStat.mp)  stat.mp =  maxStat.mp;
+					if (stat.eng > maxStat.eng) stat.eng = maxStat.eng;
+					if (stat.mor > maxStat.mor) stat.mor = maxStat.mor;
+					if (stat.atk > maxStat.atk) stat.atk = maxStat.atk;
+					//TODO: consider clamping lower
+
+				}
+				
+				//if this restore is done, remove it
+				if (intervalsAfter == temp.intervalCount)
+				{
+					statRestores.RemoveAt(i);
+					i--;
+				}
+			}
+		}
+		
+		
+
 		//claim any unclaimed xp for this
 		if (unclaimedXPBounties.ContainsKey(mySave.id))
 		{
@@ -857,7 +923,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		{
 			temp.Add(st.name);
 		}
-		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls);
+		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls, statRestores);
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
@@ -878,6 +944,7 @@ public class StatScript : MonoBehaviour, ISaveable
 			statSkills.Add(a.Result);
 		}
 		this.skillLvls = s.skillLvls;
+		this.statRestores = s.statRestores;
 		//null checks
 		if (damageRecords == null) damageRecords = new List<DamageRecord>();
 		if (statSkills == null)
@@ -885,6 +952,7 @@ public class StatScript : MonoBehaviour, ISaveable
 			statSkills = new List<StatSkill>();
 			skillLvls = new List<int>();
 		}
+		if (statRestores == null) statRestores = new List<StatRestore>();
 
 		UpdateXP();
 		CheckStats();

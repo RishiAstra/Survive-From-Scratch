@@ -111,6 +111,27 @@ namespace bobStuff
 	}
 
 	[Serializable]
+	public struct StatRestore
+	{
+		/// <summary>
+		/// the total stat to restore over all intervals
+		/// </summary>
+		public Stat stat;
+		/// <summary>
+		/// The number of time intervals over which to apply this restore
+		/// </summary>
+		public int intervalCount;
+		/// <summary>
+		/// The time of each interval
+		/// </summary>
+		public float timeInterval;
+		/// <summary>
+		/// the time that this has been active/restoring
+		/// </summary>
+		public float timeSpent;
+	}
+
+	[Serializable]
 	public struct ItemType
 	{
 		public string name;
@@ -126,7 +147,7 @@ namespace bobStuff
 		public GameObject equipPrefab;
 		public float strength;
 		public ModifierGroup mods;
-		public Stat consumeRestore;
+		public StatRestore consumeRestore;
 
 		//public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		//{

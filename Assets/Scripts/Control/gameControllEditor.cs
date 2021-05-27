@@ -97,13 +97,19 @@ public class gameControllEditor : Editor
 					showStat = EditorGUILayout.Foldout(showStat, "Consume Restore");
 					if (showStat)
 					{
-						Stat temp = item.consumeRestore;
+						Stat temp = item.consumeRestore.stat;
 						temp.hp = EditorGUILayout.FloatField("HP", temp.hp);
 						temp.mp = EditorGUILayout.FloatField("MP", temp.mp);
 						temp.eng = EditorGUILayout.FloatField("ENG", temp.eng);
 						temp.mor = EditorGUILayout.FloatField("MOR", temp.mor);
 						temp.atk = EditorGUILayout.FloatField("ATK", temp.atk);
-						item.consumeRestore = temp;
+						item.consumeRestore.intervalCount = EditorGUILayout.IntField("Interval Count", item.consumeRestore.intervalCount);
+						item.consumeRestore.timeInterval = EditorGUILayout.FloatField("Interval Time", item.consumeRestore.timeInterval);
+						//don't need to set time spent
+						//item.consumeRestore.timeSpent = EditorGUILayout.FloatField("Time Spent", item.consumeRestore.timeSpent);
+
+
+						item.consumeRestore.stat = temp;
 					}
 					EditorGUILayout.Space(10);
 					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);

@@ -28,32 +28,32 @@ public class Consumable : MonoBehaviour
 				Stat m = GameControl.main.myAbilities.myStat.maxStat;
 				bool canUse = false;
 				//if this will provide some benefit from eating, allow eating
-				canUse = canUse || (s.hp <  m.hp  && t.consumeRestore.hp > small);
-				canUse = canUse || (s.mp <  m.mp  && t.consumeRestore.mp  > small);
-				canUse = canUse || (s.eng < m.eng && t.consumeRestore.eng > small);
-				canUse = canUse || (s.mor < m.mor && t.consumeRestore.mor > small);
-				canUse = canUse || (s.atk < m.atk && t.consumeRestore.atk > small);//TODO: probably unused
+				canUse = canUse || (s.hp <  m.hp  && t.consumeRestore.stat.hp > small);
+				canUse = canUse || (s.mp <  m.mp  && t.consumeRestore.stat.mp  > small);
+				canUse = canUse || (s.eng < m.eng && t.consumeRestore.stat.eng > small);
+				canUse = canUse || (s.mor < m.mor && t.consumeRestore.stat.mor > small);
+				canUse = canUse || (s.atk < m.atk && t.consumeRestore.stat.atk > small);//TODO: probably unused
 
 				if (canUse)
 				{
 					me.bob.RemoveItem(me.bob.invSel, 1);
+					GameControl.main.myAbilities.myStat.AddStatRestore(t.consumeRestore);
+					//Stat f = new Stat
+					//{
+					//	hp  = s.hp  + t.consumeRestore.stat.hp ,
+					//	mp  = s.mp  + t.consumeRestore.stat.mp ,
+					//	eng = s.eng + t.consumeRestore.stat.eng,
+					//	mor = s.mor + t.consumeRestore.stat.mor,
+					//	atk = s.atk + t.consumeRestore.stat.atk,
+					//};
 
-					Stat f = new Stat
-					{
-						hp  = s.hp  + t.consumeRestore.hp ,
-						mp  = s.mp  + t.consumeRestore.mp ,
-						eng = s.eng + t.consumeRestore.eng,
-						mor = s.mor + t.consumeRestore.mor,
-						atk = s.atk + t.consumeRestore.atk,
-					};
+					//if (f.hp  > m.hp ) f.hp  = m.hp ;
+					//if (f.mp  > m.mp ) f.mp  = m.mp ;
+					//if (f.eng > m.eng) f.eng = m.eng;
+					//if (f.mor > m.mor) f.mor = m.mor;
+					//if (f.atk > m.atk) f.atk = m.atk;
 
-					if (f.hp  > m.hp ) f.hp  = m.hp ;
-					if (f.mp  > m.mp ) f.mp  = m.mp ;
-					if (f.eng > m.eng) f.eng = m.eng;
-					if (f.mor > m.mor) f.mor = m.mor;
-					if (f.atk > m.atk) f.atk = m.atk;
-
-					GameControl.main.myAbilities.myStat.stat = f;
+					//GameControl.main.myAbilities.myStat.stat = f;
 
 				}
 			}
