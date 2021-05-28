@@ -68,7 +68,7 @@ public class SkillSelector : MonoBehaviour
             float scale = GameControl.main.mainCanvas.scaleFactor;
             Vector2 pos = Input.mousePosition;
             pos -= new Vector2(Screen.width, Screen.height) / 2f;
-            pos *= scale;
+            pos /= scale;
 
             //calculate angle
             float a = -Mathf.Atan2(pos.y, pos.x) * Mathf.Rad2Deg;
