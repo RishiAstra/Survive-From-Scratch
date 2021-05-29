@@ -2348,9 +2348,9 @@ MonoBehaviour:
   myAbilities: {fileID: 0}
   armorColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
   atkColor: {r: 1, g: 0.13679248, b: 0.13679248, a: 1}
-  hpColor: {r: 0, g: 0.7264151, b: 0, a: 1}
-  mpColor: {r: 0.18396229, g: 0.18396229, b: 1, a: 1}
-  engColor: {r: 0.7169812, g: 0.5543163, b: 0, a: 1}
+  hpColor: {r: 0, g: 1, b: 0, a: 1}
+  mpColor: {r: 0.23113209, g: 0.23113209, b: 1, a: 1}
+  engColor: {r: 0.8490566, g: 0.6541912, b: 0, a: 1}
   morColor: {r: 0, g: 0.70286345, b: 1, a: 1}
 --- !u!114 &164377914
 MonoBehaviour:
@@ -5463,7 +5463,7 @@ GameObject:
   - component: {fileID: 450634477}
   - component: {fileID: 450634476}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Skill selector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8994,6 +8994,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 646130102}
     m_Modifications:
+    - target: {fileID: 4635952826774130136, guid: 256dd62282a64cc48bca1521f4f32666,
+        type: 3}
+      propertyPath: m_text
+      value: Purple Magic
+      objectReference: {fileID: 0}
     - target: {fileID: 5574064438480116245, guid: 256dd62282a64cc48bca1521f4f32666,
         type: 3}
       propertyPath: m_Name
@@ -11132,7 +11137,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -26453,6 +26458,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 646130102}
     m_Modifications:
+    - target: {fileID: 4635952826774130136, guid: 256dd62282a64cc48bca1521f4f32666,
+        type: 3}
+      propertyPath: m_text
+      value: Strength
+      objectReference: {fileID: 0}
     - target: {fileID: 5574064438480116245, guid: 256dd62282a64cc48bca1521f4f32666,
         type: 3}
       propertyPath: m_Name

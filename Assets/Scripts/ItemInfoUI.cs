@@ -32,7 +32,7 @@ public class ItemInfoUI : MonoBehaviour
         itemNameText.text = t.name;
         itemDescriptionText.text = t.description;
         itemIcon.sprite = t.icon;
-        itemModifiersText.text = t.mods.ToString();
+        itemModifiersText.text = t.mods.ToString(0) + "\n" + t.consumeRestore.ToString();
 
 		//immediately update the size etc of this
 		LayoutRebuilder.ForceRebuildLayoutImmediate(rt);

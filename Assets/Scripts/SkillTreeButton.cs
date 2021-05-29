@@ -25,14 +25,25 @@ public class SkillTreeButton : MonoBehaviour
 	private int plvl;
     // Start is called before the first frame update
     void Awake()
-    {
-        if(prerequisiteButton != null) prerequisite = prerequisiteButton.s;
-        GetComponentInChildren<TextMeshProUGUI>().text = s.name;
-        index = SkillTreeControl.skillButtons.Count;
-        if(!SkillTreeControl.skillButtons.Contains(this)) SkillTreeControl.skillButtons.Add(this);
-    }
+	{
+		if (prerequisiteButton != null) prerequisite = prerequisiteButton.s;
+		UpdateSkillNameText();
+		index = SkillTreeControl.skillButtons.Count;
+		if (!SkillTreeControl.skillButtons.Contains(this)) SkillTreeControl.skillButtons.Add(this);
+	}
 
-    public void ClickSkill()
+	private void UpdateSkillNameText()
+	{
+		TextMeshProUGUI temp = GetComponentInChildren<TextMeshProUGUI>();
+		if(temp != null && s != null) temp.text = s.name;
+	}
+
+	private void OnValidate()
+	{
+		UpdateSkillNameText();
+	}
+
+	public void ClickSkill()
 	{
         SkillTreeControl.selectedSkillButton = index;
 		UpdateSkillDescriptionUIAsThis();
@@ -41,7 +52,7 @@ public class SkillTreeButton : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-		boughtTint.SetActive(hasThisSkill);
+		boughtTint.SetActive(hasThisSkill && !s.levelable);
 		bool isSelected = SkillTreeControl.skillButtons[SkillTreeControl.selectedSkillButton] == this;
 		selectedTint.SetActive(isSelected);
 		SkillTreeControl.main.HasSkill(s, out int lvl);

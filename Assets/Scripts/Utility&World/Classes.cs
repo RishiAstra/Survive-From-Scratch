@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using System.Text;
+
 namespace bobStuff
 {
 
@@ -137,6 +139,31 @@ namespace bobStuff
 		/// Can this be applies when other restores are active?
 		/// </summary>
 		public bool stackable;
+
+		public override string ToString()
+		{
+			//hp, mp, mor, eng can be restored
+			//bools for are hp, mp, eng, and/or mor restored
+			bool shp  = !Mathf.Approximately(0, stat.hp );
+			bool smp  = !Mathf.Approximately(0, stat.mp );
+			bool seng = !Mathf.Approximately(0, stat.eng);
+			bool smor = !Mathf.Approximately(0, stat.mor);
+
+			//if this restores nothing, return blank string
+			if (!shp && !smp && !seng && !smor) return "";
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("Restores\n");
+
+			if (shp ) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.hpColor ) + ">" + stat.hp + "HP</color>\n");
+			if (smp ) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.mpColor ) + ">" + stat.mp + "MP</color>\n");
+			if (seng) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.engColor) + ">" + stat.eng + "ENG</color>\n");
+			if (smor) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.morColor) + ">" + stat.mor + "MOR</color>\n");
+
+			sb.Append("over " + intervalCount + " intervals of " + timeInterval.ToString("F1") + " seconds");
+
+			return sb.ToString();
+		}
 	}
 
 	[Serializable]

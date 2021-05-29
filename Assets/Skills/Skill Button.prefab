@@ -366,6 +366,7 @@ MonoBehaviour:
   boughtTint: {fileID: 3913272694751279488}
   selectedTint: {fileID: 7291048295005257842}
   levelText: {fileID: 6614400332067237001}
+  descriptionText: {fileID: 0}
   prerequisite: {fileID: 0}
 --- !u!1 &6371054729945210289
 GameObject:
@@ -642,7 +643,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: df0271708833f3c4e93cd130c3cc46a5, type: 3}
-  m_Type: 1
+  m_Type: 2
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
