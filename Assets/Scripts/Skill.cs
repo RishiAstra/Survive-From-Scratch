@@ -6,14 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ID : MonoBehaviour
+[System.Serializable]
+public class Skill : ScriptableObject
 {
-	public string idString;
-	public int id = -1;
-
-	// Start is called before the first frame update
-	void Awake()
-	{
-		id = GameControl.NameToId(idString);
-	}
+	[TextArea(5, 10)]
+	public string description;
+	public bool levelable;
 }

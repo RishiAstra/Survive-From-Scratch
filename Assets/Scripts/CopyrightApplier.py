@@ -39,7 +39,7 @@ def recursive_traversal(dir,  oldcopyright, copyright):
                 update_source(fullfn, oldcopyright, copyright)
     
      
-oldcright = None#open("oldcr.txt","r+").read()
+oldcright = open("Copyright.txt","r+").read()
 cright = open("Copyright.txt","r+").read()
-recursive_traversal(os.path.realpath(__file__), oldcright, cright)
+recursive_traversal(os.path.dirname(os.path.realpath(__file__)), oldcright, cright)
 exit()

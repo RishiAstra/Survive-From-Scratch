@@ -1,4 +1,8 @@
-﻿#if UNITY_EDITOR
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

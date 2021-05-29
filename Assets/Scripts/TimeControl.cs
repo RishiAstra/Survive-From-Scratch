@@ -1,4 +1,8 @@
-﻿using System;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
