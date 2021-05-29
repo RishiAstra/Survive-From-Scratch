@@ -87,6 +87,25 @@ public struct Stat
 		atk += other.atk;
 	}
 
+	public void Subtract(Stat other)
+	{
+		hp  -= other.hp;
+		mp  -= other.mp;
+		eng -= other.eng;
+		mor -= other.mor;
+		atk -= other.atk;
+	}
+
+	public bool GreaterThanOrEqualTo(Stat other)
+	{
+		return
+			hp >= other.hp &&
+			mp >= other.mp &&
+			eng >= other.eng &&
+			mor >= other.mor &&
+			atk >= other.atk;
+	}
+
 	public override string ToString()
 	{
 		return

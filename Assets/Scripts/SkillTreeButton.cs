@@ -4,6 +4,7 @@
 ********************************************************/
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -93,7 +94,29 @@ public class SkillTreeButton : MonoBehaviour
 		}
 		else if (s is UsableSkill)
 		{
-			description = (s as UsableSkill).description;
+			UsableSkill ss = s as UsableSkill;
+			StringBuilder sb = new StringBuilder();
+			sb.Append(ss.description);
+			//description = ss.description;
+			bool shp =  !Mathf.Approximately(0, ss.cost.hp);
+			bool smp =  !Mathf.Approximately(0, ss.cost.mp);
+			bool seng = !Mathf.Approximately(0, ss.cost.eng);
+			bool smor = !Mathf.Approximately(0, ss.cost.mor);
+
+			//if this restores nothing, return blank string
+			if (!shp && !smp && !seng && !smor) 
+			{ 
+			
+			}
+			else
+			{
+				sb.Append("\nCost: \n");
+				if (shp ) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.hpColor ) + ">" + ss.cost.hp + "HP</color>\n");
+				if (smp ) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.mpColor ) + ">" + ss.cost.mp + "MP</color>\n");
+				if (seng) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.engColor) + ">" + ss.cost.eng + "ENG</color>\n");
+				if (smor) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.morColor) + ">" + ss.cost.mor + "MOR</color>\n");
+			}
+			description = sb.ToString();
 		}
 		return description;
 	}

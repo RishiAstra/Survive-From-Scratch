@@ -390,9 +390,9 @@ MonoBehaviour:
   resetOnStart: 1
   lvl: 1
   maxStat:
-    hp: 25
-    mp: 0
-    eng: 0
+    hp: 100
+    mp: 25
+    eng: 25
     mor: 0
     atk: 5
   stat:
@@ -406,6 +406,7 @@ MonoBehaviour:
   xpBounty: 10
   armors: []
   itemsEquipped: []
+  statRestores: []
   dead: 0
   damageRecords: []
   mySave: {fileID: 0}

@@ -92,9 +92,10 @@ public class Abilities : MonoBehaviour, ISaveable
 	public void UseSkill(int i)
 	{
 		if (myStat.dead || !RegionSettings.main.allowCombat) return;
-		if (!busy)
+		if (!busy && myStat.stat.GreaterThanOrEqualTo(skills[i].cost))
 		{
 			busy = true;
+			myStat.stat.Subtract(skills[i].cost);
 			anim.SetBool("Attacking", true);
 			StartCoroutine(ExecuteSkill(i));
 		}

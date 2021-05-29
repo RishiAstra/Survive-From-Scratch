@@ -81,8 +81,15 @@ public class GameControl : MonoBehaviour
 	public TextMeshProUGUI itemHoverNameText;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
 	public bool itemHoverPositionMatch;
+
 	public Image mainHpBar;
 	public TextMeshProUGUI mainHpText;
+	public Image mainMpBar;
+	public TextMeshProUGUI mainMpText;
+	public Image mainEngBar;
+	public TextMeshProUGUI mainEngText;
+
+
 	public Image mainXpBar;
 	public TextMeshProUGUI mainXpText;
 	public TextMeshProUGUI mainLvlText;
@@ -830,6 +837,20 @@ public class GameControl : MonoBehaviour
 		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
 		hPBar.hpTextUI = mainHpText;
 		hPBar.SetWorldHpBarVisible(false);
+
+		HPBar mPBar = newPlayerObject.AddComponent<HPBar>();
+		mPBar.type = HPBar.StatType.mp;
+		mPBar.hpBarImage = mainMpBar;
+		mPBar.hpTextUI = mainMpText;
+		mPBar.autoHide = false;
+		mPBar.changeHpBarColor = false;
+
+		HPBar enGBar = newPlayerObject.AddComponent<HPBar>();
+		enGBar.type = HPBar.StatType.eng;
+		enGBar.hpBarImage = mainEngBar;
+		enGBar.hpTextUI = mainEngText;
+		enGBar.autoHide = false;
+		enGBar.changeHpBarColor = false;
 
 		HPBar xPBar = newPlayerObject.AddComponent<HPBar>();
 		xPBar.type = HPBar.StatType.xp;
