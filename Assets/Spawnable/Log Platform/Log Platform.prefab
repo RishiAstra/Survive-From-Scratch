@@ -123,6 +123,7 @@ MonoBehaviour:
   a: {fileID: 0}
   deleteOnDeath: 1
   toSave: []
+  savedSceneBuildIndex: -1
 --- !u!65 &3904258954037427713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -169,11 +170,11 @@ MonoBehaviour:
   resetOnStart: 1
   lvl: 1
   maxStat:
-    hp: 25
+    hp: 100
     mp: 0
     eng: 0
     mor: 0
-    atk: 0
+    atk: 20
   stat:
     hp: 0
     mp: 0
@@ -181,6 +182,8 @@ MonoBehaviour:
     mor: 0
     atk: 0
   dieTime: 0
+  xp: 0
+  xpBounty: 0
   armors:
   - col: []
     mods:
@@ -192,7 +195,12 @@ MonoBehaviour:
       atkMods: []
     localArmorModifiers: []
   itemsEquipped: []
+  statRestores: []
   dead: 0
+  damageRecords: []
+  mySave: {fileID: 0}
+  statSkills: []
+  skillLvls: 
 --- !u!114 &4318882565557918838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,11 +213,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b5413c83f5963429870592103f0564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   hpBarSprite: {fileID: 6632494350441608197}
   hpBarImage: {fileID: 0}
   hpText: {fileID: 99642775959608089}
   hpTextUI: {fileID: 0}
   changeHpTextColor: 0
+  changeHpBarColor: 1
+  gradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 1, b: 0, a: 1}
+    key2: {r: 0, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 32768
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
   prefix: 
   dead: Dead
   hpHolder: {fileID: 8450162276051981402}

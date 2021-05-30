@@ -394,7 +394,7 @@ MonoBehaviour:
     mp: 25
     eng: 25
     mor: 0
-    atk: 5
+    atk: 20
   stat:
     hp: 0
     mp: 0
@@ -518,6 +518,7 @@ MonoBehaviour:
   a: {fileID: 924814010}
   deleteOnDeath: 0
   toSave: []
+  savedSceneBuildIndex: -1
 --- !u!114 &2206280722422302975
 MonoBehaviour:
   m_ObjectHideFlags: 0

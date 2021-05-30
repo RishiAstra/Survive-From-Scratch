@@ -145,11 +145,13 @@ public class GameControl : MonoBehaviour
 
 	IEnumerator LoadItemDataAndPlayer()
 	{
+		TimeControl.main.SetTimeScale(0, "INITIAL_PLAYER_AND_ITEM_DATA");
 		loadingLastSaveScreen.SetActive(true);
 		//print("loading......");
 		yield return LoadItemData();
 		yield return LoadPlayerInitial();
 		loadingLastSaveScreen.SetActive(false);
+		TimeControl.main.RemoveTimeScale("INITIAL_PLAYER_AND_ITEM_DATA");
 	}
 
 	public void ShowInfo(Item i, RectTransform target)
@@ -427,6 +429,7 @@ public class GameControl : MonoBehaviour
     {
 		if (!initialized) yield break;
 		//TODO:test this
+		TimeControl.main.SetTimeScale(0, "MAP_LOAD");
 		//remove other scenes if they aren't the control scene
 		loading = true;
 		TryUnlockCursor();
@@ -516,7 +519,7 @@ public class GameControl : MonoBehaviour
 		HideMenus();
 
 		if(me == null) MakeAndSetUpPlayer();
-
+		TimeControl.main.RemoveTimeScale("MAP_LOAD");
 		playerExists = true;
 		inWorld = true;
 		loading = false;

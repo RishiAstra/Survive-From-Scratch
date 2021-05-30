@@ -4084,11 +4084,11 @@ MonoBehaviour:
   resetOnStart: 1
   lvl: 1
   maxStat:
-    hp: 10
-    mp: 0
+    hp: 100
+    mp: 50
     eng: 0
     mor: 0
-    atk: 5
+    atk: 20
   stat:
     hp: 0
     mp: 0
@@ -4110,6 +4110,7 @@ MonoBehaviour:
       atkMods: []
     localArmorModifiers: []
   itemsEquipped: []
+  statRestores: []
   dead: 0
   damageRecords: []
   mySave: {fileID: 0}
@@ -4186,6 +4187,7 @@ MonoBehaviour:
   a: {fileID: 8437588072177896211}
   deleteOnDeath: 1
   toSave: []
+  savedSceneBuildIndex: -1
 --- !u!114 &5616320263452957825
 MonoBehaviour:
   m_ObjectHideFlags: 0
