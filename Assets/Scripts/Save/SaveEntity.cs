@@ -51,6 +51,7 @@ public class SaveEntity : Save, ISaveable
 
 	private int indexInSaves;
 	private Stat pStat;
+	public int savedSceneBuildIndex = -1;
 
 	public static void InitializeStatic()
 	{
@@ -635,6 +636,7 @@ public class SaveEntity : Save, ISaveable
 		id = s.id;
 		transform.position = s.position;
 		transform.eulerAngles = s.rotation;
+		savedSceneBuildIndex = s.sceneIndex;
 	}
 
 	public string[] GetAllData()

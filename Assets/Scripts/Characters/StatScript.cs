@@ -297,9 +297,14 @@ public class StatScript : MonoBehaviour, ISaveable
 		initialMaxStat = maxStat;
 		pItemsEquipped = new List<Item>();
 		UpdateXP();
+
+
+	}
+
+	private void Start()
+	{
 		CheckStats();
 		if (resetOnStart) ResetStats();//reset before anythign else can happen
-
 	}
 
 	public void AddStatRestore(StatRestore s)
@@ -321,7 +326,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		UpdateXP();
 	}
 
-	private void UpdateXP()
+	private void UpdateXP(bool scaleStats = true)
 	{
 		int l = lvl;
 		bool changed = false;
@@ -358,7 +363,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		if (changed)
 		{
 			lvl = l;
-			CheckStats();
+			CheckStats(scaleStats);
 		}
 	}
 
@@ -386,7 +391,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		return f1(level);
 	}
 
-	void CheckStats()
+	void CheckStats(bool scaleStats = true)
 	{
 		//if lvl changed or items equipped changed
 		bool shouldRecalculate = plvl != lvl | pItemsEquipped.Count != itemsEquipped.Count;
@@ -405,7 +410,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		if(shouldRecalculate)
 		{
-			UpdateStats();
+			UpdateStats(scaleStats);
 			plvl = lvl;
 			pItemsEquipped = new List<Item>();
 			pItemsEquipped.AddRange(itemsEquipped);
@@ -413,7 +418,7 @@ public class StatScript : MonoBehaviour, ISaveable
 	}
 
 	//stats that don't depend on type are calculated here; if they depend on type, they are in the damage function
-	void UpdateStats()
+	void UpdateStats(bool scaleStats = true)
 	{
 		//armor and atk depend on type, all others should have modifiers applier below
 		if (lvl <= 0) lvl = 1;
@@ -589,17 +594,21 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		//print(maxStat + "|" + newMaxStat);
 		//now that the new max stat has been calculated, scale the current stat so that if you had 80% hp before the max stat chance, you will have 80% afterward
-		Stat temp = newMaxStat;
-		temp.Divide(maxStat);//get the proportions/percent changes (0-1) of max stat
+		if (scaleStats)
+		{
+			Stat temp = newMaxStat;
+			temp.Divide(maxStat);//get the proportions/percent changes (0-1) of max stat
 
-		//avoid NaN
-		if (float.IsNaN(temp.hp)) temp.hp = 1;
-		if (float.IsNaN(temp.mp)) temp.mp = 1;
-		if (float.IsNaN(temp.eng)) temp.eng = 1;
-		if (float.IsNaN(temp.mor)) temp.mor = 1;
-		if (float.IsNaN(temp.atk)) temp.atk = 1;
+			//avoid NaN
+			if (float.IsNaN(temp.hp)) temp.hp = 1;
+			if (float.IsNaN(temp.mp)) temp.mp = 1;
+			if (float.IsNaN(temp.eng)) temp.eng = 1;
+			if (float.IsNaN(temp.mor)) temp.mor = 1;
+			if (float.IsNaN(temp.atk)) temp.atk = 1;
 
-		stat.Multiply(temp);
+			stat.Multiply(temp);
+		}
+		
 
 		//now that all that is done, assign the new max stat
 		maxStat = newMaxStat;
@@ -983,7 +992,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		}
 		if (statRestores == null) statRestores = new List<StatRestore>();
 
-		UpdateXP();
+		UpdateXP(false);
 		CheckStats();
 
 	}

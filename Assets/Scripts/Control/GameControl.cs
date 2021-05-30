@@ -20,6 +20,7 @@ using UnityEngine.EventSystems;
 public class GameControl : MonoBehaviour
 {
 	public static KeyCode interactKeyCode = KeyCode.F;
+	public const int MAP_SCENE_INDEX_START = 1;
 
 	public static string saveDirectory { 
 		get { return Application.persistentDataPath + "/" + Application.version + "/"; }
@@ -98,6 +99,8 @@ public class GameControl : MonoBehaviour
 	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
 
 	public GameObject camGameObject;
+	public int savedSceneIndex = -1;
+	public GameObject loadingLastSaveScreen;
 	
 //	public RPGCamera Camera;
 	private Player me;
@@ -132,10 +135,21 @@ public class GameControl : MonoBehaviour
 		HideInfo();
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
-		InitializeItemTypes();
+		//InitializeItemTypes();
 		Save.Initialize();
 
-		StartCoroutine(LoadPlayerInitial());
+		StartCoroutine(LoadItemDataAndPlayer());
+		//StartCoroutine(LoadItemData());
+		//StartCoroutine(LoadPlayerInitial());
+	}
+
+	IEnumerator LoadItemDataAndPlayer()
+	{
+		loadingLastSaveScreen.SetActive(true);
+		//print("loading......");
+		yield return LoadItemData();
+		yield return LoadPlayerInitial();
+		loadingLastSaveScreen.SetActive(false);
 	}
 
 	public void ShowInfo(Item i, RectTransform target)
@@ -347,7 +361,22 @@ public class GameControl : MonoBehaviour
 	IEnumerator LoadPlayerInitial()
 	{
 		yield return new WaitForEndOfFrame();
-		LoadPlayer(this);
+		LoadPlayer();
+		print("loaded player initial");
+		if(savedSceneIndex >= MAP_SCENE_INDEX_START && savedSceneIndex < SceneManager.sceneCountInBuildSettings)
+		{
+			string sceneName = GetSceneNameFromIndex(savedSceneIndex);
+			yield return LoadMapLocation(sceneName);
+			print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
+		}
+	}
+	private static string GetSceneNameFromIndex(int BuildIndex)
+	{
+		string path = SceneUtility.GetScenePathByBuildIndex(BuildIndex);
+		int slash = path.LastIndexOf('/');
+		string name = path.Substring(slash + 1);
+		int dot = name.LastIndexOf('.');
+		return name.Substring(0, dot);
 	}
 
 	private void HideMenus()
@@ -356,6 +385,7 @@ public class GameControl : MonoBehaviour
 		mapScreen.TryDeactivateMenu();
 		craftInventory.TryDeactivateMenu();
 		shopMenu.TryDeactivateMenu();
+		helpMenu.TryDeactivateMenu();
 		HideInfo();
 		//mapLoadScreen.SetActive(false);
 		//mapScreen.SetActive(false);
@@ -512,10 +542,10 @@ public class GameControl : MonoBehaviour
 		}
 	}
 
-	private void InitializeItemTypes()
-	{
-		StartCoroutine(LoadItemData());
-	}
+	//private void InitializeItemTypes()
+	//{
+	//	StartCoroutine(LoadItemData());
+	//}
 
 	private IEnumerator LoadItemData()
 	{
@@ -556,9 +586,9 @@ public class GameControl : MonoBehaviour
 	//{
 	//	CreatePlayerObject();
 	//}
-	void MakeAndSetUpPlayer()
+	void MakeAndSetUpPlayer(bool respawn = false)
 	{
-		CreatePlayerObject();
+		CreatePlayerObject(respawn);
 		//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
 
 	}
@@ -570,7 +600,7 @@ public class GameControl : MonoBehaviour
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
 			SaveStuff();
-			MakeAndSetUpPlayer();
+			MakeAndSetUpPlayer(true);
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
 		}
@@ -881,7 +911,12 @@ public class GameControl : MonoBehaviour
 		myInv.put = true;
 	}
 
-	GameObject CreatePlayerObject()
+	/// <summary>
+	/// Creates a player GameObject
+	/// </summary>
+	/// <param name="respawn">should the player's stats and position be reset? NOTE: position is reset if teleported</param>
+	/// <returns></returns>
+	GameObject CreatePlayerObject(bool respawn = false)
 	{
 		Vector3 position;
 		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
@@ -903,9 +938,25 @@ public class GameControl : MonoBehaviour
 				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
 				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
 				//TODO: consider below and if it should be also for loading player
-				g.transform.position = position;
-				g.transform.rotation = Quaternion.identity;
-				g.GetComponent<StatScript>().ResetStats();
+
+				//if player is in a different map location than saved (meaning that the player teleported)
+				if (respawn)
+				{
+					g.transform.position = position;
+					g.transform.rotation = Quaternion.identity;
+					g.GetComponent<StatScript>().ResetStats();//restore hp etc when respawning
+				}
+				else if (g.GetComponent<SaveEntity>().savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+				{
+					g.transform.position = position;
+					g.transform.rotation = Quaternion.identity;
+					//g.GetComponent<StatScript>().resetOnStart = false;//don't give full hp etc every time the game starts
+				}
+				
+
+				//resetting the stats is not good
+				//g.GetComponent<StatScript>().ResetStats();
+
 				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
@@ -963,6 +1014,7 @@ public class GameControl : MonoBehaviour
 			money = GameControl.main.money,
 			craftInventoryItems = crafting.craftInventory.items,
 			mainInventoryItems = GameControl.main.mainInventoryUI.target.items,
+			sceneIndex = SceneManager.GetActiveScene().buildIndex,
 		};
 		string path1 = Authenticator.GetAccountPath(username);
 		if (!Directory.Exists(path1)) Directory.CreateDirectory(path1);//TODO: warning this is bad, allows making account folders without registering
@@ -970,7 +1022,7 @@ public class GameControl : MonoBehaviour
 		Debug.Log("Saved player data for username: " + username);
 	}
 
-	public static void LoadPlayer(GameControl p)
+	public static void LoadPlayer()
 	{
 		Crafting crafting = Crafting.main;// p.GetComponent<Crafting>();
 		string path = Authenticator.GetAccountPath(username) + "data.json";
@@ -982,6 +1034,7 @@ public class GameControl : MonoBehaviour
 			GameControl.main.myPlayersId = s.myId;
 			GameControl.main.money = s.money;
 			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
+			GameControl.main.savedSceneIndex = s.sceneIndex;
 			print("Loaded player: " + username);
 		}
 
@@ -1027,7 +1080,7 @@ public class GameControl : MonoBehaviour
 		//	Directory.CreateDirectory(Application.persistentDataPath + );
 		//}
 
-		LoadPlayer(this);
+		LoadPlayer();
 		yield return Save.LoadAllData();
 
 		//yield return SaveItem.LoadAll();//load items (inc. buildings maybe) first
@@ -1128,6 +1181,7 @@ public class PlayerSaveData
 	public string username;
 	public long myId;//the id of the player owned, use this to load it
 	public int money;
+	public int sceneIndex = -1;
 	public List<Item> craftInventoryItems;
 	public List<Item> mainInventoryItems;
 }
