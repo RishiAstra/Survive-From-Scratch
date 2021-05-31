@@ -37,7 +37,7 @@ public class SkillTreeControl : MonoBehaviour
 		}
 		int pointsSpent = UpdateSkills();
 		int pointsRemaining = targetS.GetSkillPointTotal() - pointsSpent;
-		if(pointsRemaining >= t.cost && (t.s.levelable || !HasSkill(t.s)))
+		if (pointsRemaining >= t.cost && (t.s.levelable || !HasSkill(t.s)))
 		{
 			AddSkill(t.s);
 
@@ -112,6 +112,12 @@ public class SkillTreeControl : MonoBehaviour
 	public bool HasSkill(Skill s, out int skillPoinstSpendOnIt)
 	{
 		bool has = false;
+		if (targetA == null || targetS == null)
+		{
+			skillPoinstSpendOnIt = 0;
+			return false;
+		}
+
 		skillPoinstSpendOnIt = 0;
 		if (s == null) return true;
 

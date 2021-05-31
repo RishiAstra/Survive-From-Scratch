@@ -27,7 +27,7 @@ public class SkillTreeButton : MonoBehaviour
 
     public Skill prerequisite;
 
-	private int plvl;
+	private int plvl = -1;
     // Start is called before the first frame update
     void Awake()
 	{
@@ -35,6 +35,11 @@ public class SkillTreeButton : MonoBehaviour
 		UpdateSkillNameText();
 		index = SkillTreeControl.skillButtons.Count;
 		if (!SkillTreeControl.skillButtons.Contains(this)) SkillTreeControl.skillButtons.Add(this);
+	}
+	//immediately update when enabled
+	private void OnEnable()
+	{
+		Update();
 	}
 
 	private void UpdateSkillNameText()
@@ -59,7 +64,7 @@ public class SkillTreeButton : MonoBehaviour
 	{
 		boughtTint.SetActive(hasThisSkill && !s.levelable);
 		bool isSelected = SkillTreeControl.skillButtons[SkillTreeControl.selectedSkillButton] == this;
-		selectedTint.SetActive(false);// isSelected);
+		selectedTint.SetActive(isSelected);
 		SkillTreeControl.main.HasSkill(s, out int lvl);
 		levelText.text = lvl == 0 ? "" : "Level " + lvl;
 
@@ -98,7 +103,7 @@ public class SkillTreeButton : MonoBehaviour
 			}
 			else
 			{
-				description = ss.mods.ToString(lvl);
+				description = ss.mods.ToString(lvl + 1);
 			}
 		}
 		else if (s is UsableSkill)
