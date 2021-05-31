@@ -13,8 +13,9 @@ public class SkillTreeControl : MonoBehaviour
 	public static int selectedSkillButton;
 	public static SkillTreeControl main;
 
-	public Abilities targetA;
-	public StatScript targetS;
+	public Abilities targetA { get { return GameControl.main.myAbilities; } }
+	public StatScript targetS { get { return GameControl.main.myAbilities.myStat; } }
+
 	public TextMeshProUGUI skillPointsLeftText;
 	public TextMeshProUGUI skillDescriptionText;
 	public TextMeshProUGUI skillTitleText;
@@ -90,8 +91,8 @@ public class SkillTreeControl : MonoBehaviour
 	int UpdateSkills()
 	{
 		int skillPointsSpent = 0;
-		targetA = GameControl.main.myAbilities;
-		targetS = targetA.myStat;
+		//targetA = GameControl.main.myAbilities;
+		//targetS = targetA.myStat;
 
 		foreach (SkillTreeButton s in skillButtons)
 		{
@@ -112,11 +113,6 @@ public class SkillTreeControl : MonoBehaviour
 	public bool HasSkill(Skill s, out int skillPoinstSpendOnIt)
 	{
 		bool has = false;
-		if (targetA == null || targetS == null)
-		{
-			skillPoinstSpendOnIt = 0;
-			return false;
-		}
 
 		skillPoinstSpendOnIt = 0;
 		if (s == null) return true;

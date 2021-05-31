@@ -257,6 +257,7 @@ public class StatScript : MonoBehaviour, ISaveable
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
 	public const float DAMAGERECORD_TIME = 60f;//remember damages received for 60s
+	public const float STAT_REGAIN_PROPORTION = 0.01f;//the amount/proportion of stat to regain every second
 
 	public static Dictionary<long, float> unclaimedXPBounties = new Dictionary<long, float>();//xp from kills that wasn't claimed yet <id, amount of unclaimed xp>
 
@@ -281,6 +282,8 @@ public class StatScript : MonoBehaviour, ISaveable
 	public SaveEntity mySave;
 	public List<StatSkill> statSkills;
 	public List<int> skillLvls;
+
+	private float timeSinceRegain;
 
 	private void Awake()
 	{
@@ -315,7 +318,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public int GetSkillPointTotal()
 	{
-		return lvl * 2;
+		return (lvl - 1) * 2;//2 skill points for each lvl, but you start at lvl 1 with 0 skill points
 	}
 
 	#region stats and xp updates
@@ -653,6 +656,16 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		if (!dead)
 		{
+			timeSinceRegain += Time.deltaTime;
+			if(timeSinceRegain > 1)
+			{
+				timeSinceRegain -= 1;
+				Stat temp = maxStat;
+				temp.Multiply(STAT_REGAIN_PROPORTION);
+				stat.Add(temp);
+				ClampStat();
+			}
+
 			for (int i = 0; i < statRestores.Count; i++)
 			{
 				StatRestore temp = statRestores[i];
