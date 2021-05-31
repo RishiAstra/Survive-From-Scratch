@@ -8,9 +8,12 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SkillTreeButton : MonoBehaviour
 {
+	public const float selectedScale = 1.1f;
+
     public Skill s;
     public SkillTreeButton prerequisiteButton;
     public bool hasThisSkill;
@@ -20,6 +23,7 @@ public class SkillTreeButton : MonoBehaviour
     public GameObject selectedTint;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI descriptionText;
+	public Image mainImage;
 
     public Skill prerequisite;
 
@@ -55,9 +59,14 @@ public class SkillTreeButton : MonoBehaviour
 	{
 		boughtTint.SetActive(hasThisSkill && !s.levelable);
 		bool isSelected = SkillTreeControl.skillButtons[SkillTreeControl.selectedSkillButton] == this;
-		selectedTint.SetActive(isSelected);
+		selectedTint.SetActive(false);// isSelected);
 		SkillTreeControl.main.HasSkill(s, out int lvl);
 		levelText.text = lvl == 0 ? "" : "Level " + lvl;
+
+		transform.localScale = Vector3.one * (isSelected ? selectedScale : 1);
+		Color c = mainImage.color;
+		c.a = isSelected ? 0.95f : 0.8f;
+		mainImage.color = c;
 
 		if (isSelected && lvl != plvl)
 		{
