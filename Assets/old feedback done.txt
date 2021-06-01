@@ -1,0 +1,81 @@
+-make shop font fit theme
+-some stuff we discussed earlier: basic info including price needs to be on the side of shop items
+-skill tree, abilities, etc.
+-make shop text black
+-make shop buy multiplier buttons shade when selected
+-logs in the top of shop activate low lods too soon
+-can't punch damage if no inventory thing is selected
+-log lods have bad lighting, maybe the normals are too smooth (make top faces sharp)
+-collect indicator is stuck on
+-shop door looks double at certain distances, 
+-shop lighting bad
+-(temporarily fixed) shop looks terrible from a distance (minimum lod)
+-make fullscreen also fit the whole screen with no black space
+-consider making esc disable all menus
+-fix transparency issues by changing render queue on material
+-walking animation won't play for a few sec after teleporting
+-scrolling is too slow in shop
+-enable global illumination
+-show money only if shop
+-delete top panel
+-make f to collect on top of item to collect
+-apply auto hp bar hiding to everything
+-make it clear if shopkeeper doesn't buy something or make him buy everything
+-(didn't happen again) can sometimes teleport to wrong spawn point (none)
+-consider only activating dialogue with NPCs if F is pressed, not if clicked
+-put dialogues into files, don't use unity inspector to make them
+-fade dialogue transitions
+-log held in hand forces camera to move in
+-make quest goal chains, so a quest can require many things. e.g. kill 5 spiders, then talk to npc
+-make option for quest-activating dialogue to be put along with NPC's default dialogue
+-make it so when quest is done, it'll make/break dialogue paths
+-bake lighting and mark things static when at desktop
+-make sure that windows allow light through
+-make other things dots on map, not arrows
+-move dieing to statscript from abilities so trees can die
+-note to self: next up is making leveling system including skill tree
+-consider exponential hp and other stat increases with level as well as linear etc
+-only some stats of equip increase with lvl
+-save xp
+-oh right, i forgot to add the ability to actually use skills that you get in the skill tree, rn you can only use stat skills that boost your stats, not skills that attack
+-!!!!!!make all menus easy to get rid of or activate by F1-F12
+-bad scaling on skill tree ui
+-amount of xp required for lvls doesn't go up fast
+-x-outline item when hovering over it
+-x-can get stuck in fence if jump is timed perfectly
+-consider wheel to choose skills
+-only 1 menu active at a time
+-reduce size of pickup item
+-dmg increases too fast (5@1 to 26@10)
+-make other things dots on map
+-e or f to interact, talk etc
+-item info can remain if menu deactivated
+-show what lvling a skill will do and provide description
+-show consumerestore in iteminfo
+-nerf chicken somehow, maybe a cooldown or don't allow eating if got hit recently
+-x-so do you think i should add hunger and according to your hp regain, you exchange hunger for hp
+-x-actually i already added energy, so energy=hunger, used both for some attacks and for regaining hp
+-make skills use eng or mp except default and other small skills
+-consider making hp, mp, and eng regain from food (a new stat to consider adding)
+-consider making hp, mp, and eng regain over time from some consumables rather than being instantly increased
+-show mp somehow, maybe a slider
+-add effects that last a limited amount of time, e.g. eating chicken gives a hp regain effect and you can't eat chicken if you already have that effect
+-add stuff like restoring to item description
+-add border to skill tree scrollview
+-fix item description
+-balance hp mp etc between mobs
+-don't restore hp, etc on teleport
+-fix movement so that player doesn't get stuck on stairs
+-make mp/eng bars' text split well so that the / is always at the end of first line
+-mouse is locked when stopping skill wheel, even if it should be free because menu active. Don't activate skill wheel if mouse isn't locked
+-make mp etc. regain especially so rin doesn't run out of mp and die
+-balance item prices, make it centralized/official value/price with shopkeepers having their own discounts
+-huge problem: skills not being counted on game restart
+-player stat lvl not calculated immediately, resulting in hp scaling
+-player damage text should be on ui to prevent confusing dmg texts with enemy dmg texts
+-tavern should be separate probably
+-lvl and xp ui design is terrible
+-make strength lvled all in same place in tree
+-move tavern
+-make skill use mp
+-make store selected tint more dark

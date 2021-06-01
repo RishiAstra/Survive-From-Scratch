@@ -3589,8 +3589,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6551,8 +6551,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -16408,8 +16408,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -17377,6 +17377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1458913890}
   - component: {fileID: 1458913891}
+  - component: {fileID: 1458913892}
   m_Layer: 0
   m_Name: Crafting
   m_TagString: Untagged
@@ -17410,7 +17411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03ffab576717b9429e7bd5f9186818b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  craftInventory: {fileID: 2053797425}
+  craftInventory: {fileID: 1458913892}
   craftResult: {fileID: 12886707}
   recipieIndexes: 
   craftInventoryUI: {fileID: 2053797422}
@@ -17458,6 +17459,28 @@ MonoBehaviour:
       currentStrength: 0
     craftType: 0
   me: {fileID: 164377913}
+--- !u!114 &1458913892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458913889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  take: 0
+  put: 0
+  size: 16
+  items: []
+  invChange:
+    m_PersistentCalls:
+      m_Calls: []
+  invClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1491305532
 GameObject:
   m_ObjectHideFlags: 0
@@ -24550,7 +24573,6 @@ GameObject:
   - component: {fileID: 2053797424}
   - component: {fileID: 2053797423}
   - component: {fileID: 2053797422}
-  - component: {fileID: 2053797425}
   - component: {fileID: 2053797426}
   m_Layer: 5
   m_Name: CraftingInventory - Menu
@@ -24595,7 +24617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54adaa1925de9c49bd77c55e492560c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2053797425}
+  target: {fileID: 1458913892}
   slotPrefab: {fileID: 7226170483033000810, guid: 4957c5b06ae9b65448451e146d4a6cee,
     type: 3}
   preferedSize: {x: 75, y: 75}
@@ -24645,28 +24667,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053797420}
   m_CullTransparentMesh: 0
---- !u!114 &2053797425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2053797420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  take: 0
-  put: 0
-  size: 16
-  items: []
-  invChange:
-    m_PersistentCalls:
-      m_Calls: []
-  invClicked:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2053797426
 MonoBehaviour:
   m_ObjectHideFlags: 0

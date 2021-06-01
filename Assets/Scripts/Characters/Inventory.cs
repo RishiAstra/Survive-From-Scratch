@@ -28,6 +28,16 @@ public class Inventory : MonoBehaviour, ISaveable
 	public IntUnityEvent invClicked;
 	void Awake()
 	{
+		InitializeIfEmpty();
+	}
+
+	void Start()
+	{
+		InitializeIfEmpty();
+	}
+
+	public void InitializeIfEmpty()
+	{
 		if (items.Count == 0)
 		{
 			items = new List<Item>();

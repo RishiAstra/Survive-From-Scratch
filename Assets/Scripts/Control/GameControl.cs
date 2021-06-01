@@ -1036,6 +1036,7 @@ public class GameControl : MonoBehaviour
 			PlayerSaveData s = JsonConvert.DeserializeObject<PlayerSaveData>(File.ReadAllText(path));
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
+			crafting.craftInventory.InitializeIfEmpty();
 			GameControl.main.myPlayersId = s.myId;
 			GameControl.main.money = s.money;
 			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
