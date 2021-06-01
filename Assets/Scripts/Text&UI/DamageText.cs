@@ -14,6 +14,7 @@ public class DamageText : MonoBehaviour
     public float riseSpeed;
     public float lifeTime;
     public TextMeshPro text;
+    public TextMeshProUGUI textUI;
 
     private Stopwatch sw;
     // Start is called before the first frame update
@@ -39,7 +40,8 @@ public class DamageText : MonoBehaviour
 		{
             toDisplay = damageAmount.ToString("F0");
         }
-        text.text = toDisplay;
+        if (text != null) text.text = toDisplay;
+        if (textUI != null) textUI.text = toDisplay;
     }
 
 	// Update is called once per frame
@@ -52,9 +54,19 @@ public class DamageText : MonoBehaviour
             return;
 		}
 
-		Color color = text.color;
-		color.a = occupacity.Evaluate(timepassed / lifeTime);
-        text.color = color;
+        if(text != null)
+		{
+            Color color = text.color;
+		    color.a = occupacity.Evaluate(timepassed / lifeTime);
+            text.color = color;
+		}
+
+        if(textUI != null)
+		{
+            Color color = textUI.color;
+            color.a = occupacity.Evaluate(timepassed / lifeTime);
+            textUI.color = color;
+        }		
 
         transform.Translate(0, riseSpeed * Time.deltaTime, 0);
     }

@@ -299,13 +299,14 @@ public class StatScript : MonoBehaviour, ISaveable
 		mySave = GetComponent<SaveEntity>();
 		initialMaxStat = maxStat;
 		pItemsEquipped = new List<Item>();
-		UpdateXP();
+		
 
 
 	}
 
 	private void Start()
 	{
+		UpdateXP();
 		CheckStats();
 		if (resetOnStart) ResetStats();//reset before anythign else can happen
 	}
@@ -797,7 +798,17 @@ public class StatScript : MonoBehaviour, ISaveable
 			}
 		}
 
-		DamageTextControl.PutDamageText(cols.bounds.center, damageTaken);
+		if(GameControl.main.myAbilities.myStat == this)
+		{
+
+			DamageTextControl.PutDamageText(damageTaken, true);
+
+		}
+		else
+		{
+			DamageTextControl.PutDamageText(damagePosition, damageTaken);
+		}
+
 	}
 	
 	public float GetReceiveDamageAmount(float damage, AttackType type, Armor armor)

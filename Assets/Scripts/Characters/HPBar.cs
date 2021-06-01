@@ -202,12 +202,12 @@ public class HPBar : MonoBehaviour
 			if (text)
 			{
 				hpText.text = "Dead";
-				hpText.color = new Color(0, 0, 0);
+				if (changeHpTextColor) hpText.color = new Color(0, 0, 0);
 			}
 			if (textUI)
 			{
 				hpTextUI.text = "Dead";
-				hpTextUI.color = new Color(0, 0, 0);
+				if (changeHpTextColor) hpTextUI.color = new Color(0, 0, 0);
 			}
 		}
 		else
