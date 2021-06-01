@@ -866,31 +866,33 @@ public class GameControl : MonoBehaviour
 
 		me = newPlayerObject.GetComponent<Player>();
 		playerControl = newPlayerObject.GetComponent<PlayerControl>();
-		HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
-		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
-		hPBar.hpTextUI = mainHpText;
-		hPBar.SetWorldHpBarVisible(false);
+		HPBar hpBar = newPlayerObject.GetComponent<HPBar>();
+		hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
+		hpBar.hpTextUI = mainHpText;
+		hpBar.SetWorldHpBarVisible(false);
 
-		HPBar mPBar = newPlayerObject.AddComponent<HPBar>();
-		mPBar.type = HPBar.StatType.mp;
-		mPBar.hpBarImage = mainMpBar;
-		mPBar.hpTextUI = mainMpText;
-		mPBar.autoHide = false;
-		mPBar.changeHpBarColor = false;
+		HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
+		mpBar.type = HPBar.StatType.mp;
+		mpBar.hpBarImage = mainMpBar;
+		mpBar.hpTextUI = mainMpText;
+		mpBar.autoHide = false;
+		mpBar.changeHpBarColor = false;
+		mpBar.useNewLine = true;
 
-		HPBar enGBar = newPlayerObject.AddComponent<HPBar>();
-		enGBar.type = HPBar.StatType.eng;
-		enGBar.hpBarImage = mainEngBar;
-		enGBar.hpTextUI = mainEngText;
-		enGBar.autoHide = false;
-		enGBar.changeHpBarColor = false;
+		HPBar engBar = newPlayerObject.AddComponent<HPBar>();
+		engBar.type = HPBar.StatType.eng;
+		engBar.hpBarImage = mainEngBar;
+		engBar.hpTextUI = mainEngText;
+		engBar.autoHide = false;
+		engBar.changeHpBarColor = false;
+		engBar.useNewLine = true;
 
-		HPBar xPBar = newPlayerObject.AddComponent<HPBar>();
-		xPBar.type = HPBar.StatType.xp;
-		xPBar.hpBarImage = mainXpBar;
-		xPBar.hpTextUI = mainXpText;
-		xPBar.autoHide = false;
-		xPBar.changeHpBarColor = false;
+		HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
+		xpBar.type = HPBar.StatType.xp;
+		xpBar.hpBarImage = mainXpBar;
+		xpBar.hpTextUI = mainXpText;
+		xpBar.autoHide = false;
+		xpBar.changeHpBarColor = false;
 
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();

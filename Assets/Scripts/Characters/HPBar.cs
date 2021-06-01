@@ -31,6 +31,7 @@ public class HPBar : MonoBehaviour
 	public TextMeshProUGUI hpTextUI;
 	public bool changeHpTextColor;
 	public bool changeHpBarColor = true;
+	public bool useNewLine = false;
 	public Gradient gradient = new Gradient
 	{
 		colorKeys = new GradientColorKey[] {
@@ -221,7 +222,7 @@ public class HPBar : MonoBehaviour
 			}
 			
 			if (changeHpTextColor) color = temp;
-			else color = new Color(0, 0, 0);
+			//else color = new Color(0, 0, 0);
 
 			//if (GetStatValue() > (GetMaxStatValue() / 2))
 			//{
@@ -240,17 +241,20 @@ public class HPBar : MonoBehaviour
 			//	else color = new Color(0, 0, 0);
 			//}
 
-			string tempText = Mathf.RoundToInt(GetStatValue()) + "/" + Mathf.RoundToInt(GetMaxStatValue());//TODO: use Math.Round(hp, 2) to make it 2 decimal places
+			string tempText = useNewLine ?
+				Mathf.RoundToInt(GetStatValue()) + "\n" + Mathf.RoundToInt(GetMaxStatValue())
+				:
+				Mathf.RoundToInt(GetStatValue()) + "/" + Mathf.RoundToInt(GetMaxStatValue());//TODO: use Math.Round(hp, 2) to make it 2 decimal places
 
 			if (text)
 			{
 				hpText.text = tempText;
-				hpText.color = color;
+				if (changeHpTextColor) hpText.color = color;
 			}
 			if (textUI)
 			{
 				hpTextUI.text = tempText;
-				hpTextUI.color = color;
+				if(changeHpTextColor) hpTextUI.color = color;
 			}
 
 			Vector3 scale = new Vector3(GetStatValue() / GetMaxStatValue(), 1, 1);
