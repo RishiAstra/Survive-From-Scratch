@@ -27,7 +27,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 0
   },
   {
     "name": "Rock",
@@ -56,7 +57,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 10
   },
   {
     "name": "Branch",
@@ -74,8 +76,8 @@
       "atkMods": [
         {
           "type": 7,
-          "m_preadd": 2.0,
-          "m_premult": 0.0,
+          "m_preadd": 0.0,
+          "m_premult": 0.25,
           "m_postadd": 0.0,
           "m_postmult": 0.0,
           "growthType": 0,
@@ -95,7 +97,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 10
   },
   {
     "name": "Axe",
@@ -134,7 +137,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 100
   },
   {
     "name": "Slime goo",
@@ -163,7 +167,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 25
   },
   {
     "name": "Log",
@@ -178,7 +183,17 @@
       "mpMods": [],
       "engMods": [],
       "morMods": [],
-      "atkMods": []
+      "atkMods": [
+        {
+          "type": 7,
+          "m_preadd": 0.0,
+          "m_premult": 0.25,
+          "m_postadd": 0.0,
+          "m_postmult": 0.0,
+          "growthType": 0,
+          "a": 0.0
+        }
+      ]
     },
     "consumeRestore": {
       "stat": {
@@ -192,7 +207,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 25
   },
   {
     "name": "Log Platform",
@@ -221,7 +237,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 200
   },
   {
     "name": "Log Ramp",
@@ -250,7 +267,8 @@
       "timeInterval": 0.0,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 200
   },
   {
     "name": "Chicken",
@@ -279,7 +297,8 @@
       "timeInterval": 0.5,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 25
   },
   {
     "name": "Beer",
@@ -308,6 +327,7 @@
       "timeInterval": 0.5,
       "timeSpent": 0.0,
       "stackable": false
-    }
+    },
+    "cost": 25
   }
 ]

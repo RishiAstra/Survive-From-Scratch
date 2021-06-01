@@ -42,7 +42,7 @@ public class SkillSelector : MonoBehaviour
 		}
 
         //if you press down alt, start showing wheel
-        if (GameControl.main.myAbilities != null && (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt)))
+        if (GameControl.main.myAbilities != null && Cursor.lockState == CursorLockMode.Locked && (Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt)))
         {
             showing = true;
             Cursor.lockState = CursorLockMode.Confined;

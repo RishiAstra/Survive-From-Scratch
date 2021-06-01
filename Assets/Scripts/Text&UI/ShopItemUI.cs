@@ -24,9 +24,9 @@ public class ShopItemUI : MonoBehaviour
         
     }
 
-    public void Setup(ShopItem shopItem)
+    public void Setup(ShopItem shopItem, int count)
 	{
         nameText.text = GameControl.itemTypes[shopItem.item.id].name;
-        costText.text = "Cost: " + shopItem.price;
+        costText.text = "Cost: " + ShopControl.GetPriceFromShopItem(shopItem, count);
 	}
 }

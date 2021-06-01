@@ -183,6 +183,7 @@ namespace bobStuff
 		public float strength;
 		public ModifierGroup mods;
 		public StatRestore consumeRestore;
+		public int cost;
 
 		//public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		//{

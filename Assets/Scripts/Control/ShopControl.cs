@@ -76,9 +76,11 @@ public class ShopControl : MonoBehaviour
 		for (int i = 0; i < current.buyDeals.Count; i++)
 		{
 			ShopItem s = current.buyDeals[i];
-			s.item.amount *= mult;
-			s.price *= mult;
-			shopInventoryUI.slotT[i].GetComponent<ShopItemUI>().Setup(s);
+			//not used
+			//s.item.amount *= mult;
+			//taken care of in Setup()
+			//s.price *= mult;
+			shopInventoryUI.slotT[i].GetComponent<ShopItemUI>().Setup(s, mult);
 			shopInventoryUI.slotI[i].UpdateIcon();
 		}
 	}
@@ -110,7 +112,7 @@ public class ShopControl : MonoBehaviour
 
 	private int GetSellPrice(int i)
 	{
-		return current.sellDeals[i].price * sellInventory.items[0].amount;
+		return GetPriceFromShopItem(current.sellDeals[i], sellInventory.items[0].amount);
 	}
 
 	public void SellCurrentItem()
@@ -134,7 +136,7 @@ public class ShopControl : MonoBehaviour
         shopInventoryUI.SelectSlot(index);
         if (buyDealSelected >= 0 && buyDealSelected < current.buyDeals.Count)
 		{
-			buyPriceText.text = "Buy x" + mult + " for: " + current.buyDeals[index].price * mult;
+			buyPriceText.text = "Buy x" + mult + " for: " + GetPriceFromShopItem(current.buyDeals[index], mult);
 		}
 		else
 		{
@@ -164,35 +166,40 @@ public class ShopControl : MonoBehaviour
         if (buyDealSelected < 0 || buyDealSelected >= current.buyDeals.Count) return;
 
         ShopItem buy = current.buyDeals[buyDealSelected];
-		buy.price *= mult;
+		//this is taken care of in GetPriceFromShopItem count
+		//buy.priceMult *= mult;
 		buy.item.amount *= mult;
-        if (GameControl.main.money >= buy.price)
+        if (GameControl.main.money >= GetPriceFromShopItem(buy, mult))
         {
             //get it if u can, then if u succeeded, take the money
             if(GameControl.main.GetItem(buy.item.id, buy.item.amount))
 			{
-                GameControl.main.money -= buy.price;
-            }
+				GameControl.main.money -= GetPriceFromShopItem(buy, mult);
+			}
 
-            //if (ItemIcon.held.id == 0)
-            //{
-            //    ItemIcon.held = buy.item;
-            //    GameControl.main.money -= buy.price;
-            //}
+			//if (ItemIcon.held.id == 0)
+			//{
+			//    ItemIcon.held = buy.item;
+			//    GameControl.main.money -= buy.price;
+			//}
 
-            //if (ItemIcon.held.id == buy.item.id)
-            //{
-            //    ItemIcon.held.amount += buy.item.amount;
-            //    GameControl.main.money -= buy.price;
-            //}
-        }
+			//if (ItemIcon.held.id == buy.item.id)
+			//{
+			//    ItemIcon.held.amount += buy.item.amount;
+			//    GameControl.main.money -= buy.price;
+			//}
+		}
     }
 
+	public static int GetPriceFromShopItem(ShopItem i, int count)
+	{
+		return Mathf.RoundToInt(GameControl.itemTypes[i.item.id].cost * i.priceMult * count);
+	}
 }
 
 [System.Serializable]
 public struct ShopItem
 {
     public Item item;
-    public int price;
+	public float priceMult;
 }

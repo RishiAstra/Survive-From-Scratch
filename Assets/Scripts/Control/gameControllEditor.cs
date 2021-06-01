@@ -67,6 +67,7 @@ public class gameControllEditor : Editor
 					item.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", item.prefab, typeof(GameObject), false);
 					item.equipPrefab = (GameObject)EditorGUILayout.ObjectField("Equip Prefab", item.equipPrefab, typeof(GameObject), false);
 					item.strength = EditorGUILayout.FloatField("Strength", item.strength);
+					item.cost = EditorGUILayout.IntField("Cost/Price", item.cost);
 
 
 					//EditorGUI.indentLevel += 2;

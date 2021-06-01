@@ -6723,38 +6723,38 @@ MonoBehaviour:
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 10
+    priceMult: 2
   - item:
       id: 3
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 75
+    priceMult: 2
   - item:
       id: 6
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 45
+    priceMult: 2
   - item:
       id: 7
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 45
+    priceMult: 2
   sellDeals:
   - item:
       id: 5
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 5
+    priceMult: 0.5
   - item:
       id: 2
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 3
+    priceMult: 0.5
 --- !u!136 &404517973
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -30074,26 +30074,26 @@ MonoBehaviour:
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 35
+    priceMult: 2
   - item:
       id: 8
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 10
+    priceMult: 1
   - item:
       id: 9
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 5
+    priceMult: 1
   sellDeals:
   - item:
       id: 4
       amount: 1
       strength: 0
       currentStrength: 0
-    price: 25
+    priceMult: 0.5
 --- !u!136 &1715995403
 CapsuleCollider:
   m_ObjectHideFlags: 0
