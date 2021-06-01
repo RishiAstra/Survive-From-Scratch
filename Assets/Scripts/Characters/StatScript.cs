@@ -735,7 +735,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		foreach(DamageRecord d in damageRecords)
 		{
 			long id = d.damagedBy;
-			float amount = d.amount / t * xpBounty;//proportional to dmg dealt by this damage record
+			float amount = d.amount / t * Stat.GetLeveledFloat(xpBounty, lvl);//proportional to dmg dealt by this damage record
 			if (unclaimedXPBounties.ContainsKey(id))
 			{
 				unclaimedXPBounties[id] += amount;
