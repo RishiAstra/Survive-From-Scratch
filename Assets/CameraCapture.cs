@@ -11,9 +11,9 @@ public class CameraCapture : MonoBehaviour
 
     public bool capture = false;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
-        
+        capture = false;
     }
 
 	private void Update()
