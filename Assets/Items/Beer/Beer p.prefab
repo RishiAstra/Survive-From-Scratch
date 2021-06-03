@@ -4884,6 +4884,7 @@ GameObject:
   - component: {fileID: 2786224253185738971}
   - component: {fileID: 6253843199849954767}
   - component: {fileID: 2939528150832025748}
+  - component: {fileID: 5659896218308701888}
   m_Layer: 0
   m_Name: Beer p
   m_TagString: Untagged
@@ -4980,6 +4981,18 @@ CapsuleCollider:
   m_Height: 0.65
   m_Direction: 1
   m_Center: {x: 0, y: 0.35, z: 0}
+--- !u!114 &5659896218308701888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4574484217693602261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdc04f35daeb77408d2e9a274b4e12a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7674202896686601899
 GameObject:
   m_ObjectHideFlags: 0
