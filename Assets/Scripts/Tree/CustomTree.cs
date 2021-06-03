@@ -96,13 +96,15 @@ public class CustomTree : MonoBehaviour
 		int tIndex = layers.IndexOf(t);
 		t.branches = new List<int>();
 		TreeLayer tParent = layers[t.parent];
+		int maxCount = 1000;
 		if (t.parent == layers.IndexOf(t))
 		{
 			float countDown;
 			float prog = t.startBranches;
 			while (prog < t.endBranches)
 			{
-
+				if (maxCount < 0) return t;
+				maxCount--;
 				float l = t.length.Evaluate(prog) *
 				t.lengthMult + UnityEngine.Random.Range(-t.lengthRandomness, t.lengthRandomness);
 
@@ -122,6 +124,7 @@ public class CustomTree : MonoBehaviour
 		{
 			for (int i = 0; i < tParent.branches.Count; i++)
 			{
+				if (allBranches[tParent.branches[i]].length < 0.01f) continue;
 				float countDown = 0;
 				float prog = t.startBranches;
 				if (t.branchRangeGlobal)
@@ -139,6 +142,8 @@ public class CustomTree : MonoBehaviour
 				bool hasAlternateControll = true;
 				while (prog < t.endBranches)
 				{
+					if (maxCount < 0) return t;
+					maxCount--;
 					//length
 					float l =
 						(t.length.Evaluate(prog) * 
@@ -158,10 +163,17 @@ public class CustomTree : MonoBehaviour
 					Vector3 offset = Vector3.zero;
 					//if (!t.isLeaf && allBranches[tParent.branches[i]].offsets.Count != 0) {
 					if (low < 0) low = 0;
-						//print(low + "," + high + "," + allBranches[tParent.branches[i]].offsets.Count);
+					int count = allBranches[tParent.branches[i]].offsets.Count;
+					//TODO: somehow when this throws an error without the if statement, unity crashes
+					//TODO: temporary workaround: count should never be 0
+					if (count != 0)
+					{
 						Vector3 lowPos = allBranches[tParent.branches[i]].offsets[low];
 						Vector3 highPos = allBranches[tParent.branches[i]].offsets[high];
 						offset = Vector3.Lerp(lowPos, highPos, between);//lerp
+					}
+					//print(low + "," + high + "," + allBranches[tParent.branches[i]].offsets.Count);
+
 					//}
 
 					//the position of the parent branch at the point the new branch will be created
