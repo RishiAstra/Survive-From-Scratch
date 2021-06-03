@@ -16,7 +16,7 @@ MonoBehaviour:
   VegetationInfoList:
   - Name: Grass 1
     VegetationItemID: 29cd487c-02f3-4141-8df2-c3c10f9927dd
-    EnableRuntimeSpawn: 1
+    EnableRuntimeSpawn: 0
     PrefabType: 0
     ShaderType: 1
     VegetationPrefab: {fileID: 5434873900184017879, guid: 47800a7d2b0c6a1468283dad81280c32,
@@ -684,9 +684,9 @@ MonoBehaviour:
     IncludeDetailMaskRuleList: []
     IncludeDetailLayer: 0
     Bounds:
-      m_Center: {x: -0.3739668, y: 0.3999999, z: 0.077973545}
-      m_Extent: {x: 0.8162962, y: 0.5000002, z: 0.8919929}
-    Volume: 2.9125228
+      m_Center: {x: -0.17321378, y: 0.43377644, z: 0.19551808}
+      m_Extent: {x: 0.9467086, y: 0.56622374, z: 1.1008972}
+    Volume: 4.721078
   UseTerrainTextures: 0
   TerrainTextureList:
   - Texture: {fileID: 2800000, guid: d2504622f77f75f41b1fbfcd72fc3dc3, type: 3}
@@ -1215,4 +1215,4 @@ MonoBehaviour:
     TextureWeight: 1
     TextureLayer: 7
     Enabled: 0
-  MaxVegetationItemHeight: 4.0000014
+  MaxVegetationItemHeight: 4.52979

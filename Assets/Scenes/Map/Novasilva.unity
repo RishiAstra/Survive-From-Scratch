@@ -482,51 +482,6 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
---- !u!28 &292247049
-Texture2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  serializedVersion: 2
-  m_Width: 2
-  m_Height: 2
-  m_CompleteImageSize: 20
-  m_MipsStripped: 0
-  m_TextureFormat: 4
-  m_MipCount: 2
-  m_IsReadable: 1
-  m_IsPreProcessed: 0
-  m_IgnoreMasterTextureLimit: 0
-  m_StreamingMipmaps: 0
-  m_StreamingMipmapsPriority: 0
-  m_VTOnly: 0
-  m_AlphaIsTransparency: 0
-  m_ImageCount: 1
-  m_TextureDimension: 2
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 0
-    m_WrapV: 0
-    m_WrapW: 0
-  m_LightmapFormat: 0
-  m_ColorSpace: 1
-  image data: 20
-  _typelessdata: cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
-  m_StreamData:
-    serializedVersion: 2
-    offset: 0
-    size: 0
-    path: 
 --- !u!1 &434125934
 GameObject:
   m_ObjectHideFlags: 0
@@ -822,13 +777,58 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1065698380}
-  m_LocalRotation: {x: -0.048664562, y: 0.95030195, z: -0.20451234, w: -0.22963609}
-  m_LocalPosition: {x: 0.96094894, y: 3.7008572, z: 1.5516701}
+  m_LocalRotation: {x: -0.0016728501, y: 0.99672693, z: -0.0779034, w: -0.021536602}
+  m_LocalPosition: {x: 32.95727, y: 9.137003, z: 57.36297}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1782145519}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!28 &1105659695
+Texture2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  serializedVersion: 2
+  m_Width: 2
+  m_Height: 2
+  m_CompleteImageSize: 20
+  m_MipsStripped: 0
+  m_TextureFormat: 4
+  m_MipCount: 2
+  m_IsReadable: 1
+  m_IsPreProcessed: 0
+  m_IgnoreMasterTextureLimit: 0
+  m_StreamingMipmaps: 0
+  m_StreamingMipmapsPriority: 0
+  m_VTOnly: 0
+  m_AlphaIsTransparency: 0
+  m_ImageCount: 1
+  m_TextureDimension: 2
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 0
+    m_WrapV: 0
+    m_WrapW: 0
+  m_LightmapFormat: 0
+  m_ColorSpace: 1
+  image data: 20
+  _typelessdata: cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd
+  m_StreamData:
+    serializedVersion: 2
+    offset: 0
+    size: 0
+    path: 
 --- !u!1 &1119626272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1195,7 +1195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed61dbb94209aa41b4a71bfa87265f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PersistentVegetationStoragePackage: {fileID: 0}
+  PersistentVegetationStoragePackage: {fileID: 11400000, guid: ba5b1e4c41c249c4fa8d0e8d6c9eeb88,
+    type: 2}
   VegetationSystem: {fileID: 1782145520}
   SelectedBrushIndex: 0
   BrushSize: 5
@@ -1206,7 +1207,7 @@ MonoBehaviour:
   DisablePersistentStorage: 0
   SelectedEditVegetationID: 
   SelectedPaintVegetationID: 
-  SelectedBakeVegetationID: 
+  SelectedBakeVegetationID: 29cd487c-02f3-4141-8df2-c3c10f9927dd
   SelectedStorageVegetationID: 
   SelectedPrecisionPaintingVegetationID: 
   PrecisionPaintingMode: 2
@@ -1401,17 +1402,17 @@ MonoBehaviour:
     UseTouchReact: 0
     GrassWetnesss: 0
     WindRange: 100
-  CurrentTabIndex: 3
-  LastTabIndex: 3
+  CurrentTabIndex: 1
+  LastTabIndex: 1
   AutomaticWakeup: 0
-  ThreadCount: 6
+  ThreadCount: 4
   FrustumKernelHandle: 0
   DistanceKernelHandle: 1
   FrusumMatrixShader: {fileID: 7200000, guid: c9e8dd058032cd842a131f9c59cb41a7, type: 3}
   MergeBufferKernelHandle: 0
   MergeBufferShader: {fileID: 7200000, guid: 51a742f1facfd234085f43a4404c9333, type: 3}
   RealTimeMaskTexture: {fileID: 0}
-  DummyMaskTexture: {fileID: 292247049}
+  DummyMaskTexture: {fileID: 1105659695}
   RealTimeMaskBand: 1
   RealTimeMaskEnabled: 0
   RealTimeMaskInvert: 0
