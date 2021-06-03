@@ -155,7 +155,14 @@ public class CustomTree : MonoBehaviour
 
 					float spaceTilltop = 1f - ((low + between) / allBranches[tParent.branches[i]].maxLength);// (allBranches[tParent.branches[i]].offsets.Count - 1f));
 
-					Vector3 offset = Vector3.Lerp(allBranches[tParent.branches[i]].offsets[low], allBranches[tParent.branches[i]].offsets[high], between);//lerp
+					Vector3 offset = Vector3.zero;
+					//if (!t.isLeaf && allBranches[tParent.branches[i]].offsets.Count != 0) {
+					if (low < 0) low = 0;
+						//print(low + "," + high + "," + allBranches[tParent.branches[i]].offsets.Count);
+						Vector3 lowPos = allBranches[tParent.branches[i]].offsets[low];
+						Vector3 highPos = allBranches[tParent.branches[i]].offsets[high];
+						offset = Vector3.Lerp(lowPos, highPos, between);//lerp
+					//}
 
 					//the position of the parent branch at the point the new branch will be created
 					Vector3 parentBranchPos = new Vector3(0, height, 0) + offset;
@@ -1103,7 +1110,7 @@ public class CustomTree : MonoBehaviour
 			if(lods.Length > numberOfLods)
 			{
 				List<LOD> templod = lods.ToList();
-				templod.RemoveRange(numberOfLods, lods.Length);
+				templod.RemoveRange(numberOfLods, lods.Length - numberOfLods);
 				lods = templod.ToArray();
 			}
 			if (lods.Length < numberOfLods)

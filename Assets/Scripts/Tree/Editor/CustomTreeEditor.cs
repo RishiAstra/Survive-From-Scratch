@@ -137,6 +137,7 @@ public class CustomTreeEditor : Editor
 	// Use this for initialization
 	public override void OnInspectorGUI()
 	{
+		if (me.layers == null) me.layers = new List<TreeLayer>();
 		if (me.layers.Count == 0)
 		{
 			me.layers.Add(new TreeLayer(me.layers.Count, new List<int>(), 1, 0.5f, 5, 1, 0));
