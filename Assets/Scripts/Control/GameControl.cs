@@ -19,7 +19,6 @@ using UnityEngine.EventSystems;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
-	public static KeyCode interactKeyCode = KeyCode.F;
 	public const int MAP_SCENE_INDEX_START = 1;
 
 	public static string saveDirectory { 

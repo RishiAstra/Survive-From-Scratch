@@ -221,7 +221,7 @@ public class DialogueControl : MonoBehaviour
     void Update()
     {
         if (dialogueMenuParent.gameObject.activeSelf) {
-            if(Input.GetKeyDown(GameControl.interactKeyCode) || Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            if(InputControl.InteractKeyDown() || Input.GetKeyUp(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
 		    {
                 TryAdvanceDialogue();
             }

@@ -51,7 +51,7 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 	public void OnMouseHoverFromRaycast()
 	{
 		if (onHover != null) onHover.SetActive(true);
-		if (Input.GetKeyDown(GameControl.interactKeyCode))
+		if (InputControl.InteractKeyDown())
 		{
 			
 			//dialogue = DialogueControl.GetPartFromFile(DialoguePath);
