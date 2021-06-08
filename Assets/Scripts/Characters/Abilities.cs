@@ -92,6 +92,10 @@ public class Abilities : MonoBehaviour, ISaveable
 	public void UseSkill(int i)
 	{
 		if (myStat.dead || !RegionSettings.main.allowCombat) return;
+		if(i < 0 || i >= skills.Count)
+		{
+			Debug.LogError("Skill index out of range. Index: " + i + ", skill count: " + skills.Count);
+		}
 		if (!busy && myStat.stat.GreaterThanOrEqualTo(skills[i].cost))
 		{
 			busy = true;
@@ -171,16 +175,17 @@ public class Abilities : MonoBehaviour, ISaveable
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public async void SetData(string data)
+	public void SetData(string data)
 	{
 		SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
 
 		this.skills = new List<UsableSkill>();
 		foreach (string st in s.skills)
 		{
-			AsyncOperationHandle<UsableSkill> a = Addressables.LoadAssetAsync<UsableSkill>("Assets/Skills/" + st + ".asset");
-			await Task.WhenAll(a.Task);
-			skills.Add(a.Result);
+			//AsyncOperationHandle<UsableSkill> a = Addressables.LoadAsset<UsableSkill>("Assets/Skills/" + st + ".asset");
+			//await Task.WhenAll(a.Task);
+
+			skills.Add(Resources.Load<UsableSkill>(st));
 		}
 		this.skillLvls = s.skillLvls;
 		//null checks

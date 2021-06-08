@@ -368,6 +368,7 @@ public class GameControl : MonoBehaviour
 		{
 			string sceneName = GetSceneNameFromIndex(savedSceneIndex);
 			yield return LoadMapLocation(sceneName);
+			MakeAndSetUpPlayer(false, false);
 			print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
 		}
 	}
@@ -419,12 +420,19 @@ public class GameControl : MonoBehaviour
 		}
 	}
 
-	public void BeginLoadMapLocation(string name)
-    {
-		StartCoroutine(LoadMapLocation(name));
-    }
+	//used by buttons
+	public void BeginLoadMapLocation(string sceneName)
+	{
+		StartCoroutine(LoadMapLocationAndResetPosition(sceneName));
+	}
 
-	public IEnumerator LoadMapLocation(string name)
+	IEnumerator LoadMapLocationAndResetPosition(string sceneName)
+	{
+		yield return LoadMapLocation(sceneName);
+		MakeAndSetUpPlayer(true, false);
+	}
+
+	public IEnumerator LoadMapLocation(string sceneName)
     {
 		if (!initialized) yield break;
 		//TODO:test this
@@ -466,7 +474,7 @@ public class GameControl : MonoBehaviour
 			yield return null;
 		}
 
-		string path = mapScenePath + "/" + name;
+		string path = mapScenePath + "/" + sceneName;
 
 		if (myPlayersId == -1)
 		{
@@ -517,7 +525,20 @@ public class GameControl : MonoBehaviour
 
 		HideMenus();
 
-		if(me == null) MakeAndSetUpPlayer();
+		//if(me == null)
+		//{
+		//	//if (respawn)
+		//	//{
+		//	//	MakeAndSetUpPlayer(true, true);
+		//	//}
+		//	//else
+		//	//{
+
+		//	//teleport but don't restore
+		//	MakeAndSetUpPlayer(true, false);
+		//	//}
+		//}
+
 		TimeControl.main.RemoveTimeScale("MAP_LOAD");
 		playerExists = true;
 		inWorld = true;
@@ -588,24 +609,29 @@ public class GameControl : MonoBehaviour
 	//{
 	//	CreatePlayerObject();
 	//}
-	void MakeAndSetUpPlayer(bool respawn = false)
+	void MakeAndSetUpPlayer(bool respawnPosition = false, bool restoreStats = false)
 	{
-		CreatePlayerObject(respawn);
+		CreatePlayerObject(respawnPosition, restoreStats);
 		//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
 
 	}
 
-	void Respawn()
+	void RespawnGUIOption()
 	{
 		//TODO: clear all statis effects, maybe just delete player and spawn a new one
 		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
-			SaveStuff();
-			MakeAndSetUpPlayer(true);
+			Respawn();
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
 		}
+	}
+
+	private void Respawn()
+	{
+		SaveStuff();
+		MakeAndSetUpPlayer(true, true);
 	}
 
 	void OnGUI()
@@ -615,7 +641,7 @@ public class GameControl : MonoBehaviour
 		//TODO: probably won't work with multiple player characters
 		if (inWorld && playerExists && me == null)
 		{// && me.ph.isMine
-			Respawn();
+			RespawnGUIOption();
 		}
 	}
 
@@ -918,9 +944,10 @@ public class GameControl : MonoBehaviour
 	/// <summary>
 	/// Creates a player GameObject
 	/// </summary>
-	/// <param name="respawn">should the player's stats and position be reset? NOTE: position is reset if teleported</param>
+	/// <param name="respawnPosition">should the player's position be reset? NOTE: position is reset if teleported</param>
+	/// <param name="restoreStats">should the player's hp etc be reset?</param>
 	/// <returns></returns>
-	GameObject CreatePlayerObject(bool respawn = false)
+	GameObject CreatePlayerObject(bool respawnPosition = false, bool restoreStats = false)
 	{
 		Vector3 position;
 		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
@@ -944,11 +971,10 @@ public class GameControl : MonoBehaviour
 				//TODO: consider below and if it should be also for loading player
 
 				//if player is in a different map location than saved (meaning that the player teleported)
-				if (respawn)
+				if (respawnPosition)
 				{
 					g.transform.position = position;
 					g.transform.rotation = Quaternion.identity;
-					g.GetComponent<StatScript>().ResetStats();//restore hp etc when respawning
 				}
 				else if (g.GetComponent<SaveEntity>().savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
 				{
@@ -956,7 +982,13 @@ public class GameControl : MonoBehaviour
 					g.transform.rotation = Quaternion.identity;
 					//g.GetComponent<StatScript>().resetOnStart = false;//don't give full hp etc every time the game starts
 				}
-				
+
+				if (restoreStats)
+				{
+					g.GetComponent<StatScript>().ResetStats();//restore hp etc when respawning
+
+				}
+
 
 				//resetting the stats is not good
 				//g.GetComponent<StatScript>().ResetStats();

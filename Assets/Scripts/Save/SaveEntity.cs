@@ -295,7 +295,8 @@ public class SaveEntity : Save, ISaveable
 		//btw because of the goto and for loops, the directory entitySceneMapPath must exist or function would have returned or errored
 
 		//put the data in target scene
-		string newPath = entitySceneMapPath + SceneManager.GetSceneByBuildIndex(nextScene) + ".json";
+		//use SceneUtility instead of SceneManager because SceneManager doesn't know about unloaded scenes
+		string newPath = entitySceneMapPath + Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(nextScene)) + ".json";
 		List<EntityMapData> targetMapData;
 
 		//if there is a file for entities in this scene, load it, otherwise create it

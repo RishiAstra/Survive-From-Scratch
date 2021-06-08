@@ -989,7 +989,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public async void SetData(string data)
+	public void SetData(string data)
 	{
 		SaveDataStat s = JsonConvert.DeserializeObject<SaveDataStat>(data);
 		//TODO: warning, sceneindex not considered here
@@ -1001,9 +1001,10 @@ public class StatScript : MonoBehaviour, ISaveable
 		this.statSkills = new List<StatSkill>();
 		foreach (string st in s.statSkills)
 		{
-			AsyncOperationHandle<StatSkill> a = Addressables.LoadAssetAsync<StatSkill>("Assets/Skills/" + st + ".asset");
-			await Task.WhenAll(a.Task);
-			statSkills.Add(a.Result);
+			//AsyncOperationHandle<StatSkill> a = Addressables.LoadAssetAsync<StatSkill>("Assets/Skills/" + st + ".asset");
+			//await Task.WhenAll(a.Task);
+
+			statSkills.Add(Resources.Load<StatSkill>(st));
 		}
 		this.skillLvls = s.skillLvls;
 		this.statRestores = s.statRestores;
