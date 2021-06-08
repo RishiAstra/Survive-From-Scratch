@@ -1,18 +1,2 @@
--made skill casting wheel
--added chicken (item)
--added beer (item)
--updated bartender shop deals
--made skills able to cost mana etc.
--added purple magic skill to skill tree
--updated skill tree ui
--updated hotbar ui
--updated descriptions for items to include restoring hp, mp, etc
--added initial loading screen
--pause game while loading initial or teleporting
--rebalanced hp and atk
--made player start where they left off when the game is opened and there is save data
--made hp etc regain by 1% every sec for every mob
--disallow skill wheel when mouse is not locked (prevent accidental pressing of alt when inventory is open to trigger it, etc)
--added dmg tint when player is attacked
--moved dmg text to ui (screen) when player is attacked
--made hp, xp, mp, eng text easier to see
+-fixed glitch where skills weren't loaded on game start
+-fixed glitch where player wasn't saved properly

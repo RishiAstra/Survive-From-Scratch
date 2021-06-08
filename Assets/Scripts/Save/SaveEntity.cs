@@ -296,7 +296,7 @@ public class SaveEntity : Save, ISaveable
 
 		//put the data in target scene
 		//use SceneUtility instead of SceneManager because SceneManager doesn't know about unloaded scenes
-		string newPath = entitySceneMapPath + Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(nextScene)) + ".json";
+		string newPath = entitySceneMapPath + nextScene + ".json";//Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(nextScene))
 		List<EntityMapData> targetMapData;
 
 		//if there is a file for entities in this scene, load it, otherwise create it

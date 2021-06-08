@@ -368,7 +368,7 @@ public class GameControl : MonoBehaviour
 		{
 			string sceneName = GetSceneNameFromIndex(savedSceneIndex);
 			yield return LoadMapLocation(sceneName);
-			MakeAndSetUpPlayer(false, false);
+			if(me == null) MakeAndSetUpPlayer(false, false);
 			print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
 		}
 	}
@@ -429,7 +429,15 @@ public class GameControl : MonoBehaviour
 	IEnumerator LoadMapLocationAndResetPosition(string sceneName)
 	{
 		yield return LoadMapLocation(sceneName);
-		MakeAndSetUpPlayer(true, false);
+		if(me == null)
+		{
+			MakeAndSetUpPlayer(true, false);
+		}
+		else
+		{
+			//TODO:warning: this supposes that the player component is on the root of player gameobject
+			ResetPositionOfPlayer(me.gameObject);
+		}
 	}
 
 	public IEnumerator LoadMapLocation(string sceneName)
@@ -941,6 +949,17 @@ public class GameControl : MonoBehaviour
 		myInv.put = true;
 	}
 
+	void ResetPositionOfPlayer(GameObject player)
+	{
+		Vector3 position;
+		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint>();
+		int chosen = UnityEngine.Random.Range(0, sp.Length);
+		position = sp[chosen].transform.position;
+
+		player.transform.position = position;
+		player.transform.rotation = sp[chosen].transform.rotation;
+	}
+
 	/// <summary>
 	/// Creates a player GameObject
 	/// </summary>
@@ -949,11 +968,12 @@ public class GameControl : MonoBehaviour
 	/// <returns></returns>
 	GameObject CreatePlayerObject(bool respawnPosition = false, bool restoreStats = false)
 	{
-		Vector3 position;
-		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
-		int chosen = UnityEngine.Random.Range (0, sp.Length);
-		position = sp [chosen].transform.position;
+		//Vector3 position;
+		//spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
+		//int chosen = UnityEngine.Random.Range (0, sp.Length);
+		//position = sp [chosen].transform.position;
 
+		//finds existing player data, makes a gameobject for it, and teleports it. SetupPlayer is called when loading the player
 		if(myPlayersId != -1)
 		{
 			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
@@ -973,13 +993,15 @@ public class GameControl : MonoBehaviour
 				//if player is in a different map location than saved (meaning that the player teleported)
 				if (respawnPosition)
 				{
-					g.transform.position = position;
-					g.transform.rotation = Quaternion.identity;
+					ResetPositionOfPlayer(g);
+					//g.transform.position = position;
+					//g.transform.rotation = Quaternion.identity;
 				}
 				else if (g.GetComponent<SaveEntity>().savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
 				{
-					g.transform.position = position;
-					g.transform.rotation = Quaternion.identity;
+					ResetPositionOfPlayer(g);
+					//g.transform.position = position;
+					//g.transform.rotation = Quaternion.identity;
 					//g.GetComponent<StatScript>().resetOnStart = false;//don't give full hp etc every time the game starts
 				}
 
@@ -1009,8 +1031,11 @@ public class GameControl : MonoBehaviour
 
 		Debug.LogWarning("Failed to find player, making new one");
 
+		//make a new player gameobject from no saved data
+
 		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
-		GameObject temp = Instantiate(playerPrefab, position, Quaternion.identity);
+		GameObject temp = Instantiate(playerPrefab);
+		ResetPositionOfPlayer(temp);
 		SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
 		return temp;
 
