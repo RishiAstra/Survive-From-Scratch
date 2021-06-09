@@ -65,6 +65,8 @@ public class ShopKeeper : MonoBehaviour, IMouseHoverable
 
 	private void Update()
 	{
+		if (GameControl.main == null) return;
+
 		if (GameControl.main.shopMenu.gameObject.activeSelf && InputControl.InteractKeyDown())
 		{
 			GameControl.main.shopMenu.TryDeactivateMenu();
