@@ -222,7 +222,7 @@ public class spawner : MonoBehaviour {
 		if(s != null)
 		{
 			//set level of spawned thing
-			int lvl = Random.Range(minSpawnLevel, maxSpawnLevel);
+			int lvl = Random.Range(minSpawnLevel, maxSpawnLevel + 1);
 			s.xp = StatScript.GetRequiredXPForLvl(lvl);
 		}
 

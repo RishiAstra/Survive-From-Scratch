@@ -759,15 +759,15 @@ MonoBehaviour:
   thingType: 1
   toSpawnType: Slime
   minSpawnLevel: 1
-  maxSpawnLevel: 0
+  maxSpawnLevel: 3
   spawnShape: 0
-  delay: 0
-  radius: 0
+  delay: 5
+  radius: 85
   xs: 0
   zs: 0
-  maxAmount: 0
-  initialAmount: 0
-  removeNullObjectsSpeed: 0
+  maxAmount: 100
+  initialAmount: 100
+  removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []

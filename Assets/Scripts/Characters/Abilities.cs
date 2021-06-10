@@ -198,6 +198,6 @@ public class Abilities : MonoBehaviour, ISaveable
 
 	public string GetFileNameBaseForSavingThisComponent()
 	{
-		return "Stats";
+		return "Abilities";
 	}
 }
