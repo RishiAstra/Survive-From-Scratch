@@ -36,6 +36,7 @@ public class spawner : MonoBehaviour {
 	//public GameObject spawnThis;
 	public ThingType thingType;
 	public string toSpawnType;
+	public int minSpawnLevel, maxSpawnLevel;
 	public SpawnShape spawnShape;
 	public float delay;
 	public float radius;
@@ -214,6 +215,17 @@ public class spawner : MonoBehaviour {
 		GameObject g = (GameObject)Instantiate(spawnThis, target, Quaternion.Euler(0, Random.Range(0, 360), 0));
 		spawnedThese.Add(g);
 		mySpawnedSaves.Add(g.GetComponent<Save>());
+
+
+		StatScript s = g.GetComponent<StatScript>();
+
+		if(s != null)
+		{
+			//set level of spawned thing
+			int lvl = Random.Range(minSpawnLevel, maxSpawnLevel);
+			s.xp = StatScript.GetRequiredXPForLvl(lvl);
+		}
+
 		//IDsOfSpawned.Add(g.GetComponent<Save>().id);
 	}
 
