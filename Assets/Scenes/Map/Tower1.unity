@@ -462,7 +462,7 @@ MonoBehaviour:
   LoadUnityTerrainDetails: 0
   SunDirectionalLight: {fileID: 33555933}
   DirectFromCell: 1
-  UseIndirectLoDs: 0
+  UseIndirectLoDs: 1
   DisableWhenSaving: 0
   VegetationPackageIndex: 0
   VegetationPackageList:
@@ -472,7 +472,7 @@ MonoBehaviour:
   WindSampler: {fileID: 1618282429}
   CurrentVegetationPackage: {fileID: 11400000, guid: 3d5f4f73ea1a22e498fb863d6d1bb0d5,
     type: 2}
-  IsDirty: 1
+  IsDirty: 0
   InitDone: 1
   TextureGrassPrefab: {fileID: 0}
   TexturePatchGrassPrefab: {fileID: 0}
@@ -490,7 +490,7 @@ MonoBehaviour:
   vegetationSettings:
     WaterLevel: 0
     RandomSeed: 0
-    VegetationDistance: 100
+    VegetationDistance: 25
     TreeDistance: 300
     BillboardDistance: 20000
     GrassDensity: 1
@@ -500,10 +500,10 @@ MonoBehaviour:
     LargeObjectDensity: 1
     VegetationScale: 1
     DistanceLod0: 34.142136
-    DistanceLod1: 54.142136
-    DistanceLod2: 134.14214
-    DistanceLod3: 434.14215
-    DistanceBillboards: 20400
+    DistanceLod1: 39.142136
+    DistanceLod2: 59.142136
+    DistanceLod3: 359.14215
+    DistanceBillboards: 20325
     LODFadeDistance: 20
     GrassLayer:
       serializedVersion: 2
@@ -551,7 +551,7 @@ MonoBehaviour:
   MergeBufferKernelHandle: 0
   MergeBufferShader: {fileID: 7200000, guid: 51a742f1facfd234085f43a4404c9333, type: 3}
   RealTimeMaskTexture: {fileID: 0}
-  DummyMaskTexture: {fileID: 1290721877}
+  DummyMaskTexture: {fileID: 1116336097}
   RealTimeMaskBand: 1
   RealTimeMaskEnabled: 0
   RealTimeMaskInvert: 0
@@ -560,9 +560,9 @@ MonoBehaviour:
   ShowColliderMenu: 0
   ShowNavMeshObstacleMenu: 0
   ShowShadowsMenu: 0
-  ShowLODMenu: 0
+  ShowLODMenu: 1
   ShowSpeedtreeMenu: 0
-  ShowTextureMaskRulesMenu: 1
+  ShowTextureMaskRulesMenu: 0
   ShowVegetationMaskMenu: 0
   ShowDetailMaskMenu: 0
   ShowTerrainTextureRulesMenu: 1
@@ -575,8 +575,8 @@ MonoBehaviour:
   ShowBillboardsMenu: 0
   ShowVegetationItemGrassMenu: 0
   ShowTouchReactMenu: 0
-  ShowGlobalVegetationItemSettingsMenu: 0
-  ShowAddVegetationItemMenu: 0
+  ShowGlobalVegetationItemSettingsMenu: 1
+  ShowAddVegetationItemMenu: 1
   TerrainMaterialOverridden: 0
   LocalTextureMaskTextureList: []
   RuntimeTextureMaskList: []
@@ -667,7 +667,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!28 &1290721877
+--- !u!28 &1116336097
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -735,8 +735,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618282429}
-  m_LocalRotation: {x: 0.17446946, y: -0.610794, z: 0.14139028, w: 0.7592759}
-  m_LocalPosition: {x: -22.972696, y: 15.232611, z: 40.907196}
+  m_LocalRotation: {x: 0.19908512, y: -0.41321796, z: 0.09404043, w: 0.8836133}
+  m_LocalPosition: {x: 6.7668524, y: 5.0350184, z: -1.3121805}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1058120152}
