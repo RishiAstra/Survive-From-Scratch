@@ -1162,6 +1162,7 @@ public class GameControl : MonoBehaviour
 		Save.SaveAllData();
 
 		spawner.SaveAllSpawners();
+		TowerControl.main.SaveTowers();
 		//SaveEntity.SaveAll();
 		//SaveItem.SaveAll();
 

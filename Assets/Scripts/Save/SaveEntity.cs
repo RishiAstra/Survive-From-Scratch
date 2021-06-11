@@ -116,6 +116,8 @@ public class SaveEntity : Save, ISaveable
 		if (i != null) toSaveTemp.Add(i);
 		PlayerControl p = GetComponent<PlayerControl>();
 		if (p != null) toSaveTemp.Add(p);
+		NPCControl c = GetComponent<NPCControl>();
+		if (c != null) toSaveTemp.Add(c);
 
 		toSave = toSaveTemp.ToArray();
 
@@ -707,7 +709,6 @@ public interface ISaveable
 	string GetFileNameBaseForSavingThisComponent();
 }
 
-//TODO: [in progress] split into inventory and abilities etc.
 [System.Serializable]
 public class SaveDataBasic
 {
@@ -718,6 +719,14 @@ public class SaveDataBasic
 	public int sceneIndex;
 	public Vector3 position;
 	public Vector3 rotation;
+}
+
+[System.Serializable]
+public class SaveDataNPCControl
+{
+	public bool guard;
+	public Vector3 guardPosition;
+	public float maxGuardDist;
 }
 
 [System.Serializable]

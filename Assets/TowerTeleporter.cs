@@ -1,11 +1,21 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class TowerTeleporter : MonoBehaviour, IMouseHoverable
 {
-	public Tower t;
+	public string towerName;
+	private int t;
 	public GameObject onHover;
+	
+	// Start is called before the first frame update
+	void Start()
+	{
+		onHover.SetActive(false);
+		t = TowerControl.main.GetTowerIndex(towerName);
+	}
 
 	public void OnMouseHoverFromRaycast()
 	{
@@ -13,6 +23,7 @@ public class TowerTeleporter : MonoBehaviour, IMouseHoverable
 
 		if (InputControl.InteractKeyDown())
 		{
+			t = TowerControl.main.GetTowerIndex(towerName);
 			TowerControl.main.SetTowerSelected(t);
 			TowerControl.main.SetButtonIndexSelected(0);
 			TowerControl.main.towerMenu.TryActivateMenu();
@@ -24,11 +35,7 @@ public class TowerTeleporter : MonoBehaviour, IMouseHoverable
 		onHover.SetActive(false);
 	}
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		onHover.SetActive(false);
-	}
+	
 
 	// Update is called once per frame
 	void Update()
@@ -39,11 +46,29 @@ public class TowerTeleporter : MonoBehaviour, IMouseHoverable
 		}
 	}
 
-	void OnValidate()
-	{
-		if (t.unlockedLevels.Count == 0) t.unlockedLevels.Add(true);
-		t.unlockedLevels[0] = true;
-	}
+	//void OnValidate()
+	//{
+	//	Tower tower = TowerControl.main.towers[t];
+	//	if (tower.unlockedLevels.Count == 0) tower.unlockedLevels.Add(true);
+	//	tower.unlockedLevels[0] = true;
+	//}
+
+	//string GetFileName()
+	//{
+	//	return GetFileDirectory() + t.name;
+	//}
+
+	//private static string GetFileDirectory()
+	//{
+	//	return GameControl.saveDirectory + "towers/";
+	//}
+
+	//void OnDestroy()
+	//{
+	//	Directory.CreateDirectory(GetFileDirectory());
+	//	File.WriteAllText(GetFileName(), JsonConvert.SerializeObject(t, Formatting.Indented));
+	//}
+
 }
 
 [System.Serializable]

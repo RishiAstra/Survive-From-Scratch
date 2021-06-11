@@ -702,6 +702,75 @@ MonoBehaviour:
   VegetationSystem: {fileID: 1058120151}
   TerrainHeatMapMaterial: {fileID: 2100000, guid: 2e000a0a7a300fd48a825e4f9741350e,
     type: 2}
+--- !u!1001 &1096870596
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8872861627908875764, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_Name
+      value: Turris Aetheris
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -71.46167
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.527007
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.43435955
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 43a75f4d3bd4be1428c5a9e31aaad778, type: 3}
 --- !u!1 &1104557046
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,13 +917,17 @@ MonoBehaviour:
   radius: 85
   xs: 0
   zs: 0
-  maxAmount: 100
-  initialAmount: 100
+  maxAmount: 50
+  initialAmount: 50
   removeNullObjectsSpeed: 1
   IDsOfSpawned: 
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!114 &1128826922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,6 +941,130 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 10
+--- !u!1 &1353413531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1353413533}
+  - component: {fileID: 1353413532}
+  m_Layer: 0
+  m_Name: NextLevelDoor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1353413532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353413531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e73e7ead75d07f4bac542205f184fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerName: Turris Aetheris
+  levelToUnlock: 2
+  spawners:
+  - {fileID: 1460704479}
+--- !u!4 &1353413533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353413531}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -60, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1460704478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1460704481}
+  - component: {fileID: 1460704480}
+  - component: {fileID: 1460704479}
+  m_Layer: 0
+  m_Name: Guard Slime spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1460704479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460704478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43e2c94a924fc54fbfa9e4bf4e3d7b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thingType: 1
+  toSpawnType: Slime
+  minSpawnLevel: 5
+  maxSpawnLevel: 5
+  spawnShape: 0
+  delay: 1e+16
+  radius: 10
+  xs: 0
+  zs: 0
+  maxAmount: 5
+  initialAmount: 5
+  removeNullObjectsSpeed: 1
+  IDsOfSpawned: 
+  heightOffset: 0
+  spawnedThese: []
+  mySpawnedSaves: []
+  initialized: 0
+  guard: 1
+  guardPosition: {fileID: 1460704481}
+  maxGuardDist: 10
+--- !u!114 &1460704480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460704478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 12
+--- !u!4 &1460704481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460704478}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -60, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1618282429
 GameObject:
   m_ObjectHideFlags: 0

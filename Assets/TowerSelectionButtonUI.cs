@@ -36,6 +36,6 @@ public class TowerSelectionButtonUI : MonoBehaviour
     void Update()
     {
         //show disabled tint if not allwoed to select this tower level
-        disabledTint.SetActive(!TowerControl.main.t.unlockedLevels[index]);
+        disabledTint.SetActive(!TowerControl.main.towers[TowerControl.main.t].unlockedLevels[index]);
     }
 }

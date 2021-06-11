@@ -10390,6 +10390,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352de8aba24c0d445af5a32080374957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towers:
+  - name: Turris Aetheris
+    unlockedLevels: 010000
   towerMenu: {fileID: 125775333}
   levelSelectedText: {fileID: 424634952}
   buttonParent: {fileID: 1305092677}
@@ -10397,9 +10400,7 @@ MonoBehaviour:
     type: 3}
   buttons: []
   buttonIndexSelected: 0
-  t:
-    name: 
-    unlockedLevels: 
+  t: 0
 --- !u!1 &778756318
 GameObject:
   m_ObjectHideFlags: 0

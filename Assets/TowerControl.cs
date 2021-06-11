@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,38 +11,91 @@ public class TowerControl : MonoBehaviour
 {
     public static TowerControl main;
 
+    public List<Tower> towers;
     public Menu towerMenu;
     public TMP_Text levelSelectedText;
     public RectTransform buttonParent;
     public GameObject towerLevelButton;
     public List<TowerSelectionButtonUI> buttons;
     public int buttonIndexSelected;
-    public Tower t;
+    public int t;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
+	{
+		if (main != null) Debug.LogError("two TowerControl");
+		main = this;
+
+		LoadTowers();
+	}
+
+	private void LoadTowers()
+	{
+		for (int i = 0; i < towers.Count; i++)
+		{
+			//if a tower has been saved, load it
+			if (File.Exists(GetFileName(towers[i])))
+			{
+				towers[i] = JsonConvert.DeserializeObject<Tower>(File.ReadAllText(GetFileName(towers[i])));
+			}
+		}
+	}
+
+	public int GetTowerIndex(string towerName)
+	{
+		for(int i = 0; i < towers.Count; i++)
+		{
+            if(towers[i].name == towerName)
+			{
+                return i;
+			}
+		}
+
+        Debug.LogError("Tower not found: " + towerName);
+        return -1;
+	}
+
+	string GetFileName(Tower tower)
     {
-        if (main != null) Debug.LogError("two TowerControl");
-        main = this;
+        return GetFileDirectory() + tower.name + ".json";
     }
 
-    public void SetTowerSelected(Tower tower)
+    private static string GetFileDirectory()
+    {
+        return GameControl.saveDirectory + "towers/";
+    }
+
+    void OnDestroy()
+	{
+		SaveTowers();
+	}
+
+	public void SaveTowers()
+	{
+		Directory.CreateDirectory(GetFileDirectory());
+		for (int i = 0; i < towers.Count; i++)
+		{
+			File.WriteAllText(GetFileName(towers[i]), JsonConvert.SerializeObject(towers[t], Formatting.Indented));
+		}
+	}
+
+	public void SetTowerSelected(int tower)
 	{
         t = tower;
         //set buttons count
 
-        while (buttons.Count > t.unlockedLevels.Count)
+        while (buttons.Count > towers[t].unlockedLevels.Count)
 		{
             Destroy(buttons[buttons.Count - 1].gameObject);
             buttons.RemoveAt(buttons.Count - 1);
 		}
 
-        for(int i = buttons.Count; i < t.unlockedLevels.Count; i++)
+        for(int i = buttons.Count; i < towers[t].unlockedLevels.Count; i++)
 		{
             GameObject g = Instantiate(towerLevelButton, buttonParent);
             buttons.Add(g.GetComponent<TowerSelectionButtonUI>());
 		}
 
-        for (int i = 0; i < t.unlockedLevels.Count; i++)
+        for (int i = 0; i < towers[t].unlockedLevels.Count; i++)
         {
             buttons[i].SetIndex(i);
             Button b = buttons[i].GetComponent<Button>();
@@ -56,8 +112,8 @@ public class TowerControl : MonoBehaviour
 
     public void RefreshSelectedTint()
 	{
-        if (t == null) return;
-        for (int i = 0; i < t.unlockedLevels.Count; i++)
+        if (towers[t] == null) return;
+        for (int i = 0; i < towers[t].unlockedLevels.Count; i++)
         {
             buttons[i].SetSelected(false);
         }
@@ -75,22 +131,22 @@ public class TowerControl : MonoBehaviour
 
 	private void CheckButtonIndexSelected()
 	{
-        if(t == null)
+        if(towers[t] == null)
 		{
             buttonIndexSelected = 0;
             return;
 		}
 		if (buttonIndexSelected < 0) buttonIndexSelected = 0;
-		if (buttonIndexSelected >= t.unlockedLevels.Count) buttonIndexSelected = t.unlockedLevels.Count - 1;
+		if (buttonIndexSelected >= towers[t].unlockedLevels.Count) buttonIndexSelected = towers[t].unlockedLevels.Count - 1;
 	}
 
     public void EnterCurrentLevel()
 	{
         //if within range etc, and unlocked that level
-        if(t != null && t.unlockedLevels.Count > 0 && buttonIndexSelected >= 0 && buttonIndexSelected < t.unlockedLevels.Count && t.unlockedLevels[buttonIndexSelected])
+        if(towers[t] != null && towers[t].unlockedLevels.Count > 0 && buttonIndexSelected >= 0 && buttonIndexSelected < towers[t].unlockedLevels.Count && towers[t].unlockedLevels[buttonIndexSelected])
 		{
             //levels start at 1, not 0, so an offset of 1 is required
-            GameControl.main.BeginLoadMapLocation(t.GetLevelSceneName(buttonIndexSelected + 1));
+            GameControl.main.BeginLoadMapLocation(towers[t].GetLevelSceneName(buttonIndexSelected + 1));
 		}
 	}
 

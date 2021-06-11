@@ -43,7 +43,7 @@ public class spawner : MonoBehaviour {
 	public float xs, zs;
 	public int maxAmount;
 	public int initialAmount;
-	public int removeNullObjectsSpeed;
+	public float removeNullObjectsSpeed;
 	public List<long> IDsOfSpawned;
 	public float heightOffset;
 
@@ -53,6 +53,11 @@ public class spawner : MonoBehaviour {
 	private float removeNullTimeLeft;
 	private GameObject spawnThis;
 	private PersistantSaveID myId;
+	public bool initialized;
+
+	public bool guard;
+	public Transform guardPosition;
+	public float maxGuardDist;
 
 	public static string savePath
 	{
@@ -93,6 +98,7 @@ public class spawner : MonoBehaviour {
 		{
 			SpawnThing();
 		}
+		initialized = true;
 		yield return null;
 	}
 
@@ -225,6 +231,19 @@ public class spawner : MonoBehaviour {
 			int lvl = Random.Range(minSpawnLevel, maxSpawnLevel + 1);
 			s.xp = StatScript.GetRequiredXPForLvl(lvl);
 		}
+
+		if (guard)
+		{
+			NPCControl ctrl = g.GetComponent<NPCControl>();
+			if(ctrl != null)
+			{
+				ctrl.guard = guard;
+				ctrl.guardPosition = guardPosition.position;
+				ctrl.maxGuardDist = maxGuardDist;	
+			}
+		}
+
+		
 
 		//IDsOfSpawned.Add(g.GetComponent<Save>().id);
 	}
