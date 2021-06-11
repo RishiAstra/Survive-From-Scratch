@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: a027b03fedc2f1342b9cdf639c3937ad,
+  m_LightingDataAsset: {fileID: 112000000, guid: 5148c76913ec0cf49b92266de3cb27b9,
     type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: 377deebfbf3a2d64288f9081f0014130,
     type: 2}
@@ -385,6 +385,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thingType: 1
   toSpawnType: Slime
+  minSpawnLevel: 0
+  maxSpawnLevel: 0
   spawnShape: 0
   delay: 0.5
   radius: 50
@@ -397,6 +399,10 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!4 &233569250
 Transform:
   m_ObjectHideFlags: 0
@@ -470,6 +476,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thingType: 1
   toSpawnType: Tree 1
+  minSpawnLevel: 0
+  maxSpawnLevel: 0
   spawnShape: 1
   delay: 0.01
   radius: 100
@@ -482,6 +490,10 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!1 &434125934
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +635,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811624385}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 50, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -831,6 +843,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thingType: 0
   toSpawnType: Rock
+  minSpawnLevel: 0
+  maxSpawnLevel: 0
   spawnShape: 1
   delay: 0.01
   radius: 100
@@ -843,6 +857,10 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!1 &1273551575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,6 +1043,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thingType: 1
   toSpawnType: Rin
+  minSpawnLevel: 0
+  maxSpawnLevel: 0
   spawnShape: 0
   delay: 4
   radius: 10
@@ -1037,6 +1057,10 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!4 &1767101029
 Transform:
   m_ObjectHideFlags: 0
@@ -1386,6 +1410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thingType: 1
   toSpawnType: Spider
+  minSpawnLevel: 0
+  maxSpawnLevel: 0
   spawnShape: 0
   delay: 0.5
   radius: 60
@@ -1398,6 +1424,10 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!4 &1803451688
 Transform:
   m_ObjectHideFlags: 0
@@ -1629,6 +1659,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thingType: 1
   toSpawnType: Golem
+  minSpawnLevel: 0
+  maxSpawnLevel: 0
   spawnShape: 0
   delay: 3
   radius: 50
@@ -1641,6 +1673,10 @@ MonoBehaviour:
   heightOffset: 0
   spawnedThese: []
   mySpawnedSaves: []
+  initialized: 0
+  guard: 0
+  guardPosition: {fileID: 0}
+  maxGuardDist: 0
 --- !u!4 &2106121465
 Transform:
   m_ObjectHideFlags: 0
