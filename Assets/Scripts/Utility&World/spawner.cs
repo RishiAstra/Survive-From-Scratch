@@ -155,10 +155,23 @@ public class spawner : MonoBehaviour {
 			{
 				spawnedThese.Add(s.gameObject);
 				mySpawnedSaves.Add(s);
+				AddGuardIconIfGuard(s.gameObject);
+
 				amountRemembered++;
 			}
 		}
 		print("Remembered " + amountRemembered + " of type: " + type);
+	}
+
+	private void AddGuardIconIfGuard(GameObject g)
+	{
+		if (guard)
+		{
+			GameObject guardIconG = Instantiate(TowerControl.main.guardIconGameObject, g.transform);
+			//print(s.GetComponent<HPBar>().hpHolder.localPosition + "|" + TowerControl.main.guardIconGameObject.transform.localPosition);
+			guardIconG.transform.localPosition = g.GetComponent<HPBar>().hpHolder.localPosition + TowerControl.main.guardIconGameObject.transform.localPosition;
+			guardIconG.transform.localRotation = Quaternion.identity;
+		}
 	}
 
 	// Update is called once per frame
@@ -222,6 +235,7 @@ public class spawner : MonoBehaviour {
 		spawnedThese.Add(g);
 		mySpawnedSaves.Add(g.GetComponent<Save>());
 
+		AddGuardIconIfGuard(g);
 
 		StatScript s = g.GetComponent<StatScript>();
 

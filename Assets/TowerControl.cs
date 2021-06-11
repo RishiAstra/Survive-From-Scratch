@@ -10,15 +10,18 @@ using UnityEngine.UI;
 public class TowerControl : MonoBehaviour
 {
     public static TowerControl main;
+    public static List<TowerLevelUnlocker> towerLevelUnlockers = new List<TowerLevelUnlocker>();
 
     public List<Tower> towers;
     public Menu towerMenu;
     public TMP_Text levelSelectedText;
+    public TMP_Text guardText;//text to tell the player how many guards killed / how many remaining
     public RectTransform buttonParent;
     public GameObject towerLevelButton;
     public List<TowerSelectionButtonUI> buttons;
     public int buttonIndexSelected;
     public int t;
+    public GameObject guardIconGameObject;
     // Start is called before the first frame update
     void Awake()
 	{
@@ -153,6 +156,12 @@ public class TowerControl : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        
+        int monstersLeft = 0;
+        foreach(TowerLevelUnlocker tu in towerLevelUnlockers)
+		{
+            monstersLeft += tu.GetMonstersLeft();
+		}
+
+        guardText.text = (monstersLeft > 0) ? (monstersLeft + " monsters left") : "";
     }
 }

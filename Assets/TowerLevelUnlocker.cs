@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,10 +11,15 @@ public class TowerLevelUnlocker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        TowerControl.towerLevelUnlockers.Add(this);
     }
 
-    void CheckIfUnlock()
+	private void OnDestroy()
+	{
+        TowerControl.towerLevelUnlockers.Remove(this);
+	}
+
+	void CheckIfUnlock()
 	{
         bool ok = true;
         for(int i = 0; i < spawners.Count; i++)
@@ -41,4 +47,14 @@ public class TowerLevelUnlocker : MonoBehaviour
             CheckIfUnlock();
 		}
     }
+
+	public int GetMonstersLeft()
+	{
+        int r = 0;
+        foreach(spawner sp in spawners)
+		{
+            r += sp.spawnedThese.Count;
+		}
+        return r;
+	}
 }
