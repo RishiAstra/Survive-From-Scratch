@@ -105,7 +105,7 @@ public class GameControl : MonoBehaviour
 	private Player me;
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
-	private IMouseHoverable previouslyMouseHovered;
+	public IMouseHoverable previouslyMouseHovered;
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
@@ -816,8 +816,11 @@ public class GameControl : MonoBehaviour
 		}
 	}
 
-    private void LiveFunctions()
+	private void LiveFunctions()
 	{
+		//null check because interface isn't set to null when destroyed
+		UnityEngine.Object o = previouslyMouseHovered as UnityEngine.Object;
+		if (o == null || o.Equals(null)) previouslyMouseHovered = null;
 		if (!waitBeforeInteractEnabled && !MenuActive() && Cursor.lockState == CursorLockMode.Locked)
 		{
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
@@ -854,6 +857,7 @@ public class GameControl : MonoBehaviour
 			else
 			{
 				if (previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
+				itemHoverInfo.SetActive(false);
 			}
 
 			//itemHoverInfo.SetActive(foundIMouseHoverable);
