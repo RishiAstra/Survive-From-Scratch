@@ -4991,7 +4991,7 @@ GameObject:
   - component: {fileID: 380291275}
   - component: {fileID: 380291274}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: Tower1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5010,10 +5010,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   t:
-    name: 
-    unlockedLevels: 
+    name: Tower
+    unlockedLevels: 0100
   onHover: {fileID: 2080448895}
-  towerMenu: {fileID: 0}
 --- !u!4 &380291275
 Transform:
   m_ObjectHideFlags: 0

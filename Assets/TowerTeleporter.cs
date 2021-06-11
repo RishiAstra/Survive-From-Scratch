@@ -13,7 +13,8 @@ public class TowerTeleporter : MonoBehaviour, IMouseHoverable
 
 		if (InputControl.InteractKeyDown())
 		{
-            TowerControl.main.towerMenu.ToggleMenu();
+            TowerControl.main.SetTowerSelected(t);
+            TowerControl.main.towerMenu.TryActivateMenu();
 		}
 	}
 
@@ -36,6 +37,12 @@ public class TowerTeleporter : MonoBehaviour, IMouseHoverable
             TowerControl.main.towerMenu.TryDeactivateMenu();
 		}
     }
+
+    void OnValidate()
+	{
+        if (t.unlockedLevels.Count == 0) t.unlockedLevels.Add(true);
+        t.unlockedLevels[0] = true;
+	}
 }
 
 [System.Serializable]
