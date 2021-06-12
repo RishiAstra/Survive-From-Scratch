@@ -136,6 +136,7 @@ Material:
     - _GlossyReflections: 0
     - _Length: 0
     - _Metallic: 0
+    - _NoiseScale: 0.5
     - _OcclusionStrength: 1
     - _Offset: 1000
     - _Parallax: 0.005
@@ -155,7 +156,7 @@ Material:
     - _WavesSpeed: 1
     - _Wetness: 0
     - _WindAffectDistance: 50
-    - _WindAmount: 0.052
+    - _WindAmount: 0.5
     - _WorkflowMode: 1
     - _ZWrite: 1
     - __dirty: 0
@@ -167,4 +168,5 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _NormalVector: {r: 0, g: 0, b: 1, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Windspeed: {r: 0.1, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []
