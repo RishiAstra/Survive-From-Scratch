@@ -26,9 +26,13 @@ public class SettingsControl : MonoBehaviour
     public TMP_InputField grassDensityField;
     //public Slider bloomThresholdSlider;
     //public Slider bloomThresholdSlider;
+    public UserQualitySettings settings;
 
     private UnityEngine.Rendering.Universal.Bloom bloom;
-    private 
+
+    //TODO: add settings presets of the type UserQualitySettings in a list that user can choose from and save
+    //TODO: if there is no settings, use default (must make default)
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,13 +48,11 @@ public class SettingsControl : MonoBehaviour
 
         presetDropdown.onValueChanged.AddListener(OnQualityPresetSelected);
 
-        OnQualityPresetSelected(0);//load 1st quality
-
-        bloomEnableToggle.isOn = bloom.active;
-        bloomEnableToggle.onValueChanged.AddListener((bool value) => { bloom.active = value; });
-        bloomIntensitySlider.value = bloom.intensity.value;
-        bloomIntensitySlider.onValueChanged.AddListener((float value) => { bloom.intensity.value = value; bloomIntensityField.text = value.ToString("F2"); });
-        bloomIntensityField.text = bloom.intensity.value.ToString("F2");
+        bloomEnableToggle.isOn = settings.bloomEnabled;
+        bloomEnableToggle.onValueChanged.AddListener((bool value) => { settings.bloomEnabled = value; });
+        bloomIntensitySlider.value = settings.bloomIntensity;
+        bloomIntensitySlider.onValueChanged.AddListener((float value) => { settings.bloomIntensity = value; bloomIntensityField.text = value.ToString("F2"); });
+        bloomIntensityField.text = settings.bloomIntensity.ToString("F2");
         bloomIntensityField.onValueChanged.AddListener((string text) => 
             {
                 float value;
@@ -63,7 +65,9 @@ public class SettingsControl : MonoBehaviour
             }
         );
 
-        grassDensitySlider.onValueChanged.AddListener((float value) => { UpdateGrassDensity(); grassDensityField.text = value.ToString("F2"); });
+        grassDensitySlider.value = settings.grassDensity;
+        grassDensitySlider.onValueChanged.AddListener((float value) => { settings.grassDensity = value; grassDensityField.text = value.ToString("F2"); });
+        grassDensityField.text = settings.grassDensity.ToString("F2");
         grassDensityField.onValueChanged.AddListener((string text) =>
         {
             float value;
@@ -71,26 +75,35 @@ public class SettingsControl : MonoBehaviour
             {
                 value = Mathf.Clamp(value, grassDensitySlider.minValue, grassDensitySlider.maxValue);
                 grassDensitySlider.value = value;
-                UpdateGrassDensity();
+                settings.grassDensity = value;
             }
         }
         );
     }
 
+    public void ApplySettings()
+	{
+        SetQualityPreset(settings.qualitySelected);
+        bloom.active = settings.bloomEnabled;
+        bloom.intensity.value = settings.bloomIntensity;
+        UpdateGrassDensity(settings.grassDensity);
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		UpdateGrassDensity();
+        ApplySettings();
+		//UpdateGrassDensity();
 	}
 
-	private void UpdateGrassDensity()
+	private void UpdateGrassDensity(float value)
 	{
 		VegetationStudioManager m = FindObjectOfType<VegetationStudioManager>();
         if(m != null)
 		{
             foreach (VegetationSystem v in m.VegetationSystemList)
 		    {
-			    v.SetGrassDensity(grassDensitySlider.value);
-                v.SetPlantDensity(grassDensitySlider.value);
+			    v.SetGrassDensity(value);
+                v.SetPlantDensity(value);
 		    }
 		}
 		
@@ -98,13 +111,27 @@ public class SettingsControl : MonoBehaviour
 
 	void OnQualityPresetSelected(int index)
 	{
+        settings.qualitySelected = index;
+	}
+
+    void SetQualityPreset(int index)
+    {
         QualitySettings.SetQualityLevel(index);
         GraphicsSettings.renderPipelineAsset = QualitySettings.GetRenderPipelineAssetAt(index);
-	}
+    }
 
     // Update is called once per frame
     void Update()
     {
         //if(Input.)
     }
+}
+
+
+public class UserQualitySettings
+{
+    public int qualitySelected;
+    public bool bloomEnabled;
+    public float bloomIntensity;
+    public float grassDensity;
 }
