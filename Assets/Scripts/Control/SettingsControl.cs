@@ -11,11 +11,15 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using AwesomeTechnologies.VegetationStudio;
 using AwesomeTechnologies;
+using System.IO;
+using Newtonsoft.Json;
 
 public class SettingsControl : MonoBehaviour
 {
 
     public Volume mainPostProcessingVolume;
+    [Space(10)]
+    public TMP_InputField nameField;
     [Space(10)]
     public TMP_Dropdown presetDropdown;
     [Space(10)]
@@ -27,6 +31,8 @@ public class SettingsControl : MonoBehaviour
     //public Slider bloomThresholdSlider;
     //public Slider bloomThresholdSlider;
     public UserQualitySettings settings;
+    public List<UserQualitySettings> settingsPresets;
+    public List<UserQualitySettings> defaultSettingsPresets;
 
     private UnityEngine.Rendering.Universal.Bloom bloom;
 
@@ -38,6 +44,8 @@ public class SettingsControl : MonoBehaviour
     {
         mainPostProcessingVolume.profile.TryGet(out bloom);
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        nameField.onValueChanged.AddListener((string text) => settings.name = text);
 
         presetDropdown.options = new List<TMP_Dropdown.OptionData>();
 		string[] names = QualitySettings.names;
@@ -81,6 +89,33 @@ public class SettingsControl : MonoBehaviour
         );
     }
 
+    public void LoadSettings()
+	{
+        settingsPresets = new List<UserQualitySettings>();
+
+        //read the custom presets
+		if (Directory.Exists(GetSettingsSaveDirectory()))
+		{
+            foreach(string s in Directory.GetFiles(GetSettingsSaveDirectory()))
+			{
+                settingsPresets.Add(JsonConvert.DeserializeObject<UserQualitySettings>(File.ReadAllText(s)));
+			}
+		}
+	}
+
+    public void SaveSettings()
+	{
+		if (Directory.Exists(GetSettingsSaveDirectory()))
+		{
+            Directory.Delete(GetSettingsSaveDirectory(), true);
+		}
+        Directory.CreateDirectory(GetSettingsSaveDirectory());
+        foreach(UserQualitySettings s in settingsPresets)
+		{
+            File.WriteAllText(s.name, JsonConvert.SerializeObject(s, Formatting.Indented));
+		}
+	}
+
     public void ApplySettings()
 	{
         SetQualityPreset(settings.qualitySelected);
@@ -120,6 +155,11 @@ public class SettingsControl : MonoBehaviour
         GraphicsSettings.renderPipelineAsset = QualitySettings.GetRenderPipelineAssetAt(index);
     }
 
+    public string GetSettingsSaveDirectory()
+	{
+        return GameControl.saveDirectory + "/Settings";
+	}
+
     // Update is called once per frame
     void Update()
     {
@@ -127,9 +167,10 @@ public class SettingsControl : MonoBehaviour
     }
 }
 
-
+[System.Serializable]
 public class UserQualitySettings
 {
+    public string name;
     public int qualitySelected;
     public bool bloomEnabled;
     public float bloomIntensity;
