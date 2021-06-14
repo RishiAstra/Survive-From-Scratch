@@ -89,7 +89,7 @@ public class Tower
 
 	public string GetLevelSceneName(int level)
 	{
-		return name + level;
+		return name + "/" + level;
 	}
 
 }
