@@ -136,7 +136,22 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5934777142513072836, guid: cb52450719e2c0c408e4f0cca4869971,
         type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934777142513072836, guid: cb52450719e2c0c408e4f0cca4869971,
+        type: 3}
       propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934777142513072836, guid: cb52450719e2c0c408e4f0cca4869971,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5934777142513072836, guid: cb52450719e2c0c408e4f0cca4869971,
+        type: 3}
+      propertyPath: m_Shadows.m_Type
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6040214486482670386, guid: cb52450719e2c0c408e4f0cca4869971,

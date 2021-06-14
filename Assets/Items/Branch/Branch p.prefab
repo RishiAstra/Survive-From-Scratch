@@ -55,6 +55,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -79,6 +80,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1277800778933602
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,6 +143,7 @@ GameObject:
   - component: {fileID: 136019118160639470}
   - component: {fileID: -2399120455763609770}
   - component: {fileID: 2596916902793902107}
+  - component: {fileID: -9048520766929667676}
   m_Layer: 0
   m_Name: Branch p
   m_TagString: Untagged
@@ -188,6 +191,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -212,6 +216,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &114532223253607022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,10 +231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 1
   myID: {fileID: 0}
-  sleepThreshold: 0.03
-  contacts: 0
-  ac: 0
-  checkRad: 0
 --- !u!54 &54384034884293548
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -313,8 +314,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  a: {fileID: 0}
   myID: {fileID: 0}
+--- !u!114 &-9048520766929667676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382041385227520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdc04f35daeb77408d2e9a274b4e12a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3383507612039533132
 GameObject:
   m_ObjectHideFlags: 0

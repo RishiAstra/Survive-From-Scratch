@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 //TODO: add good wandering behavior
-public class NPCControl : MonoBehaviour
+public class NPCControl : MonoBehaviour, ISaveable
 {
 	public LayerMask targetMask;
 	public Movement movement;
@@ -12,6 +17,10 @@ public class NPCControl : MonoBehaviour
 	public float checkAttackRadius;
 
 	public List<StatScript> targets;
+
+	public bool guard;
+	public Vector3 guardPosition;
+	public float maxGuardDist;
 
 	private Abilities abilities;
 
@@ -93,8 +102,17 @@ public class NPCControl : MonoBehaviour
 		}
 		else
 		{
-			//movement.SetAngle(targetAngle);
-			movement.SetDirection(Vector3.zero);
+			//if guarding a position, move back if too far
+			if(guard && (transform.position - guardPosition).sqrMagnitude > maxGuardDist * maxGuardDist)
+			{
+				movement.SetDirection((guardPosition - transform.position).normalized);
+				movement.SetAngleFromDirection();
+			}
+			else
+			{
+				//movement.SetAngle(targetAngle);
+				movement.SetDirection(Vector3.zero);
+			}
 		}
 	}
 	
@@ -103,6 +121,9 @@ public class NPCControl : MonoBehaviour
 		targets = new List<StatScript>();
 		foreach(Collider col in Physics.OverlapSphere(transform.position, spotRange, targetMask))
 		{
+			if(guard && (col.transform.position - guardPosition).sqrMagnitude > maxGuardDist * maxGuardDist){
+				continue;//don't target stuff too far
+			}
 			TagScript tagScript = col.GetComponent<TagScript>();
 			if(tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 			{
@@ -114,5 +135,30 @@ public class NPCControl : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public string GetData()
+	{
+		SaveDataNPCControl s = new SaveDataNPCControl()
+		{
+			guard = this.guard,
+			guardPosition = this.guardPosition,
+			maxGuardDist = this.maxGuardDist
+		};
+
+		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+	}
+
+	public void SetData(string data)
+	{
+		SaveDataNPCControl s = JsonConvert.DeserializeObject<SaveDataNPCControl>(data);
+		this.guard = s.guard;
+		this.guardPosition = s.guardPosition;
+		this.maxGuardDist = s.maxGuardDist;
+	}
+
+	public string GetFileNameBaseForSavingThisComponent()
+	{
+		return "NPC_control";
 	}
 }

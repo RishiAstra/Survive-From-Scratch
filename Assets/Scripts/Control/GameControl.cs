@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -15,7 +19,7 @@ using UnityEngine.EventSystems;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
-	public static KeyCode interactKeyCode = KeyCode.F;
+	public const int MAP_SCENE_INDEX_START = 1;
 
 	public static string saveDirectory { 
 		get { return Application.persistentDataPath + "/" + Application.version + "/"; }
@@ -77,8 +81,15 @@ public class GameControl : MonoBehaviour
 	public TextMeshProUGUI itemHoverNameText;
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
 	public bool itemHoverPositionMatch;
+
 	public Image mainHpBar;
 	public TextMeshProUGUI mainHpText;
+	public Image mainMpBar;
+	public TextMeshProUGUI mainMpText;
+	public Image mainEngBar;
+	public TextMeshProUGUI mainEngText;
+
+
 	public Image mainXpBar;
 	public TextMeshProUGUI mainXpText;
 	public TextMeshProUGUI mainLvlText;
@@ -87,12 +98,14 @@ public class GameControl : MonoBehaviour
 	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
 
 	public GameObject camGameObject;
+	public int savedSceneIndex = -1;
+	public GameObject loadingLastSaveScreen;
 	
 //	public RPGCamera Camera;
 	private Player me;
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
-	private IMouseHoverable previouslyMouseHovered;
+	public IMouseHoverable previouslyMouseHovered;
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
 
@@ -121,10 +134,23 @@ public class GameControl : MonoBehaviour
 		HideInfo();
 		//TODO: consider setting mapScreen to active
 		CheckItemTypes();
-		InitializeItemTypes();
+		//InitializeItemTypes();
 		Save.Initialize();
 
-		StartCoroutine(LoadPlayerInitial());
+		StartCoroutine(LoadItemDataAndPlayer());
+		//StartCoroutine(LoadItemData());
+		//StartCoroutine(LoadPlayerInitial());
+	}
+
+	IEnumerator LoadItemDataAndPlayer()
+	{
+		TimeControl.main.SetTimeScale(0, "INITIAL_PLAYER_AND_ITEM_DATA");
+		loadingLastSaveScreen.SetActive(true);
+		//print("loading......");
+		yield return LoadItemData();
+		yield return LoadPlayerInitial();
+		loadingLastSaveScreen.SetActive(false);
+		TimeControl.main.RemoveTimeScale("INITIAL_PLAYER_AND_ITEM_DATA");
 	}
 
 	public void ShowInfo(Item i, RectTransform target)
@@ -336,7 +362,23 @@ public class GameControl : MonoBehaviour
 	IEnumerator LoadPlayerInitial()
 	{
 		yield return new WaitForEndOfFrame();
-		LoadPlayer(this);
+		LoadPlayer();
+		print("loaded player initial");
+		if(savedSceneIndex >= MAP_SCENE_INDEX_START && savedSceneIndex < SceneManager.sceneCountInBuildSettings)
+		{
+			string sceneName = GetSceneNameFromIndex(savedSceneIndex);
+			yield return LoadMapLocation(sceneName);
+			if(me == null) MakeAndSetUpPlayer(false, false);
+			print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
+		}
+	}
+	private static string GetSceneNameFromIndex(int BuildIndex)
+	{
+		string path = SceneUtility.GetScenePathByBuildIndex(BuildIndex);
+		int slash = path.LastIndexOf('/');
+		string name = path.Substring(slash + 1);
+		int dot = name.LastIndexOf('.');
+		return name.Substring(0, dot);
 	}
 
 	private void HideMenus()
@@ -345,6 +387,7 @@ public class GameControl : MonoBehaviour
 		mapScreen.TryDeactivateMenu();
 		craftInventory.TryDeactivateMenu();
 		shopMenu.TryDeactivateMenu();
+		helpMenu.TryDeactivateMenu();
 		HideInfo();
 		//mapLoadScreen.SetActive(false);
 		//mapScreen.SetActive(false);
@@ -377,15 +420,31 @@ public class GameControl : MonoBehaviour
 		}
 	}
 
-	public void BeginLoadMapLocation(string name)
-    {
-		StartCoroutine(LoadMapLocation(name));
-    }
+	//used by buttons
+	public void BeginLoadMapLocation(string sceneName)
+	{
+		StartCoroutine(LoadMapLocationAndResetPosition(sceneName));
+	}
 
-	public IEnumerator LoadMapLocation(string name)
+	IEnumerator LoadMapLocationAndResetPosition(string sceneName)
+	{
+		yield return LoadMapLocation(sceneName);
+		if(me == null)
+		{
+			MakeAndSetUpPlayer(true, false);
+		}
+		else
+		{
+			//TODO:warning: this supposes that the player component is on the root of player gameobject
+			ResetPositionOfPlayer(me.gameObject);
+		}
+	}
+
+	public IEnumerator LoadMapLocation(string sceneName)
     {
 		if (!initialized) yield break;
 		//TODO:test this
+		TimeControl.main.SetTimeScale(0, "MAP_LOAD");
 		//remove other scenes if they aren't the control scene
 		loading = true;
 		TryUnlockCursor();
@@ -423,7 +482,7 @@ public class GameControl : MonoBehaviour
 			yield return null;
 		}
 
-		string path = mapScenePath + "/" + name;
+		string path = mapScenePath + "/" + sceneName;
 
 		if (myPlayersId == -1)
 		{
@@ -474,8 +533,21 @@ public class GameControl : MonoBehaviour
 
 		HideMenus();
 
-		if(me == null) MakeAndSetUpPlayer();
+		//if(me == null)
+		//{
+		//	//if (respawn)
+		//	//{
+		//	//	MakeAndSetUpPlayer(true, true);
+		//	//}
+		//	//else
+		//	//{
 
+		//	//teleport but don't restore
+		//	MakeAndSetUpPlayer(true, false);
+		//	//}
+		//}
+
+		TimeControl.main.RemoveTimeScale("MAP_LOAD");
 		playerExists = true;
 		inWorld = true;
 		loading = false;
@@ -501,10 +573,10 @@ public class GameControl : MonoBehaviour
 		}
 	}
 
-	private void InitializeItemTypes()
-	{
-		StartCoroutine(LoadItemData());
-	}
+	//private void InitializeItemTypes()
+	//{
+	//	StartCoroutine(LoadItemData());
+	//}
 
 	private IEnumerator LoadItemData()
 	{
@@ -545,24 +617,29 @@ public class GameControl : MonoBehaviour
 	//{
 	//	CreatePlayerObject();
 	//}
-	void MakeAndSetUpPlayer()
+	void MakeAndSetUpPlayer(bool respawnPosition = false, bool restoreStats = false)
 	{
-		CreatePlayerObject();
+		CreatePlayerObject(respawnPosition, restoreStats);
 		//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
 
 	}
 
-	void Respawn()
+	void RespawnGUIOption()
 	{
 		//TODO: clear all statis effects, maybe just delete player and spawn a new one
 		//myAbilities.Reset();
 		if (GUI.Button(new Rect((Screen.width - 100) / 2, (Screen.height - 25) / 2, 100, 25), "Respawn"))
 		{
-			SaveStuff();
-			MakeAndSetUpPlayer();
+			Respawn();
 			//me.gameObject.SetActive(true);
 			//me.Respawn();
 		}
+	}
+
+	private void Respawn()
+	{
+		SaveStuff();
+		MakeAndSetUpPlayer(true, true);
 	}
 
 	void OnGUI()
@@ -572,7 +649,7 @@ public class GameControl : MonoBehaviour
 		//TODO: probably won't work with multiple player characters
 		if (inWorld && playerExists && me == null)
 		{// && me.ph.isMine
-			Respawn();
+			RespawnGUIOption();
 		}
 	}
 
@@ -739,8 +816,11 @@ public class GameControl : MonoBehaviour
 		}
 	}
 
-    private void LiveFunctions()
+	private void LiveFunctions()
 	{
+		//null check because interface isn't set to null when destroyed
+		UnityEngine.Object o = previouslyMouseHovered as UnityEngine.Object;
+		if (o == null || o.Equals(null)) previouslyMouseHovered = null;
 		if (!waitBeforeInteractEnabled && !MenuActive() && Cursor.lockState == CursorLockMode.Locked)
 		{
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
@@ -777,6 +857,7 @@ public class GameControl : MonoBehaviour
 			else
 			{
 				if (previouslyMouseHovered != null) previouslyMouseHovered.OnMouseStopHoverFromRaycast();
+				itemHoverInfo.SetActive(false);
 			}
 
 			//itemHoverInfo.SetActive(foundIMouseHoverable);
@@ -822,17 +903,33 @@ public class GameControl : MonoBehaviour
 
 		me = newPlayerObject.GetComponent<Player>();
 		playerControl = newPlayerObject.GetComponent<PlayerControl>();
-		HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
-		hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
-		hPBar.hpTextUI = mainHpText;
-		hPBar.SetWorldHpBarVisible(false);
+		HPBar hpBar = newPlayerObject.GetComponent<HPBar>();
+		hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
+		hpBar.hpTextUI = mainHpText;
+		hpBar.SetWorldHpBarVisible(false);
 
-		HPBar xPBar = newPlayerObject.AddComponent<HPBar>();
-		xPBar.type = HPBar.StatType.xp;
-		xPBar.hpBarImage = mainXpBar;
-		xPBar.hpTextUI = mainXpText;
-		xPBar.autoHide = false;
-		xPBar.changeHpBarColor = false;
+		HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
+		mpBar.type = HPBar.StatType.mp;
+		mpBar.hpBarImage = mainMpBar;
+		mpBar.hpTextUI = mainMpText;
+		mpBar.autoHide = false;
+		mpBar.changeHpBarColor = false;
+		mpBar.useNewLine = true;
+
+		HPBar engBar = newPlayerObject.AddComponent<HPBar>();
+		engBar.type = HPBar.StatType.eng;
+		engBar.hpBarImage = mainEngBar;
+		engBar.hpTextUI = mainEngText;
+		engBar.autoHide = false;
+		engBar.changeHpBarColor = false;
+		engBar.useNewLine = true;
+
+		HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
+		xpBar.type = HPBar.StatType.xp;
+		xpBar.hpBarImage = mainXpBar;
+		xpBar.hpTextUI = mainXpText;
+		xpBar.autoHide = false;
+		xpBar.changeHpBarColor = false;
 
 		Player.main = me;
 		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
@@ -856,13 +953,31 @@ public class GameControl : MonoBehaviour
 		myInv.put = true;
 	}
 
-	GameObject CreatePlayerObject()
+	void ResetPositionOfPlayer(GameObject player)
 	{
 		Vector3 position;
-		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
-		int chosen = UnityEngine.Random.Range (0, sp.Length);
-		position = sp [chosen].transform.position;
+		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint>();
+		int chosen = UnityEngine.Random.Range(0, sp.Length);
+		position = sp[chosen].transform.position;
 
+		player.transform.position = position;
+		player.transform.rotation = sp[chosen].transform.rotation;
+	}
+
+	/// <summary>
+	/// Creates a player GameObject
+	/// </summary>
+	/// <param name="respawnPosition">should the player's position be reset? NOTE: position is reset if teleported</param>
+	/// <param name="restoreStats">should the player's hp etc be reset?</param>
+	/// <returns></returns>
+	GameObject CreatePlayerObject(bool respawnPosition = false, bool restoreStats = false)
+	{
+		//Vector3 position;
+		//spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
+		//int chosen = UnityEngine.Random.Range (0, sp.Length);
+		//position = sp [chosen].transform.position;
+
+		//finds existing player data, makes a gameobject for it, and teleports it. SetupPlayer is called when loading the player
 		if(myPlayersId != -1)
 		{
 			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
@@ -878,9 +993,32 @@ public class GameControl : MonoBehaviour
 				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
 				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
 				//TODO: consider below and if it should be also for loading player
-				g.transform.position = position;
-				g.transform.rotation = Quaternion.identity;
-				g.GetComponent<StatScript>().ResetStats();
+
+				//if player is in a different map location than saved (meaning that the player teleported)
+				if (respawnPosition)
+				{
+					ResetPositionOfPlayer(g);
+					//g.transform.position = position;
+					//g.transform.rotation = Quaternion.identity;
+				}
+				else if (g.GetComponent<SaveEntity>().savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+				{
+					ResetPositionOfPlayer(g);
+					//g.transform.position = position;
+					//g.transform.rotation = Quaternion.identity;
+					//g.GetComponent<StatScript>().resetOnStart = false;//don't give full hp etc every time the game starts
+				}
+
+				if (restoreStats)
+				{
+					g.GetComponent<StatScript>().ResetStats();//restore hp etc when respawning
+
+				}
+
+
+				//resetting the stats is not good
+				//g.GetComponent<StatScript>().ResetStats();
+
 				return g;
 					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
 					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
@@ -897,8 +1035,11 @@ public class GameControl : MonoBehaviour
 
 		Debug.LogWarning("Failed to find player, making new one");
 
+		//make a new player gameobject from no saved data
+
 		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
-		GameObject temp = Instantiate(playerPrefab, position, Quaternion.identity);
+		GameObject temp = Instantiate(playerPrefab);
+		ResetPositionOfPlayer(temp);
 		SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
 		return temp;
 
@@ -938,6 +1079,7 @@ public class GameControl : MonoBehaviour
 			money = GameControl.main.money,
 			craftInventoryItems = crafting.craftInventory.items,
 			mainInventoryItems = GameControl.main.mainInventoryUI.target.items,
+			sceneIndex = SceneManager.GetActiveScene().buildIndex,
 		};
 		string path1 = Authenticator.GetAccountPath(username);
 		if (!Directory.Exists(path1)) Directory.CreateDirectory(path1);//TODO: warning this is bad, allows making account folders without registering
@@ -945,7 +1087,7 @@ public class GameControl : MonoBehaviour
 		Debug.Log("Saved player data for username: " + username);
 	}
 
-	public static void LoadPlayer(GameControl p)
+	public static void LoadPlayer()
 	{
 		Crafting crafting = Crafting.main;// p.GetComponent<Crafting>();
 		string path = Authenticator.GetAccountPath(username) + "data.json";
@@ -954,9 +1096,11 @@ public class GameControl : MonoBehaviour
 			PlayerSaveData s = JsonConvert.DeserializeObject<PlayerSaveData>(File.ReadAllText(path));
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
+			crafting.craftInventory.InitializeIfEmpty();
 			GameControl.main.myPlayersId = s.myId;
 			GameControl.main.money = s.money;
 			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
+			GameControl.main.savedSceneIndex = s.sceneIndex;
 			print("Loaded player: " + username);
 		}
 
@@ -1002,7 +1146,7 @@ public class GameControl : MonoBehaviour
 		//	Directory.CreateDirectory(Application.persistentDataPath + );
 		//}
 
-		LoadPlayer(this);
+		LoadPlayer();
 		yield return Save.LoadAllData();
 
 		//yield return SaveItem.LoadAll();//load items (inc. buildings maybe) first
@@ -1018,6 +1162,7 @@ public class GameControl : MonoBehaviour
 		Save.SaveAllData();
 
 		spawner.SaveAllSpawners();
+		TowerControl.main.SaveTowers();
 		//SaveEntity.SaveAll();
 		//SaveItem.SaveAll();
 
@@ -1103,6 +1248,7 @@ public class PlayerSaveData
 	public string username;
 	public long myId;//the id of the player owned, use this to load it
 	public int money;
+	public int sceneIndex = -1;
 	public List<Item> craftInventoryItems;
 	public List<Item> mainInventoryItems;
 }

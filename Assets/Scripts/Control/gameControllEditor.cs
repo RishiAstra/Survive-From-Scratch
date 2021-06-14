@@ -1,4 +1,8 @@
-﻿#if UNITY_EDITOR
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -18,7 +22,7 @@ public class gameControllEditor : Editor
 	public static List<FoldoutStuff> show = new List<FoldoutStuff>();
 	GUIStyle tempStyle;
 	GameControl t;
-
+	bool showStat;
 	private void OnEnable()
 	{
 		show = new List<FoldoutStuff>();
@@ -48,11 +52,13 @@ public class gameControllEditor : Editor
 			//bool changed = false;
 			for(int i = 0; i < GameControl.itemTypes.Count; i++)
 			{
+
+				ItemType item = GameControl.itemTypes[i];
+				if (string.IsNullOrEmpty(item.name)) item.name = "New ItemType";
 				show[i].mainFoldout = EditorGUILayout.Foldout(show[i].mainFoldout, i + " : " + GameControl.itemTypes[i].name);
 				if (show[i].mainFoldout)
 				{
 					EditorGUI.indentLevel += 2;
-					ItemType item = GameControl.itemTypes[i];
 					item.name = EditorGUILayout.TextField("name", item.name);
 					EditorGUILayout.LabelField("description");
 					item.description = EditorGUILayout.TextArea(item.description == null? "" : item.description, tempStyle);
@@ -61,11 +67,13 @@ public class gameControllEditor : Editor
 					item.prefab = (GameObject)EditorGUILayout.ObjectField("Prefab", item.prefab, typeof(GameObject), false);
 					item.equipPrefab = (GameObject)EditorGUILayout.ObjectField("Equip Prefab", item.equipPrefab, typeof(GameObject), false);
 					item.strength = EditorGUILayout.FloatField("Strength", item.strength);
+					item.cost = EditorGUILayout.IntField("Cost/Price", item.cost);
 
 
 					//EditorGUI.indentLevel += 2;
 
-
+					if (item.mods == null) item.mods = new ModifierGroup();
+					if (item.tags == null) item.tags = new List<int>();
 
 					show[i].g =		ShowMods(item.mods.globalArmorModifiers	, show[i].gf,	show[i].g, "Global Armor Modifiers"	);
 					show[i].h =		ShowMods(item.mods.hpMods				, show[i].hf,	show[i].h, "HP Modifiers"			);
@@ -90,6 +98,25 @@ public class gameControllEditor : Editor
 					//EditorGUILayout.PropertyField(mp[i].FindProperty("atkMods"));
 					//mp[i].ApplyModifiedProperties();
 					//EditorGUI.indentLevel += 2;
+					EditorGUILayout.Space(10);
+					showStat = EditorGUILayout.Foldout(showStat, "Consume Restore");
+					if (showStat)
+					{
+						Stat temp = item.consumeRestore.stat;
+						temp.hp = EditorGUILayout.FloatField("HP", temp.hp);
+						temp.mp = EditorGUILayout.FloatField("MP", temp.mp);
+						temp.eng = EditorGUILayout.FloatField("ENG", temp.eng);
+						temp.mor = EditorGUILayout.FloatField("MOR", temp.mor);
+						temp.atk = EditorGUILayout.FloatField("ATK", temp.atk);
+						item.consumeRestore.intervalCount = EditorGUILayout.IntField("Interval Count", item.consumeRestore.intervalCount);
+						item.consumeRestore.timeInterval = EditorGUILayout.FloatField("Interval Time", item.consumeRestore.timeInterval);
+						item.consumeRestore.stackable = EditorGUILayout.Toggle("Stackable", item.consumeRestore.stackable);
+						//don't need to set time spent
+						//item.consumeRestore.timeSpent = EditorGUILayout.FloatField("Time Spent", item.consumeRestore.timeSpent);
+
+
+						item.consumeRestore.stat = temp;
+					}
 					EditorGUILayout.Space(10);
 					EditorGUILayout.LabelField("Tags", EditorStyles.boldLabel);
 					if (item.tags == null) item.tags = new List<int>();//TODO: is this good

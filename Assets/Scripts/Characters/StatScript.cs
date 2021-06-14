@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -56,6 +60,15 @@ public struct Stat
 		atk *= other.atk;
 	}
 
+	public void Multiply(float mult)
+	{
+		hp  *= mult;
+		mp  *= mult;
+		eng *= mult;
+		mor *= mult;
+		atk *= mult;
+	}
+
 	public void Divide(Stat other)
 	{
 		hp  /= other.hp;
@@ -63,6 +76,34 @@ public struct Stat
 		eng /= other.eng;
 		mor /= other.mor;
 		atk /= other.atk;
+	}
+
+	public void Add(Stat other)
+	{
+		hp  += other.hp;
+		mp  += other.mp;
+		eng += other.eng;
+		mor += other.mor;
+		atk += other.atk;
+	}
+
+	public void Subtract(Stat other)
+	{
+		hp  -= other.hp;
+		mp  -= other.mp;
+		eng -= other.eng;
+		mor -= other.mor;
+		atk -= other.atk;
+	}
+
+	public bool GreaterThanOrEqualTo(Stat other)
+	{
+		return
+			hp >= other.hp &&
+			mp >= other.mp &&
+			eng >= other.eng &&
+			mor >= other.mor &&
+			atk >= other.atk;
 	}
 
 	public override string ToString()
@@ -216,6 +257,7 @@ public class StatScript : MonoBehaviour, ISaveable
 {
 	public const float RESIST_EXPONENT_BASE = 2f;
 	public const float DAMAGERECORD_TIME = 60f;//remember damages received for 60s
+	public const float STAT_REGAIN_PROPORTION = 0.01f;//the amount/proportion of stat to regain every second
 
 	public static Dictionary<long, float> unclaimedXPBounties = new Dictionary<long, float>();//xp from kills that wasn't claimed yet <id, amount of unclaimed xp>
 
@@ -229,6 +271,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	public List<Armor> armors;
 	public List<Item> itemsEquipped;
+	public List<StatRestore> statRestores;
 
 	public bool dead;
 
@@ -239,6 +282,8 @@ public class StatScript : MonoBehaviour, ISaveable
 	public SaveEntity mySave;
 	public List<StatSkill> statSkills;
 	public List<int> skillLvls;
+
+	private float timeSinceRegain;
 
 	private void Awake()
 	{
@@ -254,15 +299,27 @@ public class StatScript : MonoBehaviour, ISaveable
 		mySave = GetComponent<SaveEntity>();
 		initialMaxStat = maxStat;
 		pItemsEquipped = new List<Item>();
+		
+
+
+	}
+
+	private void Start()
+	{
 		UpdateXP();
 		CheckStats();
 		if (resetOnStart) ResetStats();//reset before anythign else can happen
+	}
 
+	public void AddStatRestore(StatRestore s)
+	{
+		s.timeSpent = 0;//reset the time left
+		statRestores.Add(s);
 	}
 
 	public int GetSkillPointTotal()
 	{
-		return lvl * 2;
+		return (lvl - 1) * 2;//2 skill points for each lvl, but you start at lvl 1 with 0 skill points
 	}
 
 	#region stats and xp updates
@@ -273,7 +330,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		UpdateXP();
 	}
 
-	private void UpdateXP()
+	private void UpdateXP(bool scaleStats = true)
 	{
 		int l = lvl;
 		bool changed = false;
@@ -310,7 +367,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		if (changed)
 		{
 			lvl = l;
-			CheckStats();
+			CheckStats(scaleStats);
 		}
 	}
 
@@ -338,7 +395,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		return f1(level);
 	}
 
-	void CheckStats()
+	void CheckStats(bool scaleStats = true)
 	{
 		//if lvl changed or items equipped changed
 		bool shouldRecalculate = plvl != lvl | pItemsEquipped.Count != itemsEquipped.Count;
@@ -357,7 +414,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		if(shouldRecalculate)
 		{
-			UpdateStats();
+			UpdateStats(scaleStats);
 			plvl = lvl;
 			pItemsEquipped = new List<Item>();
 			pItemsEquipped.AddRange(itemsEquipped);
@@ -365,7 +422,7 @@ public class StatScript : MonoBehaviour, ISaveable
 	}
 
 	//stats that don't depend on type are calculated here; if they depend on type, they are in the damage function
-	void UpdateStats()
+	void UpdateStats(bool scaleStats = true)
 	{
 		//armor and atk depend on type, all others should have modifiers applier below
 		if (lvl <= 0) lvl = 1;
@@ -541,17 +598,21 @@ public class StatScript : MonoBehaviour, ISaveable
 
 		//print(maxStat + "|" + newMaxStat);
 		//now that the new max stat has been calculated, scale the current stat so that if you had 80% hp before the max stat chance, you will have 80% afterward
-		Stat temp = newMaxStat;
-		temp.Divide(maxStat);//get the proportions/percent changes (0-1) of max stat
+		if (scaleStats)
+		{
+			Stat temp = newMaxStat;
+			temp.Divide(maxStat);//get the proportions/percent changes (0-1) of max stat
 
-		//avoid NaN
-		if (float.IsNaN(temp.hp)) temp.hp = 1;
-		if (float.IsNaN(temp.mp)) temp.mp = 1;
-		if (float.IsNaN(temp.eng)) temp.eng = 1;
-		if (float.IsNaN(temp.mor)) temp.mor = 1;
-		if (float.IsNaN(temp.atk)) temp.atk = 1;
+			//avoid NaN
+			if (float.IsNaN(temp.hp)) temp.hp = 1;
+			if (float.IsNaN(temp.mp)) temp.mp = 1;
+			if (float.IsNaN(temp.eng)) temp.eng = 1;
+			if (float.IsNaN(temp.mor)) temp.mor = 1;
+			if (float.IsNaN(temp.atk)) temp.atk = 1;
 
-		stat.Multiply(temp);
+			stat.Multiply(temp);
+		}
+		
 
 		//now that all that is done, assign the new max stat
 		maxStat = newMaxStat;
@@ -593,6 +654,63 @@ public class StatScript : MonoBehaviour, ISaveable
 			}
 		}
 
+
+		if (!dead)
+		{
+			timeSinceRegain += Time.deltaTime;
+			if(timeSinceRegain > 1)
+			{
+				timeSinceRegain -= 1;
+				Stat temp = maxStat;
+				temp.Multiply(STAT_REGAIN_PROPORTION);
+				stat.Add(temp);
+				ClampStat();
+			}
+
+			for (int i = 0; i < statRestores.Count; i++)
+			{
+				StatRestore temp = statRestores[i];
+				//total intervals before adding this frame's time
+				int intervalsBefore = Mathf.FloorToInt(temp.timeSpent / temp.timeInterval);
+				temp.timeSpent += Time.deltaTime;
+				
+				int intervalsAfter = Mathf.FloorToInt(temp.timeSpent / temp.timeInterval);
+				//don't allow restoring more times than the intervalCount
+				if (intervalsAfter > temp.intervalCount) intervalsAfter = temp.intervalCount;
+
+				if(intervalsAfter > intervalsBefore)
+				{
+					Stat toAdd = temp.stat;
+					//multiply toAdd by the new intervals passed divided by the interval count
+					toAdd.Multiply((intervalsAfter - intervalsBefore) / (float)temp.intervalCount);
+					stat.Add(toAdd);
+
+					//clamp upper
+					if (stat.hp >  maxStat.hp)  stat.hp =  maxStat.hp;
+					if (stat.mp >  maxStat.mp)  stat.mp =  maxStat.mp;
+					if (stat.eng > maxStat.eng) stat.eng = maxStat.eng;
+					if (stat.mor > maxStat.mor) stat.mor = maxStat.mor;
+					if (stat.atk > maxStat.atk) stat.atk = maxStat.atk;
+					//TODO: consider clamping lower
+
+				}
+
+
+				//apply the changes
+				statRestores[i] = temp;
+
+				//if this restore is done, remove it
+				if (intervalsAfter == temp.intervalCount)
+				{
+					statRestores.RemoveAt(i);
+					i--;
+				}
+
+			}
+		}
+		
+		
+
 		//claim any unclaimed xp for this
 		if (unclaimedXPBounties.ContainsKey(mySave.id))
 		{
@@ -617,7 +735,7 @@ public class StatScript : MonoBehaviour, ISaveable
 		foreach(DamageRecord d in damageRecords)
 		{
 			long id = d.damagedBy;
-			float amount = d.amount / t * xpBounty;//proportional to dmg dealt by this damage record
+			float amount = d.amount / t * Stat.GetLeveledFloat(xpBounty, lvl);//proportional to dmg dealt by this damage record
 			if (unclaimedXPBounties.ContainsKey(id))
 			{
 				unclaimedXPBounties[id] += amount;
@@ -680,7 +798,17 @@ public class StatScript : MonoBehaviour, ISaveable
 			}
 		}
 
-		DamageTextControl.PutDamageText(cols.bounds.center, damageTaken);
+		if(GameControl.main.myAbilities.myStat == this)
+		{
+
+			DamageTextControl.PutDamageText(damageTaken, true);
+
+		}
+		else
+		{
+			DamageTextControl.PutDamageText(damagePosition, damageTaken);
+		}
+
 	}
 	
 	public float GetReceiveDamageAmount(float damage, AttackType type, Armor armor)
@@ -857,11 +985,11 @@ public class StatScript : MonoBehaviour, ISaveable
 		{
 			temp.Add(st.name);
 		}
-		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls);
+		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls, statRestores);
 		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public async void SetData(string data)
+	public void SetData(string data)
 	{
 		SaveDataStat s = JsonConvert.DeserializeObject<SaveDataStat>(data);
 		//TODO: warning, sceneindex not considered here
@@ -873,11 +1001,13 @@ public class StatScript : MonoBehaviour, ISaveable
 		this.statSkills = new List<StatSkill>();
 		foreach (string st in s.statSkills)
 		{
-			AsyncOperationHandle<StatSkill> a = Addressables.LoadAssetAsync<StatSkill>("Assets/Skills/" + st + ".asset");
-			await Task.WhenAll(a.Task);
-			statSkills.Add(a.Result);
+			//AsyncOperationHandle<StatSkill> a = Addressables.LoadAssetAsync<StatSkill>("Assets/Skills/" + st + ".asset");
+			//await Task.WhenAll(a.Task);
+
+			statSkills.Add(Resources.Load<StatSkill>(st));
 		}
 		this.skillLvls = s.skillLvls;
+		this.statRestores = s.statRestores;
 		//null checks
 		if (damageRecords == null) damageRecords = new List<DamageRecord>();
 		if (statSkills == null)
@@ -885,8 +1015,9 @@ public class StatScript : MonoBehaviour, ISaveable
 			statSkills = new List<StatSkill>();
 			skillLvls = new List<int>();
 		}
+		if (statRestores == null) statRestores = new List<StatRestore>();
 
-		UpdateXP();
+		UpdateXP(false);
 		CheckStats();
 
 	}

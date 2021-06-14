@@ -1,8 +1,14 @@
-﻿using System.Collections;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System;
+using System.Text;
+
 namespace bobStuff
 {
 
@@ -111,6 +117,56 @@ namespace bobStuff
 	}
 
 	[Serializable]
+	public struct StatRestore
+	{
+		/// <summary>
+		/// the total stat to restore over all intervals
+		/// </summary>
+		public Stat stat;
+		/// <summary>
+		/// The number of time intervals over which to apply this restore
+		/// </summary>
+		public int intervalCount;
+		/// <summary>
+		/// The time of each interval
+		/// </summary>
+		public float timeInterval;
+		/// <summary>
+		/// the time that this has been active/restoring
+		/// </summary>
+		public float timeSpent;
+		/// <summary>
+		/// Can this be applies when other restores are active?
+		/// </summary>
+		public bool stackable;
+
+		public override string ToString()
+		{
+			//hp, mp, mor, eng can be restored
+			//bools for are hp, mp, eng, and/or mor restored
+			bool shp  = !Mathf.Approximately(0, stat.hp );
+			bool smp  = !Mathf.Approximately(0, stat.mp );
+			bool seng = !Mathf.Approximately(0, stat.eng);
+			bool smor = !Mathf.Approximately(0, stat.mor);
+
+			//if this restores nothing, return blank string
+			if (!shp && !smp && !seng && !smor) return "";
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("Restores\n");
+
+			if (shp ) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.hpColor ) + ">" + stat.hp + "HP</color>\n");
+			if (smp ) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.mpColor ) + ">" + stat.mp + "MP</color>\n");
+			if (seng) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.engColor) + ">" + stat.eng + "ENG</color>\n");
+			if (smor) sb.Append("<#" + ColorUtility.ToHtmlStringRGB(GameControl.main.morColor) + ">" + stat.mor + "MOR</color>\n");
+
+			sb.Append("over " + intervalCount + " intervals of " + timeInterval.ToString("F1") + " seconds");
+
+			return sb.ToString();
+		}
+	}
+
+	[Serializable]
 	public struct ItemType
 	{
 		public string name;
@@ -126,6 +182,8 @@ namespace bobStuff
 		public GameObject equipPrefab;
 		public float strength;
 		public ModifierGroup mods;
+		public StatRestore consumeRestore;
+		public int cost;
 
 		//public ItemType(string name, Sprite icon, GameObject prefab, GameObject equipPrefab, float strength, List<int> tags)//ItemToolType type,
 		//{

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using UnityEngine;
 using System.Collections;
 
 public class LookAtCamera : MonoBehaviour {

@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -47,6 +51,7 @@ public class SaveEntity : Save, ISaveable
 
 	private int indexInSaves;
 	private Stat pStat;
+	public int savedSceneBuildIndex = -1;
 
 	public static void InitializeStatic()
 	{
@@ -111,6 +116,8 @@ public class SaveEntity : Save, ISaveable
 		if (i != null) toSaveTemp.Add(i);
 		PlayerControl p = GetComponent<PlayerControl>();
 		if (p != null) toSaveTemp.Add(p);
+		NPCControl c = GetComponent<NPCControl>();
+		if (c != null) toSaveTemp.Add(c);
 
 		toSave = toSaveTemp.ToArray();
 
@@ -290,7 +297,8 @@ public class SaveEntity : Save, ISaveable
 		//btw because of the goto and for loops, the directory entitySceneMapPath must exist or function would have returned or errored
 
 		//put the data in target scene
-		string newPath = entitySceneMapPath + SceneManager.GetSceneByBuildIndex(nextScene) + ".json";
+		//use SceneUtility instead of SceneManager because SceneManager doesn't know about unloaded scenes
+		string newPath = entitySceneMapPath + nextScene + ".json";//Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(nextScene))
 		List<EntityMapData> targetMapData;
 
 		//if there is a file for entities in this scene, load it, otherwise create it
@@ -631,6 +639,7 @@ public class SaveEntity : Save, ISaveable
 		id = s.id;
 		transform.position = s.position;
 		transform.eulerAngles = s.rotation;
+		savedSceneBuildIndex = s.sceneIndex;
 	}
 
 	public string[] GetAllData()
@@ -700,7 +709,6 @@ public interface ISaveable
 	string GetFileNameBaseForSavingThisComponent();
 }
 
-//TODO: [in progress] split into inventory and abilities etc.
 [System.Serializable]
 public class SaveDataBasic
 {
@@ -714,6 +722,14 @@ public class SaveDataBasic
 }
 
 [System.Serializable]
+public class SaveDataNPCControl
+{
+	public bool guard;
+	public Vector3 guardPosition;
+	public float maxGuardDist;
+}
+
+[System.Serializable]
 public class SaveDataStat
 {
 	public Stat initialMaxStat;
@@ -722,8 +738,9 @@ public class SaveDataStat
 	public List<DamageRecord> dmgs;
 	public List<string> statSkills;
 	public List<int> skillLvls;
+	public List<StatRestore> statRestores;
 
-	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills, List<int> skillLvls)
+	public SaveDataStat(Stat stat, Stat initialMaxStat, float xp, List<DamageRecord> dmgs, List<string> statSkills, List<int> skillLvls, List<StatRestore> statRestores)
 	{
 		this.stat = stat;
 		this.initialMaxStat = initialMaxStat;
@@ -731,6 +748,7 @@ public class SaveDataStat
 		this.dmgs = dmgs;
 		this.statSkills = statSkills;
 		this.skillLvls = skillLvls;
+		this.statRestores = statRestores;
 	}
 }
 

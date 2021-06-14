@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +20,7 @@ public class Throwable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (RegionSettings.main.allowCombat && Input.GetMouseButtonDown(1))
+		if (RegionSettings.main.allowCombat && Input.GetMouseButtonDown(1) && Cursor.lockState == CursorLockMode.Locked)
 		{
 			//print(me.bob.inventory[me.bob.invSel].amount >= 1);
 			if (me.bob.inv.items[me.bob.invSel].amount >= 1)

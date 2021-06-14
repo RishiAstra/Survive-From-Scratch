@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using Newtonsoft.Json;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;

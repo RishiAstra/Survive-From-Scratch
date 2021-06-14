@@ -1,4 +1,8 @@
-﻿using bobStuff;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using bobStuff;
 
 [System.Serializable]
 public class Reward

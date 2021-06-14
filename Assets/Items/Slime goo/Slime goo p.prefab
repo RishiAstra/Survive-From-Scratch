@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7848637552555876016}
   - component: {fileID: 1201225221041158315}
   - component: {fileID: 745173004902372401}
+  - component: {fileID: -3891206539581071671}
   m_Layer: 0
   m_Name: Slime goo p
   m_TagString: Untagged
@@ -133,6 +134,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2402546, y: 0.11763384, z: 0.2651866}
   m_Center: {x: -0.003817522, y: 0.013394148, z: 0.003898472}
+--- !u!114 &-3891206539581071671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578048132457945444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fdc04f35daeb77408d2e9a274b4e12a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6947352893467759516
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +201,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -212,6 +226,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &7490480418003032947
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,6 +282,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -291,6 +307,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &671810172098320767
 PrefabInstance:
   m_ObjectHideFlags: 0

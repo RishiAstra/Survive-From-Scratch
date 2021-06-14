@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/********************************************************
+* Copyright (c) 2021 Rishi A. Astra
+* All rights reserved.
+********************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -32,13 +36,14 @@ public class spawner : MonoBehaviour {
 	//public GameObject spawnThis;
 	public ThingType thingType;
 	public string toSpawnType;
+	public int minSpawnLevel, maxSpawnLevel;
 	public SpawnShape spawnShape;
 	public float delay;
 	public float radius;
 	public float xs, zs;
 	public int maxAmount;
 	public int initialAmount;
-	public int removeNullObjectsSpeed;
+	public float removeNullObjectsSpeed;
 	public List<long> IDsOfSpawned;
 	public float heightOffset;
 
@@ -48,6 +53,11 @@ public class spawner : MonoBehaviour {
 	private float removeNullTimeLeft;
 	private GameObject spawnThis;
 	private PersistantSaveID myId;
+	public bool initialized;
+
+	public bool guard;
+	public Transform guardPosition;
+	public float maxGuardDist;
 
 	public static string savePath
 	{
@@ -88,6 +98,7 @@ public class spawner : MonoBehaviour {
 		{
 			SpawnThing();
 		}
+		initialized = true;
 		yield return null;
 	}
 
@@ -144,10 +155,23 @@ public class spawner : MonoBehaviour {
 			{
 				spawnedThese.Add(s.gameObject);
 				mySpawnedSaves.Add(s);
+				AddGuardIconIfGuard(s.gameObject);
+
 				amountRemembered++;
 			}
 		}
 		print("Remembered " + amountRemembered + " of type: " + type);
+	}
+
+	private void AddGuardIconIfGuard(GameObject g)
+	{
+		if (guard)
+		{
+			GameObject guardIconG = Instantiate(TowerControl.main.guardIconGameObject, g.transform);
+			//print(s.GetComponent<HPBar>().hpHolder.localPosition + "|" + TowerControl.main.guardIconGameObject.transform.localPosition);
+			guardIconG.transform.localPosition = g.GetComponent<HPBar>().hpHolder.localPosition + TowerControl.main.guardIconGameObject.transform.localPosition;
+			guardIconG.transform.localRotation = Quaternion.identity;
+		}
 	}
 
 	// Update is called once per frame
@@ -210,6 +234,31 @@ public class spawner : MonoBehaviour {
 		GameObject g = (GameObject)Instantiate(spawnThis, target, Quaternion.Euler(0, Random.Range(0, 360), 0));
 		spawnedThese.Add(g);
 		mySpawnedSaves.Add(g.GetComponent<Save>());
+
+		AddGuardIconIfGuard(g);
+
+		StatScript s = g.GetComponent<StatScript>();
+
+		if(s != null)
+		{
+			//set level of spawned thing
+			int lvl = Random.Range(minSpawnLevel, maxSpawnLevel + 1);
+			s.xp = StatScript.GetRequiredXPForLvl(lvl);
+		}
+
+		if (guard)
+		{
+			NPCControl ctrl = g.GetComponent<NPCControl>();
+			if(ctrl != null)
+			{
+				ctrl.guard = guard;
+				ctrl.guardPosition = guardPosition.position;
+				ctrl.maxGuardDist = maxGuardDist;	
+			}
+		}
+
+		
+
 		//IDsOfSpawned.Add(g.GetComponent<Save>().id);
 	}
 
