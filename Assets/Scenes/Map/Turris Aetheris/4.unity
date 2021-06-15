@@ -1080,9 +1080,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerName: Turris Aetheris
-  levelToUnlock: 2
+  levelToUnlock: 5
   spawners:
   - {fileID: 1460704479}
+  - {fileID: 1110926155}
 --- !u!4 &1353413533
 Transform:
   m_ObjectHideFlags: 0

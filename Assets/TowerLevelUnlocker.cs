@@ -40,6 +40,11 @@ public class TowerLevelUnlocker : MonoBehaviour
 			{
                 TowerControl.main.towers[s].unlockedLevels[ind] = true;
 			}
+			else
+			{
+                //TODO: now you beat the tower
+                //tell the player that they beat the tower and give them the reward
+			}
 		}
 	}
 
