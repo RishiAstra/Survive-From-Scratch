@@ -100,7 +100,9 @@ public class SettingsControl : MonoBehaviour
 	void UpdateQualitySettingsDisplay()
 	{
 		nameField.text = settings.name;
+		settingsPresetDropdown.RefreshShownValue();
 		primarySettingsPresetDropdown.value = settings.qualitySelected;
+		primarySettingsPresetDropdown.RefreshShownValue();
 
 		bloomEnableToggle.isOn = settings.bloomEnabled;
 		bloomIntensitySlider.value = settings.bloomIntensity;
@@ -214,6 +216,7 @@ public class SettingsControl : MonoBehaviour
 		//apply to preset list
 		settingsPresets[settingsIndex] = new UserQualitySettings(settings);
 		RefreshQualityPresetsDropdown();
+		UpdateQualitySettingsDisplay();
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)

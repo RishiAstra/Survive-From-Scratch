@@ -739,7 +739,7 @@ public class GameControl : MonoBehaviour
 		{
 			CursorLockUpdate();
 
-			if (Input.GetKeyDown(KeyCode.E))
+			if (Input.GetKeyDown(KeyCode.E) && !Menu.IsOtherMenuActive(craftInventory))
 			{
 				//if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
 				//{
@@ -769,7 +769,7 @@ public class GameControl : MonoBehaviour
 				//}
 			}
 
-			if (Input.GetKeyDown(KeyCode.M))
+			if (Input.GetKeyDown(KeyCode.M) && !Menu.IsOtherMenuActive(mapScreen))
 			{
 				//if (!mapScreen.gameObject.activeSelf) HideMenus();
 				mapScreen.ToggleMenu();

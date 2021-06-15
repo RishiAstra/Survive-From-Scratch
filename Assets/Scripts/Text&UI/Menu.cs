@@ -104,6 +104,23 @@ public class Menu : MonoBehaviour
 		}
 	}
 
+	public static bool IsOtherMenuActive(Menu exclude)
+	{
+		//disable all menus
+		for (int i = 0; i < activeMenus.Count;i++)
+		{
+			if (activeMenus[i] != exclude)
+			{
+				//this menu is active and isn't the excluded menu
+				//therefore return true
+				return true;
+			}
+		}
+
+		//no other menu is active
+		return false;
+	}
+
 	public void TryDeactivateMenu()
 	{
 		if (gameObject.activeSelf)
