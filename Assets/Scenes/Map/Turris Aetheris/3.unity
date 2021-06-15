@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: bf5595a76e47aba4fa2b016cff910c37,
+  m_LightingDataAsset: {fileID: 112000000, guid: 8a0911d0f515a2c46a59b9b1441cb32f,
     type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: dbd12f2cc26ac774b9dbe18d0a01125d,
     type: 2}
@@ -864,9 +864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thingType: 1
-  toSpawnType: Slime
-  minSpawnLevel: 1
-  maxSpawnLevel: 3
+  toSpawnType: Shelled Slime
+  minSpawnLevel: 5
+  maxSpawnLevel: 10
   spawnShape: 0
   delay: 5
   radius: 85
@@ -895,7 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 13
+  id: 16
 --- !u!1 &1353413531
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerName: Turris Aetheris
-  levelToUnlock: 2
+  levelToUnlock: 4
   spawners:
   - {fileID: 1460704479}
 --- !u!4 &1353413533
@@ -974,7 +974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thingType: 1
-  toSpawnType: Slime
+  toSpawnType: Shelled Slime
   minSpawnLevel: 5
   maxSpawnLevel: 5
   spawnShape: 0
@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 14
+  id: 17
 --- !u!4 &1460704481
 Transform:
   m_ObjectHideFlags: 0

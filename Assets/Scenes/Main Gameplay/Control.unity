@@ -3031,7 +3031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverIp: 
-  mapScenePath: Scenes/Map
+  mapScenePath: Scenes/Map/
   controlSceneName: Control
   mainItemInfoUI: {fileID: 1316756507}
   money: 0
@@ -13468,7 +13468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   towers:
   - name: Turris Aetheris
-    unlockedLevels: 010000
+    unlockedLevels: 0100000000
   towerMenu: {fileID: 125775333}
   levelSelectedText: {fileID: 424634952}
   guardText: {fileID: 594636599}

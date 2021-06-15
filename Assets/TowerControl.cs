@@ -38,7 +38,14 @@ public class TowerControl : MonoBehaviour
 			//if a tower has been saved, load it
 			if (File.Exists(GetFileName(towers[i])))
 			{
-				towers[i] = JsonConvert.DeserializeObject<Tower>(File.ReadAllText(GetFileName(towers[i])));
+                int length = towers[i].unlockedLevels.Count;
+				towers[i].unlockedLevels = JsonConvert.DeserializeObject<List<bool>>(File.ReadAllText(GetFileName(towers[i])));
+
+                //if new levels were added, fill them as not unlocked
+                for(int j = towers[i].unlockedLevels.Count; j < length; j++)
+				{
+                    towers[j].unlockedLevels.Add(false);
+				}
 			}
 		}
 	}
@@ -77,7 +84,7 @@ public class TowerControl : MonoBehaviour
 		Directory.CreateDirectory(GetFileDirectory());
 		for (int i = 0; i < towers.Count; i++)
 		{
-			File.WriteAllText(GetFileName(towers[i]), JsonConvert.SerializeObject(towers[t], Formatting.Indented));
+			File.WriteAllText(GetFileName(towers[i]), JsonConvert.SerializeObject(towers[t].unlockedLevels, Formatting.Indented));
 		}
 	}
 

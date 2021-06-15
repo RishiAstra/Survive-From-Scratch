@@ -35,7 +35,11 @@ public class TowerLevelUnlocker : MonoBehaviour
 		if (ok)
 		{
             int s = TowerControl.main.GetTowerIndex(towerName);
-            TowerControl.main.towers[s].unlockedLevels[levelToUnlock - 1] = true;
+            int ind = levelToUnlock - 1;
+            if(ind < TowerControl.main.towers[s].unlockedLevels.Count)
+			{
+                TowerControl.main.towers[s].unlockedLevels[ind] = true;
+			}
 		}
 	}
 
