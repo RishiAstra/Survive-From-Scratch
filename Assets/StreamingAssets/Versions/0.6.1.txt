@@ -1,0 +1,18 @@
+-fixed glitch where skills weren't loaded on game start
+-fixed glitch where player wasn't saved properly
+-added Turris Aetheris tower with 5 levels
+-added new type of grass
+-added spawning higher lvl enemies (not just lvl 1)
+-added display name and title for characters
+-added saving tower level unlock data
+-added "guard" monsters that must be killed to progress to the next level of a tower
+-added grass and bloom settings to settings menu
+-added saving, adding, removing, renaming settings presets
+-fixed bug where the inventory or map would pop up when typing E or M in the settings preset name field
+-added Shelled Slime
+-added Spirit skill: increase magic damage premult
+-added a central Input Control to prevent pressing F one from triggering multiple interactions
+-made post processing not dependent on scene
+-added new skyboxes
+-improved grass wind effect
+-fixed error: last tower level unlocking the next level, but the next level didn't exist because it was the last level
