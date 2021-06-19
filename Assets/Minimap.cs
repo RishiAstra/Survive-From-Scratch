@@ -30,7 +30,7 @@ public class Minimap : MonoBehaviour
             if (arrowedPositions[i] == null)
 			{
                 arrowedPositions.RemoveAt(i);
-                Destroy(arrows[i]);
+                Destroy(arrows[i].gameObject);
                 arrows.RemoveAt(i);
                 i--;//since arrow position was removed, go back 1 index
                 continue;
