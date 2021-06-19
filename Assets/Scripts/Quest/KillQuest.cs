@@ -78,6 +78,11 @@ public class KillQuest : IQuest
 			{
 				amountKilled++;
 				if (amountKilled > amountToKill) amountKilled = amountToKill;
+				NotificationControl.main.AddNotification(
+					new Notification() { 
+						message = GetDescription() 
+					}
+				);
 			}
 		}
 	}

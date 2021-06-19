@@ -28,9 +28,8 @@ public class NotificationControl : MonoBehaviour
 		//if not triggering notification and not showing notification, remove the previous notification and show the next one
 		if (!notificationAnimator.GetBool("Notify") && notificationAnimator.GetCurrentAnimatorStateInfo(0).IsName("Empty"))
 		{
-			if (notifications.Count > 0) notifications.RemoveAt(0);
 
-			if(notifications.Count > 0)
+			if (notifications.Count > 0)
 			{
 				Notification n = notifications[0];
 				messageText.text = n.message;
@@ -38,8 +37,14 @@ public class NotificationControl : MonoBehaviour
 			}
 		}
 	}
+
+	public void DoneWithNotification()
+	{
+		if (notifications.Count > 0) notifications.RemoveAt(0);
+	}
 }
 
+[System.Serializable]
 public class Notification
 {
 	public string message;
