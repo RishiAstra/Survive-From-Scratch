@@ -379,8 +379,7 @@ public class ProgressTracker : MonoBehaviour
 
 		if (File.Exists(progressSavePath))
 		{
-
-			File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
+			prog = JsonConvert.DeserializeObject<Progress>(File.ReadAllText(progressSavePath)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
 		}
 
 	}
