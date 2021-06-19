@@ -30,6 +30,11 @@ public class NPCControl : MonoBehaviour, ISaveable
 		abilities = GetComponent<Abilities>();
 		movement = GetComponent<Movement>();
 		targets = new List<StatScript>();
+
+		if (guard)
+		{
+			Minimap.main.AddArrowedPosition(transform);
+		}
     }
 
     // Update is called once per frame

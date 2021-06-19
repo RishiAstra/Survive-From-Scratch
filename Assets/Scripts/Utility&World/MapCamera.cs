@@ -9,6 +9,8 @@ using System.Diagnostics;
 
 public class MapCamera : MonoBehaviour
 {
+    public static MapCamera main;
+
     [Range(1, 25)] public float fps;
     public Camera cam;
     //public Shader unlit;
@@ -17,8 +19,10 @@ public class MapCamera : MonoBehaviour
     private Stopwatch sw;
     private Transform mainCameraTransform;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        if (main != null) UnityEngine.Debug.LogError("Two MapCamera");
+        main = this;
         sw = new Stopwatch();
         sw.Start();
         mainCameraTransform = Camera.main.transform.root;
