@@ -110,13 +110,17 @@ public class ComplexQuest : IQuest
 		{
 			current++;
 
-			//when part of a complex quest is completed, show a notification saying what the next part is
-			NotificationControl.main.AddNotification(
-				new Notification()
-				{
-					message = GetDescription()
-				}
-			);
+			if (current < quests.Count)
+			{
+				//when part of a complex quest is completed, show a notification saying what the next part is
+				NotificationControl.main.AddNotification(
+					new Notification()
+					{
+						message = GetDescription()
+					}
+				);
+			}
+			
 		}
 	}
 }

@@ -207,7 +207,13 @@ public class ProgressTracker : MonoBehaviour
 
 		//add the new quest
 		quests.Add(temp);
-		if(!string.IsNullOrEmpty(fromDialogueName)) questResult.nextDialogueTargetName = fromDialogueName;
+		NotificationControl.main.AddNotification(
+				new Notification()
+				{
+					message = temp.GetDescription()
+				}
+			);
+		if (!string.IsNullOrEmpty(fromDialogueName)) questResult.nextDialogueTargetName = fromDialogueName;
 		questSaves.Add(questResult);
 
 		print(ConvertQuestToString(temp));
