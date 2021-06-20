@@ -466,6 +466,7 @@ MonoBehaviour:
   hpTextUI: {fileID: 0}
   changeHpTextColor: 0
   changeHpBarColor: 1
+  useNewLine: 0
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -3140,10 +3141,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2393106191154857213, guid: 5fa6321ad39930c48bdb153359d57dc9,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2393106191154857213, guid: 5fa6321ad39930c48bdb153359d57dc9,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.6592306
+      objectReference: {fileID: 0}
+    - target: {fileID: 2393106191154857213, guid: 5fa6321ad39930c48bdb153359d57dc9,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.28773582
+      objectReference: {fileID: 0}
     - target: {fileID: 2645209268441059458, guid: 5fa6321ad39930c48bdb153359d57dc9,
         type: 3}
       propertyPath: m_Name
       value: Player Map Icon
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989310242997925827, guid: 5fa6321ad39930c48bdb153359d57dc9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989310242997925827, guid: 5fa6321ad39930c48bdb153359d57dc9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989310242997925827, guid: 5fa6321ad39930c48bdb153359d57dc9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fa6321ad39930c48bdb153359d57dc9, type: 3}

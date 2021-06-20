@@ -12,6 +12,7 @@ public class Cam : MonoBehaviour
 
 	//public Player myPlayer;
 	public Transform pivot;
+	public Transform mapIcon;
 	public LayerMask blockCamera;
 	//public float wait;
 	//public Vector2 mouseSensitivity;
@@ -33,6 +34,7 @@ public class Cam : MonoBehaviour
 		//myPlayer = GetComponentInParent<Player>();//TODO: dangerous
 		dist = transform.localPosition.magnitude;
 		offset = transform.localPosition / dist;
+		mapIcon = GameControl.main.mapPlayerIcon;
 	}
 
 	public void AddPitch(float p)
@@ -46,6 +48,12 @@ public class Cam : MonoBehaviour
 	{
 		dist += d;
 		dist = Mathf.Clamp(dist, minDist, maxDist);
+	}
+
+	private void Update()
+	{
+		mapIcon.position = pivot.position;
+		mapIcon.localEulerAngles = pivot.localEulerAngles.y * Vector3.up;
 	}
 
 	// Update is called once per frame

@@ -11,7 +11,7 @@ public class NotificationControl : MonoBehaviour
 	public TMP_Text messageText;
 	public Animator notificationAnimator;
 	// Start is called before the first frame update
-	void Start()
+	void Awake()
 	{
 		if (main != null) Debug.LogError("Two NotificationControl");
 		main = this;

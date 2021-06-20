@@ -15,6 +15,8 @@ public class Minimap : MonoBehaviour
     public RectTransform parent;
     public RectTransform map;
 
+    private Vector3 pos;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -39,7 +41,9 @@ public class Minimap : MonoBehaviour
             Transform target = arrowedPositions[i];
 			Transform arrow = arrows[i];
 
-            Vector3 rpos = target.position - GameControl.main.myAbilities.transform.position;
+            if(GameControl.main.myAbilities != null) pos = GameControl.main.myAbilities.transform.position;
+
+            Vector3 rpos = target.position - pos;
             rpos.y = 0;
             float dist = rpos.magnitude;
             float mapSize = MapCamera.main.cam.orthographicSize;

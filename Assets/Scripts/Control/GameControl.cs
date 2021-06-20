@@ -115,6 +115,7 @@ public class GameControl : MonoBehaviour
 
 
 	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor;
+	public Transform mapPlayerIcon;
 
 	void Awake(){
 		ItemInfoUI.main = mainItemInfoUI;
