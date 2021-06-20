@@ -219,8 +219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hit: []
-  maxDamage: 3
-  minDamage: 1
+  maxDamage: 1
+  minDamage: 0.5
   maxVelocity: 20
   minVelocity: 15
   attackType: 2
@@ -280,8 +280,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fdc04f35daeb77408d2e9a274b4e12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sleep: 0
-  rig: {fileID: 0}
 --- !u!1 &1906345214569322
 GameObject:
   m_ObjectHideFlags: 0
