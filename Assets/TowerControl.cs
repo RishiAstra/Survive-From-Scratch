@@ -5,14 +5,16 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TowerControl : MonoBehaviour
 {
     public static TowerControl main;
     public static List<TowerLevelUnlocker> towerLevelUnlockers = new List<TowerLevelUnlocker>();
-
-    public List<Tower> towers;
+	
+	public int currentLevelInTower;
+	public List<Tower> towers;
     public Menu towerMenu;
     public TMP_Text levelSelectedText;
     public TMP_Text guardText;//text to tell the player how many guards killed / how many remaining
@@ -29,6 +31,43 @@ public class TowerControl : MonoBehaviour
 		main = this;
 
 		LoadTowers();
+
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	//when the scene is loaded, assign the tower index based on the actual scene loaded
+	private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+	{
+		if (towers.Count == 0)
+		{
+			currentLevelInTower = -1;
+			return;
+		}
+
+		for(int i = 0; i < towers.Count; i++)
+		{
+			for (int j = 0; j < towers[i].levelsBeaten.Count; j++)
+			{
+				string expectedName = GameControl.main.mapScenePath + towers[i].GetLevelSceneName(j + 1);
+				
+				string actualName = arg0.path;
+				string assetPrefex = "Assets/";
+				if (actualName.IndexOf(assetPrefex) == 0) actualName = actualName.Substring(assetPrefex.Length);
+				int index = actualName.LastIndexOf(".");
+				if (index != -1) actualName = actualName.Substring(0, index);
+				//if()
+
+				print(expectedName + "||" + actualName);
+				if (actualName == expectedName)
+				{
+					currentLevelInTower = j;
+					return;
+				}
+			}
+		}
+
+		currentLevelInTower = -1;
+		return;		
 	}
 
 	private void LoadTowers()
@@ -38,13 +77,13 @@ public class TowerControl : MonoBehaviour
 			//if a tower has been saved, load it
 			if (File.Exists(GetFileName(towers[i])))
 			{
-                int length = towers[i].unlockedLevels.Count;
-				towers[i].unlockedLevels = JsonConvert.DeserializeObject<List<bool>>(File.ReadAllText(GetFileName(towers[i])));
+                int length = towers[i].levelsBeaten.Count;
+				towers[i].levelsBeaten = JsonConvert.DeserializeObject<List<bool>>(File.ReadAllText(GetFileName(towers[i])));
 
                 //if new levels were added, fill them as not unlocked
-                for(int j = towers[i].unlockedLevels.Count; j < length; j++)
+                for(int j = towers[i].levelsBeaten.Count; j < length; j++)
 				{
-                    towers[j].unlockedLevels.Add(false);
+                    towers[j].levelsBeaten.Add(false);
 				}
 			}
 		}
@@ -84,7 +123,7 @@ public class TowerControl : MonoBehaviour
 		Directory.CreateDirectory(GetFileDirectory());
 		for (int i = 0; i < towers.Count; i++)
 		{
-			File.WriteAllText(GetFileName(towers[i]), JsonConvert.SerializeObject(towers[t].unlockedLevels, Formatting.Indented));
+			File.WriteAllText(GetFileName(towers[i]), JsonConvert.SerializeObject(towers[t].levelsBeaten, Formatting.Indented));
 		}
 	}
 
@@ -93,19 +132,19 @@ public class TowerControl : MonoBehaviour
         t = tower;
         //set buttons count
 
-        while (buttons.Count > towers[t].unlockedLevels.Count)
+        while (buttons.Count > towers[t].levelsBeaten.Count)
 		{
             Destroy(buttons[buttons.Count - 1].gameObject);
             buttons.RemoveAt(buttons.Count - 1);
 		}
 
-        for(int i = buttons.Count; i < towers[t].unlockedLevels.Count; i++)
+        for(int i = buttons.Count; i < towers[t].levelsBeaten.Count; i++)
 		{
             GameObject g = Instantiate(towerLevelButton, buttonParent);
             buttons.Add(g.GetComponent<TowerSelectionButtonUI>());
 		}
 
-        for (int i = 0; i < towers[t].unlockedLevels.Count; i++)
+        for (int i = 0; i < towers[t].levelsBeaten.Count; i++)
         {
             buttons[i].SetIndex(i);
             Button b = buttons[i].GetComponent<Button>();
@@ -123,7 +162,7 @@ public class TowerControl : MonoBehaviour
     public void RefreshSelectedTint()
 	{
         if (towers[t] == null) return;
-        for (int i = 0; i < towers[t].unlockedLevels.Count; i++)
+        for (int i = 0; i < towers[t].levelsBeaten.Count; i++)
         {
             buttons[i].SetSelected(false);
         }
@@ -147,17 +186,29 @@ public class TowerControl : MonoBehaviour
             return;
 		}
 		if (buttonIndexSelected < 0) buttonIndexSelected = 0;
-		if (buttonIndexSelected >= towers[t].unlockedLevels.Count) buttonIndexSelected = towers[t].unlockedLevels.Count - 1;
+		if (buttonIndexSelected >= towers[t].levelsBeaten.Count) buttonIndexSelected = towers[t].levelsBeaten.Count - 1;
 	}
+
+
 
     public void EnterCurrentLevel()
 	{
-        //if within range etc, and unlocked that level
-        if(towers[t] != null && towers[t].unlockedLevels.Count > 0 && buttonIndexSelected >= 0 && buttonIndexSelected < towers[t].unlockedLevels.Count && towers[t].unlockedLevels[buttonIndexSelected])
+		//if within range etc, and unlocked that level
+		if (towers[t] != null && towers[t].levelsBeaten.Count > 0 && buttonIndexSelected >= 0 && buttonIndexSelected < towers[t].levelsBeaten.Count && CanEnterLevel(buttonIndexSelected))
 		{
-            //levels start at 1, not 0, so an offset of 1 is required
-            GameControl.main.BeginLoadMapLocation(towers[t].GetLevelSceneName(buttonIndexSelected + 1));
+			//levels start at 1, not 0, so an offset of 1 is required
+			GameControl.main.BeginLoadMapLocation(towers[t].GetLevelSceneName(buttonIndexSelected + 1));
 		}
+	}
+
+	public bool CanEnterLevel(int index)
+	{
+		//if out of range, can't enter
+		if (index < 0 || index >= towers[t].levelsBeaten.Count) return false;
+		//if first lvl, can enter
+		if (index == 0) return true;
+		//otherwise can enter only if previous level cleared
+		return towers[t].levelsBeaten[index - 1];
 	}
 
 	// Update is called once per frame

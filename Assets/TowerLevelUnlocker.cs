@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class TowerLevelUnlocker : MonoBehaviour
 {
-    public string towerName;
-    public int levelToUnlock;
+    //public string towerName;
+    //public int levelToUnlock;
     public List<spawner> spawners;
     // Start is called before the first frame update
     void Start()
@@ -19,7 +19,7 @@ public class TowerLevelUnlocker : MonoBehaviour
         TowerControl.towerLevelUnlockers.Remove(this);
 	}
 
-	void CheckIfUnlock()
+	void CheckIfCleared()
 	{
         bool ok = true;
         for(int i = 0; i < spawners.Count; i++)
@@ -34,11 +34,11 @@ public class TowerLevelUnlocker : MonoBehaviour
 
 		if (ok)
 		{
-            int s = TowerControl.main.GetTowerIndex(towerName);
-            int ind = levelToUnlock - 1;
-            if(ind < TowerControl.main.towers[s].unlockedLevels.Count)
+            int s = TowerControl.main.t;//.GetTowerIndex( towerName);
+            int ind = TowerControl.main.currentLevelInTower;// - 1;// levelToUnlock - 1;
+            if(ind < TowerControl.main.towers[s].levelsBeaten.Count)
 			{
-                TowerControl.main.towers[s].unlockedLevels[ind] = true;
+                TowerControl.main.towers[s].levelsBeaten[ind] = true;
 			}
 			else
 			{
@@ -53,7 +53,7 @@ public class TowerLevelUnlocker : MonoBehaviour
     {
         if(Time.frameCount % 10 == 0)
 		{
-            CheckIfUnlock();
+            CheckIfCleared();
 		}
     }
 

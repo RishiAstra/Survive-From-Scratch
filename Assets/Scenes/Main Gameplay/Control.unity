@@ -13525,9 +13525,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352de8aba24c0d445af5a32080374957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLevelInTower: 0
   towers:
   - name: Turris Aetheris
-    unlockedLevels: 0100000000
+    levelsBeaten: 0000000000
   towerMenu: {fileID: 125775333}
   levelSelectedText: {fileID: 424634952}
   guardText: {fileID: 594636599}

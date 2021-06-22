@@ -75,15 +75,15 @@ public class TowerTeleporter : MonoBehaviour, IMouseHoverable
 public class Tower
 {
 	public string name;
-	public List<bool> unlockedLevels;
+	public List<bool> levelsBeaten;
 
 	public Tower(string name, int floorCount)
 	{
 		this.name = name;
-		this.unlockedLevels = new List<bool>();
+		this.levelsBeaten = new List<bool>();
 		for(int i = 0; i < floorCount; i++)
 		{
-			unlockedLevels.Add(false);
+			levelsBeaten.Add(false);
 		}
 	}
 

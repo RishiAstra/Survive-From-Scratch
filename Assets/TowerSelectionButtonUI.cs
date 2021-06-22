@@ -8,6 +8,7 @@ public class TowerSelectionButtonUI : MonoBehaviour
     public TMP_Text levelText;
     public GameObject tint;
     public GameObject disabledTint;
+    public GameObject beatenTint;
     public int index;
 
     // Start is called before the first frame update
@@ -36,6 +37,16 @@ public class TowerSelectionButtonUI : MonoBehaviour
     void Update()
     {
         //show disabled tint if not allwoed to select this tower level
-        disabledTint.SetActive(!TowerControl.main.towers[TowerControl.main.t].unlockedLevels[index]);
+        beatenTint.SetActive(TowerControl.main.towers[TowerControl.main.t].levelsBeaten[index]);
+        bool unlocked = false;
+        //if in range for subtracting 1 from index
+        if(index >= 1 && index < TowerControl.main.towers[TowerControl.main.t].levelsBeaten.Count)
+		{
+            //if previous level was beaten
+            unlocked = TowerControl.main.towers[TowerControl.main.t].levelsBeaten[index - 1];
+        }
+        if (index == 0) unlocked = true;
+        //disabled if not unlocked
+        disabledTint.SetActive(!unlocked);
     }
 }
