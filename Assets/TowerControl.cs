@@ -18,6 +18,7 @@ public class TowerControl : MonoBehaviour
     public Menu towerMenu;
     public TMP_Text levelSelectedText;
     public TMP_Text guardText;//text to tell the player how many guards killed / how many remaining
+	public TMP_Text towerNameText;
     public RectTransform buttonParent;
     public GameObject towerLevelButton;
     public List<TowerSelectionButtonUI> buttons;
@@ -201,6 +202,14 @@ public class TowerControl : MonoBehaviour
 		}
 	}
 
+	public bool CurrentLevelCleared()
+	{
+		if (t < 0 || t > towers.Count) return false;
+		if (currentLevelInTower < 0 || currentLevelInTower >= towers[t].levelsBeaten.Count) return false;
+
+		return towers[t].levelsBeaten[currentLevelInTower];
+	}
+
 	public bool CanEnterLevel(int index)
 	{
 		//if out of range, can't enter
@@ -220,6 +229,7 @@ public class TowerControl : MonoBehaviour
             monstersLeft += tu.GetMonstersLeft();
 		}
 
-        guardText.text = (monstersLeft > 0) ? (monstersLeft + " monsters left") : "";
+        guardText.text = (monstersLeft > 0) ? (monstersLeft + " monsters left") : "Level Cleared!";
+		towerNameText.text = towers[t].name;
     }
 }

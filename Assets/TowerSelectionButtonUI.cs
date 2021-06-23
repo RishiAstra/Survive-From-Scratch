@@ -38,14 +38,14 @@ public class TowerSelectionButtonUI : MonoBehaviour
     {
         //show disabled tint if not allwoed to select this tower level
         beatenTint.SetActive(TowerControl.main.towers[TowerControl.main.t].levelsBeaten[index]);
-        bool unlocked = false;
+        bool unlocked = TowerControl.main.CanEnterLevel(index);
         //if in range for subtracting 1 from index
-        if(index >= 1 && index < TowerControl.main.towers[TowerControl.main.t].levelsBeaten.Count)
-		{
-            //if previous level was beaten
-            unlocked = TowerControl.main.towers[TowerControl.main.t].levelsBeaten[index - 1];
-        }
-        if (index == 0) unlocked = true;
+  //      if(index >= 1 && index < TowerControl.main.towers[TowerControl.main.t].levelsBeaten.Count)
+		//{
+  //          //if previous level was beaten
+  //          unlocked = TowerControl.main.towers[TowerControl.main.t].levelsBeaten[index - 1];
+  //      }
+  //      if (index == 0) unlocked = true;
         //disabled if not unlocked
         disabledTint.SetActive(!unlocked);
     }

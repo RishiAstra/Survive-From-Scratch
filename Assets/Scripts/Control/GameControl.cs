@@ -68,6 +68,7 @@ public class GameControl : MonoBehaviour
 
 	//public LayerMask collectibleLayerMask;
 	public LayerMask interactLayerMask;
+	public LayerMask ground;
 	public GameObject playerPrefab;
 	public GameObject playerPrefab2;
 	public bool usePlayerPrefab2;

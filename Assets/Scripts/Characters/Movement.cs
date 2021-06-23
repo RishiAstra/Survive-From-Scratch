@@ -15,7 +15,7 @@ public class Movement : MonoBehaviour
 
 
 	public float jumpForce;
-	public LayerMask ground;
+	//public LayerMask ground;
 	public Vector3 groundNormal;
 	public GroundCheck[] groundCheck;
 	[Range(0f, 90f)]
@@ -218,7 +218,7 @@ public class Movement : MonoBehaviour
 		//find all ground that character is on, then find the ground contact most aligned (dot) with character's direction.
 		foreach(GroundCheck t in groundCheck)
 		{
-			RaycastHit[] hit = Physics.SphereCastAll(t.transform.position, t.radius, t.transform.up, t.distance, ground, QueryTriggerInteraction.Ignore);
+			RaycastHit[] hit = Physics.SphereCastAll(t.transform.position, t.radius, t.transform.up, t.distance, GameControl.main.ground, QueryTriggerInteraction.Ignore);
 			//print(hit.Length);
 			foreach (RaycastHit h in hit)
 			{
