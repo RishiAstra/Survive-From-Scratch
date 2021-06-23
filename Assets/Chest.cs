@@ -11,6 +11,7 @@ public class Chest : MonoBehaviour, IMouseHoverable
 	public GameObject lootableIndicator;
 	public bool looted;
 	public bool persistantOnlyLootOnce;
+	public Animator anim;
 
 	private LootDropper loot;
 	private PersistantSaveID id;
@@ -27,6 +28,10 @@ public class Chest : MonoBehaviour, IMouseHoverable
 			if (File.Exists(GetSavePath()))
 			{
 				looted = JsonConvert.DeserializeObject<bool>(File.ReadAllText(GetSavePath()));
+				if(anim != null && looted)
+				{
+					anim.SetTrigger("Open_Immediate");
+				}
 			}
 		}
 	}
@@ -62,6 +67,10 @@ public class Chest : MonoBehaviour, IMouseHoverable
 		{
 			loot.GenerateLoot();
 			looted = true;
+			if (anim != null)
+			{
+				anim.SetTrigger("Open");
+			}
 		}
 	}
 

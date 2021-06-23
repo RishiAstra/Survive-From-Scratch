@@ -868,7 +868,9 @@ public class GameControl : MonoBehaviour
 					//c.MouseClickMe();
 				}
 
-				
+				//if not collectible, don't shot item info
+				if (g.GetComponentInParent<Collectible>() == null) itemHoverInfo.SetActive(false);
+
 			}
 			else
 			{

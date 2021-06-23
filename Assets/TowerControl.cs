@@ -229,7 +229,15 @@ public class TowerControl : MonoBehaviour
             monstersLeft += tu.GetMonstersLeft();
 		}
 
-        guardText.text = (monstersLeft > 0) ? (monstersLeft + " monsters left") : "Level Cleared!";
+		if (currentLevelInTower == -1)
+		{
+			guardText.text = "";
+		}
+		else
+		{
+			guardText.text = (monstersLeft > 0) ? (monstersLeft + " monsters left") : "Level Cleared!";
+		}
+
 		towerNameText.text = towers[t].name;
     }
 }
