@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
 {
 	public AttackType attackType;
 	public Abilities parent;
-	[Range(0, 2)]public float dmg;
+	//[Range(0, 2)]public float dmg;
 	public bool canDmg;
 	public bool multipleHits = true;//can it hit multiple enemies with same swing etc.
 	public float attackDuriation;//StopAttack() will prevent this, so no need. Set it to large value, larger than realistic attack duriation (e.g. if sword takes 1 sec to swing, set to 2 sec)
