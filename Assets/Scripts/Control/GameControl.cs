@@ -24,6 +24,10 @@ public class GameControl : MonoBehaviour
 	public static string saveDirectory { 
 		get { return Application.persistentDataPath + "/" + Application.version + "/"; }
 	}
+	public static string playerCharacterDirectory
+	{
+		get { return saveDirectory + "player characters/"; }
+	}
 	//public static string playerSavePath = Application.persistentDataPath + "/Players/";
 	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
 	public const string itemPath = @"Assets/Items/";
@@ -55,6 +59,7 @@ public class GameControl : MonoBehaviour
 	public string mapScenePath;
 	public string controlSceneName;
 
+	public string defaultMapLocation;
 	public ItemInfoUI mainItemInfoUI;
 	public int money;
 	public TextMeshProUGUI moneyText;
@@ -132,8 +137,10 @@ public class GameControl : MonoBehaviour
 
 		itemHoverInfo.SetActive(false);
 		HideMenus();
-		mapScreen.TryActivateMenu();
-		helpMenu.TryActivateMenu();
+		//mapScreen.TryActivateMenu();
+		//helpMenu.TryActivateMenu();
+
+		//TODO: show help if first time playing
 
 		//mapScreen.SetActive(true);
 		HideInfo();
@@ -369,14 +376,166 @@ public class GameControl : MonoBehaviour
 		yield return new WaitForEndOfFrame();
 		LoadPlayer();
 		print("loaded player initial");
-		if(savedSceneIndex >= MAP_SCENE_INDEX_START && savedSceneIndex < SceneManager.sceneCountInBuildSettings)
+
+
+		//load the previous location or default if none
+		string sceneName = defaultMapLocation;
+		if (savedSceneIndex >= MAP_SCENE_INDEX_START && savedSceneIndex < SceneManager.sceneCountInBuildSettings)
 		{
-			string sceneName = GetSceneNameFromIndex(savedSceneIndex);
-			yield return LoadMapLocation(sceneName);
-			if(me == null) MakeAndSetUpPlayer(false, false);
-			print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
+			sceneName = GetSceneNameFromIndex(savedSceneIndex);
 		}
+
+		yield return LoadMapLocation(sceneName);
+
+		//load/spawn party here. Make sure that if they party isn't in this location, they are teleported
+		//since this is initial, consider just keeping the whole party where they are
+		//if they are in this location, load them
+		//if(me == null) MakeAndSetUpPlayer(false, false);
+		//MakeAndSetUpPlayer(false, false);
+
+		yield return LoadPartyFromData(false, false);
+
+		print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
 	}
+
+	private IEnumerator LoadPartyFromData(bool respawn, bool resetStats)
+	{
+		foreach (PartyMember p in myParty.members)
+		{
+			//if party member gameobject exists, delete it (note: saveentity will auto-save it)
+			if (p.g != null) Destroy(p.g);
+
+			string datapath = playerCharacterDirectory + p.id;
+
+			if (Directory.Exists(datapath))
+			{
+				//get the gameobject to spawn
+				GameObject toSpawn;
+				bool succeed = SaveEntity.GetEntityPrefabCached(p.type, out toSpawn);
+				if (!succeed)
+				{
+					AsyncOperationHandle<GameObject> a = SaveEntity.GetEntityPrefab(p.type);
+					yield return a;
+					toSpawn = a.Result;
+				}
+
+
+				string[] saveData = SaveEntity.GetSaveDataFromFilePath(datapath);
+
+				GameObject g = SaveEntity.LoadEntity(toSpawn, saveData);
+				p.g = g;
+				SaveEntity saveEntity = g.GetComponent<SaveEntity>();
+
+
+				//if not respawning the position and character is in wrong scene, respawn the position to prevent wierd wrong positions
+				if (!respawn && saveEntity.savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+				{
+					RespawnPartyMemberPosition(g);
+				}
+
+				//mark as player owned
+				saveEntity.playerOwned = true;
+
+				if (resetStats)
+				{
+					StatScript ss = g.GetComponent<StatScript>();
+
+					if(ss != null)
+					{
+						ss.ResetStats();
+					}
+				}
+
+				if (respawn)
+				{
+					RespawnPartyMemberPosition(g);
+				}
+
+			}
+		}
+
+		SetControlledPartyMember(myParty.lastUsed);
+	}
+
+	private void RespawnPartyMemberPosition(GameObject g)
+	{
+		Vector3 position;
+		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint>();
+		int chosen = UnityEngine.Random.Range(0, sp.Length);
+		position = sp[chosen].transform.position;
+
+		g.transform.position = position;
+		g.transform.rotation = sp[chosen].transform.rotation;	
+	}
+
+	private void SetControlledPartyMember(int index)
+	{
+		myParty.lastUsed = index;
+
+		GameObject g = myParty.members[index].g;
+		if (g == null) Debug.LogError("No gameobject for this party member to be controlled");
+
+
+		me = g.GetComponent<Player>();
+
+
+		playerControl = g.GetComponent<PlayerControl>();
+
+
+		HPBar hpBar = newPlayerObject.GetComponent<HPBar>();
+		hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
+		hpBar.hpTextUI = mainHpText;
+		hpBar.SetWorldHpBarVisible(false);
+
+		HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
+		mpBar.type = HPBar.StatType.mp;
+		mpBar.hpBarImage = mainMpBar;
+		mpBar.hpTextUI = mainMpText;
+		mpBar.autoHide = false;
+		mpBar.changeHpBarColor = false;
+		mpBar.useNewLine = true;
+
+		HPBar engBar = newPlayerObject.AddComponent<HPBar>();
+		engBar.type = HPBar.StatType.eng;
+		engBar.hpBarImage = mainEngBar;
+		engBar.hpTextUI = mainEngText;
+		engBar.autoHide = false;
+		engBar.changeHpBarColor = false;
+		engBar.useNewLine = true;
+
+		HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
+		xpBar.type = HPBar.StatType.xp;
+		xpBar.hpBarImage = mainXpBar;
+		xpBar.hpTextUI = mainXpText;
+		xpBar.autoHide = false;
+		xpBar.changeHpBarColor = false;
+
+
+		Player.main = me;
+		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+
+		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
+		//print("set up player camera");
+		myAbilities = g.GetComponent<Abilities>();
+
+
+		//bind hotbar to character and initialize
+		hotBarUI.target = g.GetComponent<Inventory>();
+		hotBarUI.InitializeSlots();
+
+		//bind inventory to character and initialize
+		mainInventoryUI.target = mainInventoryUI.GetComponent<Inventory>();
+		mainInventoryUI.InitializeSlots();
+
+
+		Inventory myInv = g.GetComponent<Inventory>();
+		myInv.take = true;
+		myInv.put = true;
+		myInv.take = true;
+		myInv.put = true;
+		throw new NotImplementedException();
+	}
+
 	private static string GetSceneNameFromIndex(int BuildIndex)
 	{
 		string path = SceneUtility.GetScenePathByBuildIndex(BuildIndex);
@@ -429,7 +588,7 @@ public class GameControl : MonoBehaviour
 	#region Map Functions
 
 	private void SetMapLoadProgress(float amount)
-    {
+	{
 		mapSceneLoadProgress = amount;
 		if (loading)
 		{
@@ -446,19 +605,25 @@ public class GameControl : MonoBehaviour
 	IEnumerator LoadMapLocationAndResetPosition(string sceneName)
 	{
 		yield return LoadMapLocation(sceneName);
-		if(me == null)
-		{
-			MakeAndSetUpPlayer(true, false);
-		}
-		else
-		{
-			//TODO:warning: this supposes that the player component is on the root of player gameobject
-			ResetPositionOfPlayer(me.gameObject);
-		}
+
+		//reset party positions here
+
+		yield return LoadPartyFromData(true, false);
+
+
+		//if (me == null)
+		//{
+			//MakeAndSetUpPlayer(true, false);
+		//}
+		//else
+		//{
+		//	//TODO:warning: this supposes that the player component is on the root of player gameobject
+		//	ResetPositionOfPlayer(me.gameObject);
+		//}
 	}
 
 	public IEnumerator LoadMapLocation(string sceneName)
-    {
+	{
 		if (!initialized) yield break;
 		//TODO:test this
 		TimeControl.main.SetTimeScale(0, "MAP_LOAD");
@@ -482,24 +647,24 @@ public class GameControl : MonoBehaviour
 		int sceneCount = SceneManager.sceneCount;
 		float m = 0.5f / sceneCount;
 		for (int i = sceneCount - 1; i >= 0; i--)
-        {
+		{
 			mapLoadText.text = "Unloading scene " + (sceneCount - i) + " of " + sceneCount;
 			Scene scene = SceneManager.GetSceneAt(i);
 			if(scene.name != controlSceneName)
-            {
+			{
 				AsyncOperation b = SceneManager.UnloadSceneAsync(scene);
-                while (!b.isDone)
-                {
+				while (!b.isDone)
+				{
 
 					SetMapLoadProgress((sceneCount - i - 1) * m + b.progress * m);//TODO: test
 					yield return null;
-                }				
+				}				
 			}
 			SetMapLoadProgress((sceneCount - i) * m);
 			yield return null;
 		}
 
-		//string path = mapScenePath + sceneName;
+		string path = mapScenePath + sceneName;
 
 		myParty.TeleportAll(sceneName);
 
@@ -571,7 +736,7 @@ public class GameControl : MonoBehaviour
 		inWorld = true;
 		loading = false;
 		print("loaded map location");
-    }
+	}
 
 	#endregion
 
@@ -636,12 +801,13 @@ public class GameControl : MonoBehaviour
 	//{
 	//	CreatePlayerObject();
 	//}
-	void MakeAndSetUpPlayer(bool respawnPosition = false, bool restoreStats = false)
-	{
-		CreatePlayerObject(respawnPosition, restoreStats);
-		//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
+	//void MakeAndSetUpPlayer(bool respawnPosition = false, bool restoreStats = false)
+	//{
+		
+	//	CreatePlayerObject(respawnPosition, restoreStats);
+	//	//SetUpPlayer(CreatePlayerObject());//setupplayer is called by the new player PlayerControl.SetData
 
-	}
+	//}
 
 	void RespawnGUIOption()
 	{
@@ -658,7 +824,9 @@ public class GameControl : MonoBehaviour
 	private void Respawn()
 	{
 		SaveStuff();
-		MakeAndSetUpPlayer(true, true);
+		//respawn party
+		StartCoroutine(LoadPartyFromData(true, true));
+		//MakeAndSetUpPlayer(true, true);
 	}
 
 	void OnGUI()
@@ -751,7 +919,7 @@ public class GameControl : MonoBehaviour
 	}
 
 	private void Update()
-    {
+	{
 		moneyText.text = "Money: " + money;
 		if((itemInfoTarget == null || itemInfoTarget.gameObject.activeInHierarchy == false) && itemInfoTransform.gameObject.activeSelf == true) HideInfo();
 		if (playerExists)
@@ -974,16 +1142,16 @@ public class GameControl : MonoBehaviour
 		myInv.put = true;
 	}
 
-	void ResetPositionOfPlayer(GameObject player)
-	{
-		Vector3 position;
-		spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint>();
-		int chosen = UnityEngine.Random.Range(0, sp.Length);
-		position = sp[chosen].transform.position;
+	//void ResetPositionOfPlayer(GameObject player)
+	//{
+	//	Vector3 position;
+	//	spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint>();
+	//	int chosen = UnityEngine.Random.Range(0, sp.Length);
+	//	position = sp[chosen].transform.position;
 
-		player.transform.position = position;
-		player.transform.rotation = sp[chosen].transform.rotation;
-	}
+	//	player.transform.position = position;
+	//	player.transform.rotation = sp[chosen].transform.rotation;
+	//}
 
 	/// <summary>
 	/// Creates a player GameObject
@@ -991,102 +1159,111 @@ public class GameControl : MonoBehaviour
 	/// <param name="respawnPosition">should the player's position be reset? NOTE: position is reset if teleported</param>
 	/// <param name="restoreStats">should the player's hp etc be reset?</param>
 	/// <returns></returns>
-	GameObject CreatePlayerObject(bool respawnPosition = false, bool restoreStats = false)
+	//GameObject CreatePlayerObject(bool respawnPosition = false, bool restoreStats = false)
+	//{
+	//	//Vector3 position;
+	//	//spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
+	//	//int chosen = UnityEngine.Random.Range (0, sp.Length);
+	//	//position = sp [chosen].transform.position;
+
+	//	//finds existing player data, makes a gameobject for it, and teleports it. SetupPlayer is called when loading the player
+	//	if(myPlayersId != -1)
+	//	{
+	//		string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
+	//		if (pathOfThisEntity == null || !Directory.Exists(pathOfThisEntity))
+	//		{
+	//			Debug.LogError("This id could not be found to load player: id: " + myPlayersId);
+	//		}
+	//		else
+	//		{
+	//			string[] saveData = SaveEntity.GetSaveDataFromFilePath(pathOfThisEntity);//JsonConvert.DeserializeObject<string[]>(File.ReadAllText(pathOfThisEntity));
+	//			//if (saveData.id == myPlayersId)
+	//			//{
+	//			string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
+	//			GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
+	//			//TODO: consider below and if it should be also for loading player
+
+	//			//if player is in a different map location than saved (meaning that the player teleported)
+	//			if (respawnPosition)
+	//			{
+	//				ResetPositionOfPlayer(g);
+	//				//g.transform.position = position;
+	//				//g.transform.rotation = Quaternion.identity;
+	//			}
+	//			else if (g.GetComponent<SaveEntity>().savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+	//			{
+	//				ResetPositionOfPlayer(g);
+	//				//g.transform.position = position;
+	//				//g.transform.rotation = Quaternion.identity;
+	//				//g.GetComponent<StatScript>().resetOnStart = false;//don't give full hp etc every time the game starts
+	//			}
+
+	//			if (restoreStats)
+	//			{
+	//				g.GetComponent<StatScript>().ResetStats();//restore hp etc when respawning
+
+	//			}
+
+
+	//			//resetting the stats is not good
+	//			//g.GetComponent<StatScript>().ResetStats();
+
+	//			return g;
+	//				//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
+	//				//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
+	//				//saveData.scene = SceneManager.GetActiveScene().name;
+	//				//File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
+	//			//}
+	//			//else
+	//			//{
+	//			//	Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
+	//			//	//return null;
+	//			//}
+	//		}			
+	//	}
+
+	//	Debug.LogWarning("Failed to find player, making new one");
+
+	//	//make a new player gameobject from no saved data
+
+	//	//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
+	//	GameObject temp = Instantiate(playerPrefab);
+	//	ResetPositionOfPlayer(temp);
+	//	SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
+	//	return temp;
+
+	//	//Save save = newPlayerObject.GetComponent<Save>();
+	//	//save.playerOwnerName = username;
+
+	//	//me = newPlayerObject.GetComponent<Player> ();
+	//	//HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
+	//	//hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
+	//	//hPBar.hpTextUI = mainHpText;
+	//	//hPBar.SetWorldHpBarVisible(false);
+
+	//	//Player.main = me;
+	//	//newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+	//	//myAbilities = newPlayerObject.GetComponent<Abilities>();
+
+	//	////bind hotbar to character and initialize
+	//	//hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
+	//	//hotBarUI.InitializeSlots();
+
+	//	//if (Player.main == null) Debug.LogError("Failed to create main character");
+	//	//Inventory myInv = newPlayerObject.GetComponent<Inventory>();
+	//	//myInv.take = true;
+	//	//myInv.put = true;
+	//	//myInv.take = true;
+	//	//myInv.put = true;
+	//}
+
+	public void PutInitialCharacterInParty()
 	{
-		//Vector3 position;
-		//spawnPoint[] sp = GameObject.FindObjectsOfType<spawnPoint> ();
-		//int chosen = UnityEngine.Random.Range (0, sp.Length);
-		//position = sp [chosen].transform.position;
-
-		//finds existing player data, makes a gameobject for it, and teleports it. SetupPlayer is called when loading the player
-		if(myPlayersId != -1)
-		{
-			string pathOfThisEntity = SaveEntity.GetPathFromId(myPlayersId);
-			if (pathOfThisEntity == null || !Directory.Exists(pathOfThisEntity))
-			{
-				Debug.LogError("This id could not be found to load player: id: " + myPlayersId);
-			}
-			else
-			{
-				string[] saveData = SaveEntity.GetSaveDataFromFilePath(pathOfThisEntity);//JsonConvert.DeserializeObject<string[]>(File.ReadAllText(pathOfThisEntity));
-				//if (saveData.id == myPlayersId)
-				//{
-				string type = SaveEntity.GetTypeFromPath(pathOfThisEntity);
-				GameObject g = SaveEntity.LoadEntity(playerPrefab, saveData);
-				//TODO: consider below and if it should be also for loading player
-
-				//if player is in a different map location than saved (meaning that the player teleported)
-				if (respawnPosition)
-				{
-					ResetPositionOfPlayer(g);
-					//g.transform.position = position;
-					//g.transform.rotation = Quaternion.identity;
-				}
-				else if (g.GetComponent<SaveEntity>().savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
-				{
-					ResetPositionOfPlayer(g);
-					//g.transform.position = position;
-					//g.transform.rotation = Quaternion.identity;
-					//g.GetComponent<StatScript>().resetOnStart = false;//don't give full hp etc every time the game starts
-				}
-
-				if (restoreStats)
-				{
-					g.GetComponent<StatScript>().ResetStats();//restore hp etc when respawning
-
-				}
-
-
-				//resetting the stats is not good
-				//g.GetComponent<StatScript>().ResetStats();
-
-				return g;
-					//GameObject g = Instantiate(playerPrefab, position, Quaternion.identity);
-					//GameObject toSpawn = SaveEntity.GetPrefab(type, ThingType.entity);
-					//saveData.scene = SceneManager.GetActiveScene().name;
-					//File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
-				//}
-				//else
-				//{
-				//	Debug.LogError("Somehow wrong id: expected: " + myPlayersId + ", found: " + saveData.id);
-				//	//return null;
-				//}
-			}			
-		}
-
-		Debug.LogWarning("Failed to find player, making new one");
-
-		//make a new player gameobject from no saved data
-
-		//GameObject newPlayerObject = Instantiate(player, position, Quaternion.identity);
 		GameObject temp = Instantiate(playerPrefab);
-		ResetPositionOfPlayer(temp);
-		SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
-		return temp;
-
-		//Save save = newPlayerObject.GetComponent<Save>();
-		//save.playerOwnerName = username;
-
-		//me = newPlayerObject.GetComponent<Player> ();
-		//HPBar hPBar = newPlayerObject.GetComponent<HPBar>();
-		//hPBar.hpBarImage = mainHpBar;//TODO: check taht this works
-		//hPBar.hpTextUI = mainHpText;
-		//hPBar.SetWorldHpBarVisible(false);
-
-		//Player.main = me;
-		//newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
-		//myAbilities = newPlayerObject.GetComponent<Abilities>();
-
-		////bind hotbar to character and initialize
-		//hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
-		//hotBarUI.InitializeSlots();
-
-		//if (Player.main == null) Debug.LogError("Failed to create main character");
-		//Inventory myInv = newPlayerObject.GetComponent<Inventory>();
-		//myInv.take = true;
-		//myInv.put = true;
-		//myInv.take = true;
-		//myInv.put = true;
+		RespawnPartyMemberPosition(temp);
+		SetControlledPartyMember(0);
+		//ResetPositionOfPlayer(temp);
+		//SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
 	}
 
 	#region save
@@ -1096,7 +1273,8 @@ public class GameControl : MonoBehaviour
 		PlayerSaveData s = new PlayerSaveData()
 		{
 			username = username,
-			myId = GameControl.main.myPlayersId,
+			//myId = GameControl.main.myPlayersId,
+			party = GameControl.main.myParty,
 			money = GameControl.main.money,
 			craftInventoryItems = crafting.craftInventory.items,
 			mainInventoryItems = GameControl.main.mainInventoryUI.target.items,
@@ -1118,7 +1296,8 @@ public class GameControl : MonoBehaviour
 			if (username != s.username) Debug.LogError("Username doesn't match, current name: " + username + ", saved: " + s.username);
 			crafting.craftInventory.items = s.craftInventoryItems;
 			crafting.craftInventory.InitializeIfEmpty();
-			GameControl.main.myPlayersId = s.myId;
+			//GameControl.main.myPlayersId = s.myId;
+			GameControl.main.myParty = s.party;
 			GameControl.main.money = s.money;
 			GameControl.main.mainInventoryUI.target.items = s.mainInventoryItems;
 			GameControl.main.savedSceneIndex = s.sceneIndex;
@@ -1267,7 +1446,8 @@ public class GameControl : MonoBehaviour
 public class PlayerSaveData
 {
 	public string username;
-	public long myId;//the id of the player owned, use this to load it
+	//public long myId;//the id of the player owned, use this to load it
+	public Party party;
 	public int money;
 	public int sceneIndex = -1;
 	public List<Item> craftInventoryItems;

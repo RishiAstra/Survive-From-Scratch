@@ -1,0 +1,25 @@
+just don't save party members in the map file
+now playerowned are not saved in map, but still saved
+
+remove:
+createplayerobject
+makeandsetupplayer
+setupplayer
+ResetPositionOfPlayer
+
+
+merge playercontrol with npccontrol
+
+to make SetControlledPartyMember and remove setupplayer:
+add option for hpbar target to not be automatically assigned
+make hpbars for selected character xp etc assigned in setC
+set hpbar world invisible etc idk
+set up camera
+control.cam = camGameObject.GetComponentInChildren<Cam>();
+myAbilities = newPlayerObject.GetComponent<Abilities>();
+bind hotbar
+
+
+check myAbilities
+
+remove player script

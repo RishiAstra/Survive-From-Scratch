@@ -46,6 +46,7 @@ public class SaveEntity : Save, ISaveable
 
 	public StatScript a;
 	public bool deleteOnDeath;
+	public bool playerOwned;
 
 	public Component[] toSave;
 
@@ -176,7 +177,7 @@ public class SaveEntity : Save, ISaveable
 			}
 			else
 			{
-				toSaveMapData.Add(new EntityMapData(this.id, this.type, SceneManager.GetActiveScene().buildIndex));
+				if(!playerOwned) toSaveMapData.Add(new EntityMapData(this.id, this.type, SceneManager.GetActiveScene().buildIndex));
 				SaveDataToFile();
 			}
 		}
@@ -595,7 +596,8 @@ public class SaveEntity : Save, ISaveable
 			if (saves[i] != null)
 			{
 				saves[i].SaveDataToFile();
-				mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
+				//don't put player-owned in map data
+				if (!saves[i].playerOwned) mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
 			}
 		}
 

@@ -6,22 +6,33 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class Party
 {
-    public List<long> myIds;
+    public List<PartyMember> members;
+	public int lastUsed;
 
     public void TeleportAll (string mapName)
 	{
 
 		string path = GameControl.main.mapScenePath + mapName;
 
-		for (int i = 0; i < myIds.Count; i++)
+		for (int i = 0; i < members.Count; i++)
 		{
 
-			SaveEntity.TeleportEntityBetweenScenes(myIds[i], SceneUtility.GetBuildIndexByScenePath(path));
+			SaveEntity.TeleportEntityBetweenScenes(members[i].id, SceneUtility.GetBuildIndexByScenePath(path));
 		}
 	}
 
 	public Party()
 	{
-		myIds = new List<long>();
+		members = new List<PartyMember>();
 	}
+}
+
+[System.Serializable]
+public class PartyMember
+{
+	public long id;
+	public string type;
+	public string name;
+	[System.NonSerialized]
+	public GameObject g;
 }

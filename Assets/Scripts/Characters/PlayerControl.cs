@@ -114,6 +114,7 @@ public class PlayerControl : MonoBehaviour, ISaveable
 		if (playerOwnerName == GameControl.username)
 		{
 			GameControl.main.SetUpPlayer(gameObject);
+			//TODO:merge with NPC control
 		}
 		else
 		{
