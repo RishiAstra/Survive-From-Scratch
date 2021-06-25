@@ -108,6 +108,7 @@ public class GameControl : MonoBehaviour
 	private Player me;
 	private PlayerControl playerControl;
 	private long myPlayersId = -1;
+	private Party myParty = new Party();
 	public IMouseHoverable previouslyMouseHovered;
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
@@ -498,16 +499,18 @@ public class GameControl : MonoBehaviour
 			yield return null;
 		}
 
-		string path = mapScenePath + sceneName;
+		//string path = mapScenePath + sceneName;
 
-		if (myPlayersId == -1)
-		{
-			Debug.LogWarning("Didn't teleport player because player doesn't exist");
-		}
-		else
-		{
-			SaveEntity.TeleportEntityBetweenScenes(myPlayersId, SceneUtility.GetBuildIndexByScenePath(path));
-		}
+		myParty.TeleportAll(sceneName);
+
+		//if (myPlayersId == -1)
+		//{
+		//	Debug.LogWarning("Didn't teleport player because player doesn't exist");
+		//}
+		//else
+		//{
+		//	SaveEntity.TeleportEntityBetweenScenes(myPlayersId, SceneUtility.GetBuildIndexByScenePath(path));
+		//}
 
 		yield return null;
 
