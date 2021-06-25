@@ -1,3 +1,19 @@
-Different weapons deal different damage.
-For example, an axe deals 10 dmg, but a stick deals 5 dmg.
-A rock deals less damage, but is a ranged attack.
+Certain items, such as an Axe, Stick, or Log, increase your damage when held. These items are classified as weapons.
+Other items, such as rocks, can be thrown to deal ranged damage.
+Weapons increase your output damage by applying modifiers to your damage.
+
+Modifiers have 4 properties:
+pre-add: added to the value of the character
+pre-mult: multiplied to the value after pre-add
+post-add: added to the value after pre-add and pre-mult
+post-mult: multiplied to the value after all the other 
+
+In addition to these 4 properties, Attack Modifiers have another property:
+type: the type of attack that the modifier will apply to, e.g. an axe will increase physical damage output but not magic damage output.
+
+If a character has multiple Attack Modifiers applied to them, each property is added before being applied.
+
+Example: The skill strength gives +100% atk pre-mult and the weapon gives +100% atk pre-mult. The character has 10 base attack.
+The character's output damage would be (character)10 * [(base)100% + (strength)100% + (weapon)100%] 
+= 10 * 300% 
+= 30 output damage

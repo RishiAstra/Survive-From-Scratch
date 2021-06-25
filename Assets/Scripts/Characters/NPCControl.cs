@@ -30,6 +30,11 @@ public class NPCControl : MonoBehaviour, ISaveable
 		abilities = GetComponent<Abilities>();
 		movement = GetComponent<Movement>();
 		targets = new List<StatScript>();
+
+		if (guard)
+		{
+			Minimap.main.AddArrowedPosition(transform);
+		}
     }
 
     // Update is called once per frame
@@ -121,9 +126,10 @@ public class NPCControl : MonoBehaviour, ISaveable
 		targets = new List<StatScript>();
 		foreach(Collider col in Physics.OverlapSphere(transform.position, spotRange, targetMask))
 		{
-			if(guard && (col.transform.position - guardPosition).sqrMagnitude > maxGuardDist * maxGuardDist){
-				continue;//don't target stuff too far
-			}
+			//below code was removed because the enemies simply wouldn't do anything when the player stood outside the distance and attacked them, resulting in easy kills with no danger
+			//if(guard && (col.transform.position - guardPosition).sqrMagnitude > maxGuardDist * maxGuardDist){
+			//	continue;//don't target stuff too far
+			//}
 			TagScript tagScript = col.GetComponent<TagScript>();
 			if(tagScript != null && tagScript.ContainsTag(abilities.enemyString))
 			{

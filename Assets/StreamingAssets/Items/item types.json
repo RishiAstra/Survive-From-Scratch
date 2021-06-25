@@ -329,5 +329,94 @@
       "stackable": false
     },
     "cost": 25
+  },
+  {
+    "name": "Iron Sword",
+    "description": "Finally, a proper weapon",
+    "tags": [
+      1
+    ],
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": [
+        {
+          "type": 7,
+          "m_preadd": 10.0,
+          "m_premult": 1.0,
+          "m_postadd": 0.0,
+          "m_postmult": 0.0,
+          "growthType": 0,
+          "a": 0.0
+        }
+      ]
+    },
+    "consumeRestore": {
+      "stat": {
+        "hp": 0.0,
+        "mp": 0.0,
+        "eng": 0.0,
+        "mor": 0.0,
+        "atk": 0.0
+      },
+      "intervalCount": 0,
+      "timeInterval": 0.0,
+      "timeSpent": 0.0,
+      "stackable": false
+    },
+    "cost": 250
+  },
+  {
+    "name": "Staff of Aether",
+    "description": "Standard staff. The crystal at its tip is made from magic extracted from the air. ",
+    "tags": [
+      1
+    ],
+    "strength": 0.0,
+    "mods": {
+      "globalArmorModifiers": [],
+      "hpMods": [],
+      "mpMods": [],
+      "engMods": [],
+      "morMods": [],
+      "atkMods": [
+        {
+          "type": 192,
+          "m_preadd": 0.0,
+          "m_premult": 1.0,
+          "m_postadd": 0.0,
+          "m_postmult": 0.0,
+          "growthType": 0,
+          "a": 0.0
+        },
+        {
+          "type": 4096,
+          "m_preadd": 0.0,
+          "m_premult": 0.5,
+          "m_postadd": 0.0,
+          "m_postmult": 0.0,
+          "growthType": 0,
+          "a": 0.0
+        }
+      ]
+    },
+    "consumeRestore": {
+      "stat": {
+        "hp": 0.0,
+        "mp": 0.0,
+        "eng": 0.0,
+        "mor": 0.0,
+        "atk": 0.0
+      },
+      "intervalCount": 0,
+      "timeInterval": 0.0,
+      "timeSpent": 0.0,
+      "stackable": false
+    },
+    "cost": 250
   }
 ]

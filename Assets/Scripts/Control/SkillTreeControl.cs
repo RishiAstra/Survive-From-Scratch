@@ -142,7 +142,7 @@ public class SkillTreeControl : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.F2))
+		if (Input.GetKeyDown(KeyCode.F2) && !Menu.IsOtherMenuActive(skillMenu))
 		{
 			skillMenu.ToggleMenu();
 			RefreshUI();

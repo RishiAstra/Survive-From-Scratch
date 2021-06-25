@@ -27,6 +27,8 @@ public class GameControl : MonoBehaviour
 	//public static string playerSavePath = Application.persistentDataPath + "/Players/";
 	public static string itemTypePath = Application.streamingAssetsPath + @"/Items/item types.json";//@"Assets\Resources\item types.json";
 	public const string itemPath = @"Assets/Items/";
+	private const string ASSETS_FOLDER_NAME = "Assets/";
+
 	//public static string versionFilePath = Application.streamingAssetsPath + @"version.txt";
 
 
@@ -66,6 +68,7 @@ public class GameControl : MonoBehaviour
 
 	//public LayerMask collectibleLayerMask;
 	public LayerMask interactLayerMask;
+	public LayerMask ground;
 	public GameObject playerPrefab;
 	public GameObject playerPrefab2;
 	public bool usePlayerPrefab2;
@@ -113,6 +116,7 @@ public class GameControl : MonoBehaviour
 
 
 	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor;
+	public Transform mapPlayerIcon;
 
 	void Awake(){
 		ItemInfoUI.main = mainItemInfoUI;
@@ -375,10 +379,22 @@ public class GameControl : MonoBehaviour
 	private static string GetSceneNameFromIndex(int BuildIndex)
 	{
 		string path = SceneUtility.GetScenePathByBuildIndex(BuildIndex);
-		int slash = path.LastIndexOf('/');
-		string name = path.Substring(slash + 1);
+		int i = path.IndexOf(ASSETS_FOLDER_NAME);
+		if(i == 0)
+		{
+			path = path.Substring(ASSETS_FOLDER_NAME.Length);
+		}
+		if (path.IndexOf(main.mapScenePath) != 0)
+		{
+			Debug.LogError("map scene doesn't exist: " + path);
+		}
+		string name = path.Substring(main.mapScenePath.Length);
 		int dot = name.LastIndexOf('.');
 		return name.Substring(0, dot);
+
+		//int slash = path.LastIndexOf('/');
+		//string name = path.Substring(slash + 1);
+
 	}
 
 	private void HideMenus()
@@ -482,7 +498,7 @@ public class GameControl : MonoBehaviour
 			yield return null;
 		}
 
-		string path = mapScenePath + "/" + sceneName;
+		string path = mapScenePath + sceneName;
 
 		if (myPlayersId == -1)
 		{
@@ -739,7 +755,7 @@ public class GameControl : MonoBehaviour
 		{
 			CursorLockUpdate();
 
-			if (Input.GetKeyDown(KeyCode.E))
+			if (Input.GetKeyDown(KeyCode.E) && !Menu.IsOtherMenuActive(craftInventory))
 			{
 				//if (inWorld && MenuActive() && !craftInventory.gameObject.activeSelf)
 				//{
@@ -769,7 +785,7 @@ public class GameControl : MonoBehaviour
 				//}
 			}
 
-			if (Input.GetKeyDown(KeyCode.M))
+			if (Input.GetKeyDown(KeyCode.M) && !Menu.IsOtherMenuActive(mapScreen))
 			{
 				//if (!mapScreen.gameObject.activeSelf) HideMenus();
 				mapScreen.ToggleMenu();
@@ -852,7 +868,9 @@ public class GameControl : MonoBehaviour
 					//c.MouseClickMe();
 				}
 
-				
+				//if not collectible, don't shot item info
+				if (g.GetComponentInParent<Collectible>() == null) itemHoverInfo.SetActive(false);
+
 			}
 			else
 			{

@@ -40,7 +40,7 @@ public class ProgressTracker : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.F1))
+		if (Input.GetKeyDown(KeyCode.F1) && !Menu.IsOtherMenuActive(questMenu))
 		{
 			questMenu.ToggleMenu();
 			print("toggled");
@@ -207,7 +207,13 @@ public class ProgressTracker : MonoBehaviour
 
 		//add the new quest
 		quests.Add(temp);
-		if(!string.IsNullOrEmpty(fromDialogueName)) questResult.nextDialogueTargetName = fromDialogueName;
+		NotificationControl.main.AddNotification(
+				new Notification()
+				{
+					message = temp.GetDescription()
+				}
+			);
+		if (!string.IsNullOrEmpty(fromDialogueName)) questResult.nextDialogueTargetName = fromDialogueName;
 		questSaves.Add(questResult);
 
 		print(ConvertQuestToString(temp));
@@ -379,8 +385,7 @@ public class ProgressTracker : MonoBehaviour
 
 		if (File.Exists(progressSavePath))
 		{
-
-			File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
+			prog = JsonConvert.DeserializeObject<Progress>(File.ReadAllText(progressSavePath)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
 		}
 
 	}

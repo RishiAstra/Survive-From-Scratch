@@ -203,7 +203,7 @@ public class spawner : MonoBehaviour {
 		
 		//only reload if it needs to spawn more
 		if (spawnedThese.Count < maxAmount) reload -= Time.deltaTime;
-		else reload = 0;
+		else reload = delay;
 	}
 
 	private void SpawnThing()

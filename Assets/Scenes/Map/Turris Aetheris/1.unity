@@ -97,9 +97,9 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 0d3edffcfaba01542a7e4d14aee058b1,
+  m_LightingDataAsset: {fileID: 112000000, guid: bf5595a76e47aba4fa2b016cff910c37,
     type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 377deebfbf3a2d64288f9081f0014130,
+  m_LightingSettings: {fileID: 4890085278179872738, guid: dbd12f2cc26ac774b9dbe18d0a01125d,
     type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -294,6 +294,121 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &587249186
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -70.536
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.433
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.266
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071073
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.70710635
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477967375755022563, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_Name
+      value: Tower Persistant Lootbox (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7503946986137615239, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: id
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].chance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].item.id
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[0].maxAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].maxAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].minAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].spawnLocationParent
+      value: 
+      objectReference: {fileID: 587249187}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1752c41b789247d4db059a1cf7d21fea, type: 3}
+--- !u!4 &587249187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 15148690044064723, guid: 1752c41b789247d4db059a1cf7d21fea,
+    type: 3}
+  m_PrefabInstance: {fileID: 587249186}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &616456902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -895,7 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 10
+  id: 13
 --- !u!1 &1353413531
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,8 +1040,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e73e7ead75d07f4bac542205f184fe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerName: Turris Aetheris
-  levelToUnlock: 2
   spawners:
   - {fileID: 1460704479}
 --- !u!4 &1353413533
@@ -1005,7 +1118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 12
+  id: 14
 --- !u!4 &1460704481
 Transform:
   m_ObjectHideFlags: 0
@@ -1195,3 +1308,118 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1004383fc3ce6a04a8f67a734bce7e88, type: 3}
+--- !u!1001 &1903902721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -70.53564
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.388887
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.1230402
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071073
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.70710635
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5973772651921675321, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6477967375755022563, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: m_Name
+      value: Tower Persistant Lootbox
+      objectReference: {fileID: 0}
+    - target: {fileID: 7503946986137615239, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: id
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].chance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].item.id
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[0].maxAmount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].maxAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].minAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9032353582247194490, guid: 1752c41b789247d4db059a1cf7d21fea,
+        type: 3}
+      propertyPath: loots.Array.data[1].spawnLocationParent
+      value: 
+      objectReference: {fileID: 1903902722}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1752c41b789247d4db059a1cf7d21fea, type: 3}
+--- !u!4 &1903902722 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 15148690044064723, guid: 1752c41b789247d4db059a1cf7d21fea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1903902721}
+  m_PrefabAsset: {fileID: 0}

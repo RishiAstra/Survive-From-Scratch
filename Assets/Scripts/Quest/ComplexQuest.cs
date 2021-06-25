@@ -18,7 +18,7 @@ public class ComplexQuest : IQuest
 
 	public string GetDescription()
 	{
-		if( current < quests.Count)
+		if(current < quests.Count)
 		{
 			return quests[current].GetDescription();
 		}
@@ -109,6 +109,18 @@ public class ComplexQuest : IQuest
 		if (current < quests.Count && quests[current].IsFinished() && quests[current].TryCompleteMission())
 		{
 			current++;
+
+			if (current < quests.Count)
+			{
+				//when part of a complex quest is completed, show a notification saying what the next part is
+				NotificationControl.main.AddNotification(
+					new Notification()
+					{
+						message = GetDescription()
+					}
+				);
+			}
+			
 		}
 	}
 }

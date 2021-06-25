@@ -8,6 +8,7 @@ public class InputControl : MonoBehaviour
 
     public static KeyCode interactKeyCode = KeyCode.F;
     private static bool interactPressed;
+    private static bool interactHeld;
 
     /* TODO: allow players to set their own controls (e.g. allow them to set an interactKeyCode, etc)
      * consider something like this. It's inefficient because it looks a few hundred values, but it wouldn't be a problem to run it only when the player tries to change a control 
@@ -42,14 +43,22 @@ public class InputControl : MonoBehaviour
 
         bool result = interactPressed;
         //if interactPressed, then set it to false because it's used up
-        if (result) interactPressed = false;
+        if (result)
+		{
+			interactPressed = false;
+            interactHeld = false;
+		}
 
-        return result;
+		return result;
 	}
 
+    /// <summary>
+    /// Find out if the interact key is held down and unused. This does not use the key press.
+    /// </summary>
+    /// <returns></returns>
     public static bool InteractKeyHeld()
 	{
-        return Input.GetKey(interactKeyCode);
+        return interactHeld && Input.GetKey(interactKeyCode);
 	}
 
     // Update is called once per frame
@@ -57,5 +66,9 @@ public class InputControl : MonoBehaviour
     {
         //reset interact
         interactPressed = Input.GetKeyDown(interactKeyCode);
+		if (interactPressed)
+		{
+            interactHeld = true;
+		}
     }
 }

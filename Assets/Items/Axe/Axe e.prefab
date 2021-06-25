@@ -81,6 +81,7 @@ MonoBehaviour:
   parent: {fileID: 0}
   dmg: 2
   canDmg: 0
+  multipleHits: 1
   attackDuriation: 2
 --- !u!54 &-1165493377706080108
 Rigidbody:
@@ -181,6 +182,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -205,6 +207,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5684055352714127313
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 762549892120565649}
   - component: {fileID: 7695540133226869337}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Extra Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

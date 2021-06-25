@@ -72,5 +72,11 @@ public class TalkQuest : IQuest
 	public void OnTalked(string talkedTo)
 	{
 		if (talkedTo == toTalkTo) talked = true;
+		NotificationControl.main.AddNotification(
+			new Notification()
+			{
+				message = GetDescription() + " <#00ff00>Complete</color>"
+			}
+		);
 	}
 }

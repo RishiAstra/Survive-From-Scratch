@@ -180,6 +180,10 @@ public class SaveItem : Save
 			toSave[index].Add(saves[i].GetData());
 		}
 
+		//wipe all items saved for this place
+		if (Directory.Exists(savePath)) Directory.Delete(savePath, true);
+
+
 		//save each to the right name
 		foreach (KeyValuePair<string, int> i in typeToIndex)
 		{
