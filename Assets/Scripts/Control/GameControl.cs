@@ -98,10 +98,13 @@ public class GameControl : MonoBehaviour
 	public Image mainEngBar;
 	public TextMeshProUGUI mainEngText;
 
-
 	public Image mainXpBar;
 	public TextMeshProUGUI mainXpText;
 	public TextMeshProUGUI mainLvlText;
+
+
+
+
 	public Canvas mainCanvas;
 	public Vector2 mouseSensitivity;	
 	public float scrollSensitivity;
@@ -405,7 +408,7 @@ public class GameControl : MonoBehaviour
 		if (myParty.members.Count == 0)
 		{
 
-			AddNewCharacterToParty("Player");
+			yield return AddNewCharacterToParty("Player");
 
 			//GameObject g = Instantiate(playerPrefab);
 
@@ -463,6 +466,7 @@ public class GameControl : MonoBehaviour
 
 					//mark as player owned
 					saveEntity.playerOwned = true;
+					saveEntity.deleteOnDeath = false;
 
 					if (resetStats)
 					{
@@ -494,6 +498,11 @@ public class GameControl : MonoBehaviour
 		SetControlledPartyMember(myParty.lastUsed);
 	}
 
+	public void StartAddNewCharacterToParty(string type)
+	{
+		StartCoroutine(AddNewCharacterToParty(type));
+	}
+
 	public IEnumerator AddNewCharacterToParty(string type)
 	{
 		GameObject toSpawn;
@@ -507,7 +516,9 @@ public class GameControl : MonoBehaviour
 
 		GameObject g = Instantiate(toSpawn);
 
-		g.GetComponent<NPCControl>().playerControlled = true;
+		//g.GetComponent<NPCControl>().playerControlled = true;
+		g.GetComponent<SaveEntity>().playerOwned = true;
+		g.GetComponent<SaveEntity>().deleteOnDeath = false;
 
 		PartyMember p = new PartyMember()
 		{
@@ -536,8 +547,24 @@ public class GameControl : MonoBehaviour
 		g.transform.rotation = sp[chosen].transform.rotation;	
 	}
 
+	private void UnsetControlledPartyMember(int index)
+	{
+
+		GameObject g = myParty.members[index].g;
+		if (g == null) Debug.LogError("No gameobject for this party member to be uncontrolled");
+
+		g.GetComponent<NPCControl>().cam = null;
+		g.GetComponent<NPCControl>().playerControlled = false;
+	}
+
 	private void SetControlledPartyMember(int index)
 	{
+		for(int i = 0; i < myParty.members.Count; i++)
+		{
+			//return to AI-control etc. if character is on field
+			if (myParty.members[i].g != null) UnsetControlledPartyMember(i);
+		}
+
 		myParty.lastUsed = index;
 
 		GameObject g = myParty.members[index].g;
@@ -582,6 +609,7 @@ public class GameControl : MonoBehaviour
 		//Player.main = me;
 		g.GetComponent<NPCControl>().cam = camGameObject.GetComponentInChildren<Cam>();
 		g.GetComponent<NPCControl>().playerOwnerName = username;
+		g.GetComponent<NPCControl>().playerControlled = true;
 		//print("set up player camera");
 		myAbilities = g.GetComponent<Abilities>();
 
@@ -1346,14 +1374,14 @@ public class GameControl : MonoBehaviour
 	//	//myInv.put = true;
 	//}
 
-	public void PutInitialCharacterInParty()
-	{
-		GameObject temp = Instantiate(playerPrefab);
-		RespawnPartyMemberPosition(temp);
-		SetControlledPartyMember(0);
-		//ResetPositionOfPlayer(temp);
-		//SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
-	}
+	//public void PutInitialCharacterInParty()
+	//{
+	//	GameObject temp = Instantiate(playerPrefab);
+	//	RespawnPartyMemberPosition(temp);
+	//	SetControlledPartyMember(0);
+	//	//ResetPositionOfPlayer(temp);
+	//	//SetUpPlayer(temp);//manually set up player since SaveEntity.LoadEntity was not called above due to no player to load
+	//}
 
 	#region save
 	public static void SavePlayer(GameControl p)
