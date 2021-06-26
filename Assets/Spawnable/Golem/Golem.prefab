@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 766235108808700668}
   - component: {fileID: 5932179878940791774}
   - component: {fileID: 6140556019865881489}
+  - component: {fileID: -9023128773237875846}
   m_Layer: 12
   m_Name: Golem
   m_TagString: Untagged
@@ -146,6 +147,19 @@ MonoBehaviour:
   checkAttack: {fileID: 7652437171531802073}
   checkAttackRadius: 1.25
   targets: []
+  guard: 0
+  guardPosition: {x: 0, y: 0, z: 0}
+  maxGuardDist: 0
+  camPos: {fileID: 0}
+  camPref: {fileID: 0}
+  cam: {fileID: 0}
+  playerControlled: 0
+  playerOwnerName: 
+  rig: {fileID: 0}
+  inv: {fileID: 0}
+  invSel: -1
+  rightHand: {fileID: 3012764108752766605}
+  camT: {fileID: 0}
 --- !u!114 &4864829722618242390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,9 +173,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 3
-  ground:
-    serializedVersion: 2
-    m_Bits: 1
   groundNormal: {x: 0, y: 0, z: 0}
   groundCheck:
   - {fileID: 4185438985978181194}
@@ -270,6 +281,7 @@ MonoBehaviour:
   hpTextUI: {fileID: 0}
   changeHpTextColor: 0
   changeHpBarColor: 1
+  useNewLine: 0
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -321,6 +333,7 @@ MonoBehaviour:
   customSavePath: 
   a: {fileID: 0}
   deleteOnDeath: 1
+  playerOwned: 0
   toSave: []
   savedSceneBuildIndex: -1
 --- !u!114 &5932179878940791774
@@ -370,6 +383,28 @@ MonoBehaviour:
   - {fileID: 3012764108752766605}
   enemyString:
   - humanoid
+--- !u!114 &-9023128773237875846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596891623449604899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  take: 0
+  put: 0
+  size: 9
+  items: []
+  invChange:
+    m_PersistentCalls:
+      m_Calls: []
+  invClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &596903223073468833
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,7 +1153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3012764108752766605}
   m_Layer: 12
-  m_Name: GameObject
+  m_Name: Right Hand Equip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

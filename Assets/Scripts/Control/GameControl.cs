@@ -48,7 +48,7 @@ public class GameControl : MonoBehaviour
 	//public static int curserFreeCount = 0;//use this to prevent the cursor from locking
 	public static bool tempUnlockMouse;
 	public static bool loading;//true if currently loading a scene
-	public static bool playerExists;//is the main character existant yet? won't be if loading a scene or start screen etc
+	public static bool loadedLocation;//is the main character existant yet? won't be if loading a scene or start screen etc
 
 	public static List<ItemType> itemTypes;
 	public static Dictionary<string, int> StringIdMap;
@@ -414,6 +414,7 @@ public class GameControl : MonoBehaviour
 				type = playerPrefab.name,
 				id = g.GetComponent<SaveEntity>().id,
 				g = g,//not a self-assignment
+				control = g.GetComponent<NPCControl>(),
 			};
 			myParty.members.Add(p);
 			myParty.lastUsed = 0;
@@ -447,6 +448,7 @@ public class GameControl : MonoBehaviour
 
 					GameObject g = SaveEntity.LoadEntity(toSpawn, saveData);
 					p.g = g;
+					p.control = g.GetComponent<NPCControl>();
 					SaveEntity saveEntity = g.GetComponent<SaveEntity>();
 
 
@@ -511,7 +513,7 @@ public class GameControl : MonoBehaviour
 		//me = g.GetComponent<NPCControl>();
 
 
-		playerControl = g.GetComponent<NPCControl>();
+		playerControl = myParty.members[index].control;// g.GetComponent<NPCControl>();
 
 
 		//HPBar hpBar = g.GetComponent<HPBar>();
@@ -549,6 +551,7 @@ public class GameControl : MonoBehaviour
 		//print("set up player camera");
 		myAbilities = g.GetComponent<Abilities>();
 
+		g.GetComponent<SaveEntity>().playerOwned = true;
 
 		//bind hotbar to character and initialize
 		hotBarUI.target = g.GetComponent<Inventory>();
@@ -672,7 +675,7 @@ public class GameControl : MonoBehaviour
 		mapLoadScreen.TryActivateMenu();
 		mapScreen.TryDeactivateMenu();
 		//mapLoadScreen.SetActive(true);
-		playerExists = false;
+		loadedLocation = false;
 		yield return null;//wait a frame before starting
 
 		int sceneCount = SceneManager.sceneCount;
@@ -697,7 +700,7 @@ public class GameControl : MonoBehaviour
 
 		string path = mapScenePath + sceneName;
 
-		myParty.TeleportAll(sceneName);
+		//myParty.TeleportAll(sceneName);
 
 		//if (myPlayersId == -1)
 		//{
@@ -763,7 +766,7 @@ public class GameControl : MonoBehaviour
 		//}
 
 		TimeControl.main.RemoveTimeScale("MAP_LOAD");
-		playerExists = true;
+		loadedLocation = true;
 		inWorld = true;
 		loading = false;
 		print("loaded map location");
@@ -862,12 +865,27 @@ public class GameControl : MonoBehaviour
 
 	void OnGUI()
 	{
-		//TODO: warning, there could be other reasons for me being null, not just death
-		//TODO: actually this might be great, use this to select your respawn point, etc.
 		//TODO: probably won't work with multiple player characters
-		if (inWorld && playerExists && playerControl == null)
-		{// && me.ph.isMine
-			RespawnGUIOption();
+		//addressing the above todo, this has been redesigned to support multiple players and swap between them unless all are dead
+		if (inWorld && loadedLocation && playerControl == null) {
+
+			bool otherPartyMemberActivated = false;
+
+			for (int i = 0; i < myParty.members.Count; i++)
+			{
+				if (myParty.members[i].g != null)
+				{
+					SetControlledPartyMember(i);
+					otherPartyMemberActivated = true;
+					break;
+				}
+			}
+
+			if (!otherPartyMemberActivated)
+			{
+				TryUnlockCursor();
+				RespawnGUIOption();
+			}
 		}
 	}
 
@@ -953,7 +971,7 @@ public class GameControl : MonoBehaviour
 	{
 		moneyText.text = "Money: " + money;
 		if((itemInfoTarget == null || itemInfoTarget.gameObject.activeInHierarchy == false) && itemInfoTransform.gameObject.activeSelf == true) HideInfo();
-		if (playerExists)
+		if (loadedLocation)
 		{
 			CursorLockUpdate();
 
@@ -1005,7 +1023,7 @@ public class GameControl : MonoBehaviour
 			}
 
 			//TODO:check this, party stuff might have messed it up
-			if (myAbilities.myStat.dead)
+			if (myAbilities != null && myAbilities.myStat.dead)
 			{
 				//TODO: MOVE ON TO THE NEXT PARTY MEMBER
 							

@@ -72,7 +72,7 @@ public class Menu : MonoBehaviour
 	private void ActivateMenu()
 	{
 		initialized = true;
-		if(GameControl.playerExists) DisableAllMenus(this);
+		if(GameControl.loadedLocation) DisableAllMenus(this);
 
 		openMenuCount++;
 		activeMenus.Add(this);

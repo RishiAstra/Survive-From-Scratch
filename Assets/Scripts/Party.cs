@@ -9,17 +9,17 @@ public class Party
     public List<PartyMember> members;
 	public int lastUsed;
 
-    public void TeleportAll (string mapName)
-	{
+ //   public void TeleportAll (string mapName)
+	//{
 
-		string path = GameControl.main.mapScenePath + mapName;
+	//	string path = GameControl.main.mapScenePath + mapName;
 
-		for (int i = 0; i < members.Count; i++)
-		{
+	//	for (int i = 0; i < members.Count; i++)
+	//	{
 
-			SaveEntity.TeleportEntityBetweenScenes(members[i].id, SceneUtility.GetBuildIndexByScenePath(path));
-		}
-	}
+	//		SaveEntity.TeleportEntityBetweenScenes(members[i].id, SceneUtility.GetBuildIndexByScenePath(path));
+	//	}
+	//}
 
 	public Party()
 	{
@@ -35,4 +35,6 @@ public class PartyMember
 	public string name;
 	[System.NonSerialized]
 	public GameObject g;
+	[System.NonSerialized]
+	public NPCControl control;
 }

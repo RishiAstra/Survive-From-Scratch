@@ -47,7 +47,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 1
   parent: {fileID: 0}
-  dmg: 1
   canDmg: 0
   multipleHits: 1
   attackDuriation: 3
@@ -2311,6 +2310,7 @@ GameObject:
   - component: {fileID: 2246126291130573370}
   - component: {fileID: -842003936032522875}
   - component: {fileID: 2570872564870858153}
+  - component: {fileID: 6213439407341564480}
   m_Layer: 12
   m_Name: Spider
   m_TagString: Untagged
@@ -2413,6 +2413,19 @@ MonoBehaviour:
   checkAttack: {fileID: 1453039034}
   checkAttackRadius: 0.25
   targets: []
+  guard: 0
+  guardPosition: {x: 0, y: 0, z: 0}
+  maxGuardDist: 0
+  camPos: {fileID: 0}
+  camPref: {fileID: 0}
+  cam: {fileID: 0}
+  playerControlled: 0
+  playerOwnerName: 
+  rig: {fileID: 0}
+  inv: {fileID: 0}
+  invSel: -1
+  rightHand: {fileID: 1453039034}
+  camT: {fileID: 0}
 --- !u!114 &1734245064739394383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2426,9 +2439,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 3
-  ground:
-    serializedVersion: 2
-    m_Bits: 1
   groundNormal: {x: 0, y: 0, z: 0}
   groundCheck:
   - {fileID: 9015949630585041097}
@@ -2537,6 +2547,7 @@ MonoBehaviour:
   hpTextUI: {fileID: 0}
   changeHpTextColor: 0
   changeHpBarColor: 1
+  useNewLine: 0
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -2588,6 +2599,7 @@ MonoBehaviour:
   customSavePath: 
   a: {fileID: 2118055796}
   deleteOnDeath: 1
+  playerOwned: 0
   toSave: []
   savedSceneBuildIndex: -1
 --- !u!114 &-842003936032522875
@@ -2637,6 +2649,28 @@ MonoBehaviour:
   - {fileID: 905467515}
   enemyString:
   - humanoid
+--- !u!114 &6213439407341564480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9089679403127632740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  take: 0
+  put: 0
+  size: 9
+  items: []
+  invChange:
+    m_PersistentCalls:
+      m_Calls: []
+  invClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9089679403127632744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2901,12 +2935,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7aa23471e641cb4fb854e7012039f58, type: 3}
---- !u!4 &6299230668674717226 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
-    type: 3}
-  m_PrefabInstance: {fileID: 5947060956918450074}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &9089679403205342837 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3219285574800454127, guid: b7aa23471e641cb4fb854e7012039f58,
@@ -2925,3 +2953,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &6299230668674717226 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+    type: 3}
+  m_PrefabInstance: {fileID: 5947060956918450074}
+  m_PrefabAsset: {fileID: 0}
