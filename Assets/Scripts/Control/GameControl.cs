@@ -428,7 +428,7 @@ public class GameControl : MonoBehaviour
 				//if party member gameobject exists, delete it (note: saveentity will auto-save it)
 				if (p.g != null) Destroy(p.g);
 
-				string datapath = playerCharacterDirectory + p.id;
+				string datapath = playerCharacterDirectory + p.id + "/";
 
 				if (Directory.Exists(datapath))
 				{
@@ -474,6 +474,10 @@ public class GameControl : MonoBehaviour
 						RespawnPartyMemberPosition(g);
 					}
 
+				}
+				else
+				{
+					Debug.LogError("Party member gameobject null. Path: " + datapath);
 				}
 			}
 		}
@@ -560,7 +564,7 @@ public class GameControl : MonoBehaviour
 		myInv.put = true;
 		myInv.take = true;
 		myInv.put = true;
-		throw new NotImplementedException();
+
 	}
 
 	private static string GetSceneNameFromIndex(int BuildIndex)

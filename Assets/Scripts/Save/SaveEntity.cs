@@ -183,7 +183,14 @@ public class SaveEntity : Save, ISaveable
 
 	public string GetPath()
 	{
-		return savePath + type + "/" + id + "/";
+		if (playerOwned)
+		{
+			return GameControl.playerCharacterDirectory + id + "/";
+		}
+		else
+		{
+			return savePath + type + "/" + id + "/";
+		}
 	}
 
 	public static string GetPathFromId(long id)
