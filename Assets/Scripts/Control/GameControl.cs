@@ -114,8 +114,8 @@ public class GameControl : MonoBehaviour
 //	public RPGCamera Camera;
 	//private Player me;
 	public NPCControl playerControl;
-	private long myPlayersId = -1;
-	private Party myParty = new Party();
+	//private long myPlayersId = -1;
+	public Party myParty = new Party();
 	public IMouseHoverable previouslyMouseHovered;
 	public RectTransform itemInfoTarget;
 	[HideInInspector] public Abilities myAbilities;
@@ -402,59 +402,85 @@ public class GameControl : MonoBehaviour
 
 	private IEnumerator LoadPartyFromData(bool respawn, bool resetStats)
 	{
-		foreach (PartyMember p in myParty.members)
+		if (myParty.members.Count == 0)
 		{
-			//if party member gameobject exists, delete it (note: saveentity will auto-save it)
-			if (p.g != null) Destroy(p.g);
+			GameObject g = Instantiate(playerPrefab);
 
-			string datapath = playerCharacterDirectory + p.id;
+			g.GetComponent<NPCControl>().playerControlled = true;
 
-			if (Directory.Exists(datapath))
+			PartyMember p = new PartyMember()
 			{
-				//get the gameobject to spawn
-				GameObject toSpawn;
-				bool succeed = SaveEntity.GetEntityPrefabCached(p.type, out toSpawn);
-				if (!succeed)
+				name = "Player",
+				type = playerPrefab.name,
+				id = g.GetComponent<SaveEntity>().id,
+				g = g,//not a self-assignment
+			};
+			myParty.members.Add(p);
+			myParty.lastUsed = 0;
+
+			RespawnPartyMemberPosition(g);
+		}
+		else
+		{
+
+			foreach (PartyMember p in myParty.members)
+			{
+				//if party member gameobject exists, delete it (note: saveentity will auto-save it)
+				if (p.g != null) Destroy(p.g);
+
+				string datapath = playerCharacterDirectory + p.id;
+
+				if (Directory.Exists(datapath))
 				{
-					AsyncOperationHandle<GameObject> a = SaveEntity.GetEntityPrefab(p.type);
-					yield return a;
-					toSpawn = a.Result;
-				}
-
-
-				string[] saveData = SaveEntity.GetSaveDataFromFilePath(datapath);
-
-				GameObject g = SaveEntity.LoadEntity(toSpawn, saveData);
-				p.g = g;
-				SaveEntity saveEntity = g.GetComponent<SaveEntity>();
-
-
-				//if not respawning the position and character is in wrong scene, respawn the position to prevent wierd wrong positions
-				if (!respawn && saveEntity.savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
-				{
-					RespawnPartyMemberPosition(g);
-				}
-
-				//mark as player owned
-				saveEntity.playerOwned = true;
-
-				if (resetStats)
-				{
-					StatScript ss = g.GetComponent<StatScript>();
-
-					if(ss != null)
+					//get the gameobject to spawn
+					GameObject toSpawn;
+					bool succeed = SaveEntity.GetEntityPrefabCached(p.type, out toSpawn);
+					if (!succeed)
 					{
-						ss.ResetStats();
+						AsyncOperationHandle<GameObject> a = SaveEntity.GetEntityPrefab(p.type);
+						yield return a;
+						toSpawn = a.Result;
 					}
-				}
 
-				if (respawn)
-				{
-					RespawnPartyMemberPosition(g);
-				}
 
+					string[] saveData = SaveEntity.GetSaveDataFromFilePath(datapath);
+
+					GameObject g = SaveEntity.LoadEntity(toSpawn, saveData);
+					p.g = g;
+					SaveEntity saveEntity = g.GetComponent<SaveEntity>();
+
+
+					//if not respawning the position and character is in wrong scene, respawn the position to prevent wierd wrong positions
+					if (!respawn && saveEntity.savedSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+					{
+						RespawnPartyMemberPosition(g);
+					}
+
+					//mark as player owned
+					saveEntity.playerOwned = true;
+
+					if (resetStats)
+					{
+						StatScript ss = g.GetComponent<StatScript>();
+
+						if (ss != null)
+						{
+							ss.ResetStats();
+						}
+					}
+
+					if (respawn)
+					{
+						RespawnPartyMemberPosition(g);
+					}
+
+				}
 			}
 		}
+
+		//bounds check
+		if (myParty.lastUsed < 0) myParty.lastUsed = 0;
+		if (myParty.lastUsed >= myParty.members.Count) myParty.lastUsed = myParty.members.Count - 1;
 
 		SetControlledPartyMember(myParty.lastUsed);
 	}
@@ -974,15 +1000,20 @@ public class GameControl : MonoBehaviour
 				//}
 			}
 
+			//TODO:check this, party stuff might have messed it up
 			if (myAbilities.myStat.dead)
 			{
-				craftInventory.TryDeactivateMenu();
-				//deactivate crafting if dead
-				//if (craftInventory.activeSelf)
-				//{
-				//	craftInventory.SetActive(false);
-				//}
-				TryUnlockCursor();
+				//TODO: MOVE ON TO THE NEXT PARTY MEMBER
+							
+
+
+				//craftInventory.TryDeactivateMenu();
+				////deactivate crafting if dead
+				////if (craftInventory.activeSelf)
+				////{
+				////	craftInventory.SetActive(false);
+				////}
+				//TryUnlockCursor();
 			}
 			else
 			{
@@ -1375,11 +1406,13 @@ public class GameControl : MonoBehaviour
 
 	#region inventory
 	public bool GetItem(int id) { return GetItem(id, 1); }
+	//TODO: this won't account for durability etc.
 	public bool GetItem(Item i) { return GetItem(i.id, i.amount); }
 	public bool GetItem(int id, int amount)
 	{
 		//check if it can be put in hotbar
 		Inventory inv = hotBarUI.target;
+		if (inv == false) return false;
 		for (int i = 0; i < inv.items.Count; i++)
 		{
 			if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)

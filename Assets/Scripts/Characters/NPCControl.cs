@@ -382,7 +382,7 @@ public class NPCControl : MonoBehaviour, ISaveable
 	private void MakeEquipGameObject(Item i)
 	{
 		int id = i.id;
-		GameControl.main.myAbilities.myStat.itemsEquipped = new List<Item>();
+		abilities.myStat.itemsEquipped = new List<Item>();
 		if (GameControl.itemTypes[id].equipPrefab != null)
 		{
 			print("equipped something");

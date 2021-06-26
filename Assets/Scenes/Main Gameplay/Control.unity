@@ -3071,6 +3071,7 @@ MonoBehaviour:
   serverIp: 
   mapScenePath: Scenes/Map/
   controlSceneName: Control
+  defaultMapLocation: Village
   mainItemInfoUI: {fileID: 1316756507}
   money: 0
   moneyText: {fileID: 2147304409}
@@ -3078,6 +3079,7 @@ MonoBehaviour:
   mapLoadBar: {fileID: 640074841}
   mapLoadScreen: {fileID: 1095511808}
   mapScreen: {fileID: 24063266}
+  grabDist: 4
   interactLayerMask:
     serializedVersion: 2
     m_Bits: 33792
@@ -3111,10 +3113,15 @@ MonoBehaviour:
   mainLvlText: {fileID: 43970990}
   mainCanvas: {fileID: 1057924725}
   mouseSensitivity: {x: 2, y: -1.2}
+  scrollSensitivity: 0
   itemInfoTransform: {fileID: 1316756502}
   camGameObject: {fileID: 0}
   savedSceneIndex: 0
   loadingLastSaveScreen: {fileID: 532062358}
+  playerControl: {fileID: 0}
+  myParty:
+    members: []
+    lastUsed: 0
   itemInfoTarget: {fileID: 0}
   myAbilities: {fileID: 0}
   armorColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
