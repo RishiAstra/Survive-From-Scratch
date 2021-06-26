@@ -115,8 +115,6 @@ public class SaveEntity : Save, ISaveable
 		if (a != null) toSaveTemp.Add(a);
 		Inventory i = GetComponent<Inventory>();
 		if (i != null) toSaveTemp.Add(i);
-		PlayerControl p = GetComponent<PlayerControl>();
-		if (p != null) toSaveTemp.Add(p);
 		NPCControl c = GetComponent<NPCControl>();
 		if (c != null) toSaveTemp.Add(c);
 
@@ -729,6 +727,8 @@ public class SaveDataNPCControl
 	public bool guard;
 	public Vector3 guardPosition;
 	public float maxGuardDist;
+	public bool playerControlled;
+	public string playerOwnerName;
 }
 
 [System.Serializable]

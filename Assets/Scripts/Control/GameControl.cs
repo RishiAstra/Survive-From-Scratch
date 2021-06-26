@@ -67,6 +67,7 @@ public class GameControl : MonoBehaviour
 	public RectTransform mapLoadBar;
 	public Menu mapLoadScreen;
 	public Menu mapScreen;
+	public float grabDist = 4f;
 	//private AsyncOperation mapSceneProg;
 	private float mapLoadBarInitialWidth;
 	private float mapSceneLoadProgress;
@@ -102,7 +103,8 @@ public class GameControl : MonoBehaviour
 	public TextMeshProUGUI mainXpText;
 	public TextMeshProUGUI mainLvlText;
 	public Canvas mainCanvas;
-	public Vector2 mouseSensitivity;
+	public Vector2 mouseSensitivity;	
+	public float scrollSensitivity;
 	[Tooltip("Used to show information about the item type")]public RectTransform itemInfoTransform;
 
 	public GameObject camGameObject;
@@ -110,8 +112,8 @@ public class GameControl : MonoBehaviour
 	public GameObject loadingLastSaveScreen;
 	
 //	public RPGCamera Camera;
-	private Player me;
-	private PlayerControl playerControl;
+	//private Player me;
+	public NPCControl playerControl;
 	private long myPlayersId = -1;
 	private Party myParty = new Party();
 	public IMouseHoverable previouslyMouseHovered;
@@ -476,45 +478,44 @@ public class GameControl : MonoBehaviour
 		if (g == null) Debug.LogError("No gameobject for this party member to be controlled");
 
 
-		me = g.GetComponent<Player>();
+		//me = g.GetComponent<NPCControl>();
 
 
-		playerControl = g.GetComponent<PlayerControl>();
+		playerControl = g.GetComponent<NPCControl>();
 
 
-		HPBar hpBar = newPlayerObject.GetComponent<HPBar>();
-		hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
-		hpBar.hpTextUI = mainHpText;
-		hpBar.SetWorldHpBarVisible(false);
+		//HPBar hpBar = g.GetComponent<HPBar>();
+		//hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
+		//hpBar.hpTextUI = mainHpText;
+		//hpBar.SetWorldHpBarVisible(false);
 
-		HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
-		mpBar.type = HPBar.StatType.mp;
-		mpBar.hpBarImage = mainMpBar;
-		mpBar.hpTextUI = mainMpText;
-		mpBar.autoHide = false;
-		mpBar.changeHpBarColor = false;
-		mpBar.useNewLine = true;
+		//HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
+		//mpBar.type = HPBar.StatType.mp;
+		//mpBar.hpBarImage = mainMpBar;
+		//mpBar.hpTextUI = mainMpText;
+		//mpBar.autoHide = false;
+		//mpBar.changeHpBarColor = false;
+		//mpBar.useNewLine = true;
 
-		HPBar engBar = newPlayerObject.AddComponent<HPBar>();
-		engBar.type = HPBar.StatType.eng;
-		engBar.hpBarImage = mainEngBar;
-		engBar.hpTextUI = mainEngText;
-		engBar.autoHide = false;
-		engBar.changeHpBarColor = false;
-		engBar.useNewLine = true;
+		//HPBar engBar = newPlayerObject.AddComponent<HPBar>();
+		//engBar.type = HPBar.StatType.eng;
+		//engBar.hpBarImage = mainEngBar;
+		//engBar.hpTextUI = mainEngText;
+		//engBar.autoHide = false;
+		//engBar.changeHpBarColor = false;
+		//engBar.useNewLine = true;
 
-		HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
-		xpBar.type = HPBar.StatType.xp;
-		xpBar.hpBarImage = mainXpBar;
-		xpBar.hpTextUI = mainXpText;
-		xpBar.autoHide = false;
-		xpBar.changeHpBarColor = false;
+		//HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
+		//xpBar.type = HPBar.StatType.xp;
+		//xpBar.hpBarImage = mainXpBar;
+		//xpBar.hpTextUI = mainXpText;
+		//xpBar.autoHide = false;
+		//xpBar.changeHpBarColor = false;
 
-
-		Player.main = me;
-		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
-
-		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
+		//playerControl = me;
+		//Player.main = me;
+		g.GetComponent<NPCControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+		g.GetComponent<NPCControl>().playerOwnerName = username;
 		//print("set up player camera");
 		myAbilities = g.GetComponent<Abilities>();
 
@@ -834,7 +835,7 @@ public class GameControl : MonoBehaviour
 		//TODO: warning, there could be other reasons for me being null, not just death
 		//TODO: actually this might be great, use this to select your respawn point, etc.
 		//TODO: probably won't work with multiple player characters
-		if (inWorld && playerExists && me == null)
+		if (inWorld && playerExists && playerControl == null)
 		{// && me.ph.isMine
 			RespawnGUIOption();
 		}
@@ -1013,7 +1014,7 @@ public class GameControl : MonoBehaviour
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
 			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-			bool foundSomething = Physics.Raycast(ray, out hit, Player.main.grabDist + playerControl.cam.dist, interactLayerMask, QueryTriggerInteraction.Collide);
+			bool foundSomething = Physics.Raycast(ray, out hit, grabDist + playerControl.cam.dist, interactLayerMask, QueryTriggerInteraction.Collide);
 			if (hit.distance < playerControl.cam.dist) foundSomething = false;//this means that the item was found by placing it between the player and the camera. This is abusing camera distance to grab stuff from futher distances
 			//bool foundIMouseHoverable = false;
 			IMouseHoverable c = null;//apparantly this has to be initialized, even if it is guarenteed to be initialized later on before use
@@ -1084,63 +1085,64 @@ public class GameControl : MonoBehaviour
 		//}
 	}
 
-	public void SetUpPlayer(GameObject newPlayerObject)
-	{
-		SaveEntity save = newPlayerObject.GetComponent<SaveEntity>();
-		//save.playerOwnerName = username;
-		myPlayersId = save.id;
+	//public void SetUpPlayer(GameObject newPlayerObject)
+	//{
+	//	SaveEntity save = newPlayerObject.GetComponent<SaveEntity>();
+	//	//save.playerOwnerName = username;
+	//	myPlayersId = save.id;
 
-		me = newPlayerObject.GetComponent<Player>();
-		playerControl = newPlayerObject.GetComponent<PlayerControl>();
-		HPBar hpBar = newPlayerObject.GetComponent<HPBar>();
-		hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
-		hpBar.hpTextUI = mainHpText;
-		hpBar.SetWorldHpBarVisible(false);
+	//	//me = newPlayerObject.GetComponent<Player>();
+	//	playerControl = newPlayerObject.GetComponent<NPCControl>();
+	//	HPBar hpBar = newPlayerObject.GetComponent<HPBar>();
+	//	hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
+	//	hpBar.hpTextUI = mainHpText;
+	//	hpBar.SetWorldHpBarVisible(false);
 
-		HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
-		mpBar.type = HPBar.StatType.mp;
-		mpBar.hpBarImage = mainMpBar;
-		mpBar.hpTextUI = mainMpText;
-		mpBar.autoHide = false;
-		mpBar.changeHpBarColor = false;
-		mpBar.useNewLine = true;
+	//	HPBar mpBar = newPlayerObject.AddComponent<HPBar>();
+	//	mpBar.type = HPBar.StatType.mp;
+	//	mpBar.hpBarImage = mainMpBar;
+	//	mpBar.hpTextUI = mainMpText;
+	//	mpBar.autoHide = false;
+	//	mpBar.changeHpBarColor = false;
+	//	mpBar.useNewLine = true;
 
-		HPBar engBar = newPlayerObject.AddComponent<HPBar>();
-		engBar.type = HPBar.StatType.eng;
-		engBar.hpBarImage = mainEngBar;
-		engBar.hpTextUI = mainEngText;
-		engBar.autoHide = false;
-		engBar.changeHpBarColor = false;
-		engBar.useNewLine = true;
+	//	HPBar engBar = newPlayerObject.AddComponent<HPBar>();
+	//	engBar.type = HPBar.StatType.eng;
+	//	engBar.hpBarImage = mainEngBar;
+	//	engBar.hpTextUI = mainEngText;
+	//	engBar.autoHide = false;
+	//	engBar.changeHpBarColor = false;
+	//	engBar.useNewLine = true;
 
-		HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
-		xpBar.type = HPBar.StatType.xp;
-		xpBar.hpBarImage = mainXpBar;
-		xpBar.hpTextUI = mainXpText;
-		xpBar.autoHide = false;
-		xpBar.changeHpBarColor = false;
+	//	HPBar xpBar = newPlayerObject.AddComponent<HPBar>();
+	//	xpBar.type = HPBar.StatType.xp;
+	//	xpBar.hpBarImage = mainXpBar;
+	//	xpBar.hpTextUI = mainXpText;
+	//	xpBar.autoHide = false;
+	//	xpBar.changeHpBarColor = false;
 
-		Player.main = me;
-		newPlayerObject.GetComponent<PlayerControl>().cam = camGameObject.GetComponentInChildren<Cam>();
-		newPlayerObject.GetComponent<PlayerControl>().playerOwnerName = username;
-		//print("set up player camera");
-		myAbilities = newPlayerObject.GetComponent<Abilities>();
+	//	//replace
+	//	Player.main = me;
+	//	newPlayerObject.GetComponent<NPCControl>().cam = camGameObject.GetComponentInChildren<Cam>();
+	//	newPlayerObject.GetComponent<NPCControl>().playerOwnerName = username;
+	//	//print("set up player camera");
+	//	myAbilities = newPlayerObject.GetComponent<Abilities>();
 
-		//bind hotbar to character and initialize
-		hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
-		hotBarUI.InitializeSlots();
+	//	//bind hotbar to character and initialize
+	//	hotBarUI.target = newPlayerObject.GetComponent<Inventory>();
+	//	hotBarUI.InitializeSlots();
 
-		//bind inventory to character and initialize
-		mainInventoryUI.target = mainInventoryUI.GetComponent<Inventory>();
-		mainInventoryUI.InitializeSlots();
+	//	//bind inventory to character and initialize
+	//	mainInventoryUI.target = mainInventoryUI.GetComponent<Inventory>();
+	//	mainInventoryUI.InitializeSlots();
 
-		if (Player.main == null) Debug.LogError("Failed to create main character");
-		Inventory myInv = newPlayerObject.GetComponent<Inventory>();
-		myInv.take = true;
-		myInv.put = true;
-		myInv.take = true;
-		myInv.put = true;
-	}
+	//	if (playerControl == null) Debug.LogError("Failed to create main character");
+	//	Inventory myInv = newPlayerObject.GetComponent<Inventory>();
+	//	myInv.take = true;
+	//	myInv.put = true;
+	//	myInv.take = true;
+	//	myInv.put = true;
+	//}
 
 	//void ResetPositionOfPlayer(GameObject player)
 	//{
@@ -1400,10 +1402,10 @@ public class GameControl : MonoBehaviour
 			if (inv.items[i].id == 0)
 			{
 				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
-				if (Player.main.invSel == i)
+				if (GameControl.main.playerControl.invSel == i)
 				{
 
-					Player.main.RefreshSelected();
+					GameControl.main.playerControl.RefreshSelected();
 					//SelectInv (invSel);
 				}
 				return true;
