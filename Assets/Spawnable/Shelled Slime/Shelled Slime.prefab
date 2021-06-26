@@ -1311,7 +1311,7 @@ MonoBehaviour:
     m_Bits: 4608
   movement: {fileID: 9123941630015135671}
   spotRange: 10
-  checkAttack: {fileID: 9123482635650044458}
+  checkAttack: {fileID: 4906788732333109210}
   checkAttackRadius: 0.25
   targets: []
   guard: 0
@@ -1547,7 +1547,7 @@ MonoBehaviour:
   anim: {fileID: 9209353146950880325}
   currentAttackTransform: 0
   attackTranforms:
-  - {fileID: 9123482635650044458}
+  - {fileID: 4906788732333109210}
   enemyString:
   - humanoid
 --- !u!114 &-5093607644182197237

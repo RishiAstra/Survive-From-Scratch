@@ -404,22 +404,25 @@ public class GameControl : MonoBehaviour
 	{
 		if (myParty.members.Count == 0)
 		{
-			GameObject g = Instantiate(playerPrefab);
 
-			g.GetComponent<NPCControl>().playerControlled = true;
+			AddNewCharacterToParty("Player");
 
-			PartyMember p = new PartyMember()
-			{
-				name = "Player",
-				type = playerPrefab.name,
-				id = g.GetComponent<SaveEntity>().id,
-				g = g,//not a self-assignment
-				control = g.GetComponent<NPCControl>(),
-			};
-			myParty.members.Add(p);
-			myParty.lastUsed = 0;
+			//GameObject g = Instantiate(playerPrefab);
 
-			RespawnPartyMemberPosition(g);
+			//g.GetComponent<NPCControl>().playerControlled = true;
+
+			//PartyMember p = new PartyMember()
+			//{
+			//	name = "Player",
+			//	type = playerPrefab.name,
+			//	id = g.GetComponent<SaveEntity>().id,
+			//	g = g,//not a self-assignment
+			//	control = g.GetComponent<NPCControl>(),
+			//};
+			//myParty.members.Add(p);
+			//myParty.lastUsed = 0;
+
+			//RespawnPartyMemberPosition(g);
 		}
 		else
 		{
@@ -489,6 +492,37 @@ public class GameControl : MonoBehaviour
 		if (myParty.lastUsed >= myParty.members.Count) myParty.lastUsed = myParty.members.Count - 1;
 
 		SetControlledPartyMember(myParty.lastUsed);
+	}
+
+	public IEnumerator AddNewCharacterToParty(string type)
+	{
+		GameObject toSpawn;
+		bool succeed = SaveEntity.GetEntityPrefabCached(type, out toSpawn);
+		if (!succeed)
+		{
+			AsyncOperationHandle<GameObject> a = SaveEntity.GetEntityPrefab(type);
+			yield return a;
+			toSpawn = a.Result;
+		}
+
+		GameObject g = Instantiate(toSpawn);
+
+		g.GetComponent<NPCControl>().playerControlled = true;
+
+		PartyMember p = new PartyMember()
+		{
+			name = type,
+			type = type,//not a self-assignment
+			id = g.GetComponent<SaveEntity>().id,
+			g = g,//not a self-assignment
+			control = g.GetComponent<NPCControl>(),
+		};
+		myParty.members.Add(p);
+		myParty.lastUsed = 0;
+
+		RespawnPartyMemberPosition(g);
+
+		yield return null;
 	}
 
 	private void RespawnPartyMemberPosition(GameObject g)
@@ -1051,7 +1085,7 @@ public class GameControl : MonoBehaviour
 			}
 
 			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 500;
-			mainLvlText.text = "Level " + myAbilities.myStat.lvl;
+			if(myAbilities != null) mainLvlText.text = "Level " + myAbilities.myStat.lvl;
 			//TODO:REMOVE ABOVE
 
 		}
