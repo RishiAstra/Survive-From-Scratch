@@ -91,18 +91,21 @@ public class GameControl : MonoBehaviour
 	[Tooltip("Should the item hover info be on top of the item, or stay in it's position?")]
 	public bool itemHoverPositionMatch;
 
-	public Image mainHpBar;
-	public TextMeshProUGUI mainHpText;
-	public Image mainMpBar;
-	public TextMeshProUGUI mainMpText;
-	public Image mainEngBar;
-	public TextMeshProUGUI mainEngText;
+	//public Image mainHpBar;
+	//public TextMeshProUGUI mainHpText;
+	//public Image mainMpBar;
+	//public TextMeshProUGUI mainMpText;
+	//public Image mainEngBar;
+	//public TextMeshProUGUI mainEngText;
 
-	public Image mainXpBar;
-	public TextMeshProUGUI mainXpText;
+	//public Image mainXpBar;
+	//public TextMeshProUGUI mainXpText;
 	public TextMeshProUGUI mainLvlText;
 
-
+	public HPBar mainHp;
+	public HPBar mainMp;
+	public HPBar mainEng;
+	public HPBar mainXp;
 
 
 	public Canvas mainCanvas;
@@ -555,6 +558,7 @@ public class GameControl : MonoBehaviour
 
 		g.GetComponent<NPCControl>().cam = null;
 		g.GetComponent<NPCControl>().playerControlled = false;
+		g.GetComponent<HPBar>().SetWorldHpBarVisible(true);
 	}
 
 	private void SetControlledPartyMember(int index)
@@ -576,7 +580,15 @@ public class GameControl : MonoBehaviour
 
 		playerControl = myParty.members[index].control;// g.GetComponent<NPCControl>();
 
+		StatScript stat = g.GetComponent<StatScript>();
+		g.GetComponent<HPBar>().SetWorldHpBarVisible(false);
 
+		mainHp.SetTarget(stat);
+		mainMp.SetTarget(stat);
+		mainEng.SetTarget(stat);
+		mainXp.SetTarget(stat);
+
+		/*
 		//HPBar hpBar = g.GetComponent<HPBar>();
 		//hpBar.hpBarImage = mainHpBar;//TODO: check taht this works
 		//hpBar.hpTextUI = mainHpText;
@@ -604,6 +616,7 @@ public class GameControl : MonoBehaviour
 		//xpBar.hpTextUI = mainXpText;
 		//xpBar.autoHide = false;
 		//xpBar.changeHpBarColor = false;
+		*/
 
 		//playerControl = me;
 		//Player.main = me;

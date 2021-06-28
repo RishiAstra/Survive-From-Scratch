@@ -65,11 +65,23 @@ public class HPBar : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		a = GetComponent<StatScript>();
+		if(a == null) a = GetComponent<StatScript>();
+		if (a != null) SetTarget(a);
+		if(autoHide) SetHpBarsActive(false);
+    }
+
+	public void SetTarget(StatScript target)
+	{
+		if(target == null)
+		{
+			Debug.LogError("HPBar target null");
+			return;
+		}
+		a = target;
 		previousHp = GetStatValue();
 		UpdateDisplayLive(false);
-		if(autoHide)SetHpBarsActive(false);
-    }
+		SetHpBarsActive(true);
+	}
 
 	float GetStatValue()
 	{
@@ -114,70 +126,81 @@ public class HPBar : MonoBehaviour
 
 	public void SetWorldHpBarVisible(bool visible)
 	{
-		hpHolder.gameObject.SetActive(visible);
+		if(hpHolder != null) hpHolder.gameObject.SetActive(visible);
 	}
 
     // Update is called once per frame
     void Update()
     {
-		bool statIsDead = a.dead;
-
-		bool shouldHide = !statIsDead && autoHide && hideTimeLeft <= 0f;
-
-		if(shouldHide != isHiding)
+		if (a != null)
 		{
-			SetHpBarsActive(!shouldHide);
-			isHiding = shouldHide;
+
+
+			bool statIsDead = a.dead;
+
+			bool shouldHide = !statIsDead && autoHide && hideTimeLeft <= 0f;
+
+			if (shouldHide != isHiding)
+			{
+				SetHpBarsActive(!shouldHide);
+				isHiding = shouldHide;
+			}
+
+			//bool sprite = hpBarSprite != null;
+			//bool image = hpBarImage != null;
+			//bool text = hpText != null;
+			//bool textUI = hpTextUI != null;
+			//if (hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
+
+			if (!isHiding && hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);
+
+			//update if alive and hp changed
+			//also keep track of countdown to hide hp bars and update previousHp
+			if (GetStatValue() != previousHp)
+			{
+				previousHp = GetStatValue();
+				hideTimeLeft = hideTime;
+				if (!a.dead) UpdateDisplayLive(false);
+			}
+
+			if (statIsDead != isDead)
+			{
+				UpdateDisplayLive(statIsDead);
+				isDead = a.dead;
+			}
+
+			if (!statIsDead && autoHide)
+			{
+				hideTimeLeft -= Time.deltaTime;
+			}
+
+			//if (a.dead)
+			//{
+			//	//if (autoHide)
+			//	//{
+			//	//	SetHpBarsActive(true);
+			//	//}
+			//	UpdateDisplayLive(true);
+
+			//	return;
+			//}
+			//else
+			//{
+			//	if (!autoHide || hideTimeLeft >= 0f)
+			//	{
+			//		//if(autoHide) SetHpBarsActive(true);
+			//		UpdateDisplayLive(false);
+			//	}
+			//	//if (autoHide && hideTimeLeft < 0f) SetHpBarsActive(false);
+			//	if (autoHide) hideTimeLeft -= Time.deltaTime;
+			//}
+
+
 		}
-
-		//bool sprite = hpBarSprite != null;
-		//bool image = hpBarImage != null;
-		//bool text = hpText != null;
-		//bool textUI = hpTextUI != null;
-		//if (hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);//TODO: optimize or change rendering to flat on screen by shader or something
-
-		if(!isHiding && hpHolder != null) hpHolder.LookAt(GameControl.mainCamera.transform);
-
-		//update if alive and hp changed
-		//also keep track of countdown to hide hp bars and update previousHp
-		if (GetStatValue() != previousHp)
+		else
 		{
-			previousHp = GetStatValue();
-			hideTimeLeft = hideTime;
-			if(!a.dead)	UpdateDisplayLive(false);
+			SetHpBarsActive(false);
 		}
-
-		if (statIsDead != isDead)
-		{
-			UpdateDisplayLive(statIsDead);
-			isDead = a.dead;
-		}
-
-		if (!statIsDead && autoHide)
-		{
-			hideTimeLeft -= Time.deltaTime;
-		}
-
-		//if (a.dead)
-		//{
-		//	//if (autoHide)
-		//	//{
-		//	//	SetHpBarsActive(true);
-		//	//}
-		//	UpdateDisplayLive(true);
-
-		//	return;
-		//}
-		//else
-		//{
-		//	if (!autoHide || hideTimeLeft >= 0f)
-		//	{
-		//		//if(autoHide) SetHpBarsActive(true);
-		//		UpdateDisplayLive(false);
-		//	}
-		//	//if (autoHide && hideTimeLeft < 0f) SetHpBarsActive(false);
-		//	if (autoHide) hideTimeLeft -= Time.deltaTime;
-		//}
 	}
 
 	private void UpdateDisplayLive(bool dead)
