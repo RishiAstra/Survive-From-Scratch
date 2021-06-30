@@ -73,7 +73,7 @@ public class NPCControl : MonoBehaviour, ISaveable
 		if (playerControlled)
 		{
 			PlayerMovement();
-			CheckHotBar();
+			//CheckHotBar();
 		}
 		else
 		{
@@ -341,7 +341,7 @@ public class NPCControl : MonoBehaviour, ISaveable
 	/// Select an Item in the inventory. Some actions such as eating a consumable item may happen. Returns instantly if inv ==  null
 	/// </summary>
 	/// <param name="index">The index in inventory of the item to select</param>
-	void SelectInv(int index)
+	public void SelectInv(int index)
 	{
 		if (inv == null) return;
 		if (index >= inv.items.Count)
@@ -428,16 +428,16 @@ public class NPCControl : MonoBehaviour, ISaveable
 	/// <summary>
 	/// If player presses button from 0-9, select the corisponding index in inventory
 	/// </summary>
-	void CheckHotBar()
-	{
-		if (Input.GetKeyDown("0")) SelectInv(9);
-		for (int i = 1; i < 10; i++)
-		{
-			if (Input.GetKeyDown(i.ToString()))
-			{
-				SelectInv(i - 1);
-				//print("select " + i);
-			}
-		}
-	}
+	//void CheckHotBar()
+	//{
+	//	if (Input.GetKeyDown("0")) SelectInv(9);
+	//	for (int i = 1; i < 10; i++)
+	//	{
+	//		if (Input.GetKeyDown(i.ToString()))
+	//		{
+	//			SelectInv(i - 1);
+	//			//print("select " + i);
+	//		}
+	//	}
+	//}
 }

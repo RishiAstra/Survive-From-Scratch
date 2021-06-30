@@ -561,7 +561,7 @@ public class GameControl : MonoBehaviour
 		g.GetComponent<HPBar>().SetWorldHpBarVisible(true);
 	}
 
-	private void SetControlledPartyMember(int index)
+	public void SetControlledPartyMember(int index)
 	{
 		for(int i = 0; i < myParty.members.Count; i++)
 		{
