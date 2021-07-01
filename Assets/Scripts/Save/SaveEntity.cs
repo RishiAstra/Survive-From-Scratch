@@ -24,7 +24,7 @@ public class SaveEntity : Save, ISaveable
 	public static Dictionary<string, GameObject> spawnObjects;
 	public static List<EntityMapData> toSaveMapData;
 
-	const string spawnPath = "Assets/Spawnable/";
+	public const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
 			return GameControl.saveDirectory + "/Save/Entities/";

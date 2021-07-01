@@ -129,8 +129,25 @@ public class GameControl : MonoBehaviour
 	private bool waitBeforeInteractEnabled;
 
 
-	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor;
+	public Color armorColor, atkColor, hpColor, mpColor, engColor, morColor, xpColor;
 	public Transform mapPlayerIcon;
+	public GameObject partyMemberUIPrefab;
+	public Transform partyMemberUIParent;
+
+	public void RefreshPartyMemberUI()
+	{
+		//delete previous
+		for(int i = partyMemberUIParent.childCount - 1; i >= 0; i--)
+		{
+			Destroy(partyMemberUIParent.GetChild(i).gameObject);
+		}
+
+		foreach(PartyMember p in myParty.members)
+		{
+			GameObject g = Instantiate(partyMemberUIPrefab, partyMemberUIParent);
+			g.GetComponent<CharacterDisplayer>().SetTarget(p);
+		}
+	}
 
 	void Awake(){
 		ItemInfoUI.main = mainItemInfoUI;
@@ -499,6 +516,7 @@ public class GameControl : MonoBehaviour
 		if (myParty.lastUsed >= myParty.members.Count) myParty.lastUsed = myParty.members.Count - 1;
 
 		SetControlledPartyMember(myParty.lastUsed);
+		RefreshPartyMemberUI();
 	}
 
 	public void StartAddNewCharacterToParty(string type)
@@ -535,6 +553,7 @@ public class GameControl : MonoBehaviour
 		myParty.lastUsed = 0;
 
 		RespawnPartyMemberPosition(g);
+		RefreshPartyMemberUI();
 
 		yield return null;
 	}
