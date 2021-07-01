@@ -43,7 +43,7 @@ public class CharacterDisplayer : MonoBehaviour
 
 	public IEnumerator SetIcon(string type)
 	{
-		string iconPath = SaveEntity.spawnPath + type + " i";
+		string iconPath = SaveEntity.spawnPath + type + "/" + type + " i.png";
 		AsyncOperationHandle<Sprite> spriteFetchOperation = Addressables.LoadAssetAsync<Sprite>(iconPath);
 		
 		yield return spriteFetchOperation;
