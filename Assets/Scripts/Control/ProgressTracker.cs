@@ -13,8 +13,10 @@ using UnityEngine;
 public class ProgressTracker : MonoBehaviour
 {
 	public static ProgressTracker main;
-	public static string savePath { get { return GameControl.saveDirectory + "/ProgressTracker/"; } }
+	public static string savePath { get { return GameControl.saveDirectory + "ProgressTracker/"; } }
 	public static string questSavePath { get { return savePath + "quests/"; } }
+	public static string activateSavePath { get { return savePath + "Quest Activates/"; } }
+	public static string activateSaveFile { get { return activateSavePath + "data.json"; } }
 
 	public List<IQuest> quests;
 	public List<QuestSave> questSaves;
@@ -22,6 +24,8 @@ public class ProgressTracker : MonoBehaviour
 	public Transform QuestUIParent;
 	public Progress prog;
 	public Menu questMenu;
+	public Dictionary<string, bool> activates;
+
 	// Start is called before the first frame update
 	void Awake()
 	{
@@ -94,7 +98,7 @@ public class ProgressTracker : MonoBehaviour
 				
 			}
 		}
-
+		QuestGameObjectActivate.CheckAll();
 		UpdateQuestUI();
 	}
 
@@ -352,6 +356,9 @@ public class ProgressTracker : MonoBehaviour
 		File.WriteAllText(savePath + "progress.json", JsonConvert.SerializeObject(prog, Formatting.Indented));
 
 		File.WriteAllText(savePath + "questDialogueUpdates.json", JsonConvert.SerializeObject(DialogueOnClick.newDialoguePaths));
+
+		Directory.CreateDirectory(activateSavePath);
+		File.WriteAllText(activateSaveFile, JsonConvert.SerializeObject(activates));
 	}
 
 	void LoadAllProgressData()
@@ -388,6 +395,11 @@ public class ProgressTracker : MonoBehaviour
 			prog = JsonConvert.DeserializeObject<Progress>(File.ReadAllText(progressSavePath)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
 		}
 
+
+		if (File.Exists(activateSaveFile))
+		{
+			activates = JsonConvert.DeserializeObject<Dictionary<string, bool>>(File.ReadAllText(activateSaveFile)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
+		}
 	}
 }
 

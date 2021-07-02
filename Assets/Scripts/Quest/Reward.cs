@@ -10,12 +10,14 @@ public class Reward
 	public enum RewardType
 	{
 		item,
-		money
+		money,
+		character
 	}
 
 	public RewardType type;
 	public Item item;
 	public int money;
+	public string character;
 
 	public bool TryGetReward()
 	{
@@ -30,7 +32,9 @@ public class Reward
 			case RewardType.money:
 				GameControl.main.money += money;
 				return true;
-				break;
+			case RewardType.character:
+				GameControl.main.AddNewCharacterToParty(character);
+				return true;
 
 		}
 

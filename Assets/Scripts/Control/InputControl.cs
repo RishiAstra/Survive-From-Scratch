@@ -71,7 +71,20 @@ public class InputControl : MonoBehaviour
 			interactHeld = true;
 		}
 
-		if(Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt))
+		bool altPressed = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+		bool altUp = Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt);
+		bool altDown = Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt);
+		if (altDown)
+		{
+			CharacterDisplayer.SetIndexesVisible(true);
+		}
+
+		if (!altPressed || altUp)
+		{
+			CharacterDisplayer.SetIndexesVisible(false);
+		}
+
+		if (altPressed)
 		{
 			int keyPressed = GetIntKeyPressed();
 			if(keyPressed >= 0 && keyPressed < GameControl.main.myParty.members.Count)

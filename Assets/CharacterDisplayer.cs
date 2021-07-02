@@ -8,8 +8,11 @@ using UnityEngine.UI;
 
 public class CharacterDisplayer : MonoBehaviour
 {
+	public static List<CharacterDisplayer> characterDisplayers = new List<CharacterDisplayer>();
+
 	public Image icon;
 	public TMP_Text nameText;
+	public TMP_Text indexText;
 	public HPBar hpbar;
 	public HPBar mpbar;
 	public HPBar engbar;
@@ -17,10 +20,25 @@ public class CharacterDisplayer : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		characterDisplayers.Add(this);
 		hpbar.hpBarImage.color = GameControl.main.hpColor;
 		mpbar.hpBarImage.color = GameControl.main.mpColor;
 		engbar.hpBarImage.color = GameControl.main.engColor;
 		xpbar.hpBarImage.color = GameControl.main.xpColor;
+		indexText.gameObject.SetActive(false);
+	}
+
+	private void OnDestroy()
+	{
+		characterDisplayers.Remove(this);
+	}
+
+	public static void SetIndexesVisible(bool visible)
+	{
+		foreach(CharacterDisplayer c in characterDisplayers)
+		{
+			c.indexText.gameObject.SetActive(visible);
+		}
 	}
 
 	public void SetTarget(PartyMember t)

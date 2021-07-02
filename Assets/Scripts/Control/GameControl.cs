@@ -142,10 +142,13 @@ public class GameControl : MonoBehaviour
 			Destroy(partyMemberUIParent.GetChild(i).gameObject);
 		}
 
-		foreach(PartyMember p in myParty.members)
+		for (int i = 0; i < myParty.members.Count; i++)
 		{
+			PartyMember p = myParty.members[i];
 			GameObject g = Instantiate(partyMemberUIPrefab, partyMemberUIParent);
-			g.GetComponent<CharacterDisplayer>().SetTarget(p);
+			CharacterDisplayer characterDisplayer = g.GetComponent<CharacterDisplayer>();
+			characterDisplayer.SetTarget(p);
+			characterDisplayer.indexText.text = (i + 1).ToString();
 		}
 	}
 

@@ -13,6 +13,7 @@ public class ComplexQuest : IQuest
 	public List<IQuest> quests;
 	public int current;
 	public Reward reward;
+	public Dictionary<string, bool> toActivate;
 
 	private string nextDialoguePath;
 
@@ -87,7 +88,16 @@ public class ComplexQuest : IQuest
 	public bool TryCompleteMission()
 	{
 		if (!IsFinished()) return false;
-		return reward == null || reward.TryGetReward();
+		bool ok = reward == null || reward.TryGetReward();
+		if (ok && toActivate != null)
+		{
+			//add (overwright if already) keyvalues
+			foreach(KeyValuePair<string, bool> v in toActivate)
+			{
+				ProgressTracker.main.activates[v.Key] = v.Value;
+			}
+		}
+		return ok;
 	}
 
 	public void SetNextDialoguePath(string s)
