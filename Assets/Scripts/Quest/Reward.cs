@@ -18,6 +18,7 @@ public class Reward
 	public Item item;
 	public int money;
 	public string character;
+	public string characterPositionReplace;
 
 	public bool TryGetReward()
 	{
@@ -33,7 +34,24 @@ public class Reward
 				GameControl.main.money += money;
 				return true;
 			case RewardType.character:
-				GameControl.main.AddNewCharacterToParty(character);
+				if (!string.IsNullOrEmpty(characterPositionReplace))
+				{
+					QuestGameObjectActivate q = QuestGameObjectActivate.instances.Find(x => x.myName == characterPositionReplace);
+					if (q != null)
+					{
+						GameControl.main.StartAddNewCharacterToParty(character, true, q.transform.position);
+						ProgressTracker.main.activates[characterPositionReplace] = new QuestGameObjectData() {active = false };
+					}
+					else
+					{
+						GameControl.main.StartAddNewCharacterToParty(character);
+					}
+
+				}
+				else
+				{
+					GameControl.main.StartAddNewCharacterToParty(character);
+				}
 				return true;
 
 		}

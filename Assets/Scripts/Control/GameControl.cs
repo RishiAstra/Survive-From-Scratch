@@ -522,12 +522,12 @@ public class GameControl : MonoBehaviour
 		RefreshPartyMemberUI();
 	}
 
-	public void StartAddNewCharacterToParty(string type)
+	public void StartAddNewCharacterToParty(string type, bool specificPosition = false, Vector3 pos = new Vector3())
 	{
-		StartCoroutine(AddNewCharacterToParty(type));
+		StartCoroutine(AddNewCharacterToParty(type, specificPosition, pos));
 	}
 
-	public IEnumerator AddNewCharacterToParty(string type)
+	public IEnumerator AddNewCharacterToParty(string type, bool specificPosition = false, Vector3 pos = new Vector3())
 	{
 		GameObject toSpawn;
 		bool succeed = SaveEntity.GetEntityPrefabCached(type, out toSpawn);
@@ -554,8 +554,14 @@ public class GameControl : MonoBehaviour
 		};
 		myParty.members.Add(p);
 		myParty.lastUsed = 0;
-
-		RespawnPartyMemberPosition(g);
+		if (specificPosition)
+		{
+			g.transform.position = pos;
+		}
+		else
+		{
+			RespawnPartyMemberPosition(g);
+		}
 		RefreshPartyMemberUI();
 
 		yield return null;
