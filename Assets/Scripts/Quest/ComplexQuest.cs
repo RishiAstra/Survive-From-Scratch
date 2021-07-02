@@ -13,7 +13,7 @@ public class ComplexQuest : IQuest
 	public List<IQuest> quests;
 	public int current;
 	public Reward reward;
-	public Dictionary<string, bool> toActivate;
+	public Dictionary<string, QuestGameObjectData> toActivate;
 
 	private string nextDialoguePath;
 
@@ -92,7 +92,7 @@ public class ComplexQuest : IQuest
 		if (ok && toActivate != null)
 		{
 			//add (overwright if already) keyvalues
-			foreach(KeyValuePair<string, bool> v in toActivate)
+			foreach(KeyValuePair<string, QuestGameObjectData> v in toActivate)
 			{
 				ProgressTracker.main.activates[v.Key] = v.Value;
 			}

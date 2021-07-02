@@ -15,7 +15,8 @@ public class QuestGameObjectActivate : MonoBehaviour
 	public static List<QuestGameObjectActivate> instances = new List<QuestGameObjectActivate>();
 
 	public string myName;
-	public bool defaultState;
+	public bool defaultActive;
+	public Animator anim;
 
 
 	private void Start()
@@ -34,13 +35,24 @@ public class QuestGameObjectActivate : MonoBehaviour
 
 	public void CheckActive()
 	{
-		if (ProgressTracker.main.activates.TryGetValue(myName, out bool result))
+		if (ProgressTracker.main.activates.TryGetValue(myName, out QuestGameObjectData result))
 		{
-			gameObject.SetActive(result);
+			gameObject.SetActive(result.active);
+			if(anim != null && !string.IsNullOrEmpty(result.animationState))
+			{
+				anim.Play(result.animationState);
+			}
 		}
 		else
 		{
-			gameObject.SetActive(defaultState);
+			gameObject.SetActive(defaultActive);
 		}
 	}
+}
+
+public struct QuestGameObjectData
+{
+	public bool active;
+	public string animationState;
+	public float animationNormalizedTime;
 }

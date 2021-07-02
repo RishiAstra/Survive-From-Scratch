@@ -24,7 +24,7 @@ public class ProgressTracker : MonoBehaviour
 	public Transform QuestUIParent;
 	public Progress prog;
 	public Menu questMenu;
-	public Dictionary<string, bool> activates;
+	public Dictionary<string, QuestGameObjectData> activates;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -398,7 +398,7 @@ public class ProgressTracker : MonoBehaviour
 
 		if (File.Exists(activateSaveFile))
 		{
-			activates = JsonConvert.DeserializeObject<Dictionary<string, bool>>(File.ReadAllText(activateSaveFile)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
+			activates = JsonConvert.DeserializeObject<Dictionary<string, QuestGameObjectData>>(File.ReadAllText(activateSaveFile)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
 		}
 	}
 }
