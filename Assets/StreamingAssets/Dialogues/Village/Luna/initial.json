@@ -1,0 +1,67 @@
+{
+    "title" : "Luna",
+    "texts" : [
+        {"text":"Hey, ur finally awake!"}
+    ],
+    "choices" : [
+        {
+            "icon" : null,
+            "text" : "Eh? Where am I? What happened?",
+            "result" : {
+                "title" : null,
+                "texts" : [
+                    {"text":"Hmm.."},
+                    {"text":"This is my little magic shop. We are in Loconatus."}
+                ],
+                "choices" : [
+                    {
+                        "icon" : null,
+                        "text" : "...Loconatus..?",
+                        "result" : {
+                            "title" : null,
+                            "texts" : [
+                                {"text":"Surely you've heard of it...This village is famous for it's er... <i>unusual</i> methods of dealing with monsters..."}
+                            ],
+                            "choices" : [
+                                {
+                                    "icon" : null,
+                                    "text" : "Never heard of it",
+                                    "result" : {
+                                        "title" : null,
+                                        "texts" : [
+                                            {"text":"Hmm..."},
+                                            {"text":"We found you in Novasilva, a nearby forest with annoying monsters"},
+											{"text":"You were unconscious, the slimes were trying to eat you \nThankfully you're too large to be absorbed by them"},
+											{"text":"My witch instincts picked up an overwhelming mana distortion. When we searched for its source, we found you."}
+                                        ],
+										"choices" : [
+											{
+												"icon" : null,
+												"text" : "Slimes? Witch? Mana?",
+												"result" : {
+													"title" : null,
+													"texts" : [
+														{"text":"Have you lost all of your memory? <i>*sigh*</i>...I guess I'll explain"},
+														{"text":"There are lots of monsters in this world. In this village, Loconatus, we already scared off the monsters. However, there are lots of monsters if you venture too far."},
+														{"text":"Slimes are pretty weak monsters, but a group of simes can make quick work of an inexperienced victim"},
+														{"text":"I am a witch. Basically I know lots of magic and stuff. But I'm n..not evil."},
+                                                        {"text":"Mana is magic energy. Even the greatest mages don't fully understand it. "}
+													]
+												
+												}
+											}
+										]
+                                    
+                                    }
+                                }
+                            ]
+                        
+                        }
+                    }
+                ]
+            
+            }
+        }
+    ]
+
+}
