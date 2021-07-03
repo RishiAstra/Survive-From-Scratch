@@ -1,7 +1,7 @@
 {
     "title" : "Witch",
     "texts" : [
-        "Hey, ur finally awake!"
+        {"text":"Hey, ur finally awake!"}
     ],
     "choices" : [
         {
@@ -10,8 +10,8 @@
             "result" : {
                 "title" : null,
                 "texts" : [
-                    "Hmm..",
-                    "This is my little magic shop. We are in Loconatus."
+                    {"text":"Hmm.."},
+                    {"text":"This is my little magic shop. We are in Loconatus."}
                 ],
                 "choices" : [
                     {
@@ -20,49 +20,7 @@
                         "result" : {
                             "title" : null,
                             "texts" : [
-                                "Surely you've heard of it...This village is famous for it's er... <i>unusual</i> methods of dealing with monsters..."
-                            ],
-                            "choices" : [
-                                {
-                                    "icon" : null,
-                                    "text" : "Never heard of it",
-                                    "result" : {
-                                        "title" : null,
-                                        "texts" : [
-                                            "Now that I think about it, slimes reflect the sun a bit too much",
-                                            "Maybe if you kill some slimes it'll show that sun whose boss",
-                                            "Could you kill 3 slimes?"
-                                        ],
-                                        "choices" : [
-                                            {
-                                                "icon" : null,
-                                                "text" : "Alright...",
-                                                "result" : {
-                                                    "title" : null,
-                                                    "texts" : [
-                                                        "Great! I wish you luck."
-                                                    ],
-                                                    "choices" : null,
-                                                    "nextJson" : "Village/Robert/awaiting slime.json",
-                                                    "makeNextJsonDefault" : true,
-                                                    "questResult" : "Village/Robert/SlimeQuest.json"
-                                                }
-                                            },
-                                            {
-                                                "icon" : null,
-                                                "text" : "I have other things to do...",
-                                                "result" : {
-                                                    "title" : null,
-                                                    "texts" : [
-                                                        "Ah well. Contact me again if you get time"
-                                                    ],
-                                                    "choices" : null
-                                                }
-                                            }
-                                        ]
-                                    
-                                    }
-                                }
+                                {"text":"Surely you've heard of it...This village is famous for it's er... <i>unusual</i> methods of dealing with monsters..."}
                             ]
                         
                         }

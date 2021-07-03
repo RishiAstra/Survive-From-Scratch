@@ -634,6 +634,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persistant Lootbox
       objectReference: {fileID: 0}
+    - target: {fileID: 7076107381641909323, guid: 5d48d1cd0709d554aaa229591f6d5880,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7580162620918304913, guid: 5d48d1cd0709d554aaa229591f6d5880,
         type: 3}
       propertyPath: m_RootOrder
@@ -23722,16 +23727,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383895454}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.6733335, y: 0.024999937, z: 0.84933347}
+  m_LocalRotation: {x: -0, y: -0.707107, z: -0, w: 0.7071066}
+  m_LocalPosition: {x: -0.553, y: 0.024999937, z: 0.305}
   m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_Children:
   - {fileID: 1383795876}
   - {fileID: 1383796186}
   - {fileID: 1383795944}
+  - {fileID: 2112175651}
   m_Father: {fileID: 8349475541271638017}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!4 &1383796134
 Transform:
   m_ObjectHideFlags: 0
@@ -26351,6 +26357,8 @@ GameObject:
   - component: {fileID: 1389422040}
   - component: {fileID: 1383929456}
   - component: {fileID: 1383929457}
+  - component: {fileID: 1383895457}
+  - component: {fileID: 1383895455}
   m_Layer: 0
   m_Name: unitychan_dynamic
   m_TagString: Untagged
@@ -26358,6 +26366,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1383895455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383895454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e19f024126fe0a48869a5e317e532e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onHover: {fileID: 2112175652}
+  dialogue:
+    title: 
+    choices: []
+    questResult: 
+    nextJson: 
+    makeNextJsonDefault: 0
+  dialoguePath: /Village/Witch/initial.json
+  storagePath: /Village/Witch/save.txt
+  myName: Witch
 --- !u!1 &1383895456
 GameObject:
   m_ObjectHideFlags: 0
@@ -26375,6 +26405,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1383895457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383895454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ff66ddda15fec4ca2dced54c5f10cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 33
 --- !u!1 &1383895458
 GameObject:
   m_ObjectHideFlags: 0
@@ -52770,6 +52813,92 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 677260368565805942, guid: fca5fc35fe782f94ba75eaad68271531,
     type: 3}
   m_PrefabInstance: {fileID: 2105887808}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2112175650
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1383796132}
+    m_Modifications:
+    - target: {fileID: 648698171139804567, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_text
+      value: Witch
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.785
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5440919333753083216, guid: f7383237707c5a647a7d7734b8d4025d,
+        type: 3}
+      propertyPath: m_Name
+      value: Title and Dialogue icon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f7383237707c5a647a7d7734b8d4025d, type: 3}
+--- !u!4 &2112175651 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5215598589762385959, guid: f7383237707c5a647a7d7734b8d4025d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2112175650}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2112175652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7433036290519662172, guid: f7383237707c5a647a7d7734b8d4025d,
+    type: 3}
+  m_PrefabInstance: {fileID: 2112175650}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2116692683
 PrefabInstance:

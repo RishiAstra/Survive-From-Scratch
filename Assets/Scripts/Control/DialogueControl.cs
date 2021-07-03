@@ -136,7 +136,15 @@ public class DialogueControl : MonoBehaviour
         if(currentPart != null)// && currentPart.texts.Count > 0)
 		{
             dialogueMenuParent.TryActivateMenu();//.SetActive(true);
-			dialogueBodyText.text = currentPart.texts[currentLineProgress];
+			string nextText = currentPart.texts[currentLineProgress].text;
+
+			string dataTarget = currentPart.texts[currentLineProgress].dataTarget;
+			if (!string.IsNullOrEmpty(dataTarget))
+			{
+				ProgressTracker.main.activates.Add(dataTarget, currentPart.texts[currentLineProgress].data);
+			}
+
+            dialogueBodyText.text = nextText;
             if(currentPart.title != null && currentPart.title != "")
 			{
                 dialogueTitleText.text = currentPart.title;
@@ -243,12 +251,19 @@ public class DialoguePart
     
     public string title;
     [TextArea(1, 5)]
-    public List<string> texts;
+    public List<DialogueTextAndAnimation> texts;
     public List<DialogueChoise> choices;
     public string questResult;
     public string nextJson;
     public bool makeNextJsonDefault;
     //public DialoguePart defaultNextPart;
+}
+
+public class DialogueTextAndAnimation
+{
+    public string text;
+    public string dataTarget;
+    public QuestGameObjectData data;
 }
 
 //public delegate void DialogueResult(bool succeeded);

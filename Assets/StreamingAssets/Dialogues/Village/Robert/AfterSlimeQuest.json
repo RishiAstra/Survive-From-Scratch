@@ -1,8 +1,8 @@
 {
     "title" : "Robert",
     "texts" : [
-        "Thanks for the help! That'll teach the sun to burn my eyes!",
-        "Here, have these 50 logs. I cut more than I could store."
+        {"text":"Thanks for the help! That'll teach the sun to burn my eyes!"},
+        {"text":"Here, have these 50 logs. I cut more than I could store."}
     ],
     "nextJson" : "Village/Robert/quest1done.json",
     "makeNextJsonDefault" : true
