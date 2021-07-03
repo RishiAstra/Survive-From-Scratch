@@ -27239,7 +27239,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1667653199}
   - component: {fileID: 1667653200}
-  - component: {fileID: 1667653201}
   m_Layer: 0
   m_Name: Progress Tracker
   m_TagString: Untagged
@@ -27282,18 +27281,6 @@ MonoBehaviour:
     TotalDamageTaken: 0
     talkedTimes: 0
   questMenu: {fileID: 1797320666}
---- !u!114 &1667653201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667653198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e2d5875c690d874aae9a5664db2978d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1685708977
 GameObject:
   m_ObjectHideFlags: 0

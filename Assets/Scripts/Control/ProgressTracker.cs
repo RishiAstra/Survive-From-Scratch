@@ -24,7 +24,7 @@ public class ProgressTracker : MonoBehaviour
 	public Transform QuestUIParent;
 	public Progress prog;
 	public Menu questMenu;
-	public Dictionary<string, QuestGameObjectData> activates;
+	public Dictionary<string, QuestGameObjectData> activates = new Dictionary<string, QuestGameObjectData>();
 
 	// Start is called before the first frame update
 	void Awake()
@@ -343,6 +343,7 @@ public class ProgressTracker : MonoBehaviour
 
 	private void OnDestroy()
 	{
+		QuestGameObjectActivate.CheckSaveAll();
 		//delete old quest save
 		if(Directory.Exists(questSavePath)) Directory.Delete(questSavePath, true);
 		//re-make the directory
