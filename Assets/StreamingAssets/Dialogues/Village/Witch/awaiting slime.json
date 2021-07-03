@@ -1,0 +1,76 @@
+{
+    "title" : "Robert",
+    "texts" : [
+        "How's the progress killing slimes going?"
+    ],
+    "choices" : [
+        {
+            "icon" : null,
+            "text" : "Almost done!",
+            "result" : {
+                "title" : null,
+                "texts" : [
+                    "Good, good...Keep up the hard work!"
+                ],
+                "choices" : [
+                    {
+                        "icon" : null,
+                        "text" : "(Leave)"
+                    },
+                    {
+                        "icon" : null,
+                        "text" : "(stay)",
+                        "result" : {
+                            "title" : null,
+                            "texts" : [
+                                "Heh.. heh I can't wait to see the sun's face.",
+                                "Or not, I don't want to look up there.",
+                                "Oh! I didn't realize you were still there. I'm just talking to myself."
+                            ],
+                            "choices" : null            
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "icon" : null,
+            "text" : "Not very good",
+            "result" : {
+                "title" : null,
+                "texts" : [
+                    "Eh? What's the problem?"
+                ],
+                "choices" : [
+                    {
+                        "icon" : null,
+                        "text" : "I don't know where to find them",
+                        "result" : {
+                            "title" : null,
+                            "texts" : [
+                                "Have you tried searching in Novasilva?",
+                                "Remember, press M to open the map and click a location to teleport",
+                                "The slimes' red color stands out against the grass, but they are pretty short little demons."
+                            ],
+                            "choices" : null            
+                        }
+                    },
+                    {
+                        "icon" : null,
+                        "text" : "They are too hard to beat",
+                        "result" : {
+                            "title" : null,
+                            "texts" : [
+                                "Hmm? I guess it's a little much for a beginner.",
+                                "You can try throwing rocks at them from a distance to avoid getting hurt.",
+                                "Rocks are a little hard to find though, I suggest you get better at close combat.",
+                                "Make sure that your weapon is actually hitting them slimes. Swinging it around in the opposite direction won't do any damage."
+                            ],
+                            "choices" : null            
+                        }
+                    }
+                ]          
+            }
+        }
+    ]
+}
