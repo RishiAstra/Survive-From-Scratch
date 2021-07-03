@@ -52,77 +52,7 @@ public class ProgressTracker : MonoBehaviour
 		}		
 	}
 
-	public void UpdateQuestData()
-	{
-		for (int i = 0; i < quests.Count; i++)
-		{
-			//check if finished, if it is, try to complete mission (including collecting any rewards)
-			if (quests[i].IsFinished() && quests[i].TryCompleteMission())
-			{
-
-				//if there's a next dialogue, update it
-				if (!string.IsNullOrEmpty(questSaves[i].nextDialogueJson) && !string.IsNullOrEmpty(questSaves[i].nextDialogueTargetName))
-				{
-					//update the dialogue
-					//DialogueOnClick.newDialoguePaths.Add(questSaves[i].nextDialogueTargetName, questSaves[i].nextDialogueJson);
-					
-					if (DialogueOnClick.newDialoguePaths.ContainsKey(questSaves[i].nextDialogueTargetName))
-					{
-						DialogueOnClick.newDialoguePaths[questSaves[i].nextDialogueTargetName] = questSaves[i].nextDialogueJson;
-
-					}
-					else
-					{
-						DialogueOnClick.newDialoguePaths.Add(questSaves[i].nextDialogueTargetName, questSaves[i].nextDialogueJson);
-					}
-
-					print(DialogueOnClick.newDialoguePaths[questSaves[i].nextDialogueTargetName]);
-				}
-
-
-				//if there's a next quest, activate it
-				if (!string.IsNullOrEmpty(questSaves[i].nextQuestJson))
-				{
-					//load the next quest
-					questSaves[i] = GetQuestSaveFromPath(questSaves[i].nextQuestJson);
-					quests[i] = ConvertQuestSaveToQuest(questSaves[i]);
-				}
-				else
-				{
-					//done with this quest
-					questSaves.RemoveAt(i);
-					quests.RemoveAt(i);
-					i--;
-				}
-
-				
-			}
-		}
-		QuestGameObjectActivate.CheckAll();
-		UpdateQuestUI();
-	}
-
-	public void UpdateQuestUI()
-	{
-		if (!questMenu.gameObject.activeSelf) return;//don't update if can't see it
-		for (int i = QuestUIParent.childCount - 1; i >= 0; i--)
-		{
-			Destroy(QuestUIParent.GetChild(i).gameObject);
-		}
-
-		for (int i = 0; i < quests.Count; i++)
-		{
-
-			GameObject g = Instantiate(QuestUIPrefab, QuestUIParent);
-
-			QuestUI q = g.GetComponent<QuestUI>();
-			if(q != null)
-			{
-				q.title.text = quests[i].GetQuestName();
-				q.description.text = quests[i].GetDescription();
-			}
-		}
-	}
+	#region register progress
 
 	public void RegisterKill(string type, StatScript killed, Abilities killer)
 	{
@@ -193,6 +123,102 @@ public class ProgressTracker : MonoBehaviour
 		//}
 	}
 
+	public void RegisterLocationVisit(string locationVisited)
+	{
+		foreach (IQuest q in quests)
+		{
+			q.OnLocationReached(locationVisited);
+		}
+
+		UpdateQuestData();
+
+		if (prog.totalVisitsByName.TryGetValue(locationVisited, out int v))
+		{
+			prog.totalVisitsByName[locationVisited]++;
+		}
+		else{
+			prog.totalVisitsByName[locationVisited] = 1;
+		}
+
+	}
+
+	#endregion
+
+	#region quest methods
+
+
+	public void UpdateQuestData()
+	{
+		for (int i = 0; i < quests.Count; i++)
+		{
+			//check if finished, if it is, try to complete mission (including collecting any rewards)
+			if (quests[i].IsFinished() && quests[i].TryCompleteMission())
+			{
+
+				//if there's a next dialogue, update it
+				if (!string.IsNullOrEmpty(questSaves[i].nextDialogueJson) && !string.IsNullOrEmpty(questSaves[i].nextDialogueTargetName))
+				{
+					//update the dialogue
+					//DialogueOnClick.newDialoguePaths.Add(questSaves[i].nextDialogueTargetName, questSaves[i].nextDialogueJson);
+
+					if (DialogueOnClick.newDialoguePaths.ContainsKey(questSaves[i].nextDialogueTargetName))
+					{
+						DialogueOnClick.newDialoguePaths[questSaves[i].nextDialogueTargetName] = questSaves[i].nextDialogueJson;
+
+					}
+					else
+					{
+						DialogueOnClick.newDialoguePaths.Add(questSaves[i].nextDialogueTargetName, questSaves[i].nextDialogueJson);
+					}
+
+					print(DialogueOnClick.newDialoguePaths[questSaves[i].nextDialogueTargetName]);
+				}
+
+
+				//if there's a next quest, activate it
+				if (!string.IsNullOrEmpty(questSaves[i].nextQuestJson))
+				{
+					//load the next quest
+					questSaves[i] = GetQuestSaveFromPath(questSaves[i].nextQuestJson);
+					quests[i] = ConvertQuestSaveToQuest(questSaves[i]);
+				}
+				else
+				{
+					//done with this quest
+					questSaves.RemoveAt(i);
+					quests.RemoveAt(i);
+					i--;
+				}
+
+
+			}
+		}
+		QuestGameObjectActivate.CheckAll();
+		UpdateQuestUI();
+	}
+
+	public void UpdateQuestUI()
+	{
+		if (!questMenu.gameObject.activeSelf) return;//don't update if can't see it
+		for (int i = QuestUIParent.childCount - 1; i >= 0; i--)
+		{
+			Destroy(QuestUIParent.GetChild(i).gameObject);
+		}
+
+		for (int i = 0; i < quests.Count; i++)
+		{
+
+			GameObject g = Instantiate(QuestUIPrefab, QuestUIParent);
+
+			QuestUI q = g.GetComponent<QuestUI>();
+			if (q != null)
+			{
+				q.title.text = quests[i].GetQuestName();
+				q.description.text = quests[i].GetDescription();
+			}
+		}
+	}
+
 	public void TryAddQuest(QuestSave questResult, string fromDialogueName)
 	{
 		//quest cannot be null, return if it is
@@ -221,7 +247,8 @@ public class ProgressTracker : MonoBehaviour
 		questSaves.Add(questResult);
 
 		print(ConvertQuestToString(temp));
-		UpdateQuestUI();
+		UpdateQuestData();
+		//UpdateQuestUI();
 
 	}
 
@@ -260,6 +287,9 @@ public class ProgressTracker : MonoBehaviour
 				break;
 			case "TalkQuest":
 				result = JsonConvert.DeserializeObject<TalkQuest>(JsonConvert.SerializeObject(data));// CastObject<Type.GetType(q.type)>(q.data);// (Type.GetType(q.type))q.data;
+				break;
+			case "LocationQuest":
+				result = JsonConvert.DeserializeObject<LocationQuest>(JsonConvert.SerializeObject(data));
 				break;
 			case "ComplexQuest":
 				JObject obj = JObject.FromObject(data);
@@ -340,6 +370,9 @@ public class ProgressTracker : MonoBehaviour
 			return null;
 		}
 	}
+	#endregion
+
+	#region save and load
 
 	private void OnDestroy()
 	{
@@ -402,6 +435,7 @@ public class ProgressTracker : MonoBehaviour
 			activates = JsonConvert.DeserializeObject<Dictionary<string, QuestGameObjectData>>(File.ReadAllText(activateSaveFile)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
 		}
 	}
+	#endregion
 }
 
 [System.Serializable]
@@ -417,11 +451,14 @@ public class QuestSave
 [System.Serializable]
 public class Progress
 {
-	public double TotalDamageDealt;
-	public double TotalDamageTaken;
-	public Dictionary<string, int> TotalKillsByType;
-	public Dictionary<int, int> TotalKillsByTag;
-	public int talkedTimes;
+	public double TotalDamageDealt = 0f;
+	public double TotalDamageTaken = 0f;
+	public Dictionary<string, int> TotalKillsByType = new Dictionary<string, int>();
+	public Dictionary<int, int> TotalKillsByTag = new Dictionary<int, int>();
+	public int talkedTimes = 0;
+	public Dictionary<string, int> totalVisitsByName = new Dictionary<string, int>();
+	public DialoguePart currentDialoguePart;
+	public string currentDialoguePartSource;
 
  //   public Progress()
 	//{

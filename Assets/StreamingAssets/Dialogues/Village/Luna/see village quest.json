@@ -1,0 +1,25 @@
+{
+    "type" : "ComplexQuest",    
+    "nextQuestJson" : "",
+    "nextDialogueJson" : "Village/Luna/initial3.json",
+    "nextDialogueTargetName" : "Luna",
+    "data" : {
+        "quests" : [
+            {
+                "type" : "LocationQuest",
+                "data" : {
+                    "locationToVisit" : "outside mage shop",
+                    "questName" : "A new home",
+                    "descriptionText" : "step outside the mage shop"
+                }
+            },
+            {
+                "type" : "TalkQuest",
+                "data" : {
+                    "toTalkTo" : "Luna",
+                    "questName" : "A new home"
+                }
+            }
+        ]
+    }
+}

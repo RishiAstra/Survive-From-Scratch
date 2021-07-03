@@ -30,7 +30,7 @@ public class DialogueControl : MonoBehaviour
 
     //public DialogueLine currentLine;
     private int currentLineProgress;//used to separate sections of text
-    private DialoguePart currentPart;
+    [HideInInspector()]public DialoguePart currentPart;
     public string dialogueSource;
 
     private float fadeDurationLeft;
@@ -142,6 +142,7 @@ public class DialogueControl : MonoBehaviour
 			if (!string.IsNullOrEmpty(dataTarget))
 			{
 				ProgressTracker.main.activates.Add(dataTarget, currentPart.texts[currentLineProgress].data);
+                QuestGameObjectActivate.CheckAll();
 			}
 
             dialogueBodyText.text = nextText;

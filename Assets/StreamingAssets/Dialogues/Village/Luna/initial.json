@@ -31,7 +31,7 @@
                                         "texts" : [
                                             {"text":"Hmm..."},
                                             {"text":"We found you in Novasilva, a nearby forest with annoying monsters"},
-											{"text":"You were unconscious, the slimes were trying to eat you \nThankfully you're too large to be absorbed by them"},
+											{"text":"You were unconscious, the slimes were trying to eat you. \nThankfully you're too large to be absorbed by them"},
 											{"text":"My witch instincts picked up an overwhelming mana distortion. When we searched for its source, we found you."}
                                         ],
 										"choices" : [
@@ -44,10 +44,13 @@
 														{"text":"Have you lost all of your memory? <i>*sigh*</i>...I guess I'll explain"},
 														{"text":"There are lots of monsters in this world. In this village, Loconatus, we already scared off the monsters. However, there are lots of monsters if you venture too far."},
 														{"text":"Slimes are pretty weak monsters, but a group of simes can make quick work of an inexperienced victim"},
-														{"text":"I am a witch. Basically I know lots of magic and stuff. But I'm n..not evil."},
-                                                        {"text":"Mana is magic energy. Even the greatest mages don't fully understand it. "}
-													]
-												
+														{"text":"My name is Luna and I am a witch. Basically I know lots of magic and stuff. But I'm n..not evil."},
+                                                        {"text":"Mana is magic energy. Even the greatest mages don't fully understand it. Magic spells are achieved by manipulating and directing mana."},
+                                                        {"text":"The most recent theories even say that people's souls are concentrated and organized manifestations of mana"},
+                                                        {"text":"btw do you know why you were in Novasilva?"}
+													],
+                                                    "nextJson" : "Village/Luna/initial1playerresponce.json",
+                                                    "makeNextJsonDefault" : false												
 												}
 											}
 										]
