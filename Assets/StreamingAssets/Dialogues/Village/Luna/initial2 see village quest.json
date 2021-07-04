@@ -10,14 +10,16 @@
                 "data" : {
                     "locationToVisit" : "outside mage shop",
                     "questName" : "A new home",
-                    "descriptionText" : "step outside the mage shop"
+                    "descriptionText" : "step outside the mage shop",
+                    "questIndicatorIndex" : 0
                 }
             },
             {
                 "type" : "TalkQuest",
                 "data" : {
                     "toTalkTo" : "Luna",
-                    "questName" : "A new home"
+                    "questName" : "A new home",
+                    "questIndicatorIndex" : 0
                 }
             }
         ]

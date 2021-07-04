@@ -24,6 +24,11 @@ public class DamageText : MonoBehaviour
         sw = new Stopwatch();
     }
 
+	private void Start()
+	{
+        transform.localScale = Vector3.one;
+	}
+
 	public void ResetText(float damageAmount)
 	{
         sw.Restart();

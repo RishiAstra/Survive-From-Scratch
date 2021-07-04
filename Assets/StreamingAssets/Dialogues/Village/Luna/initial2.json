@@ -1,15 +1,17 @@
 {
-    "title" : "Luna",
-    "texts" : [
-        {"text":"Hmm... Maybe you hit your head, you're talking nonsense."},
-        {
-            "text" : "Anyways, you'll probably be staying here for a while, so take a step outside and see the village",
-            "dataTarget" : "mage shop door block",
-            "data" : {
-                "active" : false
-            }
-        }
-    ],
-    "questResult" : "Village/Luna/see village quest.json"
+	"title" : "Luna",
+	"texts" : [
+		{"text":"Hmm... Maybe you hit your head, you're talking nonsense."},
+		{
+			"text" : "Anyways, you'll probably be staying here for a while, so take a step outside and see the village",
+			"dataTarget" : "mage shop door block",
+			"data" : {
+				"active" : false
+			}
+		}
+	],
+	"questResult" : "Village/Luna/initial2 see village quest.json",
+	"nextJson" : "Village/Luna/initial2 wait for quest.json",
+	"makeNextJsonDefault" : true
 
 }

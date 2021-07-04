@@ -10,5 +10,7 @@
 		{"text":"Of course, you shouldn't try anything so dangerous. Just enter the tower, kill a slime, and leave."},
 		{"text":"Good Luck"}
 	],
-	"questResult" : "Village/Luna/initialKillSlime.json"
+	"questResult" : "Village/Luna/initial3 KillSlime.json",
+    "nextJson" : "Village/Luna/initial3 wait for quest.json",
+	"makeNextJsonDefault" : true
 }

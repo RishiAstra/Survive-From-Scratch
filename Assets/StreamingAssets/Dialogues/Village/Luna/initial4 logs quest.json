@@ -1,0 +1,35 @@
+{
+    "type" : "ComplexQuest",    
+    "nextQuestJson" : "",
+    "nextDialogueJson" : "Village/Luna/initial4.json",
+    "nextDialogueTargetName" : "Luna",
+    "data" : {
+        "quests" : [
+            {
+                "type" : "SceneQuest",
+                "data" : {
+                    "sceneToVisit" : "Novasilva",
+                    "questName" : "A new home",
+                    "descriptionText" : "Enter Turris Aetheris level 1 (F to open entry menu)"
+                }
+            },
+            {
+                "type" : "KillQuest",
+                "data" : {
+                    "typeToKill" : "Tree",
+                    "amountToKill" : 1,
+                    "amountKilled" : 0,
+                    "questName" : "A new home"
+                }
+            },
+            {
+                "type" : "TalkQuest",
+                "data" : {
+                    "toTalkTo" : "Luna",
+                    "questName" : "A new home",
+                    "questIndicatorIndex" : 0
+                }
+            }
+        ]
+    }
+}

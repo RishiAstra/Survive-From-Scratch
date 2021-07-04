@@ -14,6 +14,11 @@ public class PutUIAtPosition : MonoBehaviour
         myUIThing = Instantiate(toPutOnUI, GameControl.main.UIPositionMatchersParent);
     }
 
+	private void OnDestroy()
+	{
+		Destroy(myUIThing);
+	}
+
 	// Update is called once per frame
 
 	private void LateUpdate()

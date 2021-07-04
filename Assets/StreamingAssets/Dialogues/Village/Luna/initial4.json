@@ -1,0 +1,14 @@
+{
+    "title" : "Luna",
+    "texts" : [
+        {"text":"Good job with that slime!"},
+        {"text":"tbh most noobs die 5 times trying to kill slimes before giving up and realizing that combat isn't their forte"},
+        {"text":"Make sure to pick up any drops when you kill a monster, for example, that slime dropped slime goo. Monster drops can be useful or can be sold for money."},
+        {"text":"That aside, you're really good at combat for a beginner. Maybe before you lost your memory you were a professional."},
+        {"text":"I wonder if you're also good at gathering resources. To survive in the wild you'd need resources for building a shelter and crafting tools."},
+        {"text":"Why don't you go to Novasilva and chop some trees? Let's see how fast you can gather 10 logs."}
+	],
+    "questResult" : "Village/Luna/initial4 logs quest.json",
+    "nextJson" : "Village/Luna/initial4 wait logs quest.json",
+	"makeNextJsonDefault" : true
+}
