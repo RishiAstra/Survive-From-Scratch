@@ -25,18 +25,24 @@ PrefabInstance:
     - target: {fileID: 2927579221032252084, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.8174979
+      value: 0.78431374
       objectReference: {fileID: 0}
     - target: {fileID: 2927579221032252084, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.8207547
+      value: 0.6862745
       objectReference: {fileID: 0}
     - target: {fileID: 2927579221032252084, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.49167854
+      value: 0.49019608
       objectReference: {fileID: 0}
+    - target: {fileID: 5882290878320783059, guid: 0e68db4c370968346abb7dc9e1031ac0,
+        type: 3}
+      propertyPath: toPutOnUI
+      value: 
+      objectReference: {fileID: 1684336648229428270, guid: 394ca6e3432c2e84189edffb618d166e,
+        type: 3}
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_RootOrder
@@ -60,27 +66,27 @@ PrefabInstance:
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 6400185148714204947, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
@@ -95,7 +101,22 @@ PrefabInstance:
     - target: {fileID: 7715801472723555238, guid: 0e68db4c370968346abb7dc9e1031ac0,
         type: 3}
       propertyPath: m_Name
-      value: Quest Icon normal
+      value: Quest Icon normal 2nd
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870303571518127947, guid: 0e68db4c370968346abb7dc9e1031ac0,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870303571518127947, guid: 0e68db4c370968346abb7dc9e1031ac0,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.6862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870303571518127947, guid: 0e68db4c370968346abb7dc9e1031ac0,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.49019608
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e68db4c370968346abb7dc9e1031ac0, type: 3}

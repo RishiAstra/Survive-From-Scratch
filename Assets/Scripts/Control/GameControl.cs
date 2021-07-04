@@ -133,6 +133,7 @@ public class GameControl : MonoBehaviour
 	public Transform mapPlayerIcon;
 	public GameObject partyMemberUIPrefab;
 	public Transform partyMemberUIParent;
+	public Transform UIPositionMatchersParent;
 
 	public void RefreshPartyMemberUI()
 	{
