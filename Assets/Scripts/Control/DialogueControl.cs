@@ -142,7 +142,7 @@ public class DialogueControl : MonoBehaviour
 			string dataTarget = currentPart.texts[currentLineProgress].dataTarget;
 			if (!string.IsNullOrEmpty(dataTarget))
 			{
-				ProgressTracker.main.activates.Add(dataTarget, currentPart.texts[currentLineProgress].data);
+				ProgressTracker.main.activates[dataTarget] = currentPart.texts[currentLineProgress].data;
                 QuestGameObjectActivate.CheckAll();
 			}
 

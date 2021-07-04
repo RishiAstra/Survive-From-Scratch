@@ -55,6 +55,7 @@ public class ComplexQuest : IQuest
 
 	public bool IsFinished()
 	{
+		if (current >= 0 && current < quests.Count) quests[current].IsFinished();
 		return current >= quests.Count;
 	}
 

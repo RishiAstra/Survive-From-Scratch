@@ -11,8 +11,12 @@ public class spawnPoint : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		RaycastHit hit;
-		Physics.Raycast (transform.position + Vector3.up * 100, -Vector3.up, out hit, 200, putOnTopOfThese);
-		transform.position = hit.point + Vector3.up;
+		if (autoHeight)
+		{
+			Physics.Raycast(transform.position, -Vector3.up, out hit, 200, putOnTopOfThese);
+			transform.position = hit.point + Vector3.up;
+		}
+		
 	}
 
 	private void OnDrawGizmos()

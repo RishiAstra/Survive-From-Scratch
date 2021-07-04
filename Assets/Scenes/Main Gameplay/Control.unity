@@ -16710,6 +16710,12 @@ MonoBehaviour:
   choiceButtomPrefab: {fileID: 4423008384463473177, guid: 6f4c4d98424c5c0449b1c789282c8227,
     type: 3}
   choiceHolder: {fileID: 2105772285177096614}
+  currentPart:
+    title: 
+    choices: []
+    questResult: 
+    nextJson: 
+    makeNextJsonDefault: 0
   dialogueSource: 
 --- !u!1 &1032757949
 GameObject:
@@ -27275,11 +27281,21 @@ MonoBehaviour:
   questSaves: []
   QuestUIPrefab: {fileID: 7373112832051054380, guid: 1ad543928d4f36042b75fa52409ed53e,
     type: 3}
+  questWorldIndicators:
+  - {fileID: 7715801472723555238, guid: 0e68db4c370968346abb7dc9e1031ac0, type: 3}
+  - {fileID: 7776354275518869116, guid: c44297f1a1611dc4b9add583012686a5, type: 3}
   QuestUIParent: {fileID: 2116201944}
   prog:
     TotalDamageDealt: 0
     TotalDamageTaken: 0
     talkedTimes: 0
+    currentDialoguePart:
+      title: 
+      choices: []
+      questResult: 
+      nextJson: 
+      makeNextJsonDefault: 0
+    currentDialoguePartSource: 
   questMenu: {fileID: 1797320666}
 --- !u!1 &1685708977
 GameObject:
