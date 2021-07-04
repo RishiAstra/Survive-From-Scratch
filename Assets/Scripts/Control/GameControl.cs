@@ -1566,6 +1566,7 @@ public class GameControl : MonoBehaviour
 				//	RefreshSelected();
 				//	//SelectInv (invSel);
 				//}
+				ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
 				return true;
 			}
 		}
@@ -1580,6 +1581,7 @@ public class GameControl : MonoBehaviour
 					GameControl.main.playerControl.RefreshSelected();
 					//SelectInv (invSel);
 				}
+				ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
 				return true;
 			}
 		}
@@ -1594,6 +1596,7 @@ public class GameControl : MonoBehaviour
 				Item temp = inv.items[i];
 				temp.amount += amount;
 				inv.items[i] = temp;
+				ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
 				return true;
 			}
 		}
@@ -1602,6 +1605,7 @@ public class GameControl : MonoBehaviour
 			if (inv.items[i].id == 0)
 			{
 				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+				ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
 				return true;
 			}
 		}

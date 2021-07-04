@@ -34,10 +34,11 @@ public class GiveQuest : IQuest
 
 		Inventory mainInv = GameControl.main.mainInventoryUI.target;
 		Inventory hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
-		if (mainInv == null || hotBar == null)
+		Inventory craftInv = Crafting.main.craftInventory;
+		if (mainInv == null || hotBar == null || craftInv == null)
 		{
-			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null));
-			
+			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null) + ", craft:" + (craftInv != null));
+
 			for (int i = 0; i < items.Count; i++)
 			{
 				Item it = items[i];
@@ -49,7 +50,12 @@ public class GiveQuest : IQuest
 		}
 		else
 		{
-			List<int> itemCounts = GetItemCounts(mainInv, hotBar);
+			List<Inventory> invs = new List<Inventory>();
+			invs.Add(hotBar);
+			invs.Add(mainInv);
+			invs.Add(craftInv);
+
+			List<int> itemCounts = GetItemCounts(invs);
 
 			for (int i = 0; i < items.Count; i++)
 			{
@@ -61,7 +67,39 @@ public class GiveQuest : IQuest
 			sb.Remove(sb.Length - 3, 2);//remove last comma
 			sb.Append("</b> to " + toTalkTo);
 			return sb.ToString();
-		}		
+		}
+
+		
+
+		//List<int> itemCounts = GetItemCounts(invs);
+		//if (mainInv == null || hotBar == null)
+		//{
+		//	Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null));
+			
+		//	for (int i = 0; i < items.Count; i++)
+		//	{
+		//		Item it = items[i];
+		//		sb.Append(it.amount + " " + GameControl.itemTypes[it.id].name + ", ");
+		//	}
+		//	sb.Remove(sb.Length - 3, 2);//remove last comma
+		//	sb.Append("</b> to " + toTalkTo);
+		//	return sb.ToString();
+		//}
+		//else
+		//{
+		//	List<int> itemCounts = GetItemCounts(mainInv, hotBar);
+
+		//	for (int i = 0; i < items.Count; i++)
+		//	{
+		//		Item it = items[i];
+		//		if (i == emphaziseIndex) sb.Append("<#00FF00>");
+		//		sb.Append(Mathf.Min(itemCounts[i], it.amount) + "/" + it.amount + " " + GameControl.itemTypes[it.id].name + ", ");
+		//		if (i == emphaziseIndex) sb.Append("</color>");
+		//	}
+		//	sb.Remove(sb.Length - 3, 2);//remove last comma
+		//	sb.Append("</b> to " + toTalkTo);
+		//	return sb.ToString();
+		//}		
 	}
 
 	public string GetNextDialoguePath()
@@ -139,13 +177,19 @@ public class GiveQuest : IQuest
 	{
 		Inventory mainInv = GameControl.main.mainInventoryUI.target;
 		Inventory hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
-		if (mainInv == null || hotBar == null)
+		Inventory craftInv = Crafting.main.craftInventory;
+		if (mainInv == null || hotBar == null || craftInv == null)
 		{
-			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null));
+			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null) + ", craft:" + (craftInv != null));
 			return false;
 		}
+
+		List<Inventory> invs = new List<Inventory>();
+		invs.Add(hotBar);
+		invs.Add(mainInv);
+		invs.Add(craftInv);
 		
-		List<int> itemCounts = GetItemCounts(mainInv, hotBar);
+		List<int> itemCounts = GetItemCounts(invs);
 
 		//if has too little, can't give items and finish quest etc
 		for(int i = 0; i < items.Count; i++)
@@ -160,64 +204,68 @@ public class GiveQuest : IQuest
 		{
 			int required = items[j].amount;
 
-			//go through the inventory to remove the ingredients
-			for (int k = 0; k < hotBar.items.Count; k++)
-			{
-				if (hotBar.items[k].id == items[j].id)
+			foreach (Inventory h in invs) { 
+				//go through the inventory to remove the ingredients
+				for (int k = 0; k < h.items.Count; k++)
 				{
-					if (required >= hotBar.items[k].amount)
+					if (h.items[k].id == items[j].id)
 					{
-						//remove all of this item, because even all of it isn't enough
-						Item temp = hotBar.items[k];
-						required -= temp.amount;//remove the ingredient used
-						temp.amount = 0;
-						temp.id = 0;
-						hotBar.items[k] = temp;
-					}
-					else
-					{
-						//remove as much as needed, some of this item will be left
-						Item temp = hotBar.items[k];
-						temp.amount -= required;
-						required = 0;
-						hotBar.items[k] = temp;
-						break;//we are done fulfilling this ingredient spending requirement for the recipie
+						if (required >= h.items[k].amount)
+						{
+							//remove all of this item, because even all of it isn't enough
+							Item temp = h.items[k];
+							required -= temp.amount;//remove the ingredient used
+							temp.amount = 0;
+							temp.id = 0;
+							h.items[k] = temp;
+						}
+						else
+						{
+							//remove as much as needed, some of this item will be left
+							Item temp = h.items[k];
+							temp.amount -= required;
+							required = 0;
+							h.items[k] = temp;
+							break;//we are done fulfilling this ingredient spending requirement for the recipie
+						}
 					}
 				}
-			}
 
-			//skip main inventory if already have enough
-			if (required <= 0)
-			{
-				if (required == 0) continue;
-				else Debug.LogError("Somehow took too much items for givequest, required: " + required);
-			}
-
-			//go through the inventory to remove the ingredients
-			for (int k = 0; k < mainInv.items.Count; k++)
-			{
-				if (mainInv.items[k].id == items[j].id)
+				//skip other inventories if already have enough
+				if (required <= 0)
 				{
-					if (required >= mainInv.items[k].amount)
-					{
-						//remove all of this item, because even all of it isn't enough
-						Item temp = mainInv.items[k];
-						required -= temp.amount;//remove the ingredient used
-						temp.amount = 0;
-						temp.id = 0;
-						mainInv.items[k] = temp;
-					}
-					else
-					{
-						//remove as much as needed, some of this item will be left
-						Item temp = mainInv.items[k];
-						temp.amount -= required;
-						required = 0;
-						mainInv.items[k] = temp;
-						break;//we are done fulfilling this ingredient spending requirement for the recipie
-					}
+					if (required == 0) break;
+					else Debug.LogError("Somehow took too much items for givequest, required: " + required);
 				}
+
 			}
+
+
+			////go through the inventory to remove the ingredients
+			//for (int k = 0; k < mainInv.items.Count; k++)
+			//{
+			//	if (mainInv.items[k].id == items[j].id)
+			//	{
+			//		if (required >= mainInv.items[k].amount)
+			//		{
+			//			//remove all of this item, because even all of it isn't enough
+			//			Item temp = mainInv.items[k];
+			//			required -= temp.amount;//remove the ingredient used
+			//			temp.amount = 0;
+			//			temp.id = 0;
+			//			mainInv.items[k] = temp;
+			//		}
+			//		else
+			//		{
+			//			//remove as much as needed, some of this item will be left
+			//			Item temp = mainInv.items[k];
+			//			temp.amount -= required;
+			//			required = 0;
+			//			mainInv.items[k] = temp;
+			//			break;//we are done fulfilling this ingredient spending requirement for the recipie
+			//		}
+			//	}
+			//}
 
 
 			//TODO: make this better
@@ -230,28 +278,22 @@ public class GiveQuest : IQuest
 		return true;
 	}
 
-	private List<int> GetItemCounts(Inventory mainInv, Inventory hotBar)
+	private List<int> GetItemCounts(List<Inventory> invs)
 	{
 		List<int> result = new List<int>();
 		for (int j = 0; j < items.Count; j++)
 		{
 			int count = 0;
-			//go through the craft inventory to find the ingredients
-			for (int k = 0; k < mainInv.items.Count; k++)
+			foreach (Inventory mainInv in invs)
 			{
-				if (mainInv.items[k].id == items[j].id)
+				//go through the craft inventory to find the ingredients
+				for (int k = 0; k < mainInv.items.Count; k++)
 				{
-					count += mainInv.items[k].amount;
+					if (mainInv.items[k].id == items[j].id)
+					{
+						count += mainInv.items[k].amount;
 
-				}
-			}
-
-			for (int k = 0; k < hotBar.items.Count; k++)
-			{
-				if (hotBar.items[k].id == items[j].id)
-				{
-					count += hotBar.items[k].amount;
-
+					}
 				}
 			}
 
@@ -267,8 +309,26 @@ public class GiveQuest : IQuest
 		//This quest type doesn't care
 	}
 
-	public void OnItemObtained(Item i)
+	public void OnItemObtained(Item it)
 	{
-		throw new NotImplementedException();
+		int index = -1;
+		for (int i = 0; i < items.Count; i++)
+		{
+			if(items[i].id == it.id)
+			{
+				index = i;
+				break;
+			}
+		}
+
+		if(index >= 0 && index < items.Count)
+		{
+			NotificationControl.main.AddNotification(
+				new Notification()
+				{
+					message = GetDescription(index)
+				}
+			);
+		}
 	}
 }
