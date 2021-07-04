@@ -49,4 +49,5 @@ public interface IQuest
 	string GetNextDialoguePath();
 	void SetNextDialoguePath(string s);
 	bool TryCompleteMission();
+	void OnSceneReached(string scene);
 }

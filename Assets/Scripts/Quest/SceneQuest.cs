@@ -7,23 +7,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class LocationQuest : IQuest
+public class SceneQuest : IQuest
 {
 
-	public string locationToVisit;
+	public string sceneToVisit;
 	public string descriptionText;
 	public string questName;
 	public Reward reward;
-	public int questIndicatorIndex = 1;
 	private bool visited;
 
 	private string nextDialoguePath;
-	[System.NonSerialized]
-	private GameObject questIndicator;
 
 	public string GetDescription()
 	{
-		string temp = string.IsNullOrEmpty(descriptionText) ? ("Go to <b>" + locationToVisit + "</b>") : descriptionText;
+		string temp = string.IsNullOrEmpty(descriptionText) ? ("Enter <b>" + sceneToVisit + "</b>") : descriptionText;
 		return temp;
 	}
 
@@ -45,14 +42,6 @@ public class LocationQuest : IQuest
 
 	public bool IsFinished()
 	{
-		if (questIndicator == null)
-		{
-			LocationCheck d = LocationCheck.GetInstance(locationToVisit);
-			if (d != null)
-			{
-				questIndicator = GameObject.Instantiate(ProgressTracker.main.questWorldIndicators[questIndicatorIndex], d.transform);
-			}
-		}
 		return visited;
 	}
 
@@ -69,22 +58,11 @@ public class LocationQuest : IQuest
 	public void OnLocationReached(string location)
 	{
 		//This quest type doesn't care
-
-		if (location == locationToVisit){
-			visited = true;
-			NotificationControl.main.AddNotification(
-				new Notification()
-				{
-					message = GetDescription() + " <#00ff00>Complete</color>"
-				}
-			);
-		}
 	}
 
 	public bool TryCompleteMission()
 	{
 		if (!IsFinished()) return false;
-		GameObject.Destroy(questIndicator);
 		return reward == null || reward.TryGetReward();
 	}
 
@@ -100,6 +78,17 @@ public class LocationQuest : IQuest
 
 	public void OnSceneReached(string scene)
 	{
-		//This quest type doesn't care
+		if (scene == sceneToVisit)
+		{
+			visited = true;
+			NotificationControl.main.AddNotification(
+				new Notification()
+				{
+					message = GetDescription() + " <#00ff00>Complete</color>"
+				}
+			);
+		}
+
+		
 	}
 }

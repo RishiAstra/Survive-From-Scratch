@@ -16293,6 +16293,65 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 777252746}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &779129632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 779129633}
+  - component: {fileID: 779129635}
+  - component: {fileID: 779129634}
+  m_Layer: 19
+  m_Name: 'location: outside Turris Aetheris'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &779129633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779129632}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1.47}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8872861628267834686}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &779129634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779129632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2efb81ce82fe3b44e8f8ca10deb2948e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisLocationName: outside turris aetheris
+--- !u!136 &779129635
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779129632}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 3
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1001 &786344851
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32827,7 +32886,7 @@ PrefabInstance:
     - target: {fileID: 5643231647504894111, guid: ca91fd4250ef288468959a403930c79b,
         type: 3}
       propertyPath: m_ConnectedAnchor.x
-      value: -23.66648
+      value: 48.66649
       objectReference: {fileID: 0}
     - target: {fileID: 5643231647504894111, guid: ca91fd4250ef288468959a403930c79b,
         type: 3}
@@ -32837,7 +32896,7 @@ PrefabInstance:
     - target: {fileID: 5643231647504894111, guid: ca91fd4250ef288468959a403930c79b,
         type: 3}
       propertyPath: m_ConnectedAnchor.z
-      value: -43.932686
+      value: -26.067358
       objectReference: {fileID: 0}
     - target: {fileID: 5656521852013564340, guid: ca91fd4250ef288468959a403930c79b,
         type: 3}
@@ -60354,6 +60413,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43a75f4d3bd4be1428c5a9e31aaad778, type: 3}
+--- !u!4 &8872861628267834686 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8872861627908875766, guid: 43a75f4d3bd4be1428c5a9e31aaad778,
+    type: 3}
+  m_PrefabInstance: {fileID: 8872861628267834685}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8877089607340166401
 Transform:
   m_ObjectHideFlags: 0

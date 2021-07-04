@@ -423,6 +423,16 @@ public class GameControl : MonoBehaviour
 
 		yield return LoadPartyFromData(false, false);
 
+		//for some reason ProgressTracker.main.prog.currentDialoguePart won't be null, but it will be a new and empty instance
+		//therefore check that the title and texts exist
+		if (ProgressTracker.main.prog.currentDialoguePart != null && 
+			!string.IsNullOrEmpty(ProgressTracker.main.prog.currentDialoguePart.title)&&
+			ProgressTracker.main.prog.currentDialoguePart.texts != null)
+		{
+			DialogueControl.main.StartDialoguePart(ProgressTracker.main.prog.currentDialoguePart, ProgressTracker.main.prog.currentDialoguePartSource);
+		}
+
+
 		print("loaded map location initial: " + sceneName + "," + savedSceneIndex);
 	}
 
@@ -872,6 +882,9 @@ public class GameControl : MonoBehaviour
 		loadedLocation = true;
 		inWorld = true;
 		loading = false;
+
+		ProgressTracker.main.RegisterSceneEntry(sceneName);
+
 		print("loaded map location");
 	}
 

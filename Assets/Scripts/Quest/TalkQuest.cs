@@ -13,9 +13,12 @@ public class TalkQuest : IQuest
 	public string toTalkTo;
 	public string questName;
 	public Reward reward;
+	public int questIndicatorIndex = 1;
 	private bool talked;
 
 	private string nextDialoguePath;
+	[System.NonSerialized]
+	private GameObject questIndicator;
 
 	public string GetDescription()
 	{
@@ -40,6 +43,14 @@ public class TalkQuest : IQuest
 
 	public bool IsFinished()
 	{
+		if (questIndicator == null)
+		{
+			DialogueOnClick d = DialogueOnClick.GetInstance(toTalkTo);
+			if (d != null)
+			{
+				questIndicator = GameObject.Instantiate(ProgressTracker.main.questWorldIndicators[questIndicatorIndex], d.transform);
+			}
+		}
 		return talked;
 	}
 
@@ -61,6 +72,7 @@ public class TalkQuest : IQuest
 	public bool TryCompleteMission()
 	{
 		if (!IsFinished()) return false;
+		GameObject.Destroy(questIndicator);
 		return reward == null || reward.TryGetReward();
 	}
 
@@ -71,12 +83,20 @@ public class TalkQuest : IQuest
 
 	public void OnTalked(string talkedTo)
 	{
-		if (talkedTo == toTalkTo) talked = true;
-		NotificationControl.main.AddNotification(
-			new Notification()
-			{
-				message = GetDescription() + " <#00ff00>Complete</color>"
-			}
-		);
+		if (talkedTo == toTalkTo)
+		{
+			talked = true;
+			NotificationControl.main.AddNotification(
+				new Notification()
+				{
+					message = GetDescription() + " <#00ff00>Complete</color>"
+				}
+			);
+		}		
+	}
+
+	public void OnSceneReached(string scene)
+	{
+		//This quest type doesn't care
 	}
 }

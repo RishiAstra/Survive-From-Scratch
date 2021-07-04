@@ -116,4 +116,9 @@ public class KillQuest : IQuest
 	{
 		//This quest type doesn't care
 	}
+
+	public void OnSceneReached(string scene)
+	{
+		//This quest type doesn't care
+	}
 }

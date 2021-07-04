@@ -135,6 +135,7 @@ public class DialogueControl : MonoBehaviour
 	{
         if(currentPart != null)// && currentPart.texts.Count > 0)
 		{
+            //print(JsonConvert.SerializeObject(currentPart));
             dialogueMenuParent.TryActivateMenu();//.SetActive(true);
 			string nextText = currentPart.texts[currentLineProgress].text;
 

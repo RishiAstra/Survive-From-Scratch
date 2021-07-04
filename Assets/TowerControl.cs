@@ -198,7 +198,8 @@ public class TowerControl : MonoBehaviour
 		if (towers[t] != null && towers[t].levelsBeaten.Count > 0 && buttonIndexSelected >= 0 && buttonIndexSelected < towers[t].levelsBeaten.Count && CanEnterLevel(buttonIndexSelected))
 		{
 			//levels start at 1, not 0, so an offset of 1 is required
-			GameControl.main.BeginLoadMapLocation(towers[t].GetLevelSceneName(buttonIndexSelected + 1));
+			string sceneName = towers[t].GetLevelSceneName(buttonIndexSelected + 1);
+			GameControl.main.BeginLoadMapLocation(sceneName);
 		}
 	}
 

@@ -21,6 +21,7 @@ public class ProgressTracker : MonoBehaviour
 	public List<IQuest> quests;
 	public List<QuestSave> questSaves;
 	public GameObject QuestUIPrefab;
+	public GameObject[] questWorldIndicators;
 	public Transform QuestUIParent;
 	public Progress prog;
 	public Menu questMenu;
@@ -142,6 +143,26 @@ public class ProgressTracker : MonoBehaviour
 
 	}
 
+
+	public void RegisterSceneEntry(string scene)
+	{
+		foreach (IQuest q in quests)
+		{
+			q.OnSceneReached(scene);
+		}
+
+		UpdateQuestData();
+
+		if (prog.totalVisitsBySceneName.TryGetValue(scene, out int v))
+		{
+			prog.totalVisitsBySceneName[scene]++;
+		}
+		else
+		{
+			prog.totalVisitsBySceneName[scene] = 1;
+		}
+	}
+
 	#endregion
 
 	#region quest methods
@@ -252,6 +273,7 @@ public class ProgressTracker : MonoBehaviour
 
 	}
 
+
 	//public static IQuest ConvertStringToQuest(string s)
 	//{
 	//	QuestSave q = JsonConvert.DeserializeObject<QuestSave>(s);
@@ -290,6 +312,9 @@ public class ProgressTracker : MonoBehaviour
 				break;
 			case "LocationQuest":
 				result = JsonConvert.DeserializeObject<LocationQuest>(JsonConvert.SerializeObject(data));
+				break;
+			case "SceneQuest":
+				result = JsonConvert.DeserializeObject<SceneQuest>(JsonConvert.SerializeObject(data));
 				break;
 			case "ComplexQuest":
 				JObject obj = JObject.FromObject(data);
@@ -387,12 +412,17 @@ public class ProgressTracker : MonoBehaviour
 		}
 		File.WriteAllText(questSavePath + "saves.json", JsonConvert.SerializeObject(questSaves, Formatting.Indented));
 
+		prog.currentDialoguePart = DialogueControl.main.currentPart;
+		prog.currentDialoguePartSource = DialogueControl.main.dialogueSource;
+
 		File.WriteAllText(savePath + "progress.json", JsonConvert.SerializeObject(prog, Formatting.Indented));
 
 		File.WriteAllText(savePath + "questDialogueUpdates.json", JsonConvert.SerializeObject(DialogueOnClick.newDialoguePaths));
 
 		Directory.CreateDirectory(activateSavePath);
 		File.WriteAllText(activateSaveFile, JsonConvert.SerializeObject(activates));
+
+		
 	}
 
 	void LoadAllProgressData()
@@ -427,6 +457,8 @@ public class ProgressTracker : MonoBehaviour
 		if (File.Exists(progressSavePath))
 		{
 			prog = JsonConvert.DeserializeObject<Progress>(File.ReadAllText(progressSavePath)); //File.WriteAllText(progressSavePath, JsonConvert.SerializeObject(prog));
+			//moved to GameControl
+			//DialogueControl.main.StartDialoguePart(prog.currentDialoguePart, prog.currentDialoguePartSource);
 		}
 
 
@@ -459,6 +491,7 @@ public class Progress
 	public Dictionary<string, int> totalVisitsByName = new Dictionary<string, int>();
 	public DialoguePart currentDialoguePart;
 	public string currentDialoguePartSource;
+	public Dictionary<string, int> totalVisitsBySceneName = new Dictionary<string, int>();
 
  //   public Progress()
 	//{

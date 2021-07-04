@@ -133,4 +133,13 @@ public class ComplexQuest : IQuest
 			
 		}
 	}
+
+	public void OnSceneReached(string scene)
+	{
+		if (current < quests.Count)
+		{
+			quests[current].OnSceneReached(scene);
+		}
+		UpdateMyQuests();
+	}
 }

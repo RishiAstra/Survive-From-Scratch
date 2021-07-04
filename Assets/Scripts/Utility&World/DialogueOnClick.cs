@@ -11,6 +11,7 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 {
 	//use this to assign new dialogue paths, even if the dialogueonclick isn't in the currently loaded scene
 	public static Dictionary<string, string> newDialoguePaths = new Dictionary<string, string>();
+	public static List<DialogueOnClick> instances = new List<DialogueOnClick>();
 
 
 	public GameObject onHover;
@@ -23,7 +24,7 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 	public string dataPath { get { return GameControl.saveDirectory + "Dialogues/" + storagePath; } }
 	private void Start()
 	{
-		
+		instances.Add(this);
 		if (File.Exists(dataPath))
 		{
 			dialoguePath = File.ReadAllText(dataPath);
@@ -35,8 +36,22 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 
 	void OnDestroy()
 	{
+		instances.Remove(this);
 		Directory.CreateDirectory(dataPath.Substring(0, dataPath.LastIndexOf("/")));
 		File.WriteAllText(dataPath, dialoguePath);
+	}
+
+	public static DialogueOnClick GetInstance(string nameToGet)
+	{
+		foreach(DialogueOnClick d in instances)
+		{
+			if(d.myName == nameToGet)
+			{
+				return d;
+			}
+		}
+
+		return null;
 	}
 
 	private void UpdateDialogue()
@@ -66,9 +81,9 @@ public class DialogueOnClick : MonoBehaviour, IMouseHoverable
 		if (onHover != null) onHover.SetActive(false);
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		
+	}
 }

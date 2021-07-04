@@ -1,6 +1,14 @@
 {
     "title" : "Luna",
     "texts" : [
-        {"text":"Back so soon? Well I guess it'd be weird for someone who lost all their memory to wander around in a village."}
-    ]
+        {"text":"Back so soon? Well I guess it'd be weird for someone who lost all their memory to wander around in a village."},
+        {"text":"Truth be told, I wonder how powerful you are. That mana disortion that I mentioned earlier was very unusual and must have been caused by you."},
+        {"text":"Why don't you go kill a slime so we can assess your power?"},
+        {"text":"There is an entrance to the tower Turris Aetheris nearby. The magic behind towers is complicated, but you can imagine them as another dimension in which you can fight enemies."},
+		{"text":"Towers have levels, each of which is like a small world. When you enter a tower, you start on the first level."},
+		{"text":"Each level has a door to the next level, but some monsters are tied to the door with mana. To enter the next level you would need to kill these monsters."},
+		{"text":"Of course, you shouldn't try anything so dangerous. Just enter the tower, kill a slime, and leave."},
+		{"text":"Good Luck"}
+	],
+	"questResult" : "Village/Luna/initialKillSlime.json"
 }
