@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using bobStuff;
 
 [System.Serializable]
 public class SceneQuest : IQuest
@@ -90,5 +91,10 @@ public class SceneQuest : IQuest
 		}
 
 		
+	}
+
+	public void OnItemObtained(Item i)
+	{
+		//This quest type doesn't care
 	}
 }

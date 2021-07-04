@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using bobStuff;
 
 [System.Serializable]
 public class LocationQuest : IQuest
@@ -99,6 +100,11 @@ public class LocationQuest : IQuest
 	}
 
 	public void OnSceneReached(string scene)
+	{
+		//This quest type doesn't care
+	}
+
+	public void OnItemObtained(Item i)
 	{
 		//This quest type doesn't care
 	}

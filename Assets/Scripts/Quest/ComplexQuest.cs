@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using bobStuff;
 
 [System.Serializable]
 public class ComplexQuest : IQuest
@@ -140,6 +141,15 @@ public class ComplexQuest : IQuest
 		if (current < quests.Count)
 		{
 			quests[current].OnSceneReached(scene);
+		}
+		UpdateMyQuests();
+	}
+
+	public void OnItemObtained(Item i)
+	{
+		if (current < quests.Count)
+		{
+			quests[current].OnItemObtained(i);
 		}
 		UpdateMyQuests();
 	}

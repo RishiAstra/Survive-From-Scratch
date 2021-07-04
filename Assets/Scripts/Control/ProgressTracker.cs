@@ -2,6 +2,7 @@
 * Copyright (c) 2021 Rishi A. Astra
 * All rights reserved.
 ********************************************************/
+using bobStuff;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -163,6 +164,25 @@ public class ProgressTracker : MonoBehaviour
 		}
 	}
 
+	public void RegisterItemObtained(Item i)
+	{
+		foreach (IQuest q in quests)
+		{
+			q.OnItemObtained(i);
+		}
+
+		UpdateQuestData();
+
+		if (prog.totalItemsObtainedById.TryGetValue(i.id, out int v))
+		{
+			prog.totalItemsObtainedById[i.id] += i.amount;
+		}
+		else
+		{
+			prog.totalItemsObtainedById[i.id] = i.amount;
+		}
+	}
+
 	#endregion
 
 	#region quest methods
@@ -315,6 +335,9 @@ public class ProgressTracker : MonoBehaviour
 				break;
 			case "SceneQuest":
 				result = JsonConvert.DeserializeObject<SceneQuest>(JsonConvert.SerializeObject(data));
+				break;
+			case "GiveQuest":
+				result = JsonConvert.DeserializeObject<GiveQuest>(JsonConvert.SerializeObject(data));
 				break;
 			case "ComplexQuest":
 				JObject obj = JObject.FromObject(data);
@@ -492,12 +515,13 @@ public class Progress
 	public DialoguePart currentDialoguePart;
 	public string currentDialoguePartSource;
 	public Dictionary<string, int> totalVisitsBySceneName = new Dictionary<string, int>();
+	public Dictionary<int, int> totalItemsObtainedById = new Dictionary<int, int>();
 
- //   public Progress()
+	//   public Progress()
 	//{
- //       TotalDamageDealt = 0;
- //       TotalDamageTaken = 0;
- //       TotalKillsByType = new Dictionary<string, int>();
- //       TotalKillsByTag = new Dictionary<int, int>();
+	//       TotalDamageDealt = 0;
+	//       TotalDamageTaken = 0;
+	//       TotalKillsByType = new Dictionary<string, int>();
+	//       TotalKillsByTag = new Dictionary<int, int>();
 	//}
 }
