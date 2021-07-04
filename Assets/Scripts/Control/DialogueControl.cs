@@ -41,7 +41,13 @@ public class DialogueControl : MonoBehaviour
         //singleton
         if (main != null) Debug.LogError("Two Dialogue Controlls");
         main = this;
+        dialogueMenuParent.OnActiveStateChange += OnDialogueMenuStateChanged;
     }
+
+	private void OnDialogueMenuStateChanged(bool b)
+	{
+        if (!b) currentPart = null;
+	}
 
 	public void TryAdvanceDialogue()
 	{
