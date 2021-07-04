@@ -32,9 +32,12 @@ public class GiveQuest : IQuest
 	{
 		StringBuilder sb = new StringBuilder("Give <b>");
 
-		Inventory mainInv = GameControl.main.mainInventoryUI.target;
-		Inventory hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
-		Inventory craftInv = Crafting.main.craftInventory;
+		Inventory mainInv = null;
+		if (GameControl.main != null) mainInv = GameControl.main.mainInventoryUI.target;
+		Inventory hotBar = null;
+		if(GameControl.main != null && GameControl.main.myAbilities != null) hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
+		Inventory craftInv = null;
+		if(Crafting.main != null) craftInv = Crafting.main.craftInventory;
 		if (mainInv == null || hotBar == null || craftInv == null)
 		{
 			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null) + ", craft:" + (craftInv != null));
@@ -42,9 +45,9 @@ public class GiveQuest : IQuest
 			for (int i = 0; i < items.Count; i++)
 			{
 				Item it = items[i];
-				sb.Append(it.amount + " " + GameControl.itemTypes[it.id].name + ", ");
+				string endTxt = (i != items.Count - 1) ? ", " : "";
+				sb.Append(it.amount + " " + GameControl.itemTypes[it.id].name + endTxt);
 			}
-			sb.Remove(sb.Length - 3, 2);//remove last comma
 			sb.Append("</b> to " + toTalkTo);
 			return sb.ToString();
 		}
@@ -60,11 +63,14 @@ public class GiveQuest : IQuest
 			for (int i = 0; i < items.Count; i++)
 			{
 				Item it = items[i];
+				string endTxt = (i != items.Count - 1) ? ", " : "";
 				if (i == emphaziseIndex) sb.Append("<#00FF00>");
-				sb.Append(Mathf.Min(itemCounts[i], it.amount) + "/" + it.amount + " " + GameControl.itemTypes[it.id].name + ", ");
+				//sb.Append(it.amount + " " + GameControl.itemTypes[it.id].name + endTxt);
+
+				sb.Append(Mathf.Min(itemCounts[i], it.amount) + "/" + it.amount + " " + GameControl.itemTypes[it.id].name);
 				if (i == emphaziseIndex) sb.Append("</color>");
+				sb.Append(endTxt);
 			}
-			sb.Remove(sb.Length - 3, 2);//remove last comma
 			sb.Append("</b> to " + toTalkTo);
 			return sb.ToString();
 		}
@@ -175,9 +181,12 @@ public class GiveQuest : IQuest
 
 	private bool TryTakeItems()
 	{
-		Inventory mainInv = GameControl.main.mainInventoryUI.target;
-		Inventory hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
-		Inventory craftInv = Crafting.main.craftInventory;
+		Inventory mainInv = null;
+		if (GameControl.main != null) mainInv = GameControl.main.mainInventoryUI.target;
+		Inventory hotBar = null;
+		if (GameControl.main != null && GameControl.main.myAbilities != null) hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
+		Inventory craftInv = null;
+		if (Crafting.main != null) craftInv = Crafting.main.craftInventory;
 		if (mainInv == null || hotBar == null || craftInv == null)
 		{
 			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null) + ", craft:" + (craftInv != null));
