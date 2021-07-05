@@ -41,6 +41,7 @@ public class Reward
 					{
 						GameControl.main.StartAddNewCharacterToParty(character, true, q.transform.position);
 						ProgressTracker.main.activates[characterPositionReplace] = new QuestGameObjectData() {active = false };
+						QuestGameObjectActivate.CheckAll();
 					}
 					else
 					{

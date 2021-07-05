@@ -1,6 +1,46 @@
 {
-    "title" : "Luna",
-    "texts" : [
-        {"text":"gg lol testing purposes this is initial 5 ur done"}
-	]
+	"title": "Luna",
+	"texts": [
+		{"text":"Ah my firewo-- Ahem... I mean good job!"},
+		{"text":"You seem to be very a very capable sla--..er.. adventurer"},
+		{
+			"text": "This is my apprentice, Rin. She always wants to go on adventures.",
+			"dataTarget": "RinInitialJoinParty",
+			"data": {
+				"active": true
+			}
+		},
+		{"text":"You guys should form a party!"},
+		{
+			"text": "Bruh this this dude is kinda sus, he's just a random person you found in the woods",
+			"title": "Rin"
+		},
+		{
+			"text": "He's trustworthy. He got my firewood.",
+			"title": "Luna"
+		},
+		{
+			"text": "Isn't gathering firewood something that even a malicious person could do?",
+			"title": "Rin"
+		},
+		{
+			"text": "<#FF0000><i>are you questioning my judgement?</i></color>",
+			"title": "Luna"
+		},
+		{
+			"text": "Y-Yes master.. I mean no master",
+			"title": "Rin"
+		},
+		{
+			"title": "Luna",
+			"text": "As you guys get more comrades, your party will get stronger. Maybe you guys can even beat that demon lord.",
+			"reward": {
+				"type": "character",
+				"character": "Rin",
+				"characterReplace": "RinInitialJoinParty"
+			}
+		}
+	],
+	"nextJson": "Village/Luna/initial6.json",
+	"makeNextJsonDefault": true
 }
