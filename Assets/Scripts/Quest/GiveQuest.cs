@@ -18,6 +18,7 @@ public class GiveQuest : IQuest
 	public List<Item> items;
 	public Reward reward;
 	public int questIndicatorIndex = 1;
+	public bool takeItems = true;
 	private bool talked;
 
 	private string nextDialoguePath;
@@ -38,9 +39,9 @@ public class GiveQuest : IQuest
 		if(GameControl.main != null && GameControl.main.myAbilities != null) hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
 		Inventory craftInv = null;
 		if(Crafting.main != null) craftInv = Crafting.main.craftInventory;
-		if (mainInv == null || hotBar == null || craftInv == null)
+		if (emphaziseIndex == -2 || mainInv == null || hotBar == null || craftInv == null)
 		{
-			Debug.LogError("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null) + ", craft:" + (craftInv != null));
+			Debug.LogWarning("inventory not found. Main:" + (mainInv != null) + ", hotbar:" + (hotBar != null) + ", craft:" + (craftInv != null));
 
 			for (int i = 0; i < items.Count; i++)
 			{
@@ -173,7 +174,7 @@ public class GiveQuest : IQuest
 			NotificationControl.main.AddNotification(
 				new Notification()
 				{
-					message = GetDescription() + " <#00ff00>Complete</color>"
+					message = GetDescription(-2) + " <#00ff00>Complete</color>"
 				}
 			);
 		}		
@@ -207,80 +208,84 @@ public class GiveQuest : IQuest
 		}
 
 		//if it reaches here, there are enough items. Now remove those items
-
-		//go through the required ingredients
-		for (int j = 0; j < items.Count; j++)
+		if (takeItems)
 		{
-			int required = items[j].amount;
+			//go through the required ingredients
+			for (int j = 0; j < items.Count; j++)
+			{
+				int required = items[j].amount;
 
-			foreach (Inventory h in invs) { 
-				//go through the inventory to remove the ingredients
-				for (int k = 0; k < h.items.Count; k++)
+				foreach (Inventory h in invs)
 				{
-					if (h.items[k].id == items[j].id)
+					//go through the inventory to remove the ingredients
+					for (int k = 0; k < h.items.Count; k++)
 					{
-						if (required >= h.items[k].amount)
+						if (h.items[k].id == items[j].id)
 						{
-							//remove all of this item, because even all of it isn't enough
-							Item temp = h.items[k];
-							required -= temp.amount;//remove the ingredient used
-							temp.amount = 0;
-							temp.id = 0;
-							h.items[k] = temp;
-						}
-						else
-						{
-							//remove as much as needed, some of this item will be left
-							Item temp = h.items[k];
-							temp.amount -= required;
-							required = 0;
-							h.items[k] = temp;
-							break;//we are done fulfilling this ingredient spending requirement for the recipie
+							if (required >= h.items[k].amount)
+							{
+								//remove all of this item, because even all of it isn't enough
+								Item temp = h.items[k];
+								required -= temp.amount;//remove the ingredient used
+								temp.amount = 0;
+								temp.id = 0;
+								h.items[k] = temp;
+							}
+							else
+							{
+								//remove as much as needed, some of this item will be left
+								Item temp = h.items[k];
+								temp.amount -= required;
+								required = 0;
+								h.items[k] = temp;
+								break;//we are done fulfilling this ingredient spending requirement for the recipie
+							}
 						}
 					}
+
+					//skip other inventories if already have enough
+					if (required <= 0)
+					{
+						if (required == 0) break;
+						else Debug.LogError("Somehow took too much items for givequest, required: " + required);
+					}
+
 				}
 
-				//skip other inventories if already have enough
-				if (required <= 0)
-				{
-					if (required == 0) break;
-					else Debug.LogError("Somehow took too much items for givequest, required: " + required);
-				}
 
+				////go through the inventory to remove the ingredients
+				//for (int k = 0; k < mainInv.items.Count; k++)
+				//{
+				//	if (mainInv.items[k].id == items[j].id)
+				//	{
+				//		if (required >= mainInv.items[k].amount)
+				//		{
+				//			//remove all of this item, because even all of it isn't enough
+				//			Item temp = mainInv.items[k];
+				//			required -= temp.amount;//remove the ingredient used
+				//			temp.amount = 0;
+				//			temp.id = 0;
+				//			mainInv.items[k] = temp;
+				//		}
+				//		else
+				//		{
+				//			//remove as much as needed, some of this item will be left
+				//			Item temp = mainInv.items[k];
+				//			temp.amount -= required;
+				//			required = 0;
+				//			mainInv.items[k] = temp;
+				//			break;//we are done fulfilling this ingredient spending requirement for the recipie
+				//		}
+				//	}
+				//}
+
+
+				//TODO: make this better
+				//error if we still need to take more ingredient, but there is none left to take. This means that the crafting was illegitimate
+				if (required > 0) Debug.LogError("Not enough of ingredient " + "for give quest");
 			}
-
-
-			////go through the inventory to remove the ingredients
-			//for (int k = 0; k < mainInv.items.Count; k++)
-			//{
-			//	if (mainInv.items[k].id == items[j].id)
-			//	{
-			//		if (required >= mainInv.items[k].amount)
-			//		{
-			//			//remove all of this item, because even all of it isn't enough
-			//			Item temp = mainInv.items[k];
-			//			required -= temp.amount;//remove the ingredient used
-			//			temp.amount = 0;
-			//			temp.id = 0;
-			//			mainInv.items[k] = temp;
-			//		}
-			//		else
-			//		{
-			//			//remove as much as needed, some of this item will be left
-			//			Item temp = mainInv.items[k];
-			//			temp.amount -= required;
-			//			required = 0;
-			//			mainInv.items[k] = temp;
-			//			break;//we are done fulfilling this ingredient spending requirement for the recipie
-			//		}
-			//	}
-			//}
-
-
-			//TODO: make this better
-			//error if we still need to take more ingredient, but there is none left to take. This means that the crafting was illegitimate
-			if (required > 0) Debug.LogError("Not enough of ingredient " + "for give quest");
 		}
+		
 
 		//if it got this far, it had the items and removed them successfully
 
