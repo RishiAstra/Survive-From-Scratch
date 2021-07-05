@@ -533,12 +533,12 @@ public class GameControl : MonoBehaviour
 		RefreshPartyMemberUI();
 	}
 
-	public void StartAddNewCharacterToParty(string type, bool specificPosition = false, Vector3 pos = new Vector3())
+	public void StartAddNewCharacterToParty(string type, bool specificPosition = false, Vector3 pos = new Vector3(), Vector3 rot = new Vector3())
 	{
-		StartCoroutine(AddNewCharacterToParty(type, specificPosition, pos));
+		StartCoroutine(AddNewCharacterToParty(type, specificPosition, pos, rot));
 	}
 
-	public IEnumerator AddNewCharacterToParty(string type, bool specificPosition = false, Vector3 pos = new Vector3())
+	public IEnumerator AddNewCharacterToParty(string type, bool specificPosition = false, Vector3 pos = new Vector3(), Vector3 rot = new Vector3())
 	{
 		GameObject toSpawn;
 		bool succeed = SaveEntity.GetEntityPrefabCached(type, out toSpawn);
@@ -568,6 +568,7 @@ public class GameControl : MonoBehaviour
 		if (specificPosition)
 		{
 			g.transform.position = pos;
+			g.transform.eulerAngles = rot;
 		}
 		else
 		{

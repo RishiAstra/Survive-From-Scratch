@@ -4047,11 +4047,11 @@ MonoBehaviour:
   movingMaterial: {fileID: 0}
   stopMaterial: {fileID: 0}
   tryingToMove: 0
-  maxSpeed: 3
-  acceleration: 10
+  maxSpeed: 4
+  acceleration: 15
   minAngleForMove: 30
   maxAngleForMove: 90
-  turnSpeed: 90
+  turnSpeed: 360
   rig: {fileID: -7870397007917624937}
   anim: {fileID: 164153826720014327}
   jumping: 0

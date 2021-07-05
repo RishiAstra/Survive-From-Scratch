@@ -39,9 +39,9 @@ public class Reward
 					QuestGameObjectActivate q = QuestGameObjectActivate.instances.Find(x => x.myName == characterPositionReplace);
 					if (q != null)
 					{
-						GameControl.main.StartAddNewCharacterToParty(character, true, q.transform.position);
-						ProgressTracker.main.activates[characterPositionReplace] = new QuestGameObjectData() {active = false };
+						ProgressTracker.main.activates[characterPositionReplace] = new QuestGameObjectData() { active = false };
 						QuestGameObjectActivate.CheckAll();
+						GameControl.main.StartAddNewCharacterToParty(character, true, q.transform.position, q.transform.eulerAngles);						
 					}
 					else
 					{
