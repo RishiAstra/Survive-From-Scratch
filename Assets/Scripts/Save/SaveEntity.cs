@@ -24,7 +24,7 @@ public class SaveEntity : Save, ISaveable
 	public static Dictionary<string, GameObject> spawnObjects;
 	public static List<EntityMapData> toSaveMapData;
 
-	const string spawnPath = "Assets/Spawnable/";
+	public const string spawnPath = "Assets/Spawnable/";
 	public static string savePath {
 		get {
 			return GameControl.saveDirectory + "/Save/Entities/";
@@ -46,6 +46,7 @@ public class SaveEntity : Save, ISaveable
 
 	public StatScript a;
 	public bool deleteOnDeath;
+	public bool playerOwned;
 
 	public Component[] toSave;
 
@@ -114,8 +115,6 @@ public class SaveEntity : Save, ISaveable
 		if (a != null) toSaveTemp.Add(a);
 		Inventory i = GetComponent<Inventory>();
 		if (i != null) toSaveTemp.Add(i);
-		PlayerControl p = GetComponent<PlayerControl>();
-		if (p != null) toSaveTemp.Add(p);
 		NPCControl c = GetComponent<NPCControl>();
 		if (c != null) toSaveTemp.Add(c);
 
@@ -176,7 +175,7 @@ public class SaveEntity : Save, ISaveable
 			}
 			else
 			{
-				toSaveMapData.Add(new EntityMapData(this.id, this.type, SceneManager.GetActiveScene().buildIndex));
+				if(!playerOwned) toSaveMapData.Add(new EntityMapData(this.id, this.type, SceneManager.GetActiveScene().buildIndex));
 				SaveDataToFile();
 			}
 		}
@@ -184,7 +183,14 @@ public class SaveEntity : Save, ISaveable
 
 	public string GetPath()
 	{
-		return savePath + type + "/" + id + "/";
+		if (playerOwned)
+		{
+			return GameControl.playerCharacterDirectory + id + "/";
+		}
+		else
+		{
+			return savePath + type + "/" + id + "/";
+		}
 	}
 
 	public static string GetPathFromId(long id)
@@ -595,7 +601,8 @@ public class SaveEntity : Save, ISaveable
 			if (saves[i] != null)
 			{
 				saves[i].SaveDataToFile();
-				mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
+				//don't put player-owned in map data
+				if (!saves[i].playerOwned) mapData.Add(new EntityMapData(saves[i].id, saves[i].type, currentSceneIndex));
 			}
 		}
 
@@ -727,6 +734,8 @@ public class SaveDataNPCControl
 	public bool guard;
 	public Vector3 guardPosition;
 	public float maxGuardDist;
+	public bool playerControlled;
+	public string playerOwnerName;
 }
 
 [System.Serializable]

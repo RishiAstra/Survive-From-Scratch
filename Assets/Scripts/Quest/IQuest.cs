@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using bobStuff;
 
 public interface IQuest
 {
@@ -49,4 +50,6 @@ public interface IQuest
 	string GetNextDialoguePath();
 	void SetNextDialoguePath(string s);
 	bool TryCompleteMission();
+	void OnSceneReached(string scene);
+	void OnItemObtained(Item i);
 }

@@ -1,0 +1,50 @@
+just don't save party members in the map file
+now playerowned are not saved in map, but still saved
+
+[done]remove:
+createplayerobject
+makeandsetupplayer
+setupplayer
+ResetPositionOfPlayer
+
+
+[done]merge playercontrol with npccontrol
+
+to make SetControlledPartyMember and remove setupplayer:
+add option for hpbar target to not be automatically assigned
+make hpbars for selected character xp etc assigned in setC
+set hpbar world invisible etc idk
+set up camera
+control.cam = camGameObject.GetComponentInChildren<Cam>();
+myAbilities = newPlayerObject.GetComponent<Abilities>();
+bind hotbar
+
+
+
+check myAbilities
+
+[done]remove player script
+
+NPCcontrol setdata setupplayer called, check it
+deleted PlayerControl, replace it on player prefab
+
+				for(int i = 0; i < myParty.lastUsed; i++)
+				{
+					if(myParty.members[i].g != null)
+					{
+						SetControlledPartyMember(i);
+						break;
+					}
+				}
+
+
+make default weapon collider for each character, otherwise golem etc are pitiful
+
+consider allowing character to revive slightly on teleport
+
+make dead players just not spawn when teleporting
+rin has negative skill points lol fix this, it's due to purple magic requiring skill points
+
+player hp bar/title is always shown for some reason :/ maybe hpbar script not set to autohide
+
+now fix the hp bars

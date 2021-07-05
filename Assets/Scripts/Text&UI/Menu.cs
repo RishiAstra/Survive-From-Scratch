@@ -14,6 +14,8 @@ public class Menu : MonoBehaviour
     public bool pauseOnActive = true;
 	public bool activateOnEsc = false;
 
+	public delegate void boolDelegate (bool b);
+	public event boolDelegate OnActiveStateChange;
 	private bool initialized;
     // Start is called before the first frame update
     void Awake()
@@ -71,8 +73,9 @@ public class Menu : MonoBehaviour
 
 	private void ActivateMenu()
 	{
+		if (OnActiveStateChange != null) OnActiveStateChange.Invoke(true);
 		initialized = true;
-		if(GameControl.playerExists) DisableAllMenus(this);
+		if(GameControl.loadedLocation) DisableAllMenus(this);
 
 		openMenuCount++;
 		activeMenus.Add(this);
@@ -131,6 +134,7 @@ public class Menu : MonoBehaviour
 
 	private void DeactivateMenu()
 	{
+		if (OnActiveStateChange != null) OnActiveStateChange.Invoke(false);
 		openMenuCount--;
 		activeMenus.Remove(this);
 		gameObject.SetActive(false);

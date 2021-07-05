@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using bobStuff;
 
 [System.Serializable]
 public class ComplexQuest : IQuest
@@ -13,6 +14,7 @@ public class ComplexQuest : IQuest
 	public List<IQuest> quests;
 	public int current;
 	public Reward reward;
+	public Dictionary<string, QuestGameObjectData> toActivate;
 
 	private string nextDialoguePath;
 
@@ -54,6 +56,7 @@ public class ComplexQuest : IQuest
 
 	public bool IsFinished()
 	{
+		if (current >= 0 && current < quests.Count) quests[current].IsFinished();
 		return current >= quests.Count;
 	}
 
@@ -87,7 +90,16 @@ public class ComplexQuest : IQuest
 	public bool TryCompleteMission()
 	{
 		if (!IsFinished()) return false;
-		return reward == null || reward.TryGetReward();
+		bool ok = reward == null || reward.TryGetReward();
+		if (ok && toActivate != null)
+		{
+			//add (overwright if already) keyvalues
+			foreach(KeyValuePair<string, QuestGameObjectData> v in toActivate)
+			{
+				ProgressTracker.main.activates[v.Key] = v.Value;
+			}
+		}
+		return ok;
 	}
 
 	public void SetNextDialoguePath(string s)
@@ -122,5 +134,23 @@ public class ComplexQuest : IQuest
 			}
 			
 		}
+	}
+
+	public void OnSceneReached(string scene)
+	{
+		if (current < quests.Count)
+		{
+			quests[current].OnSceneReached(scene);
+		}
+		UpdateMyQuests();
+	}
+
+	public void OnItemObtained(Item i)
+	{
+		if (current < quests.Count)
+		{
+			quests[current].OnItemObtained(i);
+		}
+		UpdateMyQuests();
 	}
 }

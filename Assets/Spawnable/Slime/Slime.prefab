@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3608391364612940600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4839375119063568590}
+  m_Layer: 12
+  m_Name: Right Hand Equip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4839375119063568590
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3608391364612940600}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.442, z: 0.67}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 9123482635650044458}
+  m_Father: {fileID: 9118740217565294983}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5284605271827512755
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,6 +76,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.45
   distance: 0.1
+--- !u!1 &6214258405535459098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 995758459019156127}
+  m_Layer: 9
+  m_Name: CamPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &995758459019156127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6214258405535459098}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 9118740217565294983}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9122088682505127849
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,11 +503,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9123482635650044459}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.442, z: 0.67}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 9118740217565294983}
-  m_RootOrder: 2
+  m_Father: {fileID: 4839375119063568590}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9123482635650044471
 MonoBehaviour:
@@ -462,7 +523,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackType: 2
   parent: {fileID: 0}
-  dmg: 1
   canDmg: 0
   multipleHits: 1
   attackDuriation: 3
@@ -547,6 +607,7 @@ GameObject:
   - component: {fileID: 9123941630015135667}
   - component: {fileID: 9123941630015135668}
   - component: {fileID: 3164819327478351264}
+  - component: {fileID: -9070147781698752133}
   m_Layer: 12
   m_Name: Slime
   m_TagString: Untagged
@@ -567,10 +628,11 @@ Transform:
   m_Children:
   - {fileID: 9120609864829233009}
   - {fileID: 9118717433235205201}
-  - {fileID: 9123482635650044458}
+  - {fileID: 4839375119063568590}
   - {fileID: 8898681422997232973}
   - {fileID: 307139091423014156}
   - {fileID: 185729333630508325}
+  - {fileID: 995758459019156127}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -639,9 +701,22 @@ MonoBehaviour:
     m_Bits: 4608
   movement: {fileID: 9123941630015135671}
   spotRange: 10
-  checkAttack: {fileID: 9123482635650044458}
+  checkAttack: {fileID: 4839375119063568590}
   checkAttackRadius: 0.25
   targets: []
+  guard: 0
+  guardPosition: {x: 0, y: 0, z: 0}
+  maxGuardDist: 0
+  camPos: {fileID: 995758459019156127}
+  camPref: {fileID: 0}
+  cam: {fileID: 0}
+  playerControlled: 0
+  playerOwnerName: 
+  rig: {fileID: 0}
+  inv: {fileID: 0}
+  invSel: -1
+  rightHand: {fileID: 4839375119063568590}
+  camT: {fileID: 0}
 --- !u!114 &9123941630015135671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,9 +730,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 3
-  ground:
-    serializedVersion: 2
-    m_Bits: 1
   groundNormal: {x: 0, y: 0, z: 0}
   groundCheck:
   - {fileID: 2616084709336305905}
@@ -716,8 +788,8 @@ MonoBehaviour:
   lvl: 1
   maxStat:
     hp: 50
-    mp: 0
-    eng: 0
+    mp: 5
+    eng: 5
     mor: 0
     atk: 20
   stat:
@@ -766,6 +838,7 @@ MonoBehaviour:
   hpTextUI: {fileID: 0}
   changeHpTextColor: 0
   changeHpBarColor: 1
+  useNewLine: 0
   gradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
@@ -817,6 +890,7 @@ MonoBehaviour:
   customSavePath: 
   a: {fileID: 0}
   deleteOnDeath: 1
+  playerOwned: 0
   toSave: []
   savedSceneBuildIndex: -1
 --- !u!114 &9123941630015135668
@@ -863,9 +937,31 @@ MonoBehaviour:
   anim: {fileID: 9209353146950880325}
   currentAttackTransform: 0
   attackTranforms:
-  - {fileID: 9123482635650044458}
+  - {fileID: 4839375119063568590}
   enemyString:
   - humanoid
+--- !u!114 &-9070147781698752133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123941630015135659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  take: 0
+  put: 0
+  size: 9
+  items: []
+  invChange:
+    m_PersistentCalls:
+      m_Calls: []
+  invClicked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8140467597535700410
 PrefabInstance:
   m_ObjectHideFlags: 0

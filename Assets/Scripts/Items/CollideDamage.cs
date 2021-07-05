@@ -85,21 +85,21 @@ public class CollideDamage : MonoBehaviour
 		
 	}
 
-	void OnCollisionExit(Collision collision)
-	{
-		float v = collision.relativeVelocity.magnitude;
-		badguy b = collision.gameObject.GetComponent<badguy>();
-		if (b != null)
-		{
-			hit.Remove(collision.gameObject);
-			//if (v > minVelocity)
-			//{
-			//	float d = (v - minVelocity) / (maxVelocity - minVelocity);//Get how far between max and min velocity v is
-			//	if (d > 1) d = 1;//cap damage at maxDamage
-			//	float damage = minDamage + (maxDamage - minDamage) * d;//min damage plus the extra from higher velocity
-				print("exit collision");//" + damage);
-			//	b.Damage(damage);
-			//}
-		}
-	}
+	//void OnCollisionExit(Collision collision)
+	//{
+	//	float v = collision.relativeVelocity.magnitude;
+	//	badguy b = collision.gameObject.GetComponent<badguy>();
+	//	if (b != null)
+	//	{
+	//		hit.Remove(collision.gameObject);
+	//		//if (v > minVelocity)
+	//		//{
+	//		//	float d = (v - minVelocity) / (maxVelocity - minVelocity);//Get how far between max and min velocity v is
+	//		//	if (d > 1) d = 1;//cap damage at maxDamage
+	//		//	float damage = minDamage + (maxDamage - minDamage) * d;//min damage plus the extra from higher velocity
+	//			print("exit collision");//" + damage);
+	//		//	b.Damage(damage);
+	//		//}
+	//	}
+	//}
 }

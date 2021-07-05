@@ -1,0 +1,52 @@
+{
+	"type" : "ComplexQuest",    
+	"nextQuestJson" : "",
+	"nextDialogueJson" : "Village/Luna/initial4.json",
+	"nextDialogueTargetName" : "Luna",
+	"data" : {
+		"quests" : [
+			{
+				"type" : "LocationQuest",
+				"data" : {
+					"locationToVisit" : "outside turris aetheris",
+					"questName" : "A new home",
+					"descriptionText" : "Go to Turris Aetheris",
+					"questIndicatorIndex" : 0
+				}
+			},
+			{
+				"type" : "SceneQuest",
+				"data" : {
+					"sceneToVisit" : "Turris Aetheris/1",
+					"questName" : "A new home",
+					"descriptionText" : "Enter Turris Aetheris level 1 (F to open entry menu)"
+				}
+			},
+			{
+				"type" : "KillQuest",
+				"data" : {
+					"typeToKill" : "Slime",
+					"amountToKill" : 1,
+					"amountKilled" : 0,
+					"questName" : "A new home"
+				}
+			},
+			{
+				"type" : "SceneQuest",
+				"data" : {
+					"sceneToVisit" : "Village",
+					"questName" : "A new home",
+					"descriptionText" : "Return to the village (M to open map)"
+				}
+			},
+			{
+				"type" : "TalkQuest",
+				"data" : {
+					"toTalkTo" : "Luna",
+					"questName" : "A new home",
+					"questIndicatorIndex" : 0
+				}
+			}
+		]
+	}
+}

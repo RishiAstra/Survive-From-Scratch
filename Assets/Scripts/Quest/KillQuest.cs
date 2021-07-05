@@ -5,6 +5,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using bobStuff;
 
 [System.Serializable]
 public class KillQuest : IQuest
@@ -73,8 +74,17 @@ public class KillQuest : IQuest
 		//if it's the type to kill
 		if (type == typeToKill)
 		{
+			bool killedByPlayer = false;
+			foreach(PartyMember p in GameControl.main.myParty.members)
+			{
+				if(p.g.GetComponent<Abilities>() == killedBy)
+				{
+					killedByPlayer = true;
+					break;
+				}
+			}
 			//killed by the player
-			if (killedBy == GameControl.main.myAbilities)
+			if (killedByPlayer)
 			{
 				amountKilled++;
 				if (amountKilled > amountToKill) amountKilled = amountToKill;
@@ -104,6 +114,16 @@ public class KillQuest : IQuest
 	}
 
 	public void OnTalked(string talkedTo)
+	{
+		//This quest type doesn't care
+	}
+
+	public void OnSceneReached(string scene)
+	{
+		//This quest type doesn't care
+	}
+
+	public void OnItemObtained(Item i)
 	{
 		//This quest type doesn't care
 	}

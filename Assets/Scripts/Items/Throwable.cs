@@ -26,13 +26,13 @@ public class Throwable : MonoBehaviour
 			if (me.bob.inv.items[me.bob.invSel].amount >= 1)
 			{
 				me.bob.RemoveItem(me.bob.invSel, 1);
-				GameObject g = Instantiate(GameControl.itemTypes[me.myID.id].prefab, transform.position + me.bob.cam.forward * spawnDist, transform.rotation);
+				GameObject g = Instantiate(GameControl.itemTypes[me.myID.id].prefab, transform.position + me.bob.camT.forward * spawnDist, transform.rotation);
 				SkillObject so = g.GetComponent<SkillObject>();
 				if (so != null) so.parent = me.bob.GetComponent<Abilities>();
 				Rigidbody rig = g.GetComponent<Rigidbody>();
 				if (rig != null)
 				{
-					rig.AddForce(me.bob.rig.velocity + me.bob.cam.forward * velocity, ForceMode.VelocityChange);
+					rig.AddForce(me.bob.rig.velocity + me.bob.camT.forward * velocity, ForceMode.VelocityChange);
 				}
 			}
 		}

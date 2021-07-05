@@ -1,0 +1,42 @@
+{
+	"type" : "ComplexQuest",    
+	"nextQuestJson" : "",
+	"nextDialogueJson" : "Village/Luna/initial5.json",
+	"nextDialogueTargetName" : "Luna",
+	"data" : {
+		"quests" : [
+			{
+				"type" : "SceneQuest",
+				"data" : {
+					"sceneToVisit" : "Novasilva",
+					"questName" : "A new home",
+					"descriptionText" : "Enter Novasilva (M to open map)"
+				}
+			},
+			{
+				"type" : "KillQuest",
+				"data" : {
+					"typeToKill" : "Tree 1",
+					"amountToKill" : 1,
+					"amountKilled" : 0,
+					"questName" : "A new home"
+				}
+			},
+			{
+				"type" : "GiveQuest",
+				"data" : {
+					"toTalkTo" : "Luna",
+					"questName" : "A new home",
+					"items" : [
+						{
+							"id" : 5,
+							"amount" : 10
+						}
+					],
+					"questIndicatorIndex" : 0,
+					"takeitems" : true
+				}
+			}
+		]
+	}
+}

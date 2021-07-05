@@ -57,7 +57,7 @@ public class Collectible : MonoBehaviour, IMouseHoverable
 
 	public void MouseClickMe()
 	{
-		if (Player.main != null)
+		if (GameControl.main.playerControl != null)
 		{
 			if(GameControl.main.GetItem(myID.id, amount))//Player
 			{

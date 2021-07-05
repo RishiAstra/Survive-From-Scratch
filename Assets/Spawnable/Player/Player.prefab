@@ -198,9 +198,8 @@ GameObject:
   - component: {fileID: 95955619351916386}
   - component: {fileID: 54654920840394432}
   - component: {fileID: 136602099478796468}
-  - component: {fileID: 114707314321186450}
+  - component: {fileID: 3664503324268717457}
   - component: {fileID: 8774132261617693794}
-  - component: {fileID: 1874286038166880869}
   - component: {fileID: 924814010}
   - component: {fileID: 7022186050305224707}
   - component: {fileID: 9144992822705144503}
@@ -234,6 +233,7 @@ Transform:
   - {fileID: 6425025574554240311}
   - {fileID: 3440948006652662635}
   - {fileID: 4420545043958293143}
+  - {fileID: 8315659715987884216}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -286,7 +286,7 @@ CapsuleCollider:
   m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0, y: 0.875, z: 0}
---- !u!114 &114707314321186450
+--- !u!114 &3664503324268717457
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,22 +295,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1054728911991326}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3b088290d676ff49a449ef059e7a7c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ff18e6458698984eae084060b0d6b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabDist: 4
-  rightHand: {fileID: 4245163473704240}
-  invStuff:
-    invButtonSize: 50
-    invBackground: {fileID: 2800000, guid: 7537841ef9875c94da9a1aa73388053d, type: 3}
-    buttonsPerInvRow: 8
-    selectedColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0}
-    normalColor: {r: 0.6886792, g: 0.6784447, b: 0.28261837, a: 0}
-  rig: {fileID: 0}
-  inv: {fileID: 0}
-  invSel: 0
-  isDead: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 4608
+  movement: {fileID: 8774132261617693794}
+  spotRange: 10
+  checkAttack: {fileID: 8315659715987884216}
+  checkAttackRadius: 0.25
+  targets: []
+  guard: 0
+  guardPosition: {x: 0, y: 0, z: 0}
+  maxGuardDist: 0
+  camPos: {fileID: 3889786956256665617}
+  camPref: {fileID: 0}
   cam: {fileID: 0}
+  playerControlled: 0
+  playerOwnerName: 
+  rig: {fileID: 0}
+  inv: {fileID: 9144992822705144503}
+  invSel: -1
+  rightHand: {fileID: 4245163473704240}
+  camT: {fileID: 0}
 --- !u!114 &8774132261617693794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,9 +332,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 4
-  ground:
-    serializedVersion: 2
-    m_Bits: 1
   groundNormal: {x: 0, y: 0, z: 0}
   groundCheck:
   - {fileID: 3563714782778563414}
@@ -356,25 +361,6 @@ MonoBehaviour:
   idle: 0
   jumpCooldownLeft: 0
   jumpInProg: 0
---- !u!114 &1874286038166880869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1054728911991326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 207f3b10036134f4d95eb60159e9da0a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camPos: {fileID: 3889786956256665617}
-  camPref: {fileID: 6979773146364979283, guid: 492fc9c19fa33a54fb9da100a1af7667, type: 3}
-  movement: {fileID: 8774132261617693794}
-  abilities: {fileID: 2206280722422302975}
-  cam: {fileID: 0}
-  scrollSencitivity: 1
-  playerOwnerName: 
 --- !u!114 &924814010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,6 +504,7 @@ MonoBehaviour:
   customSavePath: 
   a: {fileID: 924814010}
   deleteOnDeath: 0
+  playerOwned: 0
   toSave: []
   savedSceneBuildIndex: -1
 --- !u!114 &2206280722422302975
@@ -2984,7 +2971,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4420545043958293143}
   m_Layer: 9
-  m_Name: CheckAttack
+  m_Name: attack spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3079,6 +3066,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0.29
   distance: 0.1
+--- !u!1 &7751452004490563291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8315659715987884216}
+  m_Layer: 9
+  m_Name: Check Attack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8315659715987884216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7751452004490563291}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4918891165435872}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1063897056423127095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3253,12 +3270,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7aa23471e641cb4fb854e7012039f58, type: 3}
---- !u!4 &1559415070924045712 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
-    type: 3}
-  m_PrefabInstance: {fileID: 1172993346028907552}
-  m_PrefabAsset: {fileID: 0}
 --- !u!212 &4389457228230696399 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3219285574800454127, guid: b7aa23471e641cb4fb854e7012039f58,
@@ -3277,3 +3288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1559415070924045712 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+    type: 3}
+  m_PrefabInstance: {fileID: 1172993346028907552}
+  m_PrefabAsset: {fileID: 0}

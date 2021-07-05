@@ -10,12 +10,15 @@ public class Reward
 	public enum RewardType
 	{
 		item,
-		money
+		money,
+		character
 	}
 
 	public RewardType type;
 	public Item item;
 	public int money;
+	public string character;
+	public string characterPositionReplace;
 
 	public bool TryGetReward()
 	{
@@ -30,7 +33,27 @@ public class Reward
 			case RewardType.money:
 				GameControl.main.money += money;
 				return true;
-				break;
+			case RewardType.character:
+				if (!string.IsNullOrEmpty(characterPositionReplace))
+				{
+					QuestGameObjectActivate q = QuestGameObjectActivate.instances.Find(x => x.myName == characterPositionReplace);
+					if (q != null)
+					{
+						ProgressTracker.main.activates[characterPositionReplace] = new QuestGameObjectData() { active = false };
+						QuestGameObjectActivate.CheckAll();
+						GameControl.main.StartAddNewCharacterToParty(character, true, q.transform.position, q.transform.eulerAngles);						
+					}
+					else
+					{
+						GameControl.main.StartAddNewCharacterToParty(character);
+					}
+
+				}
+				else
+				{
+					GameControl.main.StartAddNewCharacterToParty(character);
+				}
+				return true;
 
 		}
 
