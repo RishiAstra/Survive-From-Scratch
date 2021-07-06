@@ -1184,7 +1184,7 @@ public class GameControl : MonoBehaviour
 		{
 			//To make something collectible, a collider attached to it must match collectibleLayerMask
 			RaycastHit hit;
-			Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+			Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));// mainCamera.ScreenPointToRay(Input.mousePosition);
 			bool foundSomething = Physics.Raycast(ray, out hit, grabDist + playerControl.cam.dist, interactLayerMask, QueryTriggerInteraction.Collide);
 			if (hit.distance < playerControl.cam.dist) foundSomething = false;//this means that the item was found by placing it between the player and the camera. This is abusing camera distance to grab stuff from futher distances
 			//bool foundIMouseHoverable = false;
