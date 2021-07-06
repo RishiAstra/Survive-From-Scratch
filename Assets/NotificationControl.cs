@@ -48,4 +48,6 @@ public class NotificationControl : MonoBehaviour
 public class Notification
 {
 	public string message;
+	[System.NonSerialized]
+	public IQuest sentFrom;
 }

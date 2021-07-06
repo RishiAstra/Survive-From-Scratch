@@ -114,6 +114,7 @@ public class GiveQuest : IQuest
 		return nextDialoguePath;
 	}
 
+	//TODO: make progress based on items gathered/items needed
 	public float GetProgress()
 	{
 		//convert to floats, then use division
@@ -174,7 +175,8 @@ public class GiveQuest : IQuest
 			NotificationControl.main.AddNotification(
 				new Notification()
 				{
-					message = GetDescription(-2) + " <#00ff00>Complete</color>"
+					message = GetDescription(-2) + " <#00ff00>Complete</color>",
+					sentFrom = this
 				}
 			);
 		}		
@@ -326,23 +328,69 @@ public class GiveQuest : IQuest
 	public void OnItemObtained(Item it)
 	{
 		int index = -1;
+		//this list is only initialized if at least some item ids from required items match item ids in inventories
+		List<int> counts = null;
+
 		for (int i = 0; i < items.Count; i++)
 		{
 			if(items[i].id == it.id)
 			{
-				index = i;
-				break;
+				//initialize if necessary
+				if(counts == null)
+				{
+					Inventory mainInv = null;
+					if (GameControl.main != null) mainInv = GameControl.main.mainInventoryUI.target;
+					Inventory hotBar = null;
+					if (GameControl.main != null && GameControl.main.myAbilities != null) hotBar = GameControl.main.myAbilities.GetComponent<Inventory>();
+					Inventory craftInv = null;
+					if (Crafting.main != null) craftInv = Crafting.main.craftInventory;
+					List<Inventory> invs = new List<Inventory>();
+					if(hotBar != null)invs.Add(hotBar);
+					if(mainInv != null) invs.Add(mainInv);
+					if(craftInv != null) invs.Add(craftInv);
+					counts = GetItemCounts(invs);
+				}				
+
+				if(counts[i] <= items[i].amount)
+				{
+					index = i;
+					break;
+				}				
 			}
 		}
 
 		if(index >= 0 && index < items.Count)
 		{
-			NotificationControl.main.AddNotification(
-				new Notification()
+			int notificationFromThisCount = 0;
+			bool dontMakeNewNotification = false;
+			int notificationIndexToEdit = -48952043;//assign some trash to get rid of cs0165
+			for (int i = 0; i < NotificationControl.main.notifications.Count; i++)
+			{
+				if (NotificationControl.main.notifications[i].sentFrom.Equals(this))
 				{
-					message = GetDescription(index)
+					notificationFromThisCount++;
+					if(notificationFromThisCount >= 2)
+					{
+						//index = the last notification in list from this quest
+						notificationIndexToEdit = i;
+						dontMakeNewNotification = true;
+					}
 				}
-			);
+			}
+
+			if (dontMakeNewNotification)
+			{
+				NotificationControl.main.notifications[notificationIndexToEdit].message = GetDescription(index);
+			}
+			else
+			{
+				Notification n = new Notification()
+				{
+					message = GetDescription(index),
+					sentFrom = this
+				};
+				NotificationControl.main.AddNotification(n);
+			}			
 		}
 	}
 }

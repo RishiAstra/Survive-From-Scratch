@@ -1165,10 +1165,10 @@ public class GameControl : MonoBehaviour
 			//TODO:REMOVE THIS
 			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.RightArrow))
 			{
-				myAbilities.myStat.GiveXp(100);
+				myAbilities.myStat.GiveXp(1000);
 			}
 
-			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 500;
+			if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.UpArrow)) money += 5000;
 			if(myAbilities != null) mainLvlText.text = "Level " + myAbilities.myStat.lvl;
 			//TODO:REMOVE ABOVE
 

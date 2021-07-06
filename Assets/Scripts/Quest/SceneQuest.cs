@@ -85,7 +85,8 @@ public class SceneQuest : IQuest
 			NotificationControl.main.AddNotification(
 				new Notification()
 				{
-					message = GetDescription() + " <#00ff00>Complete</color>"
+					message = GetDescription() + " <#00ff00>Complete</color>",
+					sentFrom = this
 				}
 			);
 		}

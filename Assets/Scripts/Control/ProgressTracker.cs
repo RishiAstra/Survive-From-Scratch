@@ -281,7 +281,8 @@ public class ProgressTracker : MonoBehaviour
 		NotificationControl.main.AddNotification(
 				new Notification()
 				{
-					message = temp.GetDescription()
+					message = temp.GetDescription(),
+					sentFrom = temp
 				}
 			);
 		if (!string.IsNullOrEmpty(fromDialogueName)) questResult.nextDialogueTargetName = fromDialogueName;

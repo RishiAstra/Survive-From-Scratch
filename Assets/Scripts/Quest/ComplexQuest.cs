@@ -128,7 +128,8 @@ public class ComplexQuest : IQuest
 				NotificationControl.main.AddNotification(
 					new Notification()
 					{
-						message = GetDescription()
+						message = GetDescription(),
+						sentFrom = quests[current]
 					}
 				);
 			}
