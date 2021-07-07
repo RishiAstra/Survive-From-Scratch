@@ -90,6 +90,11 @@ public class DialogueControl : MonoBehaviour
 						//dialogueSource.DialoguePath = currentPart.nextJson;
 					}
 
+					if (!string.IsNullOrEmpty(currentPart.afterHelpMenu))
+					{
+						HelpControl.main.ShowHelpMenuSoon(currentPart.afterHelpMenu);
+					}
+
 					currentPart = null;
 					GameControl.main.Wait1FrameBeforeInteract();
 				}
@@ -276,6 +281,7 @@ public class DialoguePart
 	public string questResult;
 	public string nextJson;
 	public bool makeNextJsonDefault;
+	public string afterHelpMenu;
 	//public DialoguePart defaultNextPart;
 }
 

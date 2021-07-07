@@ -15,6 +15,10 @@ public class ComplexQuest : IQuest
 	public int current;
 	public Reward reward;
 	public Dictionary<string, QuestGameObjectData> toActivate;
+	/// <summary>
+	/// the help menu to show when the quest starts
+	/// </summary>
+	public string startHelpMenu;
 
 	private string nextDialoguePath;
 

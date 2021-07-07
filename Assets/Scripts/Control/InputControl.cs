@@ -90,6 +90,7 @@ public class InputControl : MonoBehaviour
 			if(keyPressed >= 0 && keyPressed < GameControl.main.myParty.members.Count)
 			{
 				GameControl.main.SetControlledPartyMember(keyPressed);
+				SkillSelector.main.canceled = true;
 			}
 		}
 		else

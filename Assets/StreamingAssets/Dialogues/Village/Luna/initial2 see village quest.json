@@ -1,9 +1,10 @@
 {
-    "type" : "ComplexQuest",    
+    "type" : "ComplexQuest",
     "nextQuestJson" : "",
     "nextDialogueJson" : "Village/Luna/initial3.json",
     "nextDialogueTargetName" : "Luna",
     "data" : {
+        "startHelpMenu": "Quest Indicators",
         "quests" : [
             {
                 "type" : "LocationQuest",

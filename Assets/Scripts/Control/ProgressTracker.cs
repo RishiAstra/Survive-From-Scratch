@@ -278,6 +278,16 @@ public class ProgressTracker : MonoBehaviour
 
 		//add the new quest
 		quests.Add(temp);
+
+		if(temp.GetType() == typeof(ComplexQuest))
+		{
+			ComplexQuest c = temp as ComplexQuest;
+			if(!string.IsNullOrEmpty(c.startHelpMenu))
+			{
+				HelpControl.main.ShowHelpMenuSoon(c.startHelpMenu);
+			}
+		}
+
 		NotificationControl.main.AddNotification(
 				new Notification()
 				{

@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class SkillSelector : MonoBehaviour
 {
+    public static SkillSelector main;
+
     public int startIndex = 1;
     public float startAngle = 135f;
     public float angleStep = 90f;
@@ -19,10 +21,12 @@ public class SkillSelector : MonoBehaviour
 
     private bool showing;
     private int selected;
+    public bool canceled;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (main != null) Debug.LogError("Two SkillSelector");
+        main = this;
     }
 
     // Update is called once per frame
@@ -52,10 +56,18 @@ public class SkillSelector : MonoBehaviour
         if(showing && (Input.GetKeyUp(KeyCode.LeftAlt) || Input.GetKeyUp(KeyCode.RightAlt)))
 		{
             showing = false;
-            if (selected >= 0 && selected < GameControl.main.myAbilities.skills.Count)
-            {
-                GameControl.main.myAbilities.UseSkill(selected);
-            }
+			if (canceled)
+			{
+                canceled = false;
+			}
+			else
+			{
+                if (selected >= 0 && selected < GameControl.main.myAbilities.skills.Count)
+                {
+                    GameControl.main.myAbilities.UseSkill(selected);
+                }
+			}
+            
             Cursor.lockState = CursorLockMode.Locked;
         }
 
