@@ -166,6 +166,14 @@ public class ProgressTracker : MonoBehaviour
 
 	public void RegisterItemObtained(Item i)
 	{
+		StartCoroutine(RegisteritemObtainedIEnumerator(i));
+	}
+
+	private IEnumerator RegisteritemObtainedIEnumerator(Item i)
+	{
+		//this delay is necessary, otherwise when a mission to collect an item is completed and it rewards an item
+		//it will give the item, then forcing quests to be updated again, then making the reward be obtained again, recursive
+		yield return new WaitForSeconds(0.1f);
 		foreach (IQuest q in quests)
 		{
 			q.OnItemObtained(i);
