@@ -2,7 +2,17 @@
 	"title": "Luna",
 	"texts": [
 		{"text":"Once you get more practice, you could try beating level 1 of Turris Aetheris"},
-		{"text":"I remember there being some loot there"}
+		{"text":"I remember there being some loot there"},
+		{
+			"text":"Here, take this staff. It will improve your magic damage. Maybe you should equip it on Rin.",
+			"reward": {
+				"type": "item",
+				"item": {
+					"id": 11,
+					"amount": 1
+				}
+			}		
+		}
 	],
     "nextJson" : "Village/Luna/initial7.json",
 	"makeNextJsonDefault" : true,

@@ -157,11 +157,16 @@ public class DialogueControl : MonoBehaviour
 				QuestGameObjectActivate.CheckAll();
 			}
 
-			Reward reward = currentPart.texts[currentLineProgress].reward;
-			if (reward != null)
+			if (!currentPart.texts[currentLineProgress].gotReward)
 			{
-				reward.TryGetReward();
+				Reward reward = currentPart.texts[currentLineProgress].reward;
+				if (reward != null)
+				{
+					reward.TryGetReward();
+					currentPart.texts[currentLineProgress].gotReward = true;
+				}
 			}
+			
 
 			dialogueBodyText.text = nextText;
 			if(currentPart.title != null && currentPart.title != "")
@@ -292,6 +297,7 @@ public class DialogueTextAndAnimation
 	public string dataTarget;
 	public QuestGameObjectData data;
 	public Reward reward;
+	public bool gotReward;
 }
 
 //public delegate void DialogueResult(bool succeeded);
