@@ -41,6 +41,8 @@ public class HelpControl : MonoBehaviour
 	//public Vector3 helpSelecterSpacing;
 	public int helpSelectedIndex;
 	public Menu helpParent;
+	public Scrollbar helpMenuScrollbar;
+	public float defaultScrollbarValue = 1f;
 	public List<HelpMenuSelectorUI> helps;
 
 
@@ -97,6 +99,8 @@ public class HelpControl : MonoBehaviour
 
 		//show the help menu
 		helpParent.TryActivateMenu();
+
+		helpMenuScrollbar.value = defaultScrollbarValue;
 	}
 
 	private void ActivateHelpMenuByIndex(int index)

@@ -1,6 +1,10 @@
 {
 	"title": "Luna",
 	"texts": [
-		{"text":"Good luck on your adventuring"}
-	]
+		{"text":"Once you get more practice, you could try beating level 1 of Turris Aetheris"},
+		{"text":"I remember there being some loot there"}
+	],
+    "nextJson" : "Village/Luna/initial7.json",
+	"makeNextJsonDefault" : true,
+	"afterHelpMenu": "Chests"
 }

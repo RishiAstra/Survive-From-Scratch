@@ -8,61 +8,58 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    public static int openMenuCount;
+	public static int openMenuCount;
 	public static List<Menu> activeMenus = new List<Menu>();
 
-    public bool pauseOnActive = true;
+	public bool pauseOnActive = true;
 	public bool activateOnEsc = false;
 
 	public delegate void boolDelegate (bool b);
 	public event boolDelegate OnActiveStateChange;
 	private bool initialized;
-    // Start is called before the first frame update
-    void Awake()
-    {
+	// Start is called before the first frame update
+	void Awake()
+	{
   //      if (!initialized && gameObject.activeSelf)
 		//{
 		//	ActivateMenu();
 		//}
-    }
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-		if (Input.GetKeyUp(KeyCode.Escape) && activeMenus.Count > 0)
+	// Update is called once per frame
+	void Update()
+	{
+		//if (Input.GetKeyUp(KeyCode.Escape) && activeMenus.Count > 0)
+		//{
+		//	//Cursor.lockState = CursorLockMode.Locked;
+		//	//disable all menus
+		//	for (int i = 0; i < activeMenus.Count;)
+		//	{
+		//		activeMenus[i].TryDeactivateMenu();
+		//	}
+		//}
+		//else
+		//{
+		//	if (activateOnEsc)
+		//	{
+		//		TryActivateMenu();
+		//	}
+		//}
+	}
+
+	public void ToggleMenu()
+	{
+		if (gameObject.activeSelf)
 		{
-			//disable all menus
-			for (int i = 0; i < activeMenus.Count;)
-			{
-				if (activeMenus[i].activateOnEsc)
-				{
-					activeMenus[i].TryActivateMenu();
-					i++;
-				}
-				else
-				{
-					activeMenus[i].TryDeactivateMenu();
-					//activeMenus.RemoveAt(i);
-				}
-				
-			}
-			Cursor.lockState = CursorLockMode.Locked;
+			TryDeactivateMenu();
 		}
-    }
+		else
+		{
+			TryActivateMenu();
+		}
+	}
 
-    public void ToggleMenu()
-    {
-        if (gameObject.activeSelf)
-        {
-            TryDeactivateMenu();
-        }
-        else
-        {
-            TryActivateMenu();
-        }
-    }
-
-    public void TryActivateMenu()
+	public void TryActivateMenu()
 	{
 		if (!gameObject.activeSelf)
 		{

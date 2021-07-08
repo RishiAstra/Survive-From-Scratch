@@ -8,9 +8,12 @@
 		{"text":"Towers have levels, each of which is like a small world. When you enter a tower, you start on the first level."},
 		{"text":"Each level has a door to the next level, but some monsters are tied to the door with mana. To enter the next level you would need to kill these monsters."},
 		{"text":"Of course, you shouldn't try anything so dangerous. Just enter the tower, kill a slime, and leave."},
+        {"text":"By the way, some items will prevent you from dealing damage. If you're holding something soft or squishy, you're unlikely to do any damage."},
+        {"text":"If that happens, equip something else."},
 		{"text":"Good Luck"}
 	],
 	"questResult" : "Village/Luna/initial3 KillSlime.json",
     "nextJson" : "Village/Luna/initial3 wait for quest.json",
-	"makeNextJsonDefault" : true
+	"makeNextJsonDefault" : true,
+    "afterHelpMenu": "Towers"
 }
