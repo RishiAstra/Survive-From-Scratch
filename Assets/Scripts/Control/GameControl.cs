@@ -1059,10 +1059,10 @@ public class GameControl : MonoBehaviour
 		if (Cursor.lockState == CursorLockMode.Locked)
 		{
 
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				TryUnlockCursor();
-			}
+			//if (Input.GetKeyDown(KeyCode.Escape))
+			//{
+			//	TryUnlockCursor();
+			//}
 		}
 		else
 		{
