@@ -64,6 +64,7 @@ public class NPCControl : MonoBehaviour, ISaveable
 		invSel = -1;
 		rig = GetComponent<Rigidbody>();
 		inv = GetComponent<Inventory>();
+		inv.invChange.AddListener((int x) => RefreshSelected());
 		Invoke("SelectInvInitial", 0.01f);
 	}
 
