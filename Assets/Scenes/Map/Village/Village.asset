@@ -16,19 +16,19 @@ MonoBehaviour:
   VegetationInfoList:
   - Name: Grass 1
     VegetationItemID: 29cd487c-02f3-4141-8df2-c3c10f9927dd
-    EnableRuntimeSpawn: 0
+    EnableRuntimeSpawn: 1
     PrefabType: 0
     ShaderType: 1
-    VegetationPrefab: {fileID: 5434873900184017879, guid: 47800a7d2b0c6a1468283dad81280c32,
+    VegetationPrefab: {fileID: 5434873900184017879, guid: a70334b63a011674295c07ebd0e1267b,
       type: 3}
     VegetationGuid: c6aaa6cf6c17b6e49acac6e62ceacdd3
     VegetationTexture: {fileID: 0}
     VegetationTextureGuid: 
     VegetationType: 0
     VegetationRenderType: 2
-    VegetationScaleType: 1
-    MinScale: 3
-    MaxScale: 4
+    VegetationScaleType: 0
+    MinScale: 0.5
+    MaxScale: 1
     MinVectorScale: {x: 0.75, y: 0.75, z: 0.5}
     MaxVectorScale: {x: 1, y: 1, z: 0.75}
     UseAutomaticDensityScale: 0

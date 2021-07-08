@@ -19,7 +19,7 @@ MonoBehaviour:
     EnableRuntimeSpawn: 1
     PrefabType: 0
     ShaderType: 1
-    VegetationPrefab: {fileID: 5434873900184017879, guid: 47800a7d2b0c6a1468283dad81280c32,
+    VegetationPrefab: {fileID: 5434873900184017879, guid: a70334b63a011674295c07ebd0e1267b,
       type: 3}
     VegetationGuid: 47800a7d2b0c6a1468283dad81280c32
     VegetationTexture: {fileID: 0}
@@ -27,8 +27,8 @@ MonoBehaviour:
     VegetationType: 1
     VegetationRenderType: 2
     VegetationScaleType: 0
-    MinScale: 0.5
-    MaxScale: 1
+    MinScale: 1
+    MaxScale: 1.5
     MinVectorScale: {x: 0.8, y: 0.8, z: 0.8}
     MaxVectorScale: {x: 1.2, y: 1.2, z: 1.2}
     UseAutomaticDensityScale: 0
@@ -658,7 +658,7 @@ MonoBehaviour:
     Offset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 270.01978, y: 0, z: 0}
     Rotation: 0
-    UsePerlinMask: 1
+    UsePerlinMask: 0
     PerlinCutoff: 0.25
     PerlinScale: 25
     InversePerlinMask: 0
@@ -668,7 +668,7 @@ MonoBehaviour:
     UseIncludeTextueMask: 1
     IncludeTextureMaskList:
     - TextureLayer: 0
-      MinimumValue: 0.1
+      MinimumValue: 0.7
       MaximumValue: 1
     UseVegetationMask: 0
     VegetationTypeIndex: 1
@@ -692,7 +692,7 @@ MonoBehaviour:
     EnableRuntimeSpawn: 1
     PrefabType: 0
     ShaderType: 1
-    VegetationPrefab: {fileID: 5434873900184017879, guid: a70334b63a011674295c07ebd0e1267b,
+    VegetationPrefab: {fileID: 5434873900184017879, guid: 47800a7d2b0c6a1468283dad81280c32,
       type: 3}
     VegetationGuid: a70334b63a011674295c07ebd0e1267b
     VegetationTexture: {fileID: 0}
@@ -750,7 +750,7 @@ MonoBehaviour:
     Hue: {r: 1, g: 0.5, b: 0, a: 0.09765625}
     TextureCutoff: 0.2
     YScale: 1
-    SampleDistance: 2.1883428
+    SampleDistance: 1.5
     Density: 1
     UseCollisionDetection: 0
     VegetationSteepnessType: 0
@@ -1332,16 +1332,16 @@ MonoBehaviour:
     RotationOffset: {x: 270.01978, y: 0, z: 0}
     Rotation: 0
     UsePerlinMask: 1
-    PerlinCutoff: 0.48223364
-    PerlinScale: 9
+    PerlinCutoff: 0.7
+    PerlinScale: 10
     InversePerlinMask: 1
-    PerlinOffset: {x: 0, y: 0}
+    PerlinOffset: {x: 324, y: 23}
     UseExcludeTextueMask: 0
     ExcludeTextureMaskList: []
     UseIncludeTextueMask: 1
     IncludeTextureMaskList:
     - TextureLayer: 0
-      MinimumValue: 0.1
+      MinimumValue: 0.7
       MaximumValue: 1
     UseVegetationMask: 0
     VegetationTypeIndex: 1
