@@ -131,6 +131,7 @@ public class SettingsControl : MonoBehaviour
 			{
 				settingsPresets.Add(JsonConvert.DeserializeObject<UserQualitySettings>(File.ReadAllText(s)));
 			}
+			SortSettingsPresets();
 		}
 		else
 		{
@@ -139,6 +140,18 @@ public class SettingsControl : MonoBehaviour
 
 		SetQualityPreset(settingsIndex);
 		ApplySettings();
+	}
+
+	private void SortSettingsPresets()
+	{
+		UserQualitySettings s = settingsPresets[settingsIndex];
+		settingsPresets.Sort(delegate (UserQualitySettings a, UserQualitySettings b)
+		{
+			return a.name.CompareTo(b.name);
+		});
+
+		settingsIndex = settingsPresets.IndexOf(s);
+
 	}
 
 	public void RefreshQualityPresetsDropdown()
@@ -158,6 +171,7 @@ public class SettingsControl : MonoBehaviour
 		{
 			settingsPresets.Add(s);
 		}
+		SortSettingsPresets();
 	}
 
 	public void AddQualityPreset()
