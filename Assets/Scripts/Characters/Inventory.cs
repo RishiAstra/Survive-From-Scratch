@@ -8,6 +8,7 @@ using UnityEngine;
 using bobStuff;
 using UnityEngine.Events;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 [System.Serializable]
 public class IntUnityEvent: UnityEvent<int>
@@ -70,15 +71,15 @@ public class Inventory : MonoBehaviour, ISaveable
 	//	}
 	//}
 
-	public string GetData()
+	public JObject GetData()
 	{
 		SaveDataInventory s = new SaveDataInventory(items);
-		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return new JObject(s);//  JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public void SetData(JObject data)
 	{
-		SaveDataInventory s = JsonConvert.DeserializeObject<SaveDataInventory>(data);
+		SaveDataInventory s = data.ToObject<SaveDataInventory>();// JsonConvert.DeserializeObject<SaveDataInventory>(data);
 		//TODO: warning, sceneindex not considered here
 		this.items = s.items;
 	}

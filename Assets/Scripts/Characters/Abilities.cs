@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 [RequireComponent(typeof(StatScript))]
 public class Abilities : MonoBehaviour, ISaveable
@@ -164,7 +165,7 @@ public class Abilities : MonoBehaviour, ISaveable
 	//	//this.maxStat = s.maxStat;
 	//}
 
-	public string GetData()
+	public JObject GetData()
 	{
 		List<string> temp = new List<string>();
 		foreach (UsableSkill st in skills)
@@ -172,12 +173,12 @@ public class Abilities : MonoBehaviour, ISaveable
 			temp.Add(st.name);
 		}
 		SaveDataAbilities s = new SaveDataAbilities(temp, skillLvls);
-		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public void SetData(JObject data)
 	{
-		SaveDataAbilities s = JsonConvert.DeserializeObject<SaveDataAbilities>(data);
+		SaveDataAbilities s = data.ToObject<SaveDataAbilities>();// JsonConvert.DeserializeObject<SaveDataAbilities>(data);
 
 		this.skills = new List<UsableSkill>();
 		foreach (string st in s.skills)

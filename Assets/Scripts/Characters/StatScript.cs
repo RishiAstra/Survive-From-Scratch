@@ -13,6 +13,7 @@ using System;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 [System.Serializable]
 public struct Stat
@@ -978,7 +979,7 @@ public class StatScript : MonoBehaviour, ISaveable
 
 	#region save
 
-	public string GetData()
+	public JObject GetData()
 	{
 		List<string> temp = new List<string>();
 		foreach (StatSkill st in statSkills)
@@ -986,12 +987,12 @@ public class StatScript : MonoBehaviour, ISaveable
 			temp.Add(st.name);
 		}
 		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls, statRestores);
-		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public void SetData(JObject data)
 	{
-		SaveDataStat s = JsonConvert.DeserializeObject<SaveDataStat>(data);
+		SaveDataStat s = data.ToObject<SaveDataStat>();// JsonConvert.DeserializeObject<SaveDataStat>(data);
 		//TODO: warning, sceneindex not considered here
 		this.initialMaxStat = s.initialMaxStat;
 		this.xp = s.xp;

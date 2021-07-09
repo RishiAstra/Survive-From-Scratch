@@ -16,6 +16,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine.EventSystems;
+using Newtonsoft.Json.Linq;
 //TODO: this class can do player actions unique to the player being controlled by this client in multiplayer, especially because this class knows which player is this client's player.
 public class GameControl : MonoBehaviour
 {
@@ -469,9 +470,9 @@ public class GameControl : MonoBehaviour
 				//if party member gameobject exists, delete it (note: saveentity will auto-save it)
 				if (p.g != null) Destroy(p.g);
 
-				string datapath = playerCharacterDirectory + p.id + "/";
+				//string datapath = playerCharacterDirectory + p.id + "/";
 
-				if (Directory.Exists(datapath))
+				if (SaveEntity.playerEntities.Contains(p.id))
 				{
 					//get the gameobject to spawn
 					GameObject toSpawn;
@@ -484,7 +485,7 @@ public class GameControl : MonoBehaviour
 					}
 
 
-					string[] saveData = SaveEntity.GetSaveDataFromFilePath(datapath);
+					JArray saveData = SaveEntity.GetPlayerDataFromFilePath(p.id.ToString());
 
 					GameObject g = SaveEntity.LoadEntity(toSpawn, saveData);
 					p.g = g;
@@ -520,7 +521,7 @@ public class GameControl : MonoBehaviour
 				}
 				else
 				{
-					Debug.LogError("Party member gameobject null. Path: " + datapath);
+					Debug.LogError("Party member gameobject null. id: " + p.id);
 				}
 			}
 		}

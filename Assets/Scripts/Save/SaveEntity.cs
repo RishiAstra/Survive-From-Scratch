@@ -13,6 +13,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using bobStuff;
 using System;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 //TODO: link to abilities to update when damaged or killed
 //TODO: organize all of the paths in a well-defined mannar
@@ -20,14 +21,32 @@ using System.Linq;
 //TODO: save player data file including crafting inventory etc.
 public class SaveEntity : Save, ISaveable
 {
+	public static JArray allEntities;
+	public static JArray playerEntities;
 	public static List<SaveEntity> saves;
 	public static Dictionary<string, GameObject> spawnObjects;
 	public static List<EntityMapData> toSaveMapData;
 
 	public const string spawnPath = "Assets/Spawnable/";
-	public static string savePath {
-		get {
-			return GameControl.saveDirectory + "/Save/Entities/";
+	//public static string savePath {
+	//	get {
+	//		return GameControl.saveDirectory + "/Save/Entities/";
+	//	}
+	//}
+
+	public static string allEntityFile
+	{
+		get
+		{
+			return GameControl.saveDirectory + "/Save/Entities/e.json";
+		}
+	}
+
+	public static string playerEntityFile
+	{
+		get
+		{
+			return GameControl.playerCharacterDirectory + "e.json";
 		}
 	}
 
@@ -139,25 +158,25 @@ public class SaveEntity : Save, ISaveable
 		//toSave[s] = this;
 	}
 
-	// Update is called once per frame
-	void Update()
-    {
-		//TODO: find a better way to detect changes
-		//Autosave the entity if stat was changed
-		if (a != null &&!Stat.StatEquals(pStat, a.stat))
-		{
-			//print("autosaved data for entity id: " + id);
-			pStat = a.stat;
-			SaveDataToFile();
-		}
-	}
+	//// Update is called once per frame
+	//void Update()
+ //   {
+	//	//TODO: find a better way to detect changes
+	//	//Autosave the entity if stat was changed
+	//	if (a != null &&!Stat.StatEquals(pStat, a.stat))
+	//	{
+	//		//print("autosaved data for entity id: " + id);
+	//		pStat = a.stat;
+	//		SaveDataToFile();
+	//	}
+	//}
 
 	//TODO: warning: the dead body will get deleted even if it's supposed to stay as a dead body for a few seconds
 	private void OnDestroy()
 	{
 		//TODO:GetPath broken
 		//TODO: this will break with new saving
-		string filePath = GetPath();// + id + ".json";
+		//string filePath = GetPath();// + id + ".json";
 		if (a == null || a.dead)
 		{
 			if (deleteOnDeath){
@@ -167,11 +186,21 @@ public class SaveEntity : Save, ISaveable
 				//	File.Delete(filePath);
 				//	print("Deleted dead entity id: " + id + ", type: " + type);
 				//}
-				if (Directory.Exists(filePath))
+
+				if (playerOwned)
 				{
-					Directory.Delete(filePath, true);
-					print("Deleted dead entity id: " + id + ", type: " + type);
+					playerEntities.Remove(id.ToString());
 				}
+				else
+				{
+					((JArray)allEntities[type]).Remove(id.ToString());
+				}
+
+				//if (Directory.Exists(filePath))
+				//{
+				//	Directory.Delete(filePath, true);
+				//	print("Deleted dead entity id: " + id + ", type: " + type);
+				//}
 			}
 			else
 			{
@@ -181,237 +210,148 @@ public class SaveEntity : Save, ISaveable
 		}
 	}
 
-	public string GetPath()
-	{
-		if (playerOwned)
-		{
-			return GameControl.playerCharacterDirectory + id + "/";
-		}
-		else
-		{
-			return savePath + type + "/" + id + "/";
-		}
-	}
+	//public string GetPath()
+	//{
+	//	if (playerOwned)
+	//	{
+	//		return GameControl.playerCharacterDirectory + id + "/";
+	//	}
+	//	else
+	//	{
+	//		return savePath + type + "/" + id + "/";
+	//	}
+	//}
 
-	public static string GetPathFromId(long id)
-	{
-		if (!Directory.Exists(savePath))
-		{
-			Debug.LogWarning("No save folder");
-			return null;
-		}
-		if (!Directory.Exists(entitySceneMapPath))
-		{
-			Debug.LogWarning("No entity scene map folder");
-			return null;
-		}
-		//print(entitySceneMapPath);
-		//find type of this by searching scene entity map, then calculate and return path
-		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
-		{
-			//print(sceneString);
-			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
+	//public static string GetPathFromId(long id)
+	//{
+	//	if (!Directory.Exists(savePath))
+	//	{
+	//		Debug.LogWarning("No save folder");
+	//		return null;
+	//	}
+	//	if (!Directory.Exists(entitySceneMapPath))
+	//	{
+	//		Debug.LogWarning("No entity scene map folder");
+	//		return null;
+	//	}
+	//	//print(entitySceneMapPath);
+	//	//find type of this by searching scene entity map, then calculate and return path
+	//	foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
+	//	{
+	//		//print(sceneString);
+	//		List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
 
-			for (int i = 0; i < mapData.Count; i++)
-			{
-				EntityMapData d = mapData[i];
-				//print(d.id);
-				if (d.id == id)
-				{
-					return GetFilePathFromEntity(d);// savePath + d.type + "/" + d.id + "/";//data.json
-				}
+	//		for (int i = 0; i < mapData.Count; i++)
+	//		{
+	//			EntityMapData d = mapData[i];
+	//			//print(d.id);
+	//			if (d.id == id)
+	//			{
+	//				return GetFilePathFromEntity(d);// savePath + d.type + "/" + d.id + "/";//data.json
+	//			}
 				
 
-				//load the data
+	//			//load the data
 				
-			}
-		}
+	//		}
+	//	}
 
-		return null;
+	//	return null;
 
-		//foreach (string typeString in Directory.GetDirectories(savePath))
-		//{
-		//	foreach (string idPath in Directory.GetFiles(typeString))
-		//	{
+	//	//foreach (string typeString in Directory.GetDirectories(savePath))
+	//	//{
+	//	//	foreach (string idPath in Directory.GetFiles(typeString))
+	//	//	{
 
-		//		SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-		//		if (saveData.id == id)
-		//		{
-		//			return idPath;
-		//		}
-		//	}
-		//}
+	//	//		SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
+	//	//		if (saveData.id == id)
+	//	//		{
+	//	//			return idPath;
+	//	//		}
+	//	//	}
+	//	//}
 
-		//return null;
-	}
+	//	//return null;
+	//}
 
-	public static string GetTypeFromPath(string path)
-	{
-		//cut after last /
-		int i1 = path.LastIndexOf("/");
-		if (i1 == -1) return null;
-		string s2 = path.Substring(0, i1);
+	//public static string GetTypeFromPath(string path)
+	//{
+	//	//cut after last /
+	//	int i1 = path.LastIndexOf("/");
+	//	if (i1 == -1) return null;
+	//	string s2 = path.Substring(0, i1);
 
-		//cut after last /
-		int i2 = s2.LastIndexOf("/");
-		if (i2 == -1) return null;
-		string s3 = s2.Substring(0, i2);
+	//	//cut after last /
+	//	int i2 = s2.LastIndexOf("/");
+	//	if (i2 == -1) return null;
+	//	string s3 = s2.Substring(0, i2);
 
-		//return from last / to end
-		int i3 = s3.LastIndexOf("/");
-		if (i3 == -1) return null;
-		return s3.Substring(i3 + 1);
-	}
+	//	//return from last / to end
+	//	int i3 = s3.LastIndexOf("/");
+	//	if (i3 == -1) return null;
+	//	return s3.Substring(i3 + 1);
+	//}
 
-	public static void TeleportEntityBetweenScenes(long idToMove, int nextScene)
-	{
-		if (!Directory.Exists(savePath))
-		{
-			Debug.LogWarning("No save folder");
-			return;
-		}
-		//TODO:warning, requires entitySceneMapPath to exist in file system
+	//public static void TeleportEntityBetweenScenes(long idToMove, int nextScene)
+	//{
+	//	if (!Directory.Exists(savePath))
+	//	{
+	//		Debug.LogWarning("No save folder");
+	//		return;
+	//	}
+	//	//TODO:warning, requires entitySceneMapPath to exist in file system
 
-		EntityMapData toMove;
-		//TODO:won't work
-		//find type of this by searching scene entity map, then calculate and return path
-		foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
-		{
-			List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
+	//	EntityMapData toMove;
+	//	//TODO:won't work
+	//	//find type of this by searching scene entity map, then calculate and return path
+	//	foreach (string sceneString in Directory.GetFiles(entitySceneMapPath))
+	//	{
+	//		List<EntityMapData> mapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(sceneString));
 
-			for (int i = 0; i < mapData.Count; i++)
-			{
-				EntityMapData d = mapData[i];
-				if (d.id == idToMove)
-				{
-					d.sceneIndex = nextScene;
-					toMove = d;
-					//remove this one and write the updated
-					mapData.RemoveAt(i);
-					File.WriteAllText(sceneString, JsonConvert.SerializeObject(mapData));// + ".json"
-					goto FoundID;
-				}
-				//load the data
+	//		for (int i = 0; i < mapData.Count; i++)
+	//		{
+	//			EntityMapData d = mapData[i];
+	//			if (d.id == idToMove)
+	//			{
+	//				d.sceneIndex = nextScene;
+	//				toMove = d;
+	//				//remove this one and write the updated
+	//				mapData.RemoveAt(i);
+	//				File.WriteAllText(sceneString, JsonConvert.SerializeObject(mapData));// + ".json"
+	//				goto FoundID;
+	//			}
+	//			//load the data
 
-			}
-		}
-		//if the goto wasn't activated, failed
-		Debug.LogError("This id could not be found to teleport: id: " + idToMove);
-		return;
-		//goto was activated, success
-		FoundID:
-		//btw because of the goto and for loops, the directory entitySceneMapPath must exist or function would have returned or errored
+	//		}
+	//	}
+	//	//if the goto wasn't activated, failed
+	//	Debug.LogError("This id could not be found to teleport: id: " + idToMove);
+	//	return;
+	//	//goto was activated, success
+	//	FoundID:
+	//	//btw because of the goto and for loops, the directory entitySceneMapPath must exist or function would have returned or errored
 
-		//put the data in target scene
-		//use SceneUtility instead of SceneManager because SceneManager doesn't know about unloaded scenes
-		string newPath = entitySceneMapPath + nextScene + ".json";//Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(nextScene))
-		List<EntityMapData> targetMapData;
+	//	//put the data in target scene
+	//	//use SceneUtility instead of SceneManager because SceneManager doesn't know about unloaded scenes
+	//	string newPath = entitySceneMapPath + nextScene + ".json";//Path.GetFileName(SceneUtility.GetScenePathByBuildIndex(nextScene))
+	//	List<EntityMapData> targetMapData;
 
-		//if there is a file for entities in this scene, load it, otherwise create it
-		if (File.Exists(newPath))
-		{
-			targetMapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(newPath));
-		}
-		else
-		{
-			targetMapData = new List<EntityMapData>();
-		}
-		targetMapData.Add(toMove);
-		File.WriteAllText(newPath, JsonConvert.SerializeObject(targetMapData));
-
-
+	//	//if there is a file for entities in this scene, load it, otherwise create it
+	//	if (File.Exists(newPath))
+	//	{
+	//		targetMapData = JsonConvert.DeserializeObject<List<EntityMapData>>(File.ReadAllText(newPath));
+	//	}
+	//	else
+	//	{
+	//		targetMapData = new List<EntityMapData>();
+	//	}
+	//	targetMapData.Add(toMove);
+	//	File.WriteAllText(newPath, JsonConvert.SerializeObject(targetMapData));
 
 
-		//string pathOfThisEntity = GetPathFromId(idToMove);
-		//if (pathOfThisEntity == null)
-		//{
-		//	Debug.LogError("This id could not be found to teleport: id: " + idToMove);
-		//	return;
-		//}
-		//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(pathOfThisEntity));
-		//if (saveData.id == idToMove)
-		//{
-		//	saveData.scene = nextScene;
-		//	File.WriteAllText(pathOfThisEntity, JsonConvert.SerializeObject(saveData, Formatting.Indented));
-		//}
-		//else
-		//{
-		//	Debug.LogError("Somehow wrong id: expected: " + idToMove + ", found: " + saveData.id);
-		//	return;
-		//}
-
-		//foreach (string typeString in Directory.GetDirectories(savePath))
-		//{
-		//	string type = typeString.Substring(savePath.Length);
-		//	//print("fetching entity prefab: " + type);
-
-		//	List<Save> loadedSaves = new List<Save>();
-		//	foreach (string idPath in Directory.GetFiles(typeString))
-		//	{
-
-		//		SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-		//		if (saveData.id == idToMove)
-		//		{
-		//			saveData.scene = nextScene;
-		//			File.WriteAllText(idPath, JsonConvert.SerializeObject(saveData, Formatting.Indented));
-		//		}
-		//	}
-		//}
-	}
+	//}
 	
-	/*
-	//public void GetDataFromFile()
-	//{
-
-	//}
-
-	//public SaveData GetData()
-	//{
-	//	Inventory inventory = GetComponent<Inventory>();
-	//	List<Item> tempItems = inventory != null ? GetComponent<Inventory>().items : null;
-	//	return new SaveData
-	//	{
-	//		id = id,
-	//		scene = SceneManager.GetActiveScene().name,
-	//		maxStat = a.maxStat,
-	//		stat = a.stat,
-	//		position = transform.position,
-	//		rotation = transform.eulerAngles,
-	//		playerOwnerName = playerOwnerName,
-	//		items = tempItems,
-	//	};
-	//}
-
-	//public void SetData(SaveData data)
-	//{
-	//	id = data.id;
-	//	a.maxStat = data.maxStat;
-	//	a.stat = data.stat;
-	//	transform.position = data.position;
-	//	transform.eulerAngles = data.rotation;
-	//	playerOwnerName = data.playerOwnerName;
-	//	//TODO:this assignes this player to the gamecontrol
-	//	if(playerOwnerName == GameControl.username)
-	//	{
-	//		GameControl.main.SetUpPlayer(gameObject);
-	//	}
-	//	List<Item> tempItems = data.items;
-	//	Inventory inventory = GetComponent<Inventory>();
-	//	if (tempItems != null)
-	//	{
-	//		if (inventory == null)
-	//		{
-	//			Debug.LogError("An Inventory was loaded, but there is not one to load it to on this GameObject");
-	//		}
-	//		else
-	//		{
-	//			inventory.items = tempItems;
-	//		}
-	//	}
-	//}
-	*/
-
-	public static GameObject LoadEntity(GameObject typePrefab, string[] saveData)
+	public static GameObject LoadEntity(GameObject typePrefab, JArray saveData)
 	{
 		GameObject g = Instantiate(typePrefab);
 
@@ -429,7 +369,12 @@ public class SaveEntity : Save, ISaveable
 	{
 		int typeCount = 0;
 		int entityCount = 0;
-		if (!Directory.Exists(savePath))
+		if (File.Exists(allEntityFile))
+		{
+			allEntities = JArray.Parse(File.ReadAllText(allEntityFile));
+			playerEntities = JArray.Parse(File.ReadAllText(playerEntityFile));
+		}
+		else
 		{
 			Debug.LogWarning("Nothing to load!");
 			yield break;
@@ -469,10 +414,8 @@ public class SaveEntity : Save, ISaveable
 
 			//this will check if the entity exists, otherwise it'll skip.
 			//TODO: delete entities in the scene map if they don't exist
-			string thisEntityPath = GetFilePathFromEntity(d);// data.json";
-			if (Directory.Exists(thisEntityPath))
-			{
-				string[] saveData = GetSaveDataFromFilePath(thisEntityPath);
+			if (((JArray)allEntities[d.type]).Contains(d.id)){
+				JArray saveData = GetSaveDataFromFilePath(d.type, d.id.ToString());
 
 				//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
 				entityCount++;
@@ -489,6 +432,11 @@ public class SaveEntity : Save, ISaveable
 				}
 				newSaves[newSavesIndex].Add(g.GetComponent<Save>());
 			}
+			//string thisEntityPath = GetFilePathFromEntity(d);// data.json";
+			//if (Directory.Exists(thisEntityPath))
+			//{
+				
+			//}
 			
 		}
 
@@ -500,83 +448,78 @@ public class SaveEntity : Save, ISaveable
 		typeCount = typesLoaded.Count;
 
 		
-
-
-		//foreach (string typeString in Directory.GetDirectories(savePath))
-		//{
-		//	//TODO: check if this type even exists (if it has a prefab)
-		//	typeCount++;
-		//	string type = typeString.Substring(savePath.Length);
-		//	print("fetching entity prefab: " + type);
-		//	AsyncOperationHandle<GameObject> toSpawnAsync = GetEntityPrefab(type);
-		//	yield return toSpawnAsync;
-		//	GameObject toSpawn = toSpawnAsync.Result;
-
-		//	List<Save> loadedSaves = new List<Save>();
-		//	foreach (string idPath in Directory.GetDirectories(typeString))//GetFiles()
-		//	{
-				
-		//		//SaveData saveData = JsonConvert.DeserializeObject<SaveData>(File.ReadAllText(idPath));
-		//		object[] saveData = JsonConvert.DeserializeObject<object[]>(File.ReadAllText(idPath));
-
-
-
-		//		if (saveData.scene == SceneManager.GetActiveScene().name)
-		//		{
-		//			entityCount++;
-		//			//LoadEntity(toSpawn, saveData);
-		//			GameObject g = LoadEntity(toSpawn, saveData); //Instantiate(toSpawn);
-		//														  //g.GetComponent<Abilities>().resetOnStart = false;//prevent resetting of hp etc
-		//														  //g.GetComponent<SaveEntity>().SetData(saveData);
-
-		//			//TODO: warning: should check if null
-		//			//add the save
-		//			loadedSaves.Add(g.GetComponent<Save>());
-		//		}				
-		//	}
-		//	Save.CallOnLoadedtype(type, loadedSaves);
-		//}
 		print("Loaded entities: " + entityCount + ", " + typeCount + "types");
 		yield return null;
 	}
 
-	public static string GetFilePathFromEntity(EntityMapData d)
-	{
+	//public static string GetFilePathFromEntity(EntityMapData d)
+	//{
 
-		//load the data
-		return savePath + d.type + "/" + d.id + "/";
+	//	//load the data
+	//	return savePath + d.type + "/" + d.id + "/";
+	//}
+
+	public static JArray GetSaveDataFromFilePath(string type, string id)
+	{
+		//DirectoryInfo di = new DirectoryInfo(thisEntityPath);
+		////print(thisEntityPath);
+		//FileSystemInfo[] files = di.GetFileSystemInfos();
+		//IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(
+		//	(f) => int.Parse(new string(f.Name.Where(Char.IsDigit).ToArray()))
+		//);
+
+
+		//string[] saveData = new string[orderedFiles.Count()];
+		//for (int j = 0; j < orderedFiles.Count(); j++)
+		//{
+		//	saveData[j] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
+		//}
+
+		return (JArray)allEntities[type][id];
+
+		//return saveData;
 	}
 
-	public static string[] GetSaveDataFromFilePath(string thisEntityPath)
+	public static JArray GetPlayerDataFromFilePath(string id)
 	{
-		DirectoryInfo di = new DirectoryInfo(thisEntityPath);
-		//print(thisEntityPath);
-		FileSystemInfo[] files = di.GetFileSystemInfos();
-		IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(
-			(f) => int.Parse(new string(f.Name.Where(Char.IsDigit).ToArray()))
-		);
+		//DirectoryInfo di = new DirectoryInfo(thisEntityPath);
+		////print(thisEntityPath);
+		//FileSystemInfo[] files = di.GetFileSystemInfos();
+		//IOrderedEnumerable<FileSystemInfo> orderedFiles = files.OrderBy(
+		//	(f) => int.Parse(new string(f.Name.Where(Char.IsDigit).ToArray()))
+		//);
 
 
-		string[] saveData = new string[orderedFiles.Count()];
-		for (int j = 0; j < orderedFiles.Count(); j++)
-		{
-			saveData[j] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
-		}
+		//string[] saveData = new string[orderedFiles.Count()];
+		//for (int j = 0; j < orderedFiles.Count(); j++)
+		//{
+		//	saveData[j] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
+		//}
 
-		return saveData;
+		return (JArray)playerEntities[id];
+
+		//return saveData;
 	}
 
 	public void SaveDataToFile()
 	{
 		//TODO:GetPath broken
-		string path = GetPath();
-		Directory.CreateDirectory(path);
+		//string path = GetPath();
+		//Directory.CreateDirectory(path);
 
-		string[] data = GetAllData();
-		for(int i = 0; i < data.Length; i++)
+		JArray data = GetAllData();
+		if (playerOwned)
 		{
-			File.WriteAllText(path + ((ISaveable)toSave[i]).GetFileNameBaseForSavingThisComponent() + "_Component_" + i + ".json", data[i]);// JsonConvert.SerializeObject(data, Formatting.Indented));
+			playerEntities[id] = data;
 		}
+		else
+		{
+			allEntities[type][id] = data;
+		}
+		//for(int i = 0; i < data.Length; i++)
+		//{
+		//	File.WriteAllText(path + ((ISaveable)toSave[i]).GetFileNameBaseForSavingThisComponent() + "_Component_" + i + ".json", data[i]);// JsonConvert.SerializeObject(data, Formatting.Indented));
+		//}
 
 		//File.WriteAllText(path + "data.json", JsonConvert.SerializeObject(data, Formatting.Indented));
 
@@ -609,6 +552,8 @@ public class SaveEntity : Save, ISaveable
 		Directory.CreateDirectory(entitySceneMapPath);
 		File.WriteAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json", JsonConvert.SerializeObject(mapData, Formatting.Indented, Save.jsonSerializerSettings));
 
+		File.WriteAllText(allEntityFile, allEntities.ToString());
+		File.WriteAllText(playerEntityFile, playerEntities.ToString());
 		//string path = Application.persistentDataPath + "/nextid.txt";
 		////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 		//File.WriteAllText(path, nextId.ToString());
@@ -627,7 +572,7 @@ public class SaveEntity : Save, ISaveable
 
 	const string baseDataPath = "";
 
-	public string GetData()
+	public JObject GetData()
 	{
 		SaveDataBasic s = new SaveDataBasic()
 		{
@@ -636,12 +581,12 @@ public class SaveEntity : Save, ISaveable
 			position = transform.position,
 			rotation = transform.eulerAngles,
 		};
-		return JsonConvert.SerializeObject(s, Formatting.Indented, jsonSerializerSettings);
+		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public void SetData(JObject data)
 	{
-		SaveDataBasic s = JsonConvert.DeserializeObject<SaveDataBasic>(data);
+		SaveDataBasic s = data.ToObject<SaveDataBasic>();// JsonConvert.DeserializeObject<SaveDataBasic>(data);
 		//TODO: warning, sceneindex not considered here
 		id = s.id;
 		transform.position = s.position;
@@ -649,33 +594,24 @@ public class SaveEntity : Save, ISaveable
 		savedSceneBuildIndex = s.sceneIndex;
 	}
 
-	public string[] GetAllData()
+	public JArray GetAllData()
 	{
-		string[] data = new string[toSave.Length];
+		JArray data = new JArray();// new string[toSave.Length];
 		for (int i = 0; i < toSave.Length; i++)
 		{
-			data[i] = ((ISaveable)toSave[i]).GetData();
+			data.Add(((ISaveable)toSave[i]).GetData());
+			//data[i] = ((ISaveable)toSave[i]).GetData();
 		}
 		return data;
 	}
 
-	//public string[] GetAllDataFileNames()
-	//{
-	//	string[] data = new string[toSave.Length];
-	//	for (int i = 0; i < toSave.Length; i++)
-	//	{
-	//		data[i] = ((ISaveable)toSave[i]).GetData();
-	//	}
-	//	return data;
-	//}
-
-	public void SetAllData(string[] data)
+	public void SetAllData(JArray data)
 	{
-		if (data.Length != toSave.Length) Debug.LogError("wrong data, data.Length: " + data.Length + ", toSave.Length: " + toSave.Length);
+		if (data.Count != toSave.Length) Debug.LogError("wrong data, data.Length: " + data.Count + ", toSave.Length: " + toSave.Length);
 		//object[] data = new object[toSave.Length];
 		for (int i = 0; i < toSave.Length; i++)
 		{
-			((ISaveable)toSave[i]).SetData(data[i]);
+			((ISaveable)toSave[i]).SetData((JObject)data[i]);
 		}
 	}
 
@@ -711,8 +647,8 @@ public struct EntityMapData
 
 public interface ISaveable
 {
-	string GetData();
-	void SetData(string data);
+	JObject GetData();
+	void SetData(JObject data);
 	string GetFileNameBaseForSavingThisComponent();
 }
 

@@ -4,6 +4,7 @@
 ********************************************************/
 using bobStuff;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -223,7 +224,7 @@ public class NPCControl : MonoBehaviour, ISaveable
 	}
 
 
-	public string GetData()
+	public JObject GetData()
 	{
 		SaveDataNPCControl s = new SaveDataNPCControl()
 		{
@@ -234,12 +235,12 @@ public class NPCControl : MonoBehaviour, ISaveable
 			playerOwnerName = this.playerOwnerName
 		};
 
-		return JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
-	public void SetData(string data)
+	public void SetData(JObject data)
 	{
-		SaveDataNPCControl s = JsonConvert.DeserializeObject<SaveDataNPCControl>(data);
+		SaveDataNPCControl s = data.ToObject<SaveDataNPCControl>();// JsonConvert.DeserializeObject<SaveDataNPCControl>(data);
 		this.guard = s.guard;
 		this.guardPosition = s.guardPosition;
 		this.maxGuardDist = s.maxGuardDist;
