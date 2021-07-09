@@ -16374,8 +16374,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 779129633}
-  - component: {fileID: 779129635}
   - component: {fileID: 779129634}
+  - component: {fileID: 779129635}
   m_Layer: 19
   m_Name: 'location: outside Turris Aetheris'
   m_TagString: Untagged
@@ -16410,8 +16410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisLocationName: outside turris aetheris
---- !u!136 &779129635
-CapsuleCollider:
+--- !u!65 &779129635
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -16420,10 +16420,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.5, z: 0}
+  serializedVersion: 2
+  m_Size: {x: 6, y: 4, z: 4}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &786344851
 PrefabInstance:
   m_ObjectHideFlags: 0
