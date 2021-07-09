@@ -21,8 +21,14 @@ using Newtonsoft.Json.Linq;
 //TODO: save player data file including crafting inventory etc.
 public class SaveEntity : Save, ISaveable
 {
-	public static JArray allEntities;
-	public static JArray playerEntities;
+	private static JObject allEntities;
+			
+		
+	public static JObject AllEntities { get { if (allEntities == null) allEntities = new JObject(); return allEntities; } set => allEntities = value; }
+
+	private static JObject playerEntities;
+	public static JObject PlayerEntities { get { if (playerEntities == null) playerEntities = new JObject(); return playerEntities; } set => playerEntities = value; }
+
 	public static List<SaveEntity> saves;
 	public static Dictionary<string, GameObject> spawnObjects;
 	public static List<EntityMapData> toSaveMapData;
@@ -57,6 +63,8 @@ public class SaveEntity : Save, ISaveable
 			return GameControl.saveDirectory + "/Save/Map/";
 		}
 	}
+
+
 
 	//public string playerOwnerName;
 
@@ -189,11 +197,16 @@ public class SaveEntity : Save, ISaveable
 
 				if (playerOwned)
 				{
-					playerEntities.Remove(id.ToString());
+					if(PlayerEntities.ContainsKey(id.ToString()))
+					PlayerEntities.Remove(id.ToString());
 				}
 				else
 				{
-					((JArray)allEntities[type]).Remove(id.ToString());
+					if (AllEntities.ContainsKey(type) && ((JObject)AllEntities[type]).ContainsKey(id.ToString()))
+					{
+						((JObject)AllEntities[type]).Remove(id.ToString());
+					}
+					
 				}
 
 				//if (Directory.Exists(filePath))
@@ -371,8 +384,8 @@ public class SaveEntity : Save, ISaveable
 		int entityCount = 0;
 		if (File.Exists(allEntityFile))
 		{
-			allEntities = JArray.Parse(File.ReadAllText(allEntityFile));
-			playerEntities = JArray.Parse(File.ReadAllText(playerEntityFile));
+			AllEntities = JObject.Parse(File.ReadAllText(allEntityFile));
+			PlayerEntities = JObject.Parse(File.ReadAllText(playerEntityFile));
 		}
 		else
 		{
@@ -414,7 +427,7 @@ public class SaveEntity : Save, ISaveable
 
 			//this will check if the entity exists, otherwise it'll skip.
 			//TODO: delete entities in the scene map if they don't exist
-			if (((JArray)allEntities[d.type]).Contains(d.id)){
+			if (AllEntities.ContainsKey(d.type) && ((JObject)AllEntities[d.type]).ContainsKey(d.id.ToString())){
 				JArray saveData = GetSaveDataFromFilePath(d.type, d.id.ToString());
 
 				//string[] saveData = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(thisEntityPath));
@@ -475,7 +488,8 @@ public class SaveEntity : Save, ISaveable
 		//	saveData[j] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
 		//}
 
-		return (JArray)allEntities[type][id];
+		//warning: if data doesn't exist, this will erorr
+		return (JArray)AllEntities[type][id.ToString()];
 
 		//return saveData;
 	}
@@ -496,7 +510,7 @@ public class SaveEntity : Save, ISaveable
 		//	saveData[j] = File.ReadAllText(orderedFiles.ElementAt(j).FullName);// JsonConvert.DeserializeObject<string>(File.ReadAllText(orderedFiles.ElementAt(j).FullName));
 		//}
 
-		return (JArray)playerEntities[id];
+		return (JArray)PlayerEntities[id.ToString()];
 
 		//return saveData;
 	}
@@ -510,11 +524,15 @@ public class SaveEntity : Save, ISaveable
 		JArray data = GetAllData();
 		if (playerOwned)
 		{
-			playerEntities[id] = data;
+			PlayerEntities[id.ToString()] = data;
 		}
 		else
 		{
-			allEntities[type][id] = data;
+			if (!AllEntities.ContainsKey(type))
+			{
+				AllEntities[type] = new JObject();
+			}
+			AllEntities[type][id.ToString()] = data;
 		}
 		//for(int i = 0; i < data.Length; i++)
 		//{
@@ -552,8 +570,14 @@ public class SaveEntity : Save, ISaveable
 		Directory.CreateDirectory(entitySceneMapPath);
 		File.WriteAllText(entitySceneMapPath + SceneManager.GetActiveScene().buildIndex + ".json", JsonConvert.SerializeObject(mapData, Formatting.Indented, Save.jsonSerializerSettings));
 
-		File.WriteAllText(allEntityFile, allEntities.ToString());
-		File.WriteAllText(playerEntityFile, playerEntities.ToString());
+		FileInfo allInfo = new FileInfo(allEntityFile);
+		FileInfo playerInfo = new FileInfo(playerEntityFile);
+
+		Directory.CreateDirectory(allInfo.Directory.FullName);
+		Directory.CreateDirectory(playerInfo.Directory.FullName);
+
+		if(AllEntities != null && AllEntities.Count > 0) File.WriteAllText(allEntityFile, AllEntities.ToString());
+		if(PlayerEntities != null && PlayerEntities.Count > 0) File.WriteAllText(playerEntityFile, PlayerEntities.ToString());
 		//string path = Application.persistentDataPath + "/nextid.txt";
 		////byte[] toWrite = System.Text.Encoding.UTF8.GetBytes(nextId.ToString());
 		//File.WriteAllText(path, nextId.ToString());
@@ -581,7 +605,7 @@ public class SaveEntity : Save, ISaveable
 			position = transform.position,
 			rotation = transform.eulerAngles,
 		};
-		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, jsonSerializerSettings);
+		return JObject.FromObject(s, Save.jsonSerializer);// JsonConvert.SerializeObject(s, Formatting.Indented, jsonSerializerSettings);
 	}
 
 	public void SetData(JObject data)

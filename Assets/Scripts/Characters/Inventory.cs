@@ -74,7 +74,7 @@ public class Inventory : MonoBehaviour, ISaveable
 	public JObject GetData()
 	{
 		SaveDataInventory s = new SaveDataInventory(items);
-		return new JObject(s);//  JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return JObject.FromObject(s, Save.jsonSerializer);//  JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(JObject data)

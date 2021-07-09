@@ -235,7 +235,7 @@ public class NPCControl : MonoBehaviour, ISaveable
 			playerOwnerName = this.playerOwnerName
 		};
 
-		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return JObject.FromObject(s, Save.jsonSerializer);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(JObject data)

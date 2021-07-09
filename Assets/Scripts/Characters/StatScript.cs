@@ -987,7 +987,7 @@ public class StatScript : MonoBehaviour, ISaveable
 			temp.Add(st.name);
 		}
 		SaveDataStat s = new SaveDataStat(stat, initialMaxStat, xp, damageRecords, temp, skillLvls, statRestores);
-		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return JObject.FromObject(s, Save.jsonSerializer);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(JObject data)

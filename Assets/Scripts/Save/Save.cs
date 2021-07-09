@@ -18,6 +18,7 @@ public abstract class Save : MonoBehaviour
 	{
 		ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 	};
+	public static JsonSerializer jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
 
 	public static bool readEverything;
 	public static long nextId = 1;

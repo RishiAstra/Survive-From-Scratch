@@ -472,7 +472,7 @@ public class GameControl : MonoBehaviour
 
 				//string datapath = playerCharacterDirectory + p.id + "/";
 
-				if (SaveEntity.playerEntities.Contains(p.id))
+				if (SaveEntity.PlayerEntities.ContainsKey(p.id.ToString()))
 				{
 					//get the gameobject to spawn
 					GameObject toSpawn;

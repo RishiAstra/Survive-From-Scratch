@@ -173,7 +173,7 @@ public class Abilities : MonoBehaviour, ISaveable
 			temp.Add(st.name);
 		}
 		SaveDataAbilities s = new SaveDataAbilities(temp, skillLvls);
-		return new JObject(s);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
+		return JObject.FromObject(s, Save.jsonSerializer);// JsonConvert.SerializeObject(s, Formatting.Indented, Save.jsonSerializerSettings);
 	}
 
 	public void SetData(JObject data)
