@@ -15,33 +15,38 @@ public class Title : MonoBehaviour
     {
         save = GetComponentInParent<SaveEntity>();
         s = GetComponentInParent<StatScript>();
-    }
-
-	private void OnEnable()
-	{
-		SetActiveIfHPBarActive();
+		UpdateTitleDisplay();
 	}
 
-	private void OnDisable()
-	{
-		SetActiveIfHPBarActive();
-	}
+	//private void OnEnable()
+	//{
+	//	SetActiveIfHPBarActive();
+	//}
+
+	//private void OnDisable()
+	//{
+	//	SetActiveIfHPBarActive();
+	//}
 
 	// Update is called once per frame
 	void Update()
 	{
 		//for now, display title based on if hpbar is displayed
 
-		SetActiveIfHPBarActive();
+		//SetActiveIfHPBarActive();
+		if(Time.frameCount % 10 == 0) UpdateTitleDisplay();
+	}
 
+	private void UpdateTitleDisplay()
+	{
 		if (save != null && s != null)
 		{
 			text.text = save.type + " lvl " + s.lvl;
 		}
 	}
 
-	private void SetActiveIfHPBarActive()
-	{
-		text.gameObject.SetActive(hpBar.activeInHierarchy);
-	}
+	//private void SetActiveIfHPBarActive()
+	//{
+	//	text.gameObject.SetActive(hpBar.activeInHierarchy);
+	//}
 }
