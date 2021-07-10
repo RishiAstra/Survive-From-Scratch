@@ -174,15 +174,18 @@ public class Movement : MonoBehaviour
 
 		previouslyIdle = idle;
 
-		CheckGround();
+		//CheckGround();
 
 		HandleMove();
 		HandleJump();
 
 		//CheckGround();
 
+		//reset grounded so it can be set if valid collision
+		grounded = false;
+		bestDirDot = -2f;
 	}
-
+	float bestDirDot;
 	private void SwapPhysicsMaterialsIfNecessary()
 	{
 		bool pTryingToMove = tryingToMove;
@@ -209,48 +212,79 @@ public class Movement : MonoBehaviour
 		//tryingToMove = (direction.magnitude > SMALL_INPUT);
 	}
 
-	void CheckGround()
+	private void OnCollisionStay(Collision collision)
 	{
-		grounded = false;
-		float bestDirDot = -2f;
+		//if no binary overlap between layer and ground layers, don't care about this collision
+		if ((1<<collision.gameObject.layer & GameControl.main.ground) == 0) return;
 
-
-		//find all ground that character is on, then find the ground contact most aligned (dot) with character's direction.
-		foreach(GroundCheck t in groundCheck)
+		foreach (ContactPoint c in collision.contacts)
 		{
-			RaycastHit[] hit = Physics.SphereCastAll(t.transform.position, t.radius, t.transform.up, t.distance, GameControl.main.ground, QueryTriggerInteraction.Ignore);
-			//print(hit.Length);
-			foreach (RaycastHit h in hit)
+			//-hit.normal should be the normal of the point on this "collider"/spherecast that hit (that's why negative)
+			float angle = Vector3.Angle(-c.normal, Vector3.down);
+			float dirDot = Vector3.Cross(-c.normal, direction.normalized).sqrMagnitude;
+			//print(angle);
+			if (angle < maxMoveAngle)
 			{
-				//-hit.normal should be the normal of the point on this "collider"/spherecast that hit (that's why negative)
-				float angle = Vector3.Angle(-h.normal, Vector3.down);
-				Vector3 deltaPositionHit = h.point - transform.position;
-				if (deltaPositionHit.magnitude > 0.01f)
-				{
-					deltaPositionHit.Normalize();
-				} else deltaPositionHit = Vector3.zero;
-				float dirDot = Vector3.Dot(deltaPositionHit, direction.normalized);
-				//print(angle);
-				if (angle < maxMoveAngle)
-				{
-					//print("Grounded");
-					grounded = true;
+				//print("Grounded");
+				grounded = true;
 
-					if (!tryingToMove)
-					{
-						groundNormal = -h.normal;
-						return;
-					} else if (dirDot > bestDirDot)
-					{
-						groundNormal = -h.normal;
-						bestDirDot = dirDot;
+				if (!tryingToMove)
+				{
+					groundNormal = -c.normal;
+					return;
+				}
+				else if (dirDot > bestDirDot)
+				{
+					groundNormal = -c.normal;
+					bestDirDot = dirDot;
 
-					}
 				}
 			}
-			
 		}
 	}
+
+	//void CheckGround()
+	//{
+	//	grounded = false;
+	//	float bestDirDot = -2f;
+
+
+	//	//find all ground that character is on, then find the ground contact most aligned (dot) with character's direction.
+	//	foreach(GroundCheck t in groundCheck)
+	//	{
+	//		RaycastHit[] hit = Physics.SphereCastAll(t.transform.position, t.radius, t.transform.up, t.distance, GameControl.main.ground, QueryTriggerInteraction.Ignore);
+	//		//print(hit.Length);
+	//		foreach (RaycastHit h in hit)
+	//		{
+	//			//-hit.normal should be the normal of the point on this "collider"/spherecast that hit (that's why negative)
+	//			float angle = Vector3.Angle(-h.normal, Vector3.down);
+	//			Vector3 deltaPositionHit = h.point - transform.position;
+	//			if (deltaPositionHit.magnitude > 0.01f)
+	//			{
+	//				deltaPositionHit.Normalize();
+	//			} else deltaPositionHit = Vector3.zero;
+	//			float dirDot = Vector3.Dot(deltaPositionHit, direction.normalized);
+	//			//print(angle);
+	//			if (angle < maxMoveAngle)
+	//			{
+	//				//print("Grounded");
+	//				grounded = true;
+
+	//				if (!tryingToMove)
+	//				{
+	//					groundNormal = -h.normal;
+	//					return;
+	//				} else if (dirDot > bestDirDot)
+	//				{
+	//					groundNormal = -h.normal;
+	//					bestDirDot = dirDot;
+
+	//				}
+	//			}
+	//		}
+			
+	//	}
+	//}
 
 	/*
 	//IEnumerator CheckJump()

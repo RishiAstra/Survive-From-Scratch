@@ -11,20 +11,20 @@ public class MapCamera : MonoBehaviour
 {
     public static MapCamera main;
 
-    [Range(1, 25)] public float fps;
+    //[Range(1, 25)] public float fps;
     public Camera cam;
     //public Shader unlit;
 
-    private double ps;
-    private Stopwatch sw;
+    //private double ps;
+    //private Stopwatch sw;
     private Transform mainCameraTransform;
     // Start is called before the first frame update
     void Awake()
     {
         if (main != null) UnityEngine.Debug.LogError("Two MapCamera");
         main = this;
-        sw = new Stopwatch();
-        sw.Start();
+        //sw = new Stopwatch();
+        //sw.Start();
         mainCameraTransform = Camera.main.transform.root;
     }
 
@@ -35,26 +35,31 @@ public class MapCamera : MonoBehaviour
         pos.y = transform.position.y;
         transform.position = pos;
 
-        double ticks = sw.ElapsedTicks;
-        double seconds = ticks / Stopwatch.Frequency;
-
-		double timePerFrame = 1.0 / fps;
-		if (seconds - ps > timePerFrame)
+        if(Time.frameCount % 5 == 0)
 		{
+            cam.Render();
+        }
+
+  //      double ticks = sw.ElapsedTicks;
+  //      double seconds = ticks / Stopwatch.Frequency;
+
+		//double timePerFrame = 1.0 / fps;
+		//if (seconds - ps > timePerFrame)
+		//{
 			
 
-            if(seconds - ps > timePerFrame * 3)
-			{
-                //there was lag of more than 3x a frame or something, so just reset the time difference to prevent it from trying to catch up
-                ps = seconds;
-			}
-			else
-			{
-                //one frame was completed, so remove 1 frame worth of time from the timer
-                ps += timePerFrame;
-            }
+  //          if(seconds - ps > timePerFrame * 3)
+		//	{
+  //              //there was lag of more than 3x a frame or something, so just reset the time difference to prevent it from trying to catch up
+  //              ps = seconds;
+		//	}
+		//	else
+		//	{
+  //              //one frame was completed, so remove 1 frame worth of time from the timer
+  //              ps += timePerFrame;
+  //          }
 
-            cam.Render();// WithShader(unlit, null);
-		}
+  //          cam.Render();// WithShader(unlit, null);
+		//}
     }
 }
