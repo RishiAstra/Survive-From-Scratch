@@ -684,15 +684,35 @@ public class SaveDataBasic
 	/// unused
 	/// </summary>
 	public int sceneIndex;
-	public Vector3 position;
-	public Vector3 rotation;
+	public SaveFloat3 position;
+	public SaveFloat3 rotation;
+}
+
+public struct SaveFloat3
+{
+	float x, y, z;
+
+	public static implicit operator Vector3(SaveFloat3 s)
+	{
+		return new Vector3(s.x, s.y, s.z);
+	}
+
+	public static implicit operator SaveFloat3(Vector3 v)
+	{
+		return new SaveFloat3()
+		{
+			x = v.x,
+			y = v.y,
+			z = v.z
+		};
+	}
 }
 
 [System.Serializable]
 public class SaveDataNPCControl
 {
 	public bool guard;
-	public Vector3 guardPosition;
+	public SaveFloat3 guardPosition;
 	public float maxGuardDist;
 	public bool playerControlled;
 	public string playerOwnerName;
