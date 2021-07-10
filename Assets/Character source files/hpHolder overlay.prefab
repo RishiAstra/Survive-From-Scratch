@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7709856331489656955
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424297712190640560, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175996000439287442, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2180264, guid: fb35ab0586b0b4b42b4816308f21ca56, type: 2}
+    - target: {fileID: 3219285574136633832, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3219285574136633847, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2180264, guid: fb35ab0586b0b4b42b4816308f21ca56, type: 2}
+    - target: {fileID: 3219285574800454113, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3219285574800454127, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 636089f917fa07e46a0c0667ccbecc15, type: 2}
+    - target: {fileID: 3227762077875309423, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fb35ab0586b0b4b42b4816308f21ca56,
+        type: 2}
+    - target: {fileID: 3227762077875309423, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: fb35ab0586b0b4b42b4816308f21ca56, type: 2}
+    - target: {fileID: 6547701870212019834, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_Name
+      value: hpHolder Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197793527051050739, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: fb35ab0586b0b4b42b4816308f21ca56,
+        type: 2}
+    - target: {fileID: 8197793527051050739, guid: b7aa23471e641cb4fb854e7012039f58,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: fb35ab0586b0b4b42b4816308f21ca56, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b7aa23471e641cb4fb854e7012039f58, type: 3}

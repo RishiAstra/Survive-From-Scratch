@@ -26,6 +26,7 @@ public class RigPrioroty : MonoBehaviour {
 		{
 			Destroy(rig);//remove the rigidbody since it's not needed
 			gameObject.isStatic = true;//mark as static since it won't move
+			Destroy(this);
 		}
 		//rig.isKinematic = Vector3.Distance(transform.position, bobPlayer.main.transform.position) > simulateDist;
 		//if ()
