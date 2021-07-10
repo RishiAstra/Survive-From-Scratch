@@ -688,9 +688,10 @@ public class SaveDataBasic
 	public SaveFloat3 rotation;
 }
 
+[System.Serializable]
 public struct SaveFloat3
 {
-	float x, y, z;
+	public float x, y, z;
 
 	public static implicit operator Vector3(SaveFloat3 s)
 	{

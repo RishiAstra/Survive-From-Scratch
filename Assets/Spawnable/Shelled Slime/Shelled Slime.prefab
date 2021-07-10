@@ -1248,7 +1248,6 @@ GameObject:
   - component: {fileID: 9123941630015135667}
   - component: {fileID: 9123941630015135668}
   - component: {fileID: 3164819327478351264}
-  - component: {fileID: -5093607644182197237}
   m_Layer: 12
   m_Name: Shelled Slime
   m_TagString: Untagged
@@ -1581,28 +1580,6 @@ MonoBehaviour:
   - {fileID: 4906788732333109210}
   enemyString:
   - humanoid
---- !u!114 &-5093607644182197237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9123941630015135659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  take: 0
-  put: 0
-  size: 9
-  items: []
-  invChange:
-    m_PersistentCalls:
-      m_Calls: []
-  invClicked:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &8140467597535700410
 PrefabInstance:
   m_ObjectHideFlags: 0

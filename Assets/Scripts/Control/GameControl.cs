@@ -1553,40 +1553,43 @@ public class GameControl : MonoBehaviour
 	{
 		//check if it can be put in hotbar
 		Inventory inv = hotBarUI.target;
-		if (inv == false) return false;
-		for (int i = 0; i < inv.items.Count; i++)
+		if (inv != null)
 		{
-			if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)
+			for (int i = 0; i < inv.items.Count; i++)
 			{
-				Item temp = inv.items[i];
-				temp.amount += amount;
-				inv.items[i] = temp;
-				//inv.items [i].amount += amount;
-
-				//TODO: this might require inventory to be refreshed
-				//if (invSel == i) {
-				//	RefreshSelected();
-				//	//SelectInv (invSel);
-				//}
-				ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
-				return true;
-			}
-		}
-		for (int i = 0; i < inv.items.Count; i++)
-		{
-			if (inv.items[i].id == 0)
-			{
-				inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
-				if (GameControl.main.playerControl.invSel == i)
+				if (inv.items[i].id == id && Mathf.Abs(inv.items[i].currentStrength - inv.items[i].strength) < 0.01f)
 				{
+					Item temp = inv.items[i];
+					temp.amount += amount;
+					inv.items[i] = temp;
+					//inv.items [i].amount += amount;
 
-					GameControl.main.playerControl.RefreshSelected();
-					//SelectInv (invSel);
+					//TODO: this might require inventory to be refreshed
+					//if (invSel == i) {
+					//	RefreshSelected();
+					//	//SelectInv (invSel);
+					//}
+					ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
+					return true;
 				}
-				ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
-				return true;
+			}
+			for (int i = 0; i < inv.items.Count; i++)
+			{
+				if (inv.items[i].id == 0)
+				{
+					inv.items[i] = new Item(id, amount, GameControl.itemTypes[id].strength, GameControl.itemTypes[id].strength);
+					if (GameControl.main.playerControl.invSel == i)
+					{
+
+						GameControl.main.playerControl.RefreshSelected();
+						//SelectInv (invSel);
+					}
+					ProgressTracker.main.RegisterItemObtained(new Item() { id = id, amount = amount });
+					return true;
+				}
 			}
 		}
+		
 
 		//check if it can be put in main inventory
 		inv = mainInventoryUI.target;

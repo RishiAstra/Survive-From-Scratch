@@ -50,7 +50,6 @@ GameObject:
   - component: {fileID: 766235108808700668}
   - component: {fileID: 5932179878940791774}
   - component: {fileID: 6140556019865881489}
-  - component: {fileID: -9023128773237875846}
   m_Layer: 12
   m_Name: Golem
   m_TagString: Untagged
@@ -384,28 +383,6 @@ MonoBehaviour:
   - {fileID: 3012764108752766605}
   enemyString:
   - humanoid
---- !u!114 &-9023128773237875846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 596891623449604899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2265d129488aa07458a1822864fe4622, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  take: 0
-  put: 0
-  size: 9
-  items: []
-  invChange:
-    m_PersistentCalls:
-      m_Calls: []
-  invClicked:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &596903223073468833
 GameObject:
   m_ObjectHideFlags: 0
