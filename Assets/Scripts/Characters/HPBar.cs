@@ -62,6 +62,7 @@ public class HPBar : MonoBehaviour
 	private float previousHp;
 	private bool isHiding;
 	private bool isDead;
+	private bool hpBarsAlwaysHiden;
     // Start is called before the first frame update
     void Start()
     {
@@ -127,6 +128,7 @@ public class HPBar : MonoBehaviour
 	public void SetWorldHpBarVisible(bool visible)
 	{
 		if(hpHolder != null) hpHolder.gameObject.SetActive(visible);
+		hpBarsAlwaysHiden = !visible;
 	}
 
     // Update is called once per frame
@@ -288,14 +290,23 @@ public class HPBar : MonoBehaviour
 
 	private void SetHpBarsActive(bool active)
 	{
-		bool sprite = hpBarSprite != null;
-		bool image = hpBarImage != null;
-		bool text = hpText != null;
-		bool textUI = hpTextUI != null;
+		if(hpHolder != null)
+		{
+			if (hpBarsAlwaysHiden) hpHolder.gameObject.SetActive(false);
+			else hpHolder.gameObject.SetActive(active);
 
-		if (sprite) hpBarSprite.gameObject.SetActive(active);
-		if (image) hpBarImage.gameObject.SetActive(active);
-		if (text) hpText.gameObject.SetActive(active);
-		if (textUI) hpTextUI.gameObject.SetActive(active);
+		}
+		//bool sprite = hpBarSprite != null;
+		//bool image = hpBarImage != null;
+		//bool text = hpText != null;
+		//bool textUI = hpTextUI != null;
+
+		//if (hpHolder != null) hpHolder.gameObject.SetActive(active);
+
+		//if (sprite) hpBarSprite.gameObject.SetActive(active);
+		//if (image) hpBarImage.gameObject.SetActive(active);
+		//if (text) hpText.gameObject.SetActive(active);
+		//if (textUI) hpTextUI.gameObject.SetActive(active);
+		
 	}
 }

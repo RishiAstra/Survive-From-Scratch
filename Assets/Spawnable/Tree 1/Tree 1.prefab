@@ -1144,6 +1144,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: hpHolder Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 3468041457533269505, guid: 413698189d6fb014f97e953f2a06568d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8006698620283687371, guid: 413698189d6fb014f97e953f2a06568d,
         type: 3}
       propertyPath: m_RootOrder
@@ -1157,7 +1162,7 @@ PrefabInstance:
     - target: {fileID: 8006698620283687371, guid: 413698189d6fb014f97e953f2a06568d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8006698620283687371, guid: 413698189d6fb014f97e953f2a06568d,
         type: 3}
